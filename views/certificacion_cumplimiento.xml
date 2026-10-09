@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_certificacion_cumplimiento_form" model="ir.ui.view">
+            <field name="name">certificacion_cumplimiento.form</field>
+            <field name="model">certificacion_cumplimiento</field>
+            <field name="arch" type="xml">
+                <form string="Certificación conjunta de cumplimiento">
+                    <sheet>
+                       <field name="estado" widget="statusbar" invisible="1"/>
+                       <button name="generar_informe_word" type="object" string="generar informe" class="btn-primary" groups="Matriz.group_soporte"/>
+                        <!-- Encabezado con logo y datos -->
+                        <div class="encabezado-certificacion" style="display:flex;justify-content:space-between;align-items:center;">
+                            <div class="logo">
+                                <img src="/Matriz/static/src/img/logo_univalle.png" style="max-height:150px;"/>
+                            </div>
+                            <div class="titulo" style="text-align:center;">
+                                <h3 style="margin:0;">CERTIFICACIÓN CONJUNTA<br/>DE CUMPLIMIENTO</h3>
+                                <p style="margin:0;">Actualización: 2024-07-01</p>
+                            </div>
+                            <div class="datos" style="text-align:right;">
+                                <p style="margin:0;">F. EMISIÓN: 2011-10-25<br/>Versión 7</p>
+                                <p style="margin:0;">FU-F-GCS-009</p>
+                            </div>
+                        </div>
+                        <br/>
+
+                         <div style="border: 1px solid #6C757D; border-radius: 5px; padding: 20px; background-color: #F8F9FA;">
+                            <table style="width: 100%; border-collapse: separate; border-spacing: 10px;">
+                                <tr invisible="1">
+                                    <td colspan="2">
+                                        <label for="relcion" style="font-size: 14px; font-weight: bold; color: #499057;">Relacion</label>
+                                        <field name="relcion" placeholder="Relacion" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label for="clase_persona" style="font-size: 14px; font-weight: bold; color: #495057;">Seleccione el tipo de persona</label>
+                                        <field name="clase_persona" placeholder="Seleccione el tipo de persona" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px; background-color: #e1976a;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <label for="periodo_comprendido" style="font-size: 14px; font-weight: bold; color: #495057;">Periodo comprendido entre:</label>
+                                        <field name="periodo_comprendido" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <label for="centro_costo" style="font-size: 14px; font-weight: bold; color: #495057;">Centro de costo:</label>
+                                        <field name="centro_costo" placeholder="Ingrese el nombre" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 50%;">
+                                        <label for="contrato_numero" style="font-size: 14px; font-weight: bold; color: #495057;">No. del contrato:</label>
+                                        <field name="contrato_numero" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                    </td>
+                                    <td style="width: 50%;">
+                                        <label for="rcf_numero" attrs="{'invisible': [('origen_cuenta', '=', 'regalias')]}" style="font-size: 14px; font-weight: bold; color: #495057;">No. del RCF:</label>
+                                        <label for="rcf_numero" attrs="{'invisible': [('origen_cuenta', '!=', 'regalias')]}" style="font-size: 14px; font-weight: bold; color: #495057;">RPC:</label>
+                                        <field name="rcf_numero" placeholder="Ingrese el nombre" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                         </div>
+                          <field name="estado3" invisible="1"/>
+                          <field name="origen_cuenta" invisible="1"/>
+                          <field name="coordinadores_asignados_ids" invisible="1"/>
+                          <field name="ventanilla_asignada_ids" invisible="1"/>
+                          <div class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_actividad" attrs="{'invisible': ['|', ('estado3', '!=', 'asis_coordinador'), ('actividades_especificas', '!=', False)]}" style="display: none;"/>
+                          <div class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_porcentaje" attrs="{'invisible': ['|', '|', ('estado3', '!=', 'asis_coordinador'), ('actividades_especificas', '=', False), ('porcentaje_objetivos', '!=', 0)]}" style="display: none;"/>
+                          <div class="js-certificacion-cumplimiento-marker" data-target=".modal-footer .btn-primary, .modal-footer .o_form_button_save, button.o_form_button_save" attrs="{'invisible': ['|', '|', ('estado3', '!=', 'asis_coordinador'), ('actividades_especificas', '=', False), ('porcentaje_objetivos', '=', 0)]}" style="display: none;"/>
+                          <div groups="Matriz.group_contratacion_coordinador" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_coordinador_nombre" attrs="{'invisible': ['|', ('estado3', '!=', 'coordinador'), ('coordinador_nombre_id', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_contratacion_coordinador" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_coordinador_cargo" attrs="{'invisible': ['|', '|', ('estado3', '!=', 'coordinador'), ('coordinador_nombre_id', '=', False), ('cargo2', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_contratacion_coordinador" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_coordinador_fecha" attrs="{'invisible': ['|', '|', '|', ('estado3', '!=', 'coordinador'), ('coordinador_nombre_id', '=', False), ('cargo2', '=', False), ('fecha_coordinador', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_contratacion_ventanilla_unica" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_ventanilla_nombre" attrs="{'invisible': ['|', ('estado3', '!=', 'ventanilla'), ('nombre_recepcion_id', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_contratacion_ventanilla_unica" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_ventanilla_fecha" attrs="{'invisible': ['|', '|', ('estado3', '!=', 'ventanilla'), ('nombre_recepcion_id', '=', False), ('fecha_recepcion', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_firmante_director_financiero_certificacion" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_financiera_nombre" attrs="{'invisible': ['|', ('estado3', '!=', 'director_financiero'), ('nombre_financiera_id', '!=', False)]}" style="display: none;"/>
+                          <div groups="Matriz.group_firmante_director_financiero_certificacion" class="js-certificacion-cumplimiento-marker" data-target="#certificacion_campo_financiera_fecha" attrs="{'invisible': ['|', '|', ('estado3', '!=', 'director_financiero'), ('nombre_financiera_id', '=', False), ('fecha_financiera', '!=', False)]}" style="display: none;"/>
+                            <div id="certificacion_datos_coordinacion" style="border: 1px solid #6C757D; border-radius: 5px; padding: 20px; background-color: #FFFFFF;">
+                                <div style="background-color: #ADD8E6; color: black; font-weight: bold; font-size: 15px; padding: 10px; border-radius: 3px;">
+                                    1. EL COORDINADOR DE PROYECTO O DIRECTOR DE UNIDAD CERTIFICA QUE:
+                                </div>
+                                <table style="width: 100%; border-collapse: separate; border-spacing: 10px;">
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <label for="name" style="font-size: 14px; font-weight: bold; color: #495057;">El Señor (a) y/o Empresa:</label>
+                                            <field name="name" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                        </td>
+                                        <td style="width: 50%;" attrs="{'invisible': [('clase_persona', '=', 'persona_juridica')]}">
+                                            <label for="identificacion" style="font-size: 14px; font-weight: bold; color: #495057;">Identificado (a) con C.C:</label>
+                                            <field name="identificacion" placeholder="Número de identificación" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                        </td>
+
+                                        <td style="width: 50%;" attrs="{'invisible': [('clase_persona', '=', 'persona_natural')]}">
+                                            <label for="nit" style="font-size: 14px; font-weight: bold; color: #495057;">NIT:</label>
+                                            <field name="nit" placeholder="Ingrese el NIT" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 50%;">
+                                            <label for="expedida_en" style="font-size: 14px; font-weight: bold; color: #495057;">Expedida en:</label>
+                                            <field name="expedida_en" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                        </td>
+                                        <td id="certificacion_campo_actividad" style="width: 50%;">
+                                            <label for="actividades_especificas" style="font-size: 14px; font-weight: bold; color: #495057;">Cumplió con las actividades a su cargo como:</label>
+                                            <field name="actividades_especificas" placeholder="Ingrese Cargo" style="width: 100%; border: 1px solid #CED4DA; border-radius: 4px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"/>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <div id="certificacion_campo_porcentaje" style="border: 1px solid #ccc; padding: 8px; background-color: #fff;">
+                                        Desarrollando las tareas propias asignadas en el PROYECTO
+                                        <field name="proyecto_relacionado" options="{'no_open': True}"/>
+                                        , con un alcance de los objetivos del
+                                        <field name="porcentaje_objetivos" placeholder="(%)" class="o_percent_field" attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"  style="border: 2px solid #0d6efd; border-radius: 8px; background-color: #eef6ff; padding: 4px;"/> %
+                                        , ejecutado en el municipio
+                                        <field name="municipio2" placeholder="Seleccione el municipio"
+                                            class="oe_inline"
+                                            options="{'no_open': True, 'no_create': True}"
+                                            attrs="{'readonly': [('estado3', '!=', 'asis_coordinador')]}"
+                                            style="width: 120px; margin: 0 4px;"/>
+                                        presentando el informe correspondiente.
+                                        <button name="action_toggle_forma_pago" type="object"
+                                            string="Ver forma de pago" icon="fa-table"
+                                            context="{'skip_certificacion_guardado': True}"
+                                            attrs="{'invisible': [('origen_cuenta', '=', 'regalias')]}"
+                                            class="oe_link" style="margin-left: 8px;"/>
+                                </div>
+                                <br/>
+                                <div style="border: 1px solid #ccc; border-radius: 5px; padding: 15px; background-color: #FFFFFF; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-top: 20px;">
+                                <!-- Contenedor de dos columnas -->
+                                <div style="display: flex; gap: 20px;">
+
+                                    <!-- Columna Izquierda: Nombre y Cargo -->
+                                    <div style="flex: 1;" groups="Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria_auxiliar,Matriz.group_contabilidad,Matriz.group_contratacion_director_financiero">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Nombre</div>
+                                            <field name="coordinador_nombre_id" placeholder="Nombre completo"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1" options="{'no_open': True}"/>
+                                        </div>
+
+                                        <!-- Campo Cargo -->
+                                        <div>
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Cargo</div>
+                                            <field name="cargo2" placeholder="Cargo"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1" options="{'no_open': True}"/>
+                                        </div>
+
+                                        <div>
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha:</div>
+                                            <field name="fecha_coordinador" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1"/>
+                                        </div>
+                                    </div>
+
+                                    <div id="certificacion_firma_coordinador" style="flex: 1;" groups="Matriz.group_contratacion_coordinador">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: flex-end; gap: 18px; width: 100%;">
+                                                <div id="certificacion_campo_coordinador_nombre" style="flex: 1; min-width: 0;">
+                                                    <div style="font-size: 14px; margin-bottom: 5px;">Nombre</div>
+                                                    <field name="coordinador_nombre_id" placeholder="Nombre completo"
+                                                        style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" options="{'no_open': True}" attrs="{'readonly': [('estado3', '!=', 'coordinador')]}" autofocus="autofocus"/>
+                                                </div>
+                                                <div id="certificacion_campo_coordinador_firma" style="display: flex; align-items: center; gap: 8px; min-height: 34px; padding-bottom: 2px; white-space: nowrap;">
+                                                    <span style="font-weight: bold; font-size: 14px; color: #000;">Firma:</span>
+                                                     <field name="firmado" widget="boolean_toggle" class="oe_inline" attrs="{'readonly': [('estado3', '!=', 'coordinador')]}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Campo Cargo -->
+                                        <div id="certificacion_campo_coordinador_cargo">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Cargo</div>
+                                            <field name="cargo2" placeholder="Cargo"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'coordinador')]}"/>
+                                        </div>
+
+                                        <div id="certificacion_campo_coordinador_fecha">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha:</div>
+                                            <field name="fecha_coordinador" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'coordinador')]}"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="flex: 1;" groups="Matriz.group_contratacion_asis_coordinador">
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="font-size: 14px; margin-bottom: 5px;">Nombre</div>
+                                            <field name="coordinador_nombre_id" placeholder="Nombre completo"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1" options="{'no_open': True}"/>
+                                        </div>
+                                        <div>
+                                            <div style="color: black; font-size: 14px; margin-bottom: 5px;">Cargo</div>
+                                            <field name="cargo2" placeholder="Cargo"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1" options="{'no_open': True}"/>
+                                        </div>
+                                        <div>
+                                            <div style="color: black; font-size: 14px; margin-bottom: 5px;">Fecha:</div>
+                                            <field name="fecha_coordinador" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1"/>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+                                    <!-- Columna Derecha: Firma -->
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;" invisible="1">
+                                        <div>
+                                            <tr>
+                                                <td>
+                                                    <label for="firma_coordinador"></label>
+                                                </td>
+                                                <td>
+                                                    <field name="firma_coordinador" widget="image" style="width: 50%; height: auto; display: block;"/>
+                                                    <br/>
+                                                    <field name="firma_coordinador" filename="firma_coordinador_name" invisible="1"/>                                            
+                                                </td>
+                                                <field name="firma_coordinador_name" invisible="1"/>
+
+                                            </tr>
+                                            <div style="text-align: left; color: #000; background-color: transparent; font-weight: bold; font-size: 14px;">Firma de coordinador <field name="firmado"/></div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    <br/>
+
+
+
+                        <div id="certificacion_firma_ventanilla" style="border: 1px solid #6C757D; border-radius: 5px; padding: 20px; background-color: #F8F9FA;">
+                            <div style="text-align: background-color: #ADD8E6; color: black; font-weight: bold; font-size: 15px; padding: 10px; border-radius: 3px;">
+                                2. RECEPCIÒN VENTANILLA ÙNICA:
+                            </div>
+                            <br/>
+                          El Proveedor / Contratista a su vez cumplió con el pago de la seguridad social correspondiente al periodo asignado, según planilla adjunta.
+                            <div style="border: 1px solid #ccc; border-radius: 5px; padding: 15px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-top: 20px;">
+
+                                <!-- Contenedor de dos columnas -->
+                                <div style="display: flex; gap: 20px;">
+
+                                    <!-- Columna Izquierda: Nombre y Cargo -->
+                                    <div style="flex: 1;" groups="Matriz.group_contratacion_coordinador,Matriz.group_tesoreria_auxiliar,Matriz.group_contabilidad,Matriz.group_contratacion_director_financiero">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Nombre quien recibe y sello:</div>
+                                            <field name="nombre_recepcion_id" placeholder="Nombre quien recibe y sello"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" options="{'no_open': True}" readonly="1"/>
+                                        </div>
+
+                                        <!-- Campo Fecha -->
+                                        <div>
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha</div>
+                                            <field name="fecha_recepcion" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="flex: 1;" groups="Matriz.group_contratacion_ventanilla_unica">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: flex-end; gap: 15px;">
+                                                
+                                                <div id="certificacion_campo_ventanilla_nombre" style="flex: 1;">
+                                                    <div style="font-weight: bold; color: black; font-size: 14px; margin-bottom: 5px;">Nombre quien recibe y sello:</div>
+                                                    <field name="nombre_recepcion_id" placeholder="Nombre completo"
+                                                        domain="[('id', 'in', ventanilla_asignada_ids)]"
+                                                        style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;"
+                                                        options="{'no_open': True}" attrs="{'readonly': [('estado3', '!=', 'ventanilla')]}" autofocus="autofocus"/>
+                                                </div>
+
+                                                <div id="certificacion_campo_ventanilla_firma" style="white-space: nowrap; padding-bottom: 5px;">
+                                                    <span style="font-weight: bold; font-size: 14px; color: #000;">Firma: </span>
+                                                     <field name="firmado_ventanilla" widget="boolean_toggle" class="oe_inline" attrs="{'readonly': [('estado3', '!=', 'ventanilla')]}"/>
+                                                </div>
+                                            </div>
+
+                                            <div attrs="{'invisible': [('firmado_ventanilla', '=', False)]}" style="margin-top: 5px;" invisible="1">
+                                                <span style="font-size: 9px; color: #7c7bad; font-weight: normal;">
+                                                    <i class="fa fa-shield"/> Sello Digital: 
+                                                    <field name="firma_ventanilla_hash" readonly="1" class="oe_inline"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Campo Fecha -->
+                                        <div id="certificacion_campo_ventanilla_fecha">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha</div>
+                                            <field name="fecha_recepcion" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'ventanilla')]}"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Columna Derecha: Firma -->
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;" invisible="1">
+                                        <div>
+                                            <tr>
+                                                <td>
+                                                    <label for="firma_recepcion"></label>
+                                                </td>
+                                                <td>
+                                                    <field name="firma_recepcion" widget="image" style="width: 50%; height: auto;"/>
+                                                    <br/>
+                                                    <field name="firma_recepcion" filename="firma_recepcion_name" invisible="1"/>
+                                                
+                                                </td>
+                                                <field name="firma_recepcion_name" invisible="1"/>
+                                                
+
+                                            </tr>
+                                            <div style="text-align: left; color: #000; background-color: transparent; font-weight: bold; font-size: 14px;">Firma de ventanilla única <field name="firmado_ventanilla"/></div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>   
+                        <br/>
+                        <div id="certificacion_firma_financiera" style="border: 1px solid #6C757D; border-radius: 5px; padding: 20px; background-color: #F8F9FA;">
+                            <div style="text-align: background-color: #ADD8E6; color: black; font-weight: bold; font-size: 15px; padding: 10px; border-radius: 3px;">
+                                3. DIRECTOR FINANCIERO:
+                            </div>
+                            <br/>
+                            <div style="border: 1px solid #ccc; padding: 8px; background-color: #fff;">
+                                2 Existe el Certificado de Disponibilidad Presupuestal para efectuar el pago respectivo, soportado con la Factura o Cuenta de cobro No.
+                                <field name="certificado_presupuesto2"/>
+                             </div>
+                            <div style="border: 1px solid #ccc; border-radius: 5px; padding: 15px; background-color: #f9f9f9; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-top: 20px;">
+
+                                <!-- Contenedor de dos columnas -->
+                                <div style="display: flex; gap: 20px;">
+
+                                    <!-- Columna Izquierda: Nombre y Cargo -->
+                                    <div style="flex: 1;" groups="Matriz.group_contratacion_coordinador,Matriz.group_contabilidad,Matriz.group_contratacion_ventanilla_unica">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Nombre área financiera:</div>
+                                            <field name="nombre_financiera_id" placeholder="Nombre quien recibe y sello"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" options="{'no_open': True}" readonly="1"/>
+                                        </div>
+
+                                        <!-- Campo Fecha -->
+                                        <div>
+                                            <div for="fecha_financiera" style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha</div>
+                                            <field name="fecha_financiera" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" readonly="1"/>
+                                        </div>
+                                    </div>
+
+
+                                    <div style="flex: 1;" groups="Matriz.group_firmante_director_financiero_certificacion">
+                                        <!-- Campo Nombre -->
+                                        <div style="margin-bottom: 15px;">
+                                            <div style="display: flex; align-items: flex-end; gap: 15px;">
+                                                
+                                                <div id="certificacion_campo_financiera_nombre" style="flex: 1;">
+                                                    <div style="font-weight: bold; color: black; font-size: 14px; margin-bottom: 5px;">Director Financiero:</div>
+                                                    <field name="nombre_financiera_id" placeholder="Nombre completo"
+                                                        style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" 
+                                                        options="{'no_open': True}" attrs="{'readonly': [('estado3', '!=', 'director_financiero')]}" autofocus="autofocus"/>
+                                                </div>
+
+                                                <div id="certificacion_campo_financiera_firma" style="white-space: nowrap; padding-bottom: 5px;">
+                                                    <span style="font-weight: bold; font-size: 14px; color: #000;">Firma: </span>
+                                                     <field name="firmado_finaciera" widget="boolean_toggle" class="oe_inline" attrs="{'readonly': [('estado3', '!=', 'director_financiero')]}"/>
+                                                </div>
+                                            </div>
+
+                                            <div attrs="{'invisible': [('firmado_finaciera', '=', False)]}" style="margin-top: 5px;" invisible="1">
+                                                <span style="font-size: 9px; color: #7c7bad; font-weight: normal;">
+                                                    <i class="fa fa-shield"/> Sello Digital: 
+                                                    <field name="firma_financiera_hash" readonly="1" class="oe_inline"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- Campo Fecha -->
+                                        <div id="certificacion_campo_financiera_fecha">
+                                            <div for="fecha_financiera" style="font-weight: color: black; font-size: 14px; margin-bottom: 5px;">Fecha</div>
+                                            <field name="fecha_financiera" placeholder="Fecha"
+                                                style="width: 100%; border: 1px solid #ccc; border-radius: 3px; padding: 5px;" attrs="{'readonly': [('estado3', '!=', 'director_financiero')]}"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Columna Derecha: Firma -->
+                                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;" invisible="1">
+                                        <div>
+                                            <tr>
+                                                <td>
+                                                    <label for="firma_financiera"></label>
+                                                </td>
+                                                <td>
+                                                    <field name="firma_financiera" widget="image" style="width: 50%; height: auto;"/>
+                                                    <br/>
+                                                    <field name="firma_financiera" filename="firma_financiera_name" invisible="1"/>
+                                                </td>
+                                                <field name="firma_financiera_name" invisible="1"/>
+
+                                            </tr>
+                                            <div style="text-align: left; color: #000; background-color: transparent; font-weight: bold; font-size: 14px;">Firma de área financiera <field name="firmado_finaciera"/></div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <field name="informe_adjunto" filename="informe_filename" invisible="1"/>
+                        <br/>
+                        <br/>
+                        <hr style="margin-top: 10px; margin-bottom: 15px;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="mail_followers"/>
+                            <field name="activity_ids" widget="mail_activity"/>
+                            <field name="message_ids" widget="mail_thread"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_certificacion_cumplimiento_form_readonly" model="ir.ui.view">
+            <field name="name">certificacion_cumplimiento.form.readonly</field>
+            <field name="model">certificacion_cumplimiento</field>
+            <field name="inherit_id" ref="view_certificacion_cumplimiento_form"/>
+            <!-- Vista alternativa: no debe convertir en solo lectura la vista base editable. -->
+            <field name="mode">primary</field>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                    <attribute name="edit">false</attribute>
+                    <attribute name="delete">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_certificacion_cumplimiento_kanban" model="ir.ui.view">
+            <field name="name">certificacion.cumplimiento.kanban</field>
+            <field name="model">certificacion_cumplimiento</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_card">
+                                <div class="o_kanban_primary_left">
+                                   <field name="name"></field>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_forma_pago_popup_certificacion" model="ir.ui.view">
+            <field name="name">forma.pago.popup.certificacion</field>
+            <field name="model">certificacion_cumplimiento</field>
+            <field name="arch" type="xml">
+                <form string="Forma de pago" class="sgo-forma-pago-popup">
+                    <sheet>
+                        <style>
+                            body .modal:has(.sgo-forma-pago-popup) {
+                                z-index: 1085 !important;
+                            }
+                            body .modal-backdrop.show:last-of-type {
+                                z-index: 1080 !important;
+                            }
+                            body .modal:has(.sgo-forma-pago-popup) .modal-header .modal-title {
+                                margin-left: 8px !important;
+                                margin-right: auto !important;
+                                text-align: left !important;
+                            }
+                            body .modal:has(.sgo-forma-pago-popup) .modal-header .close,
+                            body .modal:has(.sgo-forma-pago-popup) .modal-header .btn-close,
+                            body .modal:has(.sgo-forma-pago-popup) .modal-header button[aria-label="Close"],
+                            body .modal:has(.sgo-forma-pago-popup) .modal-header button[aria-label="Cerrar"] {
+                                display: none !important;
+                            }
+                        </style>
+                        <div style="padding: 10px;">
+                            <field name="forma_pago_es_otrosi" invisible="1"/>
+                            <field name="forma_pago_linea_seleccionada_id" invisible="1"/>
+                            <field name="forma_pago_otrosi_linea_seleccionada_id" invisible="1"/>
+                            <div style="padding: 10px 14px; margin-bottom: 12px; border-left: 4px solid #0d47a1; background: #eef6ff; color: #0d47a1; font-weight: 600;">
+                                Seleccione el desembolso para llevar su <strong>% Pago</strong> al porcentaje de objetivos. Después podrá modificar el porcentaje manualmente.
+                            </div>
+                            <field name="forma_pago_linea_ids"
+                                   nolabel="1"
+                                   readonly="1"
+                                   attrs="{'invisible': [('forma_pago_es_otrosi', '=', True)]}">
+                                <tree create="0" delete="0" edit="0" decoration-info="id == parent.forma_pago_linea_seleccionada_id">
+                                    <field name="numero_de_pagos" string="# Pago"/>
+                                    <field name="cantidad_de_dinero" string="Cantidad de dinero"/>
+                                    <field name="pago" string="% Pago"/>
+                                    <field name="porcentaje_acumulado" string="% Acumulado"/>
+                                    <button name="action_seleccionar_para_certificacion"
+                                            type="object"
+                                            string="Seleccionar"
+                                            icon="fa-check"
+                                            class="btn-primary"/>
+                                </tree>
+                            </field>
+                            <field name="forma_pago_otrosi_linea_ids"
+                                   nolabel="1"
+                                   readonly="1"
+                                   attrs="{'invisible': [('forma_pago_es_otrosi', '=', False)]}">
+                                <tree create="0" delete="0" edit="0" decoration-info="id == parent.forma_pago_otrosi_linea_seleccionada_id">
+                                    <field name="numero_de_pagos" string="# Pago"/>
+                                    <field name="cantidad_de_dinero" string="Cantidad de dinero"/>
+                                    <field name="pago" string="% Pago"/>
+                                    <field name="porcentaje_acumulado" string="% Acumulado"/>
+                                    <button name="action_seleccionar_para_certificacion"
+                                            type="object"
+                                            string="Seleccionar"
+                                            icon="fa-check"
+                                            class="btn-primary"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Cerrar"
+                                class="btn-secondary"
+                                type="object"
+                                name="action_return_to_certificacion_from_forma_pago"
+                                context="{'skip_certificacion_guardado': True}"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

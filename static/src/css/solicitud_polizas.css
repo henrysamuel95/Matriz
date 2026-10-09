@@ -1,0 +1,862 @@
+.fc-poliza-wizard-form .o_form_sheet {
+    min-width: 780px;
+    max-width: 920px;
+    padding: 0 0 24px !important;
+    overflow: hidden;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(4, 52, 132, 0.12);
+}
+
+.fc-poliza-process-form {
+    flex-flow: column nowrap !important;
+}
+
+.fc-poliza-process-form .o_form_sheet_bg,
+.fc-poliza-process-form .o_FormRenderer_chatterContainer,
+.fc-poliza-process-form .o_FormRenderer_chatterContainer.o-aside {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.fc-poliza-process-form .o_form_sheet {
+    width: calc(100% - 32px);
+    max-width: 1200px;
+    background: #fff;
+}
+
+.fc-poliza-process-form .oe_chatter {
+    width: calc(100% - 32px);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.fc-poliza-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 22px 26px;
+    color: #fff;
+    background: linear-gradient(135deg, #043484 0%, #0b5cab 100%);
+}
+
+.fc-poliza-hero-main {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 16px;
+}
+
+.fc-poliza-hero-tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.fc-poliza-hero-state {
+    position: relative;
+    z-index: 5;
+    flex: 0 0 auto;
+}
+
+.fc-poliza-guide-trigger {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff !important;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.fc-poliza-guide-trigger:hover,
+.fc-poliza-guide-trigger:focus {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff !important;
+}
+
+.fc-poliza-guide {
+    max-width: 760px;
+    margin: 0 auto;
+    color: #24344c;
+}
+
+.fc-poliza-guide-hero {
+    padding: 23px 28px;
+    color: #fff;
+    background: linear-gradient(135deg, #043484 0%, #0b5cab 100%);
+}
+
+.fc-poliza-guide-eyebrow {
+    color: #bfdbff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.fc-poliza-guide-hero h2 {
+    margin: 7px 0 4px;
+    color: #fff;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.fc-poliza-guide-hero p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 13px;
+}
+
+.fc-poliza-guide-steps {
+    display: grid;
+    gap: 0;
+    padding: 8px 28px;
+}
+
+.fc-poliza-guide-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e7edf6;
+}
+
+.fc-poliza-guide-step:last-child {
+    border-bottom: 0;
+}
+
+.fc-poliza-guide-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e7f0ff;
+    color: #043484;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.fc-poliza-guide-step h3 {
+    margin: 0 0 2px;
+    color: #123767;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.fc-poliza-guide-step p {
+    margin: 0;
+    color: #52647c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.fc-poliza-guide-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 6px 28px 20px;
+    padding: 11px 13px;
+    border: 1px solid #d7e5fa;
+    border-radius: 8px;
+    background: #f5f9ff;
+    color: #365575;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+
+.fc-poliza-hero-state .o_field_widget {
+    margin: 0 !important;
+}
+
+.fc-poliza-hero-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 24px;
+}
+
+.fc-poliza-hero h2 {
+    margin: 0 0 3px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.fc-poliza-hero p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-size: 13px;
+}
+
+.fc-poliza-contract {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 26px 16px;
+    padding: 11px 14px;
+    border: 1px solid #cbd8eb;
+    border-radius: 8px;
+    background: #f4f7fb;
+}
+
+.fc-poliza-contract-label {
+    padding-right: 14px;
+    border-right: 1px solid #cbd8eb;
+    color: #043484;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.fc-poliza-contract .o_field_widget {
+    flex: 1 1 auto;
+    margin: 0 !important;
+    color: #26364d;
+    font-weight: 600;
+}
+
+.fc-poliza-details {
+    margin: 0 26px 16px;
+    padding: 14px 16px 16px;
+    border: 1px solid #dfe6ef;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.fc-poliza-details .o_group {
+    width: 100%;
+    margin: 0;
+}
+
+.fc-poliza-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 20px;
+}
+
+.fc-poliza-details-grid .fc-poliza-details-column {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    border-collapse: separate;
+}
+
+.fc-poliza-details-grid .fc-poliza-details-column > tbody > tr {
+    height: 32px;
+}
+
+.fc-poliza-details-grid .fc-poliza-details-column .o_field_widget {
+    width: 100%;
+    max-width: 100%;
+}
+
+.fc-poliza-details .o_group .o_td_label {
+    padding-left: 0;
+}
+
+.fc-poliza-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.fc-poliza-support-action.btn,
+.o_form_view .fc-poliza-support-action.btn {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+.fc-poliza-support-action.btn:hover,
+.fc-poliza-support-action.btn:focus,
+.o_form_view .fc-poliza-support-action.btn:hover,
+.o_form_view .fc-poliza-support-action.btn:focus {
+    background-color: #b02a37 !important;
+    border-color: #a52834 !important;
+    color: #ffffff !important;
+}
+
+.fc-poliza-add-wizard .o_form_sheet {
+    min-width: 620px;
+    max-width: 760px;
+    padding: 0 0 20px !important;
+    overflow: hidden;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(4, 52, 132, 0.14);
+}
+
+.fc-poliza-add-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #043484 0%, #0b5cab 100%);
+}
+
+.fc-poliza-add-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 20px;
+}
+
+.fc-poliza-add-hero h3 {
+    margin: 0 0 4px;
+    color: #ffffff;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.fc-poliza-add-hero p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 13px;
+}
+
+.fc-poliza-add-content {
+    padding: 20px 24px 0;
+}
+
+.fc-poliza-add-content .o_group {
+    margin: 0;
+}
+
+.fc-poliza-assignment-wizard .fc-poliza-assignment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 44px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border: 1px solid #b8c9df;
+    border-radius: 8px;
+    background: #f8fbff;
+    box-shadow: inset 0 1px 2px rgba(4, 52, 132, 0.05);
+}
+
+.fc-poliza-assignment-wizard .fc-poliza-assignment-tags:focus-within {
+    border-color: #0b5cab;
+    box-shadow: 0 0 0 3px rgba(11, 92, 171, 0.12);
+}
+
+.fc-poliza-assignment-tags .o_input {
+    background: transparent;
+}
+
+.fc-poliza-add-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid #bfdbfe;
+    border-left: 4px solid #0b5cab;
+    border-radius: 7px;
+    color: #334155;
+    background: #eff6ff;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.fc-poliza-add-notice i {
+    margin-top: 2px;
+    color: #0b5cab;
+    font-size: 16px;
+}
+
+.fc-poliza-assignment {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(180px, 280px) auto;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.fc-poliza-assignment > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fc-poliza-assignment > div > span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.fc-poliza-assignment .o_field_widget {
+    margin: 0 !important;
+}
+
+.fc-poliza-documents {
+    margin: 16px 26px;
+    padding: 0 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.fc-poliza-add-actions {
+    margin: 12px 0 16px;
+}
+
+.fc-poliza-documents-head,
+.fc-poliza-document-row {
+    display: grid;
+    align-items: center;
+    gap: 16px;
+}
+
+.fc-poliza-documents-head {
+    grid-template-columns: 1fr auto;
+    padding: 16px 0 12px;
+}
+
+.fc-poliza-documents-head > div,
+.fc-poliza-document-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fc-poliza-documents-head > div > span,
+.fc-poliza-document-info span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.fc-poliza-review-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.fc-poliza-review-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 16px;
+}
+
+.fc-poliza-review-result {
+    padding-top: 3px;
+}
+
+.fc-poliza-review-meta span {
+    color: #475569;
+    line-height: 1.35;
+}
+
+.fc-poliza-review-meta b {
+    color: #334155;
+}
+
+.fc-poliza-documents-head i {
+    color: #64748b;
+    font-size: 20px;
+}
+
+.fc-poliza-other-documents {
+    border-left: 4px solid #0b5cab;
+    background: #f8fbff;
+}
+
+.fc-poliza-other-documents .o_field_x2many {
+    margin-bottom: 14px;
+    border-top: 1px solid #dce7f3;
+}
+
+.fc-poliza-other-documents .o_list_table {
+    margin-bottom: 0;
+    background: #fff;
+}
+
+.fc-poliza-document-list .o_kanban_view {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.fc-poliza-document-list .o_kanban_record {
+    width: 100% !important;
+    min-height: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+.fc-poliza-document-row {
+    grid-template-columns: minmax(240px, 1fr) 76px minmax(190px, auto);
+    min-height: 62px;
+    padding: 0;
+    border-top: 1px solid #edf2f7;
+}
+
+.fc-poliza-document-ready,
+.fc-poliza-document-pending {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.fc-poliza-document-ready {
+    color: #15803d;
+}
+
+.fc-poliza-document-pending {
+    color: #94a3b8;
+}
+
+.fc-poliza-document-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.fc-poliza-acta-section {
+    padding-bottom: 16px;
+    background: #f8fafc;
+}
+
+.fc-poliza-acta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 4px 0 12px;
+    border-top: 1px solid #edf2f7;
+}
+
+.fc-poliza-acta-section .o_group {
+    margin: 0;
+}
+
+.fc-poliza-process-form .fc-poliza-document-view {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 8px;
+    background-color: #2ecc71;
+    color: #fff;
+    font-weight: 600;
+}
+
+.fc-poliza-process-form .fc-poliza-document-view:hover,
+.fc-poliza-process-form .fc-poliza-document-view:focus {
+    background-color: #27ae60;
+    color: #fff;
+}
+
+/* Asistente jurídico de devolución. Se mantiene aislado del formulario principal. */
+.fc-poliza-return-wizard .o_form_sheet {
+    min-width: 680px;
+    max-width: 760px;
+    padding: 0 0 22px !important;
+    overflow: hidden;
+    border: 1px solid #dbe3ef;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+}
+
+.fc-poliza-return-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    color: #fff;
+    background: linear-gradient(135deg, #043484 0%, #0b5cab 100%);
+}
+
+.fc-poliza-return-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.14);
+    font-size: 20px;
+}
+
+.fc-poliza-return-hero h3 {
+    margin: 0 0 3px;
+    color: #fff;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.fc-poliza-return-hero p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 13px;
+}
+
+.fc-poliza-return-content {
+    margin: 20px 24px 0;
+    padding: 16px 18px;
+    border: 1px solid #dfe6ef;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.fc-poliza-return-content .o_group {
+    width: 100%;
+    margin: 0;
+}
+
+.fc-poliza-return-content textarea.o_field_widget {
+    min-height: 110px;
+    padding: 10px 12px;
+    border: 1px solid #b9c7da;
+    border-radius: 7px;
+    background: #f8fafc;
+}
+
+.fc-poliza-return-content textarea.o_field_widget:focus {
+    border-color: #0b5cab;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(11, 92, 171, 0.12);
+}
+
+.fc-poliza-return-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 11px 13px;
+    border-left: 4px solid #f59e0b;
+    border-radius: 6px;
+    background: #fff7ed;
+    color: #7c4a03;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.fc-poliza-return-wizard .modal-footer,
+.fc-poliza-return-wizard footer {
+    padding: 14px 24px;
+}
+
+.fc-poliza-return-action {
+    font-weight: 700;
+}
+
+.fc-poliza-section-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0 26px 10px;
+}
+
+.fc-poliza-section-title span {
+    color: #1e2f47;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.fc-poliza-section-title small {
+    color: #6c7b90;
+    font-size: 12px;
+}
+
+.fc-poliza-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 0 26px;
+}
+
+.fc-poliza-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 11px;
+    min-height: 58px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid #dce3ec;
+    border-radius: 8px;
+    background: #fff;
+    color: #34445a;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    transition: border-color 0.15s ease, background-color 0.15s ease,
+        box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.fc-poliza-option:hover {
+    border-color: #7da7d9;
+    background: #f7faff;
+    box-shadow: 0 3px 10px rgba(4, 52, 132, 0.08);
+    transform: translateY(-1px);
+}
+
+.fc-poliza-option .o_field_boolean {
+    flex: 0 0 auto;
+    margin: 0 !important;
+}
+
+.fc-poliza-option > span {
+    flex: 1 1 auto;
+    padding-right: 8px;
+}
+
+.fc-poliza-option .custom-control-input:checked ~ .custom-control-label::before,
+.fc-poliza-option .form-check-input:checked {
+    border-color: #043484;
+    background-color: #043484;
+}
+
+.fc-poliza-wizard-form footer {
+    padding: 12px 20px;
+    border-top: 1px solid #dfe5ed;
+    background: #f8fafc;
+    text-align: right;
+}
+
+.fc-poliza-close {
+    min-width: 92px;
+    border-radius: 5px !important;
+    font-weight: 600;
+}
+
+.fc-poliza-origin-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 16px 24px;
+    padding: 16px 18px;
+    border: 1px solid #bfd3ee;
+    border-left: 4px solid #0b5cab;
+    border-radius: 8px;
+    background: #f4f8fd;
+    color: #24364d;
+}
+
+.fc-poliza-origin-panel > div:first-child {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fc-poliza-origin-panel strong {
+    color: #043484;
+    font-size: 14px;
+}
+
+.fc-poliza-origin-panel span {
+    color: #56677d;
+    font-size: 12px;
+}
+
+.fc-poliza-origin-panel .btn {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 820px) {
+    .fc-poliza-wizard-form .o_form_sheet {
+        min-width: auto;
+    }
+
+    .fc-poliza-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-poliza-contract,
+    .fc-poliza-details,
+    .fc-poliza-documents {
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+
+    .fc-poliza-details-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .fc-poliza-hero {
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .fc-poliza-origin-panel {
+        align-items: stretch;
+        flex-direction: column;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+
+    .fc-poliza-hero-tools {
+        width: 100%;
+        margin-left: 64px;
+        justify-content: flex-start;
+    }
+
+    .fc-poliza-guide-hero,
+    .fc-poliza-guide-steps {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .fc-poliza-guide-note {
+        margin-right: 18px;
+        margin-left: 18px;
+    }
+
+    .fc-poliza-details-grid .fc-poliza-details-column {
+        min-height: 0;
+    }
+
+    .fc-poliza-document-row {
+        grid-template-columns: 1fr auto;
+        padding: 12px 0;
+    }
+
+    .fc-poliza-document-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}

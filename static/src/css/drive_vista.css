@@ -1,0 +1,13 @@
+.o_matriz_split_view {
+    display: flex;
+    height: 100%;
+}
+
+.o_matriz_left_pane {
+    width: 30%;
+    border-right: 1px solid #ccc;
+}
+
+.o_matriz_right_pane {
+    flex: 1;
+}

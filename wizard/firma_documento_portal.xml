@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="firma_documento_form" name="Firma pública de documento">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow rounded">
+                            <div class="card-header text-black" style="background-color: #ADD8E6;">
+                                <h4 class="mb-0">✍️ Firma de documento</h4>
+                            </div>
+                            <div class="card-body p-4">
+                                <p id="intro_firma">
+                                    Estimado/a <t t-esc="solicitud.nombre_contratista or ''"/>,
+                                    dibuje su firma en el recuadro y presione "Firmar y enviar".
+                                </p>
+
+                                <div class="mb-3" id="seccion_documento">
+                                    <p class="fw-semibold mb-1">Documento a firmar</p>
+                                    <button type="button" id="btn_toggle_documento" class="btn btn-outline-primary btn-sm mb-2">
+                                        <i class="fa fa-file-pdf-o"></i> <span id="toggle_documento_label">Ver documento</span>
+                                    </button>
+                                    <div id="documento_wrapper">
+                                        <iframe t-attf-src="/public/firma_documento/#{solicitud.id}/#{solicitud.token}/documento.pdf"
+                                                style="width:100%; height:500px; border:1px solid #ccc;"></iframe>
+                                    </div>
+                                </div>
+
+                                <form id="firma_form" action="/public/firma_documento/submit" method="post">
+                                    <input type="hidden" name="solicitud_id" t-att-value="solicitud.id"/>
+                                    <input type="hidden" name="token" t-att-value="solicitud.token"/>
+                                    <input type="hidden" name="firma_base64" id="firma_base64_input"/>
+
+                                    <div class="mb-3" id="canvas_contenedor" style="position:relative;">
+                                        <canvas id="firma_canvas" width="600" height="200"
+                                                style="border:1px solid #ccc; touch-action:none; background:#fff; display:block;"></canvas>
+                                        <div id="placeholder_firma"
+                                             style="position:absolute; font-family:'Brush Script MT', cursive; font-size:1.8rem; color:#ccc; pointer-events:none; white-space:nowrap;">
+                                            Firme aquí
+                                        </div>
+                                        <div id="linea_base_firma"
+                                             style="position:absolute; pointer-events:none;"></div>
+                                    </div>
+
+                                    <div class="form-check my-3">
+                                        <input type="checkbox" class="form-check-input" id="consentimiento_check"
+                                               name="consentimiento" required="required"/>
+                                        <label class="form-check-label" for="consentimiento_check">
+                                            He leído el documento y acepto firmarlo electrónicamente — Ley 527 de 1999
+                                        </label>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <button type="button" id="btn_limpiar" class="btn btn-outline-secondary">
+                                            Limpiar
+                                        </button>
+                                        <button type="submit" id="btn_firmar" class="btn btn-success px-4" disabled="disabled">
+                                            Firmar y enviar
+                                        </button>
+                                    </div>
+
+                                    <div id="mensaje_procesando" class="alert alert-info mt-3" style="display:none;">
+                                        <span class="spinner-border spinner-border-sm"></span>
+                                        Estamos firmando tu documento, no cierres ni recargues esta página. Esto puede tardar unos segundos.
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* Posición por defecto (escritorio) de la marca de agua y la
+                   línea guía — antes vivían en el atributo style="" inline
+                   de cada div, pero un estilo inline siempre gana sobre una
+                   regla de hoja de estilos (aunque esté en @media), así que
+                   el override de mobile no podía pisarlas. Se movieron acá
+                   para que el @media de abajo sí pueda redefinirlas. */
+                #placeholder_firma {
+                    top: 40%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+                #linea_base_firma {
+                    left: 8%;
+                    right: 8%;
+                    bottom: 15%;
+                    border-top: 2px dashed #999;
+                }
+
+                @media (max-width: 767px) {
+                    /* Header del sitio: en esta página específica se ocultan
+                       el login y el CTA "Contáctanos" (no aportan nada a
+                       alguien que está firmando un documento puntual) y se
+                       compacta el logo, para no empujar el canvas fuera de
+                       la pantalla. Solo afecta esta página — no se toca
+                       website.layout. */
+                    #top .oe_structure_solo,
+                    #top li.o_no_autohide_item {
+                        display: none;
+                    }
+                    #top .navbar-brand img { height: 26px; width: auto; }
+                    #top .navbar { padding-top: 0.35rem; padding-bottom: 0.35rem; }
+
+                    .container.mt-5.mb-5 { margin-top: 0.75rem !important; margin-bottom: 1rem !important; }
+                    .card-body.p-4 { padding: 0.75rem !important; }
+
+                    #documento_wrapper iframe { height: 60vh; }
+                    #documento_wrapper { display: none; }
+                    #documento_wrapper.mostrar_documento { display: block; }
+
+                    /* Modo inmersivo: el canvas de firma debe dominar la
+                       pantalla — se compacta todo lo demás (texto de
+                       bienvenida, sección del documento, checkbox) y se le
+                       quita el marco/sombra a la tarjeta para que se sienta
+                       más "a bordes", como en la referencia. */
+                    .card { border: none; box-shadow: none !important; border-radius: 0 !important; }
+                    .card-header { padding: 0.5rem 0.75rem; }
+                    .card-header h4 { font-size: 1rem; }
+
+                    #intro_firma { font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; }
+                    #seccion_documento { margin-bottom: 0.5rem; }
+                    #seccion_documento p.fw-semibold { font-size: 0.75rem; margin-bottom: 0.25rem; }
+                    #btn_toggle_documento { font-size: 0.7rem; padding: 0.2rem 0.5rem; }
+
+                    .form-check.my-3 {
+                        font-size: 0.7rem;
+                        margin-top: 0.4rem !important;
+                        margin-bottom: 0.4rem !important;
+                    }
+
+                    /* El canvas queda rotado -90° (ver script) para que la
+                       firma aproveche el lado largo del recuadro portrait.
+                       La marca de agua y la línea guía se rotan/reubican
+                       igual, para que sigan indicando lo mismo que en
+                       escritorio (dónde escribir, dónde queda "abajo" en
+                       la imagen final) pero dentro de ese giro visual. */
+                    #placeholder_firma {
+                        top: 50%;
+                        transform: translate(-50%, -50%) rotate(-90deg);
+                    }
+                    #linea_base_firma {
+                        left: auto;
+                        right: 15%;
+                        bottom: 8%;
+                        top: 8%;
+                        border-top: none;
+                        border-left: 2px dashed #999;
+                    }
+                }
+            </style>
+
+            <script>
+                (function () {
+                    var canvas = document.getElementById('firma_canvas');
+                    var wrapper = document.getElementById('canvas_contenedor');
+                    var esMobile = window.innerWidth &lt; 768;
+
+                    // En mobile el canvas es internamente un lienzo
+                    // "horizontal" normal (igual que en escritorio), pero
+                    // se rota -90° con CSS para que visualmente llene un
+                    // recuadro portrait (alto y angosto) — así la firma
+                    // aprovecha el lado largo del teléfono como su ancho
+                    // natural. La rotación es solo visual: lo que se
+                    // exporta sigue siendo el lienzo horizontal: no se
+                    // debe aplicar una segunda rotación al bitmap.
+                    // posicion(), más abajo, deshace esa rotación para
+                    // saber dónde cae realmente el dedo del usuario dentro
+                    // del lienzo.
+                    var dpr = window.devicePixelRatio || 1;
+                    var anchoDisponible = wrapper.clientWidth;
+                    var cssWCanvas, cssHCanvas;
+
+                    if (esMobile) {
+                        var altoWrapper = Math.round(anchoDisponible * 1.3);
+                        wrapper.style.height = altoWrapper + 'px';
+                        wrapper.style.overflow = 'hidden';
+                        // Lienzo interno "horizontal": su ancho propio es el
+                        // alto visible del recuadro (el lado largo), y su
+                        // alto propio es el ancho visible del recuadro.
+                        cssWCanvas = altoWrapper;
+                        cssHCanvas = anchoDisponible;
+                    } else {
+                        cssWCanvas = anchoDisponible;
+                        cssHCanvas = 200;
+                    }
+
+                    canvas.width = Math.round(cssWCanvas * dpr);
+                    canvas.height = Math.round(cssHCanvas * dpr);
+                    canvas.style.width = cssWCanvas + 'px';
+                    canvas.style.height = cssHCanvas + 'px';
+
+                    if (esMobile) {
+                        canvas.style.position = 'absolute';
+                        canvas.style.top = '50%';
+                        canvas.style.left = '50%';
+                        canvas.style.transform = 'translate(-50%, -50%) rotate(-90deg)';
+                    }
+
+                    var ctx = canvas.getContext('2d');
+                    ctx.lineWidth = 2 * dpr;
+                    ctx.lineCap = 'round';
+                    ctx.strokeStyle = '#000';
+
+                    var dibujando = false;
+                    var hayTrazo = false;
+                    var btnFirmar = document.getElementById('btn_firmar');
+                    var checkConsentimiento = document.getElementById('consentimiento_check');
+                    var placeholderFirma = document.getElementById('placeholder_firma');
+
+                    function actualizarBoton() {
+                        btnFirmar.disabled = !(hayTrazo &amp;&amp; checkConsentimiento.checked);
+                    }
+
+                    checkConsentimiento.addEventListener('change', actualizarBoton);
+
+                    var wrapperDocumento = document.getElementById('documento_wrapper');
+                    var btnToggleDocumento = document.getElementById('btn_toggle_documento');
+                    var labelToggleDocumento = document.getElementById('toggle_documento_label');
+
+                    // El colapso por defecto en pantallas chicas lo decide el
+                    // CSS de arriba (@media), no JS — así reacciona en vivo a
+                    // cambios de tamaño/rotación, no solo al cargar la página.
+                    // El botón solo agrega/quita una clase que fuerza mostrarlo.
+                    function actualizarLabelToggle() {
+                        var visible = window.getComputedStyle(wrapperDocumento).display !== 'none';
+                        labelToggleDocumento.textContent = visible ? 'Ocultar documento' : 'Ver documento';
+                    }
+
+                    btnToggleDocumento.addEventListener('click', function () {
+                        wrapperDocumento.classList.toggle('mostrar_documento');
+                        actualizarLabelToggle();
+                    });
+
+                    actualizarLabelToggle();
+
+                    function posicion(evt) {
+                        var rect = canvas.getBoundingClientRect();
+
+                        if (!esMobile) {
+                            var escalaX = canvas.width / rect.width;
+                            var escalaY = canvas.height / rect.height;
+                            return {
+                                x: (evt.clientX - rect.left) * escalaX,
+                                y: (evt.clientY - rect.top) * escalaY
+                            };
+                        }
+
+                        // Mobile: el canvas está rotado -90° con CSS. rect
+                        // (getBoundingClientRect) ya viene en espacio de
+                        // pantalla (rotado); para saber dónde cae el toque
+                        // DENTRO del lienzo hay que deshacer esa rotación
+                        // respecto al centro del elemento.
+                        var centerX = rect.left + rect.width / 2;
+                        var centerY = rect.top + rect.height / 2;
+                        var dx = evt.clientX - centerX;
+                        var dy = evt.clientY - centerY;
+                        // Inversa de rotate(-90deg): (dx,dy) en pantalla
+                        // corresponde a (localDx,localDy) = (-dy, dx) en el
+                        // sistema propio (sin rotar) del canvas.
+                        var localDx = -dy;
+                        var localDy = dx;
+
+                        var cssW = canvas.offsetWidth;
+                        var cssH = canvas.offsetHeight;
+                        return {
+                            x: (localDx + cssW / 2) * (canvas.width / cssW),
+                            y: (localDy + cssH / 2) * (canvas.height / cssH)
+                        };
+                    }
+
+                    canvas.addEventListener('pointerdown', function (evt) {
+                        dibujando = true;
+                        placeholderFirma.style.display = 'none';
+                        var p = posicion(evt);
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        canvas.setPointerCapture(evt.pointerId);
+                    });
+
+                    canvas.addEventListener('pointermove', function (evt) {
+                        if (!dibujando) { return; }
+                        var p = posicion(evt);
+                        ctx.lineTo(p.x, p.y);
+                        ctx.stroke();
+                        hayTrazo = true;
+                        actualizarBoton();
+                    });
+
+                    function terminarTrazo() { dibujando = false; }
+                    canvas.addEventListener('pointerup', terminarTrazo);
+                    canvas.addEventListener('pointercancel', terminarTrazo);
+                    canvas.addEventListener('pointerleave', terminarTrazo);
+
+                    document.getElementById('btn_limpiar').addEventListener('click', function () {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        hayTrazo = false;
+                        placeholderFirma.style.display = '';
+                        actualizarBoton();
+                    });
+
+                    function exportarFirma() {
+                        // posicion() ya deshace el giro CSS. Exportar el lienzo
+                        // completo: cada coordenada relativa ocupa el mismo lugar
+                        // en la caja horizontal 3:1, también desde el canvas móvil.
+                        if (!hayTrazo) { return null; }
+                        var salida = document.createElement('canvas');
+                        salida.width = 600;
+                        salida.height = 200;
+                        salida.getContext('2d').drawImage(canvas, 0, 0, 600, 200);
+                        return salida.toDataURL('image/png');
+                    }
+
+                    var procesando = false;
+                    document.getElementById('firma_form').addEventListener('submit', function (evt) {
+                        if (procesando) { evt.preventDefault(); return; }
+                        var firma = exportarFirma();
+                        if (!firma || !checkConsentimiento.checked) { evt.preventDefault(); return; }
+                        procesando = true;
+                        document.getElementById('firma_base64_input').value = firma;
+
+                        btnFirmar.innerHTML = '&lt;span class="spinner-border spinner-border-sm" role="status"&gt;&lt;/span&gt; Firmando documento...';
+                        document.getElementById('mensaje_procesando').style.display = 'block';
+
+                        // Deshabilitar en el siguiente tick: si se deshabilita
+                        // el checkbox dentro de este mismo handler de submit,
+                        // el navegador lo excluye del formulario ANTES de
+                        // enviarlo (un campo disabled no viaja en el POST),
+                        // así que el "consentimiento" marcado se perdía y el
+                        // servidor lo rechazaba aunque el usuario sí lo
+                        // hubiera aceptado.
+                        setTimeout(function () {
+                            btnFirmar.disabled = true;
+                            document.getElementById('btn_limpiar').disabled = true;
+                            checkConsentimiento.disabled = true;
+                        }, 0);
+                    });
+                })();
+            </script>
+        </t>
+    </template>
+
+    <template id="firma_documento_exitosa" name="Firma registrada">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2>¡Documento firmado exitosamente!</h2>
+                <p>Gracias, su firma quedó registrada en el documento.</p>
+                <p t-if="solicitud and solicitud.email_contratista">
+                    Le enviamos una copia del documento firmado a
+                    <strong t-esc="solicitud.email_contratista"/>.
+                </p>
+            </div>
+        </t>
+    </template>
+
+    <template id="firma_documento_invalida" name="Enlace de firma inválido">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2>Enlace inválido</h2>
+                <p>Este enlace de firma no existe o el token no es correcto.</p>
+            </div>
+        </t>
+    </template>
+
+    <template id="firma_documento_no_disponible" name="Firma no disponible">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2>Este enlace ya no está disponible</h2>
+                <p t-if="solicitud and solicitud.estado == 'firmado'">
+                    El documento ya fue firmado anteriormente con este enlace.
+                </p>
+                <p t-elif="solicitud and solicitud.estado == 'expirado'">
+                    Este enlace de firma expiró. Solicite uno nuevo.
+                </p>
+                <p t-else="">
+                    Este enlace ya no es válido. Solicite uno nuevo.
+                </p>
+            </div>
+        </t>
+    </template>
+
+    <template id="firma_documento_error" name="Error al firmar">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2>Ocurrió un error</h2>
+                <p t-esc="error_message"/>
+            </div>
+        </t>
+    </template>
+
+</odoo>

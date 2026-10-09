@@ -1,0 +1,46 @@
+/* Estilos generales para la barra de progreso */
+.progress_bar {
+    width: 100%;
+    margin: 10px 0;
+    position: relative;
+}
+
+.pro-bar {
+    background-color: #f0f0f0; /* Color de fondo */
+    height: 18px; /* Altura de la barra */
+    border-radius: 8px; /* Esquinas redondeadas */
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    background-color: #4CAF50; /* Color de la barra de progreso (verde) */
+    height: 100%;
+    width: 0; /* Inicialmente sin ancho */
+    transition: width 0.6s ease; /* Transición suave de la anchura */
+}
+
+.progress_number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #000; /* Color del texto */
+    font-weight: bold;
+    z-index: 1;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); /* Sombra al texto para mejorar la legibilidad */
+}
+
+/* Asegurar que los estilos se apliquen en la vista Kanban */
+.o_kanban_view .progress_bar .pro-bar {
+    width: 100%;
+}
+
+.o_kanban_view .progress_bar .progress-bar-inner {
+    background-color: #4CAF50; /* Color de la barra de progreso para Kanban */
+}
+
+.o_kanban_view .progress_bar .progress_number {
+   color: #000; /* Color del texto para Kanban */
+}
+

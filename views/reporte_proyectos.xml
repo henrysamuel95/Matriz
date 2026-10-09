@@ -1,0 +1,72 @@
+<odoo>
+    <record id="view_reporte_proyectos_form" model="ir.ui.view">
+        <field name="name">reporte.proyectos.form</field>
+        <field name="model">reporte_proyectos</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de proyectos">
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_download_R_proyecto_pdf" type="object" class="oe_stat_button"
+                                icon="fa-file-pdf-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Generar PDF</span>
+                            </div>
+                        </button>
+                    </div>
+                    <table>
+                        <field name="proyecto_relacionado4" invisible="1"/>
+                    </table>
+                    <table>
+                        <field name="mostrar_html" widget="html" />
+                    </table>
+
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_reporte_proyectos_tree" model="ir.ui.view">
+        <field name="name">reporte.proyectos.tree</field>
+        <field name="model">reporte_proyectos</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte de proyectos">
+                <field name="proyecto_relacionado4"/>
+                <field name="valor_total_final_R"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_reporte_proyectos_kanban" model="ir.ui.view">
+        <field name="name">reporte.proyectos.kanban</field>
+        <field name="model">reporte_proyectos</field>
+        <field name="arch" type="xml">
+            <kanban string="Reportes de Proyectos">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_details">
+                                <h4>
+                                    <field name="proyecto_relacionado4"/>
+                                </h4>
+                            </div>
+                            <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                            <div>
+                                <strong>Valor total: $</strong><field name="valor_total_final_R"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="reporte_proyectos_view_search" model="ir.ui.view">
+       <field name="name">reporte_proyectos.view.search.module.name</field>
+       <field name="model">reporte_proyectos</field>
+       <field name="arch" type="xml">
+           <search>
+                <field name="proyecto_relacionado4" string="Proyecto"/>
+           </search>
+       </field>
+    </record>
+</odoo>

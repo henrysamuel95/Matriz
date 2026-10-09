@@ -1,0 +1,19 @@
+/* Estilos para el contenedor del gráfico horizontal */
+.chart-container-horizontal {
+    width: 100%;
+    height: 400px; /* Ajusta según sea necesario */
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para el canvas del gráfico horizontal */
+.chart-canvas-horizontal {
+    width: 100%;
+    height: 100%;
+}

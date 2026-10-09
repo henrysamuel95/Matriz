@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_acta_entrega_informe_wizard_form" model="ir.ui.view">
+            <field name="name">acta.entrega.informe.wizard.form</field>
+            <field name="model">acta.entrega.informe.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Informes de cuentas de cobro" create="0" edit="1">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Informes y analítica de cuentas de cobro</h1>
+                            <p class="text-muted">
+                                Consulte todas las cuentas registradas en Acta entrega documentos,
+                                filtre por fechas o estados y analice cuánto tarda cada etapa del flujo.
+                            </p>
+                        </div>
+
+                        <group>
+                            <group string="Qué desea consultar">
+                                <field name="tipo_informe"/>
+                                <field name="estado"/>
+                                <field name="tipo_persona"/>
+                                <field name="tipo_vinculacion"/>
+                            </group>
+                            <group string="Rango y orden">
+                                <field name="campo_fecha"/>
+                                <field name="fecha_desde"/>
+                                <field name="fecha_hasta"/>
+                                <field name="ordenar_por"/>
+                                <field name="limite"/>
+                            </group>
+                        </group>
+
+                        <group string="Filtros adicionales" col="4">
+                            <field name="solo_correcciones"/>
+                            <field name="solo_cesiones"/>
+                            <field name="total_resultados" readonly="1"/>
+                        </group>
+
+                        <group string="Archivo generado" attrs="{'invisible': [('archivo_xlsx', '=', False)]}">
+                            <field name="archivo_nombre" readonly="1"/>
+                            <field name="archivo_xlsx" filename="archivo_nombre" readonly="1"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_generar"
+                                string="Ver resultados"
+                                type="object"
+                                class="btn-primary"
+                                icon="fa-table"/>
+                        <button name="action_descargar_xlsx"
+                                string="Descargar Excel"
+                                type="object"
+                                class="btn-secondary"
+                                icon="fa-file-excel-o"/>
+                        <button string="Cerrar" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_acta_entrega_informe_linea_tree" model="ir.ui.view">
+            <field name="name">acta.entrega.informe.linea.tree</field>
+            <field name="model">acta.entrega.informe.linea</field>
+            <field name="arch" type="xml">
+                <tree string="Informe de cuentas de cobro" create="0" edit="0" delete="0">
+                    <field name="contratista"/>
+                    <field name="documento" optional="show"/>
+                    <field name="tipo_persona" optional="show"/>
+                    <field name="proyecto" optional="show"/>
+                    <field name="tipo_vinculacion" optional="show"/>
+                    <field name="origen_cuenta" optional="hide"/>
+                    <field name="estado_visible" string="Estado"/>
+                    <field name="ultimo_movimiento"/>
+                    <field name="ultima_fecha_envio"/>
+                    <field name="horas_estado_actual" optional="show"/>
+                    <field name="duracion_total_horas" optional="show"/>
+                    <field name="duracion_total_dias" optional="hide"/>
+                    <field name="en_correccion" optional="hide"/>
+                    <field name="cesion_derechos" optional="hide"/>
+                    <field name="pago" optional="hide"/>
+                    <field name="numero_factura" optional="hide"/>
+                    <field name="valor_cuenta" optional="hide"/>
+                    <field name="fecha_creacion" optional="hide"/>
+                    <field name="fecha_radicacion" optional="hide"/>
+                    <field name="fecha_asistente" optional="hide"/>
+                    <field name="fecha_coordinador" optional="hide"/>
+                    <field name="fecha_ventanilla" optional="hide"/>
+                    <field name="fecha_director_financiero" optional="hide"/>
+                    <field name="fecha_firma_director_financiero" optional="hide"/>
+                    <field name="fecha_contabilidad" optional="hide"/>
+                    <field name="fecha_aux_tesoreria" optional="hide"/>
+                    <field name="fecha_tesoreria" optional="hide"/>
+                    <field name="fecha_finalizacion" optional="hide"/>
+                    <field name="fecha_rechazo" optional="hide"/>
+                    <field name="horas_creacion_asistente" optional="hide"/>
+                    <field name="horas_asistente_coordinador" optional="hide"/>
+                    <field name="horas_coordinador_ventanilla" optional="hide"/>
+                    <field name="horas_ventanilla_director" optional="hide"/>
+                    <field name="horas_director_contabilidad" optional="hide"/>
+                    <field name="horas_contabilidad_aux" optional="hide"/>
+                    <field name="horas_aux_tesoreria" optional="hide"/>
+                    <field name="horas_tesoreria_final" optional="hide"/>
+                    <field name="duracion_correccion_horas" optional="hide"/>
+                    <field name="seguimiento_correccion" optional="hide"/>
+                    <field name="estado_cesion" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_acta_entrega_informe_linea_search" model="ir.ui.view">
+            <field name="name">acta.entrega.informe.linea.search</field>
+            <field name="model">acta.entrega.informe.linea</field>
+            <field name="arch" type="xml">
+                <search string="Analizar cuentas de cobro">
+                    <field name="contratista"/>
+                    <field name="documento"/>
+                    <field name="proyecto"/>
+                    <field name="estado"/>
+                    <field name="estado_visible"/>
+                    <field name="ultimo_movimiento"/>
+                    <field name="ultima_fecha_envio"/>
+                    <filter string="En corrección" name="en_correccion" domain="[('en_correccion', '=', True)]"/>
+                    <filter string="Con cesión" name="con_cesion" domain="[('cesion_derechos', '=', True)]"/>
+                    <filter string="Finalizadas" name="finalizadas" domain="[('finalizada', '=', True)]"/>
+                    <filter string="Rechazadas" name="rechazadas" domain="[('rechazada', '=', True)]"/>
+                    <separator/>
+                    <filter string="Último movimiento" name="fecha_ultimo_movimiento" date="ultima_fecha_envio"/>
+                    <filter string="Fecha creación" name="fecha_creacion" date="fecha_creacion"/>
+                    <filter string="Fecha finalización" name="fecha_finalizacion" date="fecha_finalizacion"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                        <filter string="Estado visible" name="group_estado_visible" context="{'group_by': 'estado_visible'}"/>
+                        <filter string="Proyecto" name="group_proyecto" context="{'group_by': 'proyecto'}"/>
+                        <filter string="Contratista" name="group_contratista" context="{'group_by': 'contratista'}"/>
+                        <filter string="Tipo de persona" name="group_tipo_persona" context="{'group_by': 'tipo_persona'}"/>
+                        <filter string="Tipo" name="group_tipo" context="{'group_by': 'tipo_vinculacion'}"/>
+                        <filter string="Origen" name="group_origen" context="{'group_by': 'origen_cuenta'}"/>
+                        <filter string="Mes último movimiento" name="group_mes_ultimo" context="{'group_by': 'ultima_fecha_envio:month'}"/>
+                        <filter string="Año último movimiento" name="group_anio_ultimo" context="{'group_by': 'ultima_fecha_envio:year'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_acta_entrega_informe_linea_pivot" model="ir.ui.view">
+            <field name="name">acta.entrega.informe.linea.pivot</field>
+            <field name="model">acta.entrega.informe.linea</field>
+            <field name="arch" type="xml">
+                <pivot string="Analítica de cuentas de cobro">
+                    <field name="estado" type="row"/>
+                    <field name="tipo_persona" type="col"/>
+                    <field name="duracion_total_horas" type="measure"/>
+                    <field name="horas_estado_actual" type="measure"/>
+                    <field name="horas_asistente_coordinador" type="measure"/>
+                    <field name="horas_coordinador_ventanilla" type="measure"/>
+                    <field name="horas_ventanilla_director" type="measure"/>
+                    <field name="horas_director_contabilidad" type="measure"/>
+                    <field name="horas_contabilidad_aux" type="measure"/>
+                    <field name="horas_aux_tesoreria" type="measure"/>
+                    <field name="horas_tesoreria_final" type="measure"/>
+                    <field name="duracion_correccion_horas" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_acta_entrega_informe_linea_graph" model="ir.ui.view">
+            <field name="name">acta.entrega.informe.linea.graph</field>
+            <field name="model">acta.entrega.informe.linea</field>
+            <field name="arch" type="xml">
+                <graph string="Duración promedio por estado" type="bar">
+                    <field name="estado"/>
+                    <field name="duracion_total_horas" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_acta_entrega_informe_lineas" model="ir.actions.act_window">
+            <field name="name">Resultados - Informes de cuentas de cobro</field>
+            <field name="res_model">acta.entrega.informe.linea</field>
+            <field name="view_mode">tree,pivot,graph</field>
+            <field name="search_view_id" ref="view_acta_entrega_informe_linea_search"/>
+            <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+        </record>
+
+        <record id="action_acta_entrega_informe_wizard" model="ir.actions.act_window">
+            <field name="name">Informes de cuentas de cobro</field>
+            <field name="res_model">acta.entrega.informe.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_acta_entrega_informe_wizard_form"/>
+            <field name="target">current</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_acta_entrega_informes"
+                  name="Informes y analítica"
+                  parent="Matriz.menu_actas"
+                  sequence="15"
+                  action="action_acta_entrega_informe_wizard"
+                  groups="Matriz.group_informes_cuentas_cobro,Matriz.group_soporte"/>
+    </data>
+</odoo>

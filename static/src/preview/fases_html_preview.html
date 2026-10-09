@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Preview iconos de fases en HTML</title>
+    <style>
+        :root {
+            --line: #1f2631;
+            --muted: #65758b;
+            --panel: #ffffff;
+            --border: #dfe6ef;
+            --bg: #f6f8fb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: var(--bg);
+            color: #0f172a;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 20px;
+        }
+
+        .note {
+            margin: 0 0 22px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .icon-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+            gap: 14px;
+        }
+
+        .icon-preview-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.07);
+        }
+
+        .icon-preview-title {
+            margin: 0 0 12px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .icon-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .icon-box {
+            min-height: 116px;
+            border: 1px solid #edf1f6;
+            border-radius: 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #fff;
+        }
+
+        .icon-box span {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .icon-box img,
+        .phase-svg {
+            width: 76px;
+            height: 76px;
+            object-fit: contain;
+            color: var(--line);
+        }
+
+        .phase-svg {
+            display: block;
+        }
+
+        .s {
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 3.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .s2 {
+            stroke-width: 2.4;
+        }
+
+        .s3 {
+            stroke-width: 1.8;
+        }
+
+        .f {
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body>
+<h1>Preview de iconos recreados en HTML/SVG</h1>
+<p class="note">Comparación visual antes de reemplazar los PNG en la vista. Solo se está recreando el ícono, no la tarjeta.</p>
+
+<section class="icon-preview-grid">
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">1. Pre-contractual</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Pre-cont.png" alt="Pre-contractual original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Pre-contractual HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M34 19h35v59H34z"/>
+                    <path class="s s2" d="M60 19v15h9M37 78l12-12h20"/>
+                    <circle class="s s2" cx="47" cy="35" r="10"/>
+                    <path class="s s3" d="M41 46c3-5 10-5 13 0M47 28v6M39 35h16"/>
+                    <path class="s s2" d="M56 33h8M56 41h8M42 54h21M42 61h21"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">2. Contratación</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Contratacion.png" alt="Contratación original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Contratación HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M30 18h35l12 12v48H30z"/>
+                    <path class="s s2" d="M65 18v13h12M40 40h29M40 49h28M40 58h20"/>
+                    <path class="s" d="M61 72l6-18 20-20c3-3 9 3 6 6L73 60z"/>
+                    <path class="s s2" d="M81 40l6 6M67 54l7 7"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">3. Ejecución</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Ejecucion.png" alt="Ejecución original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Ejecución HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <circle class="s" cx="30" cy="28" r="7"/>
+                    <path class="s" d="M22 48V38c0-5 4-9 9-9h9c5 0 8 3 8 8"/>
+                    <path class="s" d="M31 44v31M43 44v31M23 49v19M23 75h8M43 75h8"/>
+                    <rect class="s" x="45" y="26" width="38" height="28"/>
+                    <path class="s" d="M50 49l16-11 9 7 8-10"/>
+                    <path class="s s2" d="M78 34h6v6"/>
+                    <circle class="s" cx="45" cy="67" r="6"/>
+                    <circle class="s" cx="61" cy="67" r="6"/>
+                    <circle class="s" cx="77" cy="67" r="6"/>
+                    <path class="s s2" d="M37 82v-8c0-3 3-5 8-5s8 2 8 5v8M53 82v-8c0-3 3-5 8-5s8 2 8 5v8M69 82v-8c0-3 3-5 8-5s8 2 8 5v8"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">4. Cierre</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Cierre.png" alt="Cierre original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Cierre HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M21 78h25V66h20V54h18v24z"/>
+                    <circle class="s" cx="58" cy="25" r="7"/>
+                    <path class="s" d="M51 36l-9 14M52 37v22M52 59l-8 15M54 46l14 5"/>
+                    <path class="s" d="M57 39l10 7 9-5"/>
+                    <path class="s" d="M76 20v34M76 21h16v12H76"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">Gestión Documental</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/gestion_documental.png" alt="Gestión Documental original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Gestión Documental HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M45 20h30c3 0 5 2 5 5v46c0 3-2 5-5 5H45c-3 0-5-2-5-5V25c0-3 2-5 5-5z"/>
+                    <path class="s s2" d="M39 30h-4c-3 0-5 2-5 5v42M50 14h30c3 0 5 2 5 5v46"/>
+                    <path class="s s2" d="M69 20v16h11"/>
+                    <circle class="s" cx="43" cy="51" r="14"/>
+                    <path class="s" d="M33 61L17 77"/>
+                    <path class="s s2" d="M49 45c4 2 6 5 6 10"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">Documentos del proyecto</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Documentos1.png" alt="Documentos del proyecto original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Documentos del proyecto HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M17 33c0-5 4-8 8-8h21l8 7h28c5 0 9 4 9 9v31c0 5-4 9-9 9H25c-4 0-8-4-8-8z"/>
+                    <path class="s s2" d="M17 35h36l8 7h30M55 35h24"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">Soporte drive</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/ilustracion.png" alt="Soporte drive original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Soporte drive HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <rect class="s" x="28" y="21" width="43" height="58"/>
+                    <rect class="s" x="36" y="31" width="25" height="9"/>
+                    <path class="s s2" d="M38 48h24M38 56h24M38 64h16M38 72h12"/>
+                    <path class="s" d="M60 57l14-7 14 7-14 8z"/>
+                    <path class="s" d="M60 57v16l14 8 14-8V57M74 65v16"/>
+                    <path class="s s2" d="M82 60v8"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+
+    <article class="icon-preview-card">
+        <h2 class="icon-preview-title">Abrir Ficha Resumen</h2>
+        <div class="icon-compare">
+            <div class="icon-box">
+                <span>PNG</span>
+                <img src="/Matriz/static/src/img/Resumen1.png" alt="Ficha resumen original"/>
+            </div>
+            <div class="icon-box">
+                <span>HTML</span>
+                <svg class="phase-svg" viewBox="0 0 100 100" role="img" aria-label="Ficha resumen HTML">
+                    <circle class="s s2" cx="50" cy="50" r="43"/>
+                    <path class="s" d="M36 22l27-7 12 48-27 7z"/>
+                    <path class="s" d="M27 30l32-5 8 50-32 5z"/>
+                    <path class="s" d="M20 39h36v43H20z"/>
+                    <path class="s s2" d="M28 49h19M28 58h19M28 67h14"/>
+                </svg>
+            </div>
+        </div>
+    </article>
+</section>
+</body>
+</html>

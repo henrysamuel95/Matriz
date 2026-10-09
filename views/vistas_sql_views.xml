@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista Tree principal -->
+    <record id="view_vistas_sql_tree" model="ir.ui.view">
+        <field name="name">vistas.sql.tree</field>
+        <field name="model">vistas_sql</field>
+        <field name="arch" type="xml">
+            <tree string="Vistas SQL" editable="bottom">
+                <field name="contratacion_ids_sql" string="Proyecto"/>
+                <field name="fecha_inicio" string="Fecha inicio"/>
+                <field name="fecha_finalizacion" string="Fecha fin"/>
+                <field name="centro_costo_proyecto" string="Unidad de negocio"/>
+                <button name="obtener_terceros" string="Consultar Terceros" type="object" icon="fa-search"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Vista de búsqueda -->
+    <record id="view_vistas_sql_search" model="ir.ui.view">
+        <field name="name">vistas.sql.search</field>
+        <field name="model">vistas_sql</field>
+        <field name="arch" type="xml">
+            <search string="Buscar vistas SQL">
+                <field name="centro_costo_proyecto" string="Unidad de negocio"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_finalizacion"/>
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Vista Tree del detalle -->
+    <record id="view_tercero_detalle_sql_temp_tree" model="ir.ui.view">
+        <field name="name">tercero.detalle.sql.temp.tree</field>
+        <field name="model">tercero_detalle_sql_temp</field>
+        <field name="arch" type="xml">
+            <tree string="Detalle del Tercero">
+                <field name="categoria"/>
+                <field name="tercero"/>
+                <field name="razon_social"/>
+                <field name="nombre_auxiliar"/>
+                <field name="id_tipo_docto"/>
+                <field name="nro_docto"/>
+                <field name="fecha_docto"/>
+                <field name="debitos"/>
+                <field name="creditos"/>
+                <field name="notas"/>
+                <field name="id_un"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Form del detalle -->
+    <record id="view_tercero_detalle_sql_temp_form" model="ir.ui.view">
+        <field name="name">tercero.detalle.sql.temp.form</field>
+        <field name="model">tercero_detalle_sql_temp</field>
+        <field name="arch" type="xml">
+            <form string="Detalle del Tercero">
+                <sheet>
+                    <group>
+                        <field name="categoria"/>
+                        <field name="tercero"/>
+                        <field name="razon_social"/>
+                        <field name="nombre_auxiliar"/>
+                        <field name="id_tipo_docto"/>
+                        <field name="nro_docto"/>
+                        <field name="fecha_docto"/>
+                        <field name="debitos"/>
+                        <field name="creditos"/>
+                        <field name="notas"/>
+                        <field name="id_un"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
+

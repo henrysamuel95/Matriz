@@ -1,0 +1,157 @@
+.o_sgo_academy_wall .o_kanban_renderer {
+    background: #f4f7fb;
+    padding: 14px;
+}
+
+.o_sgo_academy_wall .o_kanban_group {
+    background: #eef3f8;
+    border: 1px solid #d8e2ec;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.o_sgo_mural_card {
+    background: #ffffff;
+    border: 1px solid #dbe4ee;
+    border-left: 5px solid #1d6f8f;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(23, 43, 77, 0.08);
+    color: #1f2937;
+    margin: 0 0 12px;
+    padding: 16px;
+    width: 100%;
+}
+
+.o_sgo_mural_card:hover {
+    border-color: #8bb8cf;
+    box-shadow: 0 10px 26px rgba(23, 43, 77, 0.12);
+}
+
+.o_sgo_card_topline,
+.o_sgo_card_footer {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.o_sgo_badge {
+    border-radius: 6px;
+    display: inline-flex;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    max-width: 100%;
+    padding: 5px 8px;
+    text-transform: uppercase;
+}
+
+.o_sgo_badge_type {
+    background: #e8f4f8;
+    color: #14576f;
+}
+
+.o_sgo_badge_menu {
+    background: #eaf7ef;
+    color: #17643a;
+}
+
+.o_sgo_badge_internal {
+    background: #fff4de;
+    color: #84530e;
+}
+
+.o_sgo_card_title {
+    color: #102a43;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-top: 12px;
+}
+
+.o_sgo_model_name {
+    color: #5b6b7a;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+}
+
+.o_sgo_card_content {
+    color: #334155;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 12px;
+}
+
+.o_sgo_card_content p {
+    margin: 0 0 8px;
+}
+
+.o_sgo_route_box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding: 10px;
+}
+
+.o_sgo_route_label {
+    color: #496579;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.o_sgo_route_text {
+    color: #0f2537;
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.o_sgo_card_footer {
+    border-top: 1px solid #edf2f7;
+    color: #687789;
+    font-size: 12px;
+    margin-top: 12px;
+    padding-top: 10px;
+}
+
+.o_sgo_steps {
+    background: #edf7ff;
+    border-radius: 6px;
+    color: #1d4f75;
+    font-weight: 700;
+    padding: 4px 7px;
+}
+
+.o_sgo_form_header {
+    background: #f8fafc;
+    border: 1px solid #dbe4ee;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    padding: 16px;
+}
+
+.o_sgo_form_header h1 {
+    color: #102a43;
+    font-size: 24px;
+    margin: 10px 0 0;
+}
+
+.o_sgo_form_panel {
+    background: #ffffff;
+    border: 1px solid #dbe4ee;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.o_sgo_form_panel h3 {
+    color: #102a43;
+    font-size: 18px;
+    margin: 0 0 12px;
+}

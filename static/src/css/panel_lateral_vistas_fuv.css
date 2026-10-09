@@ -1,0 +1,678 @@
+/* Header gradient personalizado */
+.contratacion_fuv_header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.contratacion_fuv_header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* Badge superior derecho */
+.contratacion_badge {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Sección de información financiera */
+.financial_info_item {
+    transition: background-color 0.2s ease;
+}
+
+.financial_info_item:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+    border-radius: 4px;
+}
+
+/* Sección de Otrosí */
+.otrosi_section {
+    position: relative;
+}
+
+.otrosi_section::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #ffc107, #ff9800);
+}
+
+/* Cards de información */
+.info_card {
+    transition: all 0.2s ease;
+}
+
+.info_card:hover {
+    background-color: #e9ecef !important;
+}
+
+/* Iconos de fechas */
+.date_icon {
+    width: 14px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Avatar en footer */
+.o_kanban_record_bottom .o_m2o_avatar {
+    transition: transform 0.2s ease;
+}
+
+.o_kanban_record_bottom .o_m2o_avatar:hover {
+    transform: scale(1.15);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .o_kanban_view .oe_kanban_global_click {
+        max-width: 100% !important;
+    }
+}
+
+/* Estado contratación custom styling */
+.estado_contratacion_widget {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+
+/* ============================================
+   ESTILOS PARA ESTADOS DE CONTRATACIÓN
+   Letras blancas pequeñas, sin borde, sin hover
+   ============================================ */
+
+/* Estilo base para todos los estados */
+.o_kanban_record_bottom span.estado_badge {
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    border: none !important;
+    color: rgb(206, 237, 255) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Estado: Coordinador - Azul */
+span[data-estado="coordinador"] {
+    background-color: #0d6efd !important;
+}
+
+/* Estado: Financiera - Verde */
+span[data-estado="financiera"] {
+    background-color: #198754 !important;
+}
+
+/* Estado: Jurídico - Naranja */
+span[data-estado="juridico"] {
+    background-color: #fd7e14 !important;
+}
+
+/* Estado: Recursos Humanos - Morado */
+span[data-estado="recursos_humanos"] {
+    background-color: #6f42c1 !important;
+}
+
+/* Estado: Contratado - Verde oscuro */
+span[data-estado="contratado"] {
+    background-color: #20c997 !important;
+}
+
+/* Estados de órdenes especiales */
+span.estado_badge_ordenes[data-estado="ventanilla"] {
+    background-color: #17a2b8 !important;
+}
+
+span.estado_badge_ordenes[data-estado="contabilidad"] {
+    background-color: #fd7e14 !important;
+}
+
+span.estado_badge_ordenes[data-estado="auxiliar_tesoreria"] {
+    background-color: #e83e8c !important;
+}
+
+span.estado_badge_ordenes[data-estado="tesoreria"] {
+    background-color: #795548 !important;
+}
+
+span.estado_badge_ordenes[data-estado="finalizado"] {
+    background-color: #198754 !important;
+}
+
+/* Órdenes especiales: formulario y chatter en una sola columna. */
+.fc-ordenes-especiales-form,
+.o_form_view .o_form_renderer.fc-ordenes-especiales-form {
+    flex-flow: column nowrap !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+}
+
+/* El scroll pertenece al formulario completo para que el header sticky funcione. */
+.fc-ordenes-especiales-form .o_form_sheet_bg,
+.fc-ordenes-especiales-form .o_FormRenderer_chatterContainer {
+    overflow: visible !important;
+}
+
+.fc-ordenes-especiales-form .o_form_sheet_bg,
+.fc-ordenes-especiales-form .o_FormRenderer_chatterContainer,
+.fc-ordenes-especiales-form .o_FormRenderer_chatterContainer.o-aside {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.fc-ordenes-especiales-form .o_form_sheet,
+.fc-ordenes-especiales-form .oe_chatter {
+    width: calc(100% - 32px);
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fc-ordenes-especiales-form .oe_chatter {
+    border-top: 1px solid #dbe5f2;
+    background: #ffffff;
+}
+
+
+
+
+
+
+
+.o_kanban_record_bottom span.estado_badge_ordenes {
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    border: none !important;
+    color: rgb(206, 237, 255) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Estado: Coordinador - Azul */
+span[data-estado="coordinador"] {
+    background-color: #0d6efd !important;
+}
+
+/* Estado: Financiera - Verde */
+span[data-estado="financiera"] {
+    background-color: #198754 !important;
+}
+
+/* Estado: Contratado - Verde oscuro */
+span[data-estado="contratado"] {
+    background-color: #20c997 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Versión alternativa si NO usas data-estado */
+.o_kanban_record_bottom span.fw-bold {
+    padding: 5px 12px !important;
+    border-radius: 20px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    display: inline-block !important;
+    border: none !important;
+    color: white !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Colores por contenido de texto */
+.o_kanban_record_bottom span.fw-bold:contains("Coordinador") {
+    background-color: #0d6efd !important;
+}
+
+.o_kanban_record_bottom span.fw-bold:contains("Financiera") {
+    background-color: #198754 !important;
+}
+
+.o_kanban_record_bottom span.fw-bold:contains("Jurídico") {
+    background-color: #fd7e14 !important;
+}
+
+.o_kanban_record_bottom span.fw-bold:contains("Recursos humanos"),
+.o_kanban_record_bottom span.fw-bold:contains("Recursos Humanos") {
+    background-color: #6f42c1 !important;
+}
+
+.o_kanban_record_bottom span.fw-bold:contains("Contratado") {
+    background-color: #20c997 !important;
+}
+
+/* 1. CONTENEDOR MAESTRO: Permitir scroll horizontal si hay muchas columnas */
+
+.o_kanban_view .o_content {
+    display: flex !important;
+    flex-direction: row !important;
+    height: 100vh !important; /* Ocupa todo el alto de la pantalla */
+    overflow: hidden !important; /* Evitamos scroll doble en el padre */
+}
+/* 2. SIDEBAR: Ajuste para que se quede FIJO al bajar */
+.mtz_fuv_sidebar_master {
+    width: 280px;
+    min-width: 280px;
+    height: 100%; /* Ocupa todo el alto disponible */
+    background: white;
+    border-right: 1px solid #d1d5db;
+    flex-shrink: 0;
+    z-index: 100;
+    overflow-y: auto; /* Si el sidebar tiene mucho texto, él mismo tiene scroll */
+}
+/* ESTADO COLAPSADO: Forzamos min-width a 0 y visibilidad oculta */
+.mtz_fuv_sidebar_master.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    /* ELIMINAMOS opacity: 0; para que la pestaña no desaparezca */
+    /* ELIMINAMOS pointer-events: none; para que la pestaña reciba clics */
+    border-right: none;
+    margin-right: 0;
+}
+
+/* 3. Contenedor Interno: Responsive y sin scroll vertical molesto */
+.mtz_fuv_sidebar_container {
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Solo permite scroll interno si el contenido supera la pantalla */
+    scrollbar-width: thin; /* Scrollbar elegante para Firefox */
+}
+
+/* Estilizar scrollbar para Chrome/Edge */
+.mtz_fuv_sidebar_container::-webkit-scrollbar {
+    width: 4px;
+}
+.mtz_fuv_sidebar_container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* 4. Las Cards: Ajustamos tamaños para que quepan más en menos espacio */
+.mtz_fuv_data_card {
+    background: #f8fafc;
+    border-radius: 6px;
+    padding: 10px; /* Reducido para ahorrar espacio */
+    margin-bottom: 8px;
+    border-left: 4px solid #043484;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.mtz_fuv_data_card .mtz_value {
+    font-size: 1.1rem; /* Tamaño fluido */
+    font-weight: 700;
+    color: #1e293b;
+    word-break: break-all; /* Evita que números largos rompan el diseño */
+}
+
+
+
+
+
+
+
+
+
+
+/* Estilos para Kanban de Contrataciones FUV - Diseño Moderno */
+
+/* Ajustes generales del kanban DE MANERA GENERAL */ 
+.o_kanban_view .oe_kanban_global_click {
+    transition: all 0.3s ease;
+}
+
+.o_kanban_view .oe_kanban_global_click:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(88, 88, 88, 0.18) !important;
+}
+
+/* 1. Quitar el fondo gris de las columnas */
+.o_kanban_view .o_kanban_group {
+    background-color: transparent !important; /* Adiós al gris */
+    box-shadow: none !important; /* Por si tiene bordes/sombras */
+    border: none !important;
+}
+
+/* 2. Arreglar el "apeñuzcamiento" del alto */
+/* Esto fuerza a que las columnas ocupen todo el alto disponible */
+.o_kanban_view .o_kanban_group {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+/* 4. EL RENDERER (El área de las tarjetas): Margen para que no toque la pestaña */
+.o_kanban_renderer {
+    flex: 1 !important; /* Ocupa todo el espacio restante a la derecha */
+    height: 100% !important;
+    overflow-y: auto !important; /* ¡AQUÍ RECUPERAS EL SCROLL! */
+    padding: 20px !important;
+    display: flex !important;
+    align-items: flex-start;
+    scrollbar-width: thin; /* Scroll elegante */
+}
+
+/* Opcional: Para que el scroll se vea bien en Chrome */
+.o_kanban_renderer::-webkit-scrollbar {
+    width: 6px;
+}
+.o_kanban_renderer::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+
+
+/* RESETEAR Y FORZAR ANCHO COMPLETO */
+.oe_title.custom-select-row {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px 0 !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Contenedor de las 4 columnas */
+.oe_title.custom-select-row .o_row.select-group {
+    display: flex !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 15px !important;
+    align-items: stretch !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Cada columna individual */
+.oe_title.custom-select-row .o_cell.select-box {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+    padding-right: 20px !important;
+    box-sizing: border-box !important;
+}
+
+/* Labels */
+.oe_title.custom-select-row .o_cell.select-box label {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 5px !important;
+    white-space: nowrap !important;
+}
+
+/* Campos de formulario */
+.oe_title.custom-select-row .custom-select-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    background-color: #f8f9fa !important;
+    padding: 6px 10px !important;
+    font-size: 1rem !important;
+    color: #333333 !important;
+    box-sizing: border-box !important;
+}
+
+/* Widgets internos de Odoo */
+.oe_title.custom-select-row .o_field_widget,
+.oe_title.custom-select-row .o_field_widget input,
+.oe_title.custom-select-row .o_field_widget select,
+.oe_title.custom-select-row .o_input,
+.oe_title.custom-select-row select,
+.oe_title.custom-select-row input {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Tooltip */
+.oe_title.custom-select-row .custom-tooltip-trigger {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(20%) !important;
+    color: #007bff !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+}
+
+.oe_title.custom-select-row .custom-tooltip-trigger:hover::after {
+    content: attr(data-tooltip);
+    visibility: visible;
+    opacity: 1;
+    position: absolute;
+    top: -10px;
+    left: 105%;
+    background: #333;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px 10px;
+    width: 200px;
+    font-size: 0.8rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    white-space: normal;
+}
+
+.oe_title.custom-select-row .custom-tooltip-trigger::after {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+
+/* Recordatorio del CSS necesario */
+.checkbox-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.checkbox-center .o_field_boolean input[type="checkbox"],
+.checkbox-center input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+    accent-color: #007bff; 
+    margin: 0 !important;
+}
+
+
+
+
+
+
+
+/* CLASE PRINCIPAL: Mantiene el 100% del ancho y el padding general */
+.custom-value-header-full-width {
+    display: flex; 
+    flex-direction: row; 
+    align-items: stretch; 
+    flex-wrap: nowrap; 
+    gap: 12px; /* Espacio entre los elementos */
+    padding: 8px 12px; /* Más padding para darle un mejor aspecto */
+    width: 100%; 
+    box-sizing: border-box; 
+}
+
+/* Estilo para cada bloque de valor individual (Box) */
+.custom-value-header-full-width .valor-box {
+    /* 1. ANCHO: Distribución uniforme. Se inicia con una base de 0 (o 150px) 
+       para asegurar que la repartición Flexbox sea efectiva.
+    */
+    flex: 1 1 180px; /* Base de 150px, pero se reparte uniformemente */
+    min-width: 180px; /* Asegura un ancho mínimo visiblemente más grande */
+    
+    border: 1px solid #e0e0e0; 
+    padding: 6px 8px; 
+    border-radius: 4px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Sombra ligeramente más marcada */
+    transition: all 0.3s ease;
+}
+
+/* Regla Crucial: Asegura que los campos con invisible="1" sean ignorados */
+.custom-value-header-full-width .valor-box[invisible="1"] {
+    display: none !important;
+}
+
+
+/* Efecto al pasar el cursor (Hover) */
+.custom-value-header-full-width .valor-box:hover {
+    border-color: #2196F3;
+    box-shadow: 0 0 8px rgba(33, 150, 243, 0.5);
+}
+
+/* Estilo para la etiqueta (Texto descriptivo) */
+.custom-value-header-full-width .valor-box strong {
+    display: block; 
+    font-size: 0.9rem; /* Aumentado */
+    color: #555555;
+    margin-bottom: 4px; /* Más separación del valor */
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: normal; 
+}
+
+/* Estilo para el valor (Monetario/Datos) */
+.custom-value-header-full-width .valor-box field {
+    font-size: 1.4rem; /* ¡Aumentado visiblemente! */
+    font-weight: 700;
+    color: #333333;
+    display: block;
+    line-height: 1.2;
+}
+
+/* Estilos para el color de peligro */
+.custom-value-header-full-width field[decoration-danger="true"] { 
+    color: #C62828 !important; 
+    font-weight: 900; 
+}
+
+
+
+/* Plegable para móviles: En pantallas pequeñas, apilamos verticalmente y permitimos que cada box ocupe el 100% */
+/* Contenedor maestro con transición */
+.mtz_fuv_sidebar_master {
+    width: 280px;
+    min-width: 280px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    /* IMPORTANTE: Permitir que la pestaña se vea cuando el ancho sea 0 */
+    overflow: visible !important; 
+    z-index: 100;
+}
+/* 2. Estado Colapsado: Solo afectamos el ancho y el margen */
+.mtz_fuv_sidebar_master.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    border-right: none;
+}
+
+
+/* 3. El Contenedor de Datos: A este sí lo volvemos transparente */
+.mtz_fuv_sidebar_master.collapsed .mtz_fuv_sidebar_container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+}
+
+/* 3. LA PESTAÑA (Toggle): Más delgada y con margen de seguridad */
+.mtz_sidebar_toggle {
+    position: absolute;
+    right: -20px; /* Más pegada al borde */
+    top: 150px; /* Posición fija para que no baile */
+    width: 20px; /* Más delgada (antes era 25) */
+    height: 50px;
+    background: #043484;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+.mtz_fuv_sidebar_master.collapsed .mtz_sidebar_toggle {
+    right: -24px; /* Se mantiene visible en el borde izquierdo cuando colapsa */
+}
+
+.o_kanban_group .o_kanban_record {
+    padding-bottom: 16px !important;
+    margin-bottom: 0 !important;
+}
+
+
+
+
+
+
+
+
+
+/* static/src/scss/sticky_header.scss */
+
+.mi_header_fijo {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 999 !important;
+    
+    /* CRÍTICO: Debes poner un color de fondo, si no, se transparentará con el formulario al hacer scroll */
+    background-color: #ffffff !important; 
+    
+    /* Opcional: una pequeña sombra o borde para que se note que está flotando */
+    border-bottom: 1px solid #e0e0e0 !important; 
+    padding: 10px; /* Para que los botones no queden pegados al borde */
+}
+

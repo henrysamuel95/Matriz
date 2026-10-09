@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PolarAreaChartWidget" owl="1">
+        <div t-ref="PolarAreaChartWidget-root" class="chart-container">
+            <canvas class="polar-area-chart-canvas"></canvas>
+        </div>
+    </t>
+</templates>

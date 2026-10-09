@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="entes_control_consulta_singleton" model="entes.control.consulta">
+        <field name="name">Panel de consultas</field>
+    </record>
+
+    <record id="view_entes_control_consulta_form" model="ir.ui.view">
+        <field name="name">entes.control.consulta.form</field>
+        <field name="model">entes.control.consulta</field>
+        <field name="arch" type="xml">
+            <form string="Consultas Entes de Control" create="false" delete="false" class="o_entes_control_panel">
+                <sheet>
+                    <div class="o_entes_panel_header">
+                        <div class="o_entes_panel_logo">
+                            <img src="/Matriz/static/src/img/LogoFUV.png" alt="FUV"/>
+                        </div>
+                        <div class="o_entes_panel_heading">
+                            <h1>Entes de control</h1>
+                            <p>Consulta casos por entidad, BPIN, radicado o nombre del proyecto.</p>
+                        </div>
+                    </div>
+
+                    <div class="o_entes_search_panel">
+                        <div>
+                            <h2>Consulta puntual</h2>
+                            <p>La búsqueda acepta coincidencias parciales; no necesitas escribir los datos completos.</p>
+                        </div>
+                        <div class="o_entes_search_fields">
+                            <field name="busqueda_bpin" nolabel="1" placeholder="BPIN"/>
+                            <field name="busqueda_radicado" nolabel="1" placeholder="Radicado ente de control"/>
+                            <field name="busqueda_nombre" nolabel="1" placeholder="Nombre del proyecto"/>
+                            <button name="action_buscar" type="object" string="Buscar" class="btn-primary" icon="fa-search"/>
+                        </div>
+                    </div>
+<div class="o_entes_entity_grid">
+                        <button name="action_filtrar_procuraduria" type="object" class="o_entes_entity_card o_entes_entity_procuraduria">
+                            <i class="fa fa-balance-scale"/>
+                            <span>Procuraduría</span>
+                            <small>Procesos disciplinarios y requerimientos.</small>
+                        </button>
+                        <button name="action_filtrar_contraloria" type="object" class="o_entes_entity_card o_entes_entity_contraloria">
+                            <i class="fa fa-line-chart"/>
+                            <span>Contraloría</span>
+                            <small>Procesos fiscales, auditorías y control.</small>
+                        </button>
+                        <button name="action_filtrar_dnp" type="object" class="o_entes_entity_card o_entes_entity_dnp">
+                            <i class="fa fa-sitemap"/>
+                            <span>DNP</span>
+                            <small>Seguimiento institucional de proyectos.</small>
+                        </button>
+                        <button name="action_filtrar_fiscalia" type="object" class="o_entes_entity_card o_entes_entity_fiscalia">
+                            <i class="fa fa-gavel"/>
+                            <span>Fiscalía</span>
+                            <small>Solicitudes y actuaciones de investigación.</small>
+                        </button>
+                    </div>
+
+                    <div class="o_entes_panel_actions">
+                        <button name="action_ver_todos" type="object" string="Ver todos" class="btn-secondary" icon="fa-list"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_entes_control_kanban" model="ir.ui.view">
+        <field name="name">entes.control.kanban</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <kanban class="o_entes_control_kanban" create="false" quick_create="false" group_create="false" group_edit="false" group_delete="false" default_order="vigencia desc">
+                <field name="nombre_proyecto"/>
+                <field name="organo_control"/>
+                <field name="organo_grupo"/>
+                <field name="estado"/>
+                <field name="numero_radicado"/>
+                <field name="numero_proyecto_contrato"/>
+                <field name="vigencia"/>
+                <field name="ultima_actuacion"/>
+                <field name="investigador_responsable"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click o_entes_case_card o_entes_case_#{record.organo_grupo.raw_value || 'otros'}">
+                            <div class="o_entes_case_bar"/>
+                            <div class="o_entes_case_body">
+                                <div class="o_entes_case_head">
+                                    <span class="o_entes_case_org"><field name="organo_control"/></span>
+                                    <span class="o_entes_case_year"><field name="vigencia"/></span>
+                                </div>
+                                <h3 t-att-title="record.nombre_proyecto.raw_value || ''"><field name="nombre_proyecto"/></h3>
+                                <div class="o_entes_case_rows">
+                                    <div><span class="o_entes_field_label">Radicado</span><strong t-att-title="record.numero_radicado.raw_value || ''"><field name="numero_radicado"/></strong></div>
+                                    <div><span class="o_entes_field_label">BPIN / Contrato</span><strong t-att-title="record.numero_proyecto_contrato.raw_value || ''"><field name="numero_proyecto_contrato"/></strong></div>
+                                    <div><span class="o_entes_field_label">Responsable</span><strong t-att-title="record.investigador_responsable.raw_value || ''"><t t-esc="record.investigador_responsable.raw_value || ''"/></strong></div>
+                                    <div><span class="o_entes_field_label">Estado</span><strong t-att-title="record.estado.raw_value || ''"><t t-esc="record.estado.raw_value || ''"/></strong></div>
+                                </div>
+                                <div class="o_entes_case_update">
+                                    <span class="o_entes_field_label">Última actuación</span>
+                                    <p t-att-title="record.ultima_actuacion.raw_value || ''"><field name="ultima_actuacion"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_entes_control_consulta_tree" model="ir.ui.view">
+        <field name="name">entes.control.consulta.tree</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <tree string="Consulta Entes de Control" delete="false">
+                <field name="vigencia"/>
+                <field name="numero_proyecto_contrato" string="BPIN / Contrato"/>
+                <field name="nombre_proyecto"/>
+                <field name="organo_grupo"/>
+                <field name="organo_control"/>
+                <field name="numero_radicado"/>
+                <field name="etapa"/>
+                <field name="investigador_responsable"/>
+                <field name="ultima_actuacion"/>
+                <field name="link_informacion_drive" widget="url"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_entes_control_tree" model="ir.ui.view">
+        <field name="name">entes.control.tree</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <tree string="Entes de Control"
+                  create="1"
+                  edit="1"
+                  delete="1"
+                  editable="top"
+                  default_order="create_date desc, id desc"
+                  class="o_entes_control_editable_tree">
+                <field name="fecha_agregado" readonly="1"/>
+                <field name="vigencia"/>
+                <field name="fecha_actuacion"/>
+                <field name="fecha_hechos"/>
+                <field name="numero_proyecto_contrato" string="BPIN / Contrato" class="o_entes_limit_15"/>
+                <field name="nombre_proyecto" class="o_entes_limit_15"/>
+                <field name="organo_grupo"/>
+                <field name="organo_control" class="o_entes_limit_15"/>
+                <field name="seccional" class="o_entes_limit_15"/>
+                <field name="numero_radicado" class="o_entes_limit_15"/>
+                <field name="delito" class="o_entes_limit_15"/>
+                <field name="lugar_hechos" class="o_entes_limit_15"/>
+                <field name="correo_contacto" class="o_entes_limit_15"/>
+                <field name="etapa" class="o_entes_limit_15"/>
+                <field name="hechos_investigados" class="o_entes_limit_15"/>
+                <field name="investigador_responsable" class="o_entes_limit_15"/>
+                <field name="ultima_actuacion" class="o_entes_limit_15"/>
+                <field name="link_informacion_drive"
+                       string="URL información Drive"
+                       widget="url"
+                       class="o_entes_limit_15"/>
+                <button name="action_abrir_link_informacion_drive"
+                        type="object"
+                        icon="fa-external-link"
+                        string="Abrir Drive"
+                        help="Abrir información en Drive"
+                        attrs="{'invisible': [('link_informacion_drive', '=', False)]}"/>
+                <field name="carpeta_direccion_juridica" class="o_entes_limit_15"/>
+                <field name="estado"/>
+                <button name="action_eliminar_registro" type="object" icon="fa-trash" string="Eliminar" class="text-danger" confirm="Seguro quieres eliminar este registro?" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_entes_control_record_consulta_form" model="ir.ui.view">
+        <field name="name">entes.control.consulta.readonly.form</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <form string="Consulta Entes de Control" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="nombre_proyecto"/>
+                        <h1><field name="nombre_proyecto" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identificación">
+                            <field name="organo_grupo" readonly="1"/>
+                            <field name="organo_control" readonly="1"/>
+                            <field name="numero_radicado" readonly="1"/>
+                            <field name="numero_proyecto_contrato" readonly="1"/>
+                            <field name="vigencia" readonly="1"/>
+                            <field name="estado" readonly="1"/>
+                        </group>
+                        <group string="Responsables y ubicación">
+                            <field name="seccional" readonly="1"/>
+                            <field name="investigador_responsable" readonly="1"/>
+                            <field name="link_informacion_drive" widget="url" readonly="1"/>
+                            <field name="carpeta_direccion_juridica" widget="url" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Actuación">
+                            <group>
+                                <field name="etapa" readonly="1"/>
+                                <field name="ultima_actuacion" readonly="1"/>
+                                <field name="hechos_investigados" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_entes_control_form" model="ir.ui.view">
+        <field name="name">entes.control.form</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <form string="Entes de Control">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="nombre_proyecto"/>
+                        <h1><field name="nombre_proyecto"/></h1>
+                    </div>
+                    <group>
+                        <group string="Identificación">
+                            <field name="organo_grupo"/>
+                            <field name="organo_control"/>
+                            <field name="numero_radicado"/>
+                            <field name="numero_proyecto_contrato"/>
+                            <field name="vigencia"/>
+                            <field name="fecha_actuacion"/>
+                            <field name="estado"/>
+                        </group>
+                        <group string="Responsables y ubicación">
+                            <field name="seccional"/>
+                            <field name="investigador_responsable"/>
+                            <field name="link_informacion_drive" widget="url"/>
+                            <field name="carpeta_direccion_juridica" widget="url"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Actuación">
+                            <group>
+                                <field name="etapa"/>
+                                <field name="ultima_actuacion"/>
+                                <field name="hechos_investigados"/>
+                            </group>
+                        </page>
+                        <page string="Datos Fiscalía">
+                            <group>
+                                <field name="delito"/>
+                                <field name="lugar_hechos"/>
+                                <field name="fecha_hechos"/>
+                                <field name="correo_contacto"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="entes_control_view_search" model="ir.ui.view">
+        <field name="name">entes.control.search</field>
+        <field name="model">entes_control</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Entes de Control">
+                <field name="numero_proyecto_contrato" string="BPIN / Contrato"/>
+                <field name="nombre_proyecto" string="Nombre proyecto"/>
+                <field name="numero_radicado"/>
+                <field name="organo_control" string="Órgano de control"/>
+                <field name="organo_grupo"/>
+                <filter name="procuraduria" string="Procuraduría" domain="[('organo_grupo', '=', 'procuraduria')]"/>
+                <filter name="contraloria" string="Contraloría" domain="[('organo_grupo', '=', 'contraloria')]"/>
+                <filter name="dnp" string="DNP" domain="[('organo_grupo', '=', 'dnp')]"/>
+                <filter name="fiscalia" string="Fiscalía" domain="[('organo_grupo', '=', 'fiscalia')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="entes_control_informe_singleton" model="entes.control.informe">
+        <field name="name">Panel de informes</field>
+    </record>
+
+    <record id="view_entes_control_informe_form" model="ir.ui.view">
+        <field name="name">entes.control.informe.form</field>
+        <field name="model">entes.control.informe</field>
+        <field name="arch" type="xml">
+            <form string="Informes Entes de Control" create="false" delete="false" class="o_entes_control_panel o_entes_informe_panel">
+                <sheet>
+                    <div class="o_entes_panel_header">
+                        <div class="o_entes_panel_logo">
+                            <img src="/Matriz/static/src/img/LogoFUV.png" alt="FUV"/>
+                        </div>
+                        <div class="o_entes_panel_heading">
+                            <h1>Informes entes de control</h1>
+                            <p>Selecciona el ente y la vigencia para descargar el informe Word.</p>
+                        </div>
+                    </div>
+                    <div class="o_entes_report_panel">
+                        <div>
+                            <h2>Parámetros del informe</h2>
+                            <p>Usa solo los filtros que necesites; los campos vacíos traen todos los registros.</p>
+                        </div>
+                        <div class="o_entes_report_controls o_entes_report_controls_full">
+                            <div class="o_entes_filter_field">
+                                <label for="organo_informe" string="Seleccione un ente de control"/>
+                                <field name="organo_informe" nolabel="1"/>
+                            </div>
+                            <div class="o_entes_filter_field">
+                                <label for="vigencia_id" string="Seleccione el año de vigencia"/>
+                                <field name="vigencia_id"
+                                       nolabel="1"
+                                       placeholder="Todas las vigencias"
+                                       domain="[('organo_informe', '=', organo_informe)]"
+                                       options="{'no_create': True, 'no_create_edit': True}"/>
+                            </div>
+                            <button name="action_generar_informe_docx" type="object" string="Descargar Word" class="btn-primary" icon="fa-file-word-o"/>
+                        </div>
+                        <field name="informe_adjunto" filename="informe_nombre" invisible="1"/>
+                        <field name="informe_nombre" invisible="1"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

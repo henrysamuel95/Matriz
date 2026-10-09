@@ -1,0 +1,73 @@
+/* 1. Animación única con nombre nuevo */
+@keyframes unique_pn_fade_in {
+    from { opacity: 0; transform: translate3d(0, 20px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+
+/* 4. Etiquetas de los documentos (RUT, etc.) */
+.unique_pn_label {
+    color: #495057; /* LETRAS NEGRAS */
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* 5. Caja del nombre del archivo */
+.unique_pn_file_box {
+    background-color: #f8f9fa; /* Fondo muy suave */
+    color: #4c5258;
+    font-size: 0.9rem;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+/* 6. Botón Subir (Sólido) */
+.unique_pn_btn_upload {
+    background-color: #043484 !important;
+    border: 1px solid #043484 !important;
+    color: white !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease !important;
+    margin-bottom: 5px;
+}
+.unique_pn_btn_upload:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* 7. Botón Ver (Invertido) */
+.unique_pn_btn_view {
+    background-color: #2ECC71; /* Fondo Azul */
+    border: 1px solid #2ECC71;
+    color: white; /* Letra Blanca */
+    border-radius: 6px;
+    font-weight: 600;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}
+
+.unique_pn_btn_view:hover {
+    background-color: white; /* Fondo Blanco al pasar el mouse */
+    color: #043484; /* Letra Azul */
+}
+
+/* 8. Padding especial para columnas */
+.unique_pn_col {
+    padding: 10px 20px;
+}
+
+
+
+
+
+
+

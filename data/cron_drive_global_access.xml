@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_drive_global_access_batches" model="ir.cron">
+        <field name="name">Drive: sincronización masiva de lectores (desactivada)</field>
+        <field name="model_id" ref="model_drive_global_access"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_process_drive_reader_batches()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">False</field>
+        <field name="doall">False</field>
+    </record>
+</odoo>

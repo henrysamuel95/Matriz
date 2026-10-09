@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- El interruptor Python controla la activación; el procesamiento es por lotes. -->
+    <record id="param_fn_habilitado" model="ir.config_parameter">
+        <field name="key">Matriz.fn_habilitado</field><field name="value">False</field>
+    </record>
+    <record id="param_fn_lote" model="ir.config_parameter">
+        <field name="key">Matriz.fn_lote</field><field name="value">50</field>
+    </record>
+    <record id="param_fn_zona" model="ir.config_parameter">
+        <field name="key">Matriz.fn_zona_horaria</field><field name="value">America/Bogota</field>
+    </record>
+    <record id="ir_cron_finalizacion_normal_lotes" model="ir.cron">
+        <field name="name">FUV: finalización normal por lotes</field>
+        <field name="model_id" ref="model_contrataciones_fuv"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field><field name="code">model._fn_cron_vigencia()</field>
+        <field name="interval_number">10</field><field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field><field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+    <record id="ir_cron_finalizacion_normal_notificaciones" model="ir.cron">
+        <field name="name">FUV: trazabilidad y resumen de finalización normal</field>
+        <field name="model_id" ref="model_fuv_finalizacion_aviso"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field><field name="code">model._fn_cron_notificaciones()</field>
+        <field name="interval_number">10</field><field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field><field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

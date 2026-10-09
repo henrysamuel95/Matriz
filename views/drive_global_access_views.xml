@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_drive_global_access_form" model="ir.ui.view">
+        <field name="name">drive.global.access.form</field>
+        <field name="model">drive.global.access</field>
+        <field name="arch" type="xml">
+            <form string="Lectores de Drive por proyecto" create="0" delete="0">
+                <header>
+                    <button name="action_cancel_drive_reader_sync"
+                            string="Cancelar sincronización"
+                            type="object"
+                            class="btn-warning"
+                            attrs="{'invisible': [('sync_pending', '=', False)]}"
+                            groups="Matriz.group_soporte"
+                            confirm="¿Detener los siguientes lotes? No elimina permisos."/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <div class="alert alert-info o_drive_access_intro" role="alert">
+                        Esta es la lista de usuarios disponibles para asignar como lectores.
+                        El acceso se otorga únicamente cuando se agregan al campo
+                        <em>Lectores de Drive</em> de un proyecto. Crear un proyecto no comparte
+                        su carpeta con esta lista.
+                    </div>
+                    <div class="o_drive_access_card o_drive_access_users_card">
+                        <div class="o_drive_access_card_heading">
+                            <i class="fa fa-users"/> Usuarios disponibles para asignar
+                        </div>
+                        <field name="user_ids"
+                               widget="many2many_tags"
+                               options="{'no_create': True, 'no_create_edit': True}"
+                               domain="[('active', '=', True), ('share', '=', False), ('email', '!=', False)]"
+                               class="o_drive_access_tags"/>
+                    </div>
+                    <div class="o_drive_access_action_grid">
+                        <div class="o_drive_access_card o_drive_access_action_card">
+                            <div class="o_drive_access_card_heading">
+                                <i class="fa fa-refresh"/> Sincronizar un proyecto
+                            </div>
+                            <p class="o_drive_access_help">
+                                Consulta únicamente la carpeta del proyecto seleccionado. No hay sincronización global.
+                            </p>
+                            <div class="o_drive_access_action_row">
+                                <label for="sync_project_id">Proyecto</label>
+                                <field name="sync_project_id"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       class="o_drive_access_action_field"/>
+                                <button name="action_sync_drive_readers"
+                                        string="Sincronizar"
+                                        type="object"
+                                        class="btn btn-primary o_drive_access_button"
+                                        groups="Matriz.group_soporte"/>
+                            </div>
+                        </div>
+                        <div class="o_drive_access_card o_drive_access_action_card">
+                            <div class="o_drive_access_card_heading">
+                                <i class="fa fa-search"/> Consultar permisos registrados
+                            </div>
+                            <p class="o_drive_access_help">
+                                Consulta la trazabilidad en Odoo de inmediato; no recorre Google Drive.
+                            </p>
+                            <div class="o_drive_access_action_row">
+                                <label for="audit_user_id">Usuario</label>
+                                <field name="audit_user_id"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       class="o_drive_access_action_field"/>
+                                <button name="action_open_user_grants"
+                                        string="Ver permisos"
+                                        type="object"
+                                        class="btn btn-secondary o_drive_access_button"
+                                        groups="Matriz.group_soporte"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_drive_access_card o_drive_access_last_sync">
+                        <div class="o_drive_access_card_heading">
+                            <i class="fa fa-clock-o"/> Última sincronización
+                        </div>
+                        <div class="o_drive_access_sync_values">
+                            <div><span>Fecha</span><field name="last_sync_at" readonly="1"/></div>
+                            <div><span>Realizada por</span><field name="last_sync_user_id" readonly="1"/></div>
+                        </div>
+                    </div>
+                    <field name="last_sync_summary" invisible="1"/>
+                    <field name="sync_pending" invisible="1"/>
+                    <field name="sync_last_project_id" invisible="1"/>
+                    <field name="sync_total_projects" invisible="1"/>
+                    <field name="sync_processed_projects" invisible="1"/>
+                    <field name="sync_added_permissions" invisible="1"/>
+                    <field name="sync_existing_permissions" invisible="1"/>
+                    <field name="sync_missing_folders" invisible="1"/>
+                    <field name="sync_removed_permissions" invisible="1"/>
+                    <field name="sync_skipped_removals" invisible="1"/>
+                    <field name="sync_error_count" invisible="1"/>
+                    <field name="sync_error_log" invisible="1"/>
+                    <notebook>
+                        <page string="Permisos creados por proyecto" groups="Matriz.group_soporte">
+                            <field name="grant_ids" readonly="1">
+                                <tree create="0" edit="0" delete="0">
+                                    <button name="action_revoke_from_project"
+                                            type="object"
+                                            string="Retirar"
+                                            icon="fa-user-times"
+                                            confirm="¿Retirar este lector solo de este proyecto?"/>
+                                    <field name="project_id"/>
+                                    <field name="user_id"/>
+                                    <field name="email"/>
+                                    <field name="permission_type"/>
+                                    <field name="folder_id" optional="hide"/>
+                                    <field name="permission_id" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_drive_global_access_grant_tree" model="ir.ui.view">
+        <field name="name">drive.global.access.grant.tree</field>
+        <field name="model">drive.global.access.grant</field>
+        <field name="arch" type="xml">
+            <tree string="Carpetas con permiso de lector" create="0" edit="0" delete="0">
+                <field name="project_id"/>
+                <field name="email"/>
+                <field name="permission_type"/>
+                <field name="folder_id" optional="hide"/>
+                <button name="action_revoke_from_project"
+                        type="object"
+                        string="Retirar de este proyecto"
+                        icon="fa-user-times"
+                        confirm="¿Retirar este lector solo de este proyecto?"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_drive_global_access_server" model="ir.actions.server">
+        <field name="name">Lectores globales de Drive</field>
+        <field name="model_id" ref="model_drive_global_access"/>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4, ref('Matriz.group_soporte'))]"/>
+        <field name="code">action = model.action_open_configuration()</field>
+    </record>
+
+    <menuitem id="menu_drive_global_access"
+              name="Lectores globales de Drive"
+              action="action_drive_global_access_server"
+              sequence="100"
+              groups="Matriz.group_soporte"/>
+</odoo>

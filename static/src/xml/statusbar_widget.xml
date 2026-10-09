@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<templates>
+    <t t-name="StatusBarField" owl="1">
+        <div t-ref="StatusBarField-root" class="o_status_bar">
+            <div class="o_status_bar_item"
+                 t-attf-class="{'o_status_bar_item_active': props.value === 'red'}"
+                 data-status="red">
+                No iniciado
+            </div>
+            <div class="o_status_bar_item"
+                 t-attf-class="{'o_status_bar_item_active': props.value === 'yellow'}"
+                 data-status="yellow">
+                En progreso
+            </div>
+            <div class="o_status_bar_item o_status_bar_item_last"
+                 t-attf-class="{'o_status_bar_item_active': props.value === 'green'}"
+                 data-status="green">
+                Completado
+            </div>
+        </div>
+    </t>
+</templates>

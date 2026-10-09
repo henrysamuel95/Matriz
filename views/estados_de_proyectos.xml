@@ -1,0 +1,150 @@
+<odoo>
+    <data>
+        <!-- Vista de formulario -->
+        <record id="view_estado_proyectos_inf_form" model="ir.ui.view">
+            <field name="name">estado_proyectos_inf.form</field>
+            <field name="model">estado_proyectos_inf</field>
+            <field name="arch" type="xml">
+                <form>
+                    <notebook>
+                        <style>
+                            .modal-dialog {
+                                width: 100%;
+                                max-width: 1100px;
+                                margin: 60px auto;
+                                padding: 10px;
+                            }
+                            .custom_button_style {
+                                background-color: #485B75;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                            }
+                        </style>
+                        <page string="DETALES DEL PROYECTO">
+                            <table style="background-color: #D6EBF2; width: 100%;">
+                                <field name="name" invisible="1"/>
+                                <tr>
+                                    <td style="border: 0.1px solid #c9c9c9; background-color: #D6EBF2;">
+                                        <span style="font-size: 16px; font-weight: bold; color: black; margin: 5px;">
+                                            <label for="responsable_revis" string="Responsable: "/>
+                                            <field name="responsable_revis"/>
+                                        </span>
+                                    </td>
+                                    <td style="border: 0.1px solid #c9c9c9; background-color: #D6EBF2;">
+                                        <span style="font-size: 15px; color: black; margin: 5px;">
+                                            <label for="total_py_a_cargo" string="Total proyectos a cargo: "/>
+                                            <field name="total_py_a_cargo"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <field name="detalles_proyecto_ids" widget="one2many"
+                                   options="{'editable': 'top', 'create': true}" style="width: 100%; height: auto;">
+                                <tree editable="top" create="true">
+                                    <control>
+                                        <create string="Añadir nueva línea" context="{'default_responsable_revis': responsable_revis}"/>
+                                    </control>
+                                    <field name="nombre_proyecto" width="50" widget="many2one" options="{'no_create': True}" style="text-align: left;"/>
+                                    <field name="valor_total_final" width="50" style="text-align: left;" invisible="1"/>
+                                    <field name="valor_proyecto_sumado_lineal" string="VALOR TOTAL FINAL"/>
+                                    <field name="responsable_revis" invisible="1"/>
+                                    <field name="fecha_final_proyecto" width="50" style="text-align: left;"/>
+                                    <field name="saldo_pendiente_pago" width="50" style="text-align: left;"/>
+                                    <field name="actividades_pendientes_estado" width="100" style="text-align: left;"/>
+                                    <field name="activity_ids" widget="kanban_activity" width="100" string="ASIGNAR TAREA" style="text-align: left; cursor: grab;"/>
+                                    <field name="numero_proyecto" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="entidad_contratante" width="170" optional="hide" style="text-align: left;"/>
+                                    <field name="objeto" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="valor_proyecto" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="contrapartida" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="fecha_inicio" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="fecha_finalizacion_inicial" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="prorroga_otro_si" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="adicion_presupuestal" width="150" optional="hide" style="text-align: left;"/>
+                                    <field name="observaciones" width="150" optional="hide" style="text-align: left;"/>
+                                </tree>
+                            </field>
+
+
+
+
+                            <table style="width: 100%;">
+                                <tr class="td-cierre">
+                                    <td style="color: black !important; border: 0.1px solid grey; background-color: #D6EBF2; width: 20%; margin: 5px;">
+                                        <label for="valor_total_final_sumado" string="VALOR TOTAL FINAL SUMADO: " style="color: black" class="oe_bold" readonly="1"/>
+                                        <field name="valor_total_final_sumado" />
+                                    </td>
+                                    <td style="color: black !important; border: 0.1px solid grey; background-color: #D6EBF2; width: 20%; margin: 5px;">
+                                        <label for="valor_proyecto_sumado" string="VALOR TOTAL PROYECTOS A CARGO: " style="color: black" class="oe_bold" readonly="1"/>
+                                        <field name="valor_proyecto_sumado" />
+                                    </td>
+                                    <td style="color: black !important; border: 0.1px solid grey; background-color: #D6EBF2; width: 20%; margin: 5px;">
+                                        <label for="contrapartida_sumado" string="TOTAL CONTRAPARTIDA: " style="color: black" class="oe_bold" readonly="1"/>
+                                        <field name="contrapartida_sumado" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </page>
+                    </notebook>
+                    <br/>
+                    <table style="width: auto">
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+        <record id="view_estado_proyectos_inf_kanban" model="ir.ui.view">
+            <field name="name">estado_proyectos_inf.kanban</field>
+            <field name="model">estado_proyectos_inf</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <div class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                        t-att-title="record.responsable_revis.value">
+                                        <strong>Responsable: </strong><field name="responsable_revis" options="{'limit': 1000}"/>
+                                    </div>
+                                    <div class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                        t-att-title="record.total_py_a_cargo.value">
+                                        <strong>Total proyectos a cargo: </strong><field name="total_py_a_cargo" options="{'limit': 1000}"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div>
+                                        <field name="foto_responsable"
+                                               widget="image"
+                                               options="{'no_store': True, 'preview_image': 'foto_responsable', 'size': [120, 120]}"
+                                               class="Img_custom_class"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vista de árbol/kanban -->
+        <record id="view_estado_proyectos_inf_tree" model="ir.ui.view">
+            <field name="name">estado_proyectos_inf.tree</field>
+            <field name="model">estado_proyectos_inf</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="responsable_revis" string="Reponsable"/>
+                    <field name="total_py_a_cargo" string="Total proyectos a cargo"/>
+                    <field name="valor_proyecto_sumado" string="Valor total proyectos a cargo"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

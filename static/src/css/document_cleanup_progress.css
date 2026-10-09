@@ -1,0 +1,89 @@
+.o_document_cleanup_card {
+    max-width: 760px;
+    margin: 24px 0 8px;
+    padding: 20px 22px;
+    border: 1px solid #dbe5f1;
+    border-left: 4px solid #0b3b82;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffffff 0%, #f6f9fd 100%);
+    box-shadow: 0 4px 14px rgba(11, 59, 130, 0.08);
+}
+
+.o_document_cleanup_header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.o_document_cleanup_header h3 {
+    margin: 0 0 5px;
+    color: #0b3b82;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.o_document_cleanup_state {
+    color: #596579;
+}
+
+.o_document_cleanup_progress {
+    max-width: 280px;
+    margin-bottom: 18px;
+}
+
+.o_document_cleanup_progress .o_field_progressbar {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.o_document_cleanup_progress .o_progressbar {
+    height: 12px;
+    border-radius: 8px;
+    background-color: #dfe8f4;
+    overflow: hidden;
+}
+
+.o_document_cleanup_progress .o_progress {
+    background-color: #0b3b82;
+}
+
+.o_document_cleanup_stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(120px, 1fr));
+    gap: 12px;
+}
+
+.o_document_cleanup_stat {
+    padding: 11px 14px;
+    border-radius: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e9f2;
+}
+
+.o_document_cleanup_stat > span {
+    display: block;
+    margin-bottom: 3px;
+    color: #78859a;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.o_document_cleanup_stat .o_field_widget {
+    color: #172b4d;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.o_document_cleanup_running .o_field_boolean {
+    font-size: 14px;
+}
+
+@media (max-width: 767px) {
+    .o_document_cleanup_stats {
+        grid-template-columns: 1fr;
+    }
+}

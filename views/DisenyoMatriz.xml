@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_contratacion_form_buttons" model="ir.ui.view">
+            <field name="name">contratacion.form.buttons</field>
+            <field name="model">contratacion</field>
+            <field name="arch" type="xml">
+                <form create="0" style="width: 100%">
+                    <footer>
+                        <button name="show_otrosi_popup" string="Ver Otrosi" type="object" class="oe_highlight"/>
+                    </footer>
+                    <field name="new_total_costos_produccion_N_r" invisible="1"/>
+                    <field name="saldo_disponible_contratar2" invisible="1"/>
+                    <field name="new_name" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="informacion_base_id" invisible="1"/>
+                    <group invisible="1">
+                        <field name="drive_folder_id"/>
+
+                    </group>
+                    <field name="id_proyecto2" invisible="1"/>
+                    <table>
+                    <div invisible="1" groups="Matriz.group_soporte"
+                         style="width: auto; border: 1px solid #ccc; padding: 10px; background-color: #6ed84a; border-radius: 6px;">
+
+                        <button name="procede_contratacion_si" string="Aprobar MCB" type="object" class="oe_highlight" invisible="1"/>
+                        <group>
+                            <field name="is_editable" widget="boolean_toggle"/>
+                        </group>
+
+                        <group>
+                            <field name="valor_proyecto_convenio3_boolean"
+                                   widget="boolean_toggle"
+                                   string="Activo si tiene valor en MCB producción."
+                                   readonly="0"/>
+                        </group>
+
+                    </div>
+
+                        <field name="apodo" string="Apodo" invisible="1"/>
+                        <div class="d-flex flex-wrap justify-content-left" style="gap: 3px;">
+
+
+                        <button name="Pre_contractual" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                            <div class="d-flex flex-column h-100">
+                                <!-- En vista de lista -->
+                                <div class="p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/Matriz/static/src/img/Pre-cont.png" alt="Pre-contractual" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                    </div>
+                                    <div style="text-align: left;"> <!-- Alinea este bloque a la izquierda -->
+                                        <h6 class="font-weight-bold mb-0">1. Pre-contractual</h6>
+                                        <small class="text-muted">
+                                            Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                            Modificación: <field name="write_date" readonly="1"/>
+                                        </small>
+                                    </div>
+                                    <br/>
+                                    <field name="estado" class="mcb_naranja" attrs="{'invisible': [('estado', '=', 'aprobado')]}"/>
+                                    <field name="estado" class="mcb_verde" attrs="{'invisible': [('estado', '=', 'borrador')]}"/>
+
+
+
+                                    <div class="mt-4">
+                                        <div groups="Matriz.group_contratacion_coordinador" invisible="1">
+                                            <field name="coordinador" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                        <div groups="Matriz.group_contratacion_juridico, Matriz.group_contratacion_director_juridico" invisible="1">
+                                            <field name="juridica" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                        <div groups="Matriz.group_contratacion_financiero, Matriz.group_contratacion_director_financiero" invisible="1">
+                                            <field name="financiera" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+
+                            <div class="position-relative d-inline-block m-1">
+                                <!-- Botón principal -->
+                            <button name="Contractual" type="object" class="btn p-0 shadow tarjeta-kanban"
+                                style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100 p-3">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="/Matriz/static/src/img/Contratacion.png" alt="Contratación"
+                                            style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                    </div>
+                                    <div style="text-align: left; padding-bottom: 40px;">
+                                        <h6 class="font-weight-bold mb-0">2. Contratación</h6>
+                                        <small class="text-muted">
+                                            Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                            Modificación: <field name="write_date" readonly="1"/>
+                                        </small>
+                                        <div class="mt-4">
+                                        <div groups="Matriz.group_contratacion_coordinador" invisible="1">
+                                            <field name="coordinador" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                        <div groups="Matriz.group_contratacion_juridico, Matriz.group_contratacion_director_juridico" invisible="1">
+                                            <field name="juridica" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                        <div groups="Matriz.group_contratacion_financiero, Matriz.group_contratacion_director_financiero" invisible="1">
+                                            <field name="financiera" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                        <div groups="Matriz.group_contratacion_recursos" invisible="1">
+                                            <field name="recursos_humanos" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </button>
+                            </div>
+                            <button name="Ejecución" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/Matriz/static/src/img/Ejecucion.png" alt="Ejecución" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">3. Ejecución</h6>
+                                            <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                        <div class="mt-4">
+                                            <div groups="Matriz.group_contratacion_coordinador" invisible="1">
+                                                <field name="coordinador_j" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_juridico, Matriz.group_contratacion_director_juridico" invisible="1">
+                                                <field name="juridica_j" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_financiero, Matriz.group_contratacion_director_financiero" invisible="1">
+                                                <field name="financiera_j" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_recursos" invisible="1">
+                                                <field name="recursos_humanos_j" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button name="Cierre" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/Matriz/static/src/img/Cierre.png" alt="Cierre" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">4. Cierre</h6>
+                                            <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                        <div class="mt-4">
+                                            <div groups="Matriz.group_contratacion_coordinador" invisible="1">
+                                                <field name="coordinador" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_juridico, Matriz.group_contratacion_director_juridico" invisible="1">
+                                                <field name="juridica" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_financiero, Matriz.group_contratacion_director_financiero" invisible="1">
+                                                <field name="financiera" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                            <div groups="Matriz.group_contratacion_recursos" invisible="1">
+                                                <field name="recursos_humanos" widget="statusbar" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button name="abrir_gestion_documental" groups="Matriz.group_gestion_documental"  invisible="0" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/Matriz/static/src/img/gestion_documental.png" alt="Gestión Documental" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">Gestión Documental</h6>
+                                            <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button name="abrir_drive_browser" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/Matriz/static/src/img/Documentos1.png" alt="Drive" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">Documentos del proyecto</h6>
+                                            <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button name="abrir_documento_" type="object" groups="Matriz.group_soporte" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;" invisible="0">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <img src="/Matriz/static/src/img/ilustracion.png" alt="Documentos del proyecto" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">Soporte drive</h6>
+                                             <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+
+                            <button name="abrir_ficha_resumen_" type="object" class="btn p-0 m-1 shadow tarjeta-kanban" style="width: 250px; height: 320px; text-align: left; border: none; background-color: #f8f9fa; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="p-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <!-- Puedes cambiar la imagen por una adecuada -->
+                                            <img src="/Matriz/static/src/img/Resumen1.png" alt="Placeholder" style="width: 70px; height: 70px; object-fit: cover; margin-right: 15px;"/>
+                                        </div>
+                                        <div style="text-align: left;">
+                                            <h6 class="font-weight-bold mb-0">Abrir Ficha Resumen</h6>
+                                            <small class="text-muted">
+                                                Creación: <field name="fch_creacion" readonly="1"/><br/>
+                                                Modificación: <field name="write_date" readonly="1"/>
+                                            </small>
+                                        </div>
+                                        <div class="mt-4">
+                                            <!-- Aquí pueden ir más detalles o información -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </table>
+                    <style>
+                        .tarjeta-kanban:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+                            background-color: #FFFFFF !important;
+                        }
+                    </style>
+                    <button name="add_group_users_to_access" type="object"
+                            string="Agregar usuarios predeterminados" class="oe_highlight"
+                            groups="Matriz.group_contratacion_directivo" invisible="1"/>
+
+                    <button name="action_soporte_editores_a_lectores_drive"
+                            type="object"
+                            string="Cambiar editores a lectores en Drive"
+                            icon="fa-eye"
+                            invisible="1"
+                            class="btn-primary oe_highlight"
+                            style="background:#1565c0 !important; border-color:#0d47a1 !important; color:#ffffff !important; border-radius:6px; padding:8px 16px; box-shadow:0 3px 8px rgba(13,71,161,0.30); font-weight:600;"
+                            groups="Matriz.group_soporte"
+                            confirm="Esta acción cambiará de Editor a Lector los permisos de los usuarios asignados al proyecto en la carpeta principal de Google Drive. ¿Desea continuar?"/>
+
+                    <hr style="margin-top: 10px; margin-bottom: 15px;"/>
+                    <table groups="Matriz.group_contratacion_directivo, Matriz.group_contratacion_coordinador"
+                           style="width: 320px; text-align: left; border: none; background-color: #D6EBF2; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                        <tr>
+                            <td colspan="2" style="padding: 10px;">
+                                <h3 style="margin: 0;">Permitir usuarios al proyecto</h3>
+                            </td>
+                        </tr>
+                        <!-- <tr invisible="1">
+                            <td style="padding: 10px;">
+                                <label for="creator_user_id">Creador del proyecto:</label>
+                            </td>
+                            <td style="padding: 10px;">
+                                <field name="creator_user_id" options="{'no_create_edit': True}"
+                                       class="oe_kanban_content_oe_kanban_global_clickable"/>
+                            </td>
+                        </tr> -->
+                        <!-- Campo visible solo para el grupo de coordinadores -->
+                        <tr groups="Matriz.group_contratacion_coordinador">
+                            <td colspan="2" style="padding: 10px;">
+                                <label for="users_with_access">Usuarios con acceso:</label>
+                                <field name="users_with_access" widget="many2many_avatar_user"
+                                       options="{'no_create_edit': False}"
+                                       placeholder="Agregar aquí..."
+                                       string="Usuarios con acceso al proyecto"
+                                       style="background-color: #D6EBF2; margin-top: 10px; padding: 5px;"/>
+                            </td>
+                        </tr>
+                        <tr invisible="" groups="Matriz.group_soporte">
+                            <td colspan="2" style="padding: 10px; border-top: 1px solid #b8d6df;">
+                                <label for="drive_reader_user_ids">Lectores de Drive (solo este proyecto):</label>
+                                <field name="drive_reader_available_user_ids" invisible="1"/>
+                                <field name="drive_reader_user_ids" widget="many2many_avatar_user"
+                                       options="{'no_create': True, 'no_create_edit': True}"
+                                       domain="[('id', 'in', drive_reader_available_user_ids)]"
+                                       style="background-color: #D6EBF2; margin-top: 10px; padding: 5px;"/>
+                                <div class="text-muted" style="font-size: 12px; margin-top: 5px;">
+                                    Agregar concede lectura a la carpeta del proyecto; quitar revoca únicamente ese permiso.
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table invisible="1"  groups="Matriz.group_contratacion_director_juridico"
+                           style="width: 320px; text-align: left; border: none; background-color: #D6EBF2; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                        <tr>
+                            <td colspan="2" style="padding: 10px;">
+                                <label for="users_with_access_juridico">Usuarios con acceso:</label>
+                                <field name="users_with_access_juridico" widget="many2many_avatar_user"
+                                       options="{'no_create_edit': False}"
+                                       class="oe_kanban_content_oe_kanban_global_clickable"
+                                       style="background-color: #D6EBF2; border: 1px solid #CCCCCC; margin-top: 5px;"/>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <table groups="Matriz.group_contratacion_director_financiero"
+                           style="width: 320px; text-align: left; border: none; background-color: #D6EBF2; border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                        <tr>
+                            <td colspan="2" style="padding: 10px;">
+                                <label for="users_with_access_financiero">Usuarios con acceso:</label>
+                                <field name="users_with_access_financiero" widget="many2many_avatar_user"
+                                       options="{'no_create_edit': False}"
+                                       class="oe_kanban_content_oe_kanban_global_clickable"
+                                       style="background-color: #D6EBF2; border: 1px solid #CCCCCC; margin-top: 5px;"/>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <group>
+                        <field name="mcb_id3" invisible="1"/>
+                        <field name="ejecucion2_ids" invisible="1"/>
+                    </group>
+                    <br/>
+                    <button name="abrir_ficha_resumen_" string="FICHA RESUMEN" type="object" class="oe_highlight" invisible="1"/>
+                    <table style="width: 100%" class="table-container">
+                        <hr style="margin-top: 10px; margin-bottom: 15px;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+        <record id="view_contratacion_tree" model="ir.ui.view" >
+            <field name="name">Vista lista de contatacion</field>
+            <field name="model">contratacion</field>
+            <field name="arch" type="xml">
+                 <tree create="0">
+                    <field name="new_name"/>
+                    <field name="fch_creacion"/>
+                    <field name="asignar_coordinador"/>
+                    <field name="write_date"/>
+                    <field name="coordinador" widget="selection" options="{'red': 'No iniciado', 'yellow': 'En progreso', 'green': 'Completado'}"/>
+                    <field name="create_uid"/>
+                    <field name="mcb_centro_costo" string="Centro de costo" group="Matriz.group_auditoria_financiera"/>
+                    <!-- Nuevos campos para revisiones Laura -->
+                
+                    <field name="fecha_inicio" string="Fecha Inicio" group="Matriz.group_auditoria_financiera"/>                                     
+                    <field name="fecha_finalizacion2_otrosí_new" string="Fecha Finalización" group="Matriz.group_auditoria_financiera"/>    
+                    <field name="new_total_costos_produccion_N_r" string="Total Costos Producción" group="Matriz.group_auditoria_financiera"/>
+
+                        
+
+                    <field name="costos_total_valor2R" string="Valor Costos Tributarios"/>
+                    <field name="poliza_total" string="Total de Póliza"/>
+                    <field name="suma_costos_fuv" string="FUV"/>
+                    <!-- <field name="suma_adicion_otro_si2" string="Valor Otrosí"/> -->
+                    <!-- <field name="valor_total2_final" string="Valor Total con Otrosí"/> -->
+																						  
+                </tree>
+            </field>
+        </record>
+        <record id="view_contratacion_kanban" model="ir.ui.view">
+            <field name="name">Vista kanban del modelo contratación</field>
+            <field name="model">contratacion</field>
+            <field name="arch" type="xml">
+                <kanban create="0" drag_drop="1" class="mtz-contratacion-kanban">
+                    <field name="new_name"/>
+                    <field name="fch_creacion"/>
+                    <field name="write_date"/>
+                    <field name="mcb_centro_costo"/>
+                    <field name="area_solicitante_proyecto"/>
+                    <field name="coordinador_asignado"/>
+                    <field name="coordinador_g"/>
+                    <field name="create_uid"/>
+                    <field name="activity_ids"/>
+                    <field name="hiden"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="mtz-contratacion-card oe_kanban_global_click">
+                                <field name="hiden" widget="handle" invisible="1"/>
+
+                                <div t-if="record.coordinador_g.raw_value == 'red'" class="mtz-contratacion-badge mtz-contratacion-badge-red">
+                                    <span class="mtz-contratacion-dot"/>
+                                    <span>No iniciado</span>
+                                    <div class="mtz-contratacion-popover">
+                                        <div class="mtz-contratacion-step mtz-contratacion-step-current">
+                                            <span>Actual</span>
+                                            <strong>No iniciado</strong>
+                                        </div>
+                                        <div class="mtz-contratacion-step">
+                                            <span>Siguiente</span>
+                                            <strong>En progreso</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="record.coordinador_g.raw_value == 'yellow'" class="mtz-contratacion-badge mtz-contratacion-badge-yellow">
+                                    <span class="mtz-contratacion-dot"/>
+                                    <span>En progreso</span>
+                                    <div class="mtz-contratacion-popover">
+                                        <div class="mtz-contratacion-step">
+                                            <span>Anterior</span>
+                                            <strong>No iniciado</strong>
+                                        </div>
+                                        <div class="mtz-contratacion-step mtz-contratacion-step-current">
+                                            <span>Actual</span>
+                                            <strong>En progreso</strong>
+                                        </div>
+                                        <div class="mtz-contratacion-step">
+                                            <span>Siguiente</span>
+                                            <strong>Completado</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="record.coordinador_g.raw_value == 'green'" class="mtz-contratacion-badge mtz-contratacion-badge-green">
+                                    <span class="mtz-contratacion-dot"/>
+                                    <span>Completado</span>
+                                    <div class="mtz-contratacion-popover">
+                                        <div class="mtz-contratacion-step">
+                                            <span>Anterior</span>
+                                            <strong>En progreso</strong>
+                                        </div>
+                                        <div class="mtz-contratacion-step mtz-contratacion-step-current">
+                                            <span>Actual</span>
+                                            <strong>Completado</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mtz-contratacion-header">
+                                    <div class="mtz-contratacion-logo">
+                                        <img src="/Matriz/static/src/img/Go-S-F.png" alt="Proyecto"/>
+                                    </div>
+                                    <div class="mtz-contratacion-title" t-att-title="record.new_name.value">
+                                        <field name="new_name" options="{'limit': 1000}"/>
+                                    </div>
+                                </div>
+
+                                <div class="mtz-contratacion-body">
+                                    <div class="mtz-contratacion-section">
+                                        <small>Proyecto</small>
+                                        <strong t-att-title="record.new_name.value"><field name="new_name"/></strong>
+                                    </div>
+
+                                    <div class="mtz-contratacion-dates">
+                                        <div>
+                                            <i class="fa fa-circle me-1"/>
+                                            <span>Creacion</span>
+                                            <strong><field name="fch_creacion" widget="date"/></strong>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-flag-checkered me-1"/>
+                                            <span>Modificacion</span>
+                                            <strong><field name="write_date" widget="date"/></strong>
+                                        </div>
+                                        <div class="mtz-contratacion-date-wide">
+                                            <i class="fa fa-briefcase me-1"/>
+                                            <span>Centro de costo</span>
+                                            <strong><field name="mcb_centro_costo"/></strong>
+                                        </div>
+                                        <div class="mtz-contratacion-date-wide">
+                                            <i class="fa fa-sitemap me-1"/>
+                                            <span>Dependencia - Área Solicitante</span>
+                                            <strong t-if="record.area_solicitante_proyecto.raw_value"><field name="area_solicitante_proyecto"/></strong>
+                                            <strong t-else="" class="mtz-contratacion-empty">Sin definir</strong>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="o_kanban_record_bottom mtz-contratacion-bottom">
+                                    <div class="mtz-contratacion-footer-responsable">
+                                        <span><i class="fa fa-user-circle-o me-1"/>Coordinador responsable</span>
+                                        <strong t-if="record.asignar_coordinador.raw_value">
+                                            <field name="asignar_coordinador"/>
+                                        </strong>
+                                        <strong t-if="!record.asignar_coordinador.raw_value and record.coordinador_asignado.raw_value">
+                                            <field name="coordinador_asignado"/>
+                                        </strong>
+                                        <strong t-if="!record.asignar_coordinador.raw_value and !record.coordinador_asignado.raw_value" class="mtz-contratacion-empty">
+                                            Seleccionar uno
+                                            <span class="mtz-contratacion-info" title="Como asignarlo">i
+                                                <span class="mtz-contratacion-info-popover">
+                                                    <b>Como asignar el coordinador responsable</b>
+                                                    <span>1. El creador o coordinador del proyecto ingresa al proyecto.</span>
+                                                    <span>2. Entra a la ficha de resumen.</span>
+                                                    <span>3. Presiona el boton superior FORMULARIO DE INGRESO DE DATOS DEL PROYECTO.</span>
+                                                    <span>4. Dentro del formulario busca la opcion Asignar coordinador responsable.</span>
+                                                    <span>5. Selecciona el usuario y guarda los cambios.</span>
+                                                </span>
+                                            </span>
+                                        </strong>
+                                    </div>
+                                    <div class="mtz-contratacion-activity">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_contratacion_search" model="ir.ui.view">
+            <field name="name">contratacion.search</field>
+            <field name="model">contratacion</field>
+            <field name="arch" type="xml">
+                <search>
+                    <!-- Campos de búsqueda -->
+                    <field name="new_name" string="Nombre de proyecto"/>
+                    <field name="mcb_centro_costo" string="Centro de costo"/>
+                    <field name="asignar_coordinador" string="Coordinador responsable"/>
+                    <field name="area_solicitante_proyecto" string="Dependencia - Área Solicitante"/>
+                    <field name="fch_creacion"/>
+
+                    <!-- Filtros predefinidos -->
+                    <filter string="Ordenar por Fecha (Más recientes)" name="order_create_date_desc"
+                            domain="[]" context="{'order_create_date_desc': 1}" />
+                    <filter string="Ordenar por Fecha (Más antiguos)" name="order_create_date_asc"
+                            domain="[]" context="{'order_create_date_asc': 1}" />
+
+                    <filter string="Ordenar por Nombre (A-Z)" name="order_name"
+                            domain="[]" context="{'order_name': 1}" />
+                    <filter string="Ordenar por Nombre (Z-A)" name="order_name_desc"
+                            domain="[]" context="{'order_name_desc': 1}" />
+
+                    <separator/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Estado del proyecto" name="group_by_estado_proyecto"
+                                context="{'group_by': 'coordinador_g'}"/>
+                        <filter string="Coordinador responsable" name="group_by_asignar_coordinador"
+                                context="{'group_by': 'asignar_coordinador'}"/>
+                        <filter string="Dependencia - Área Solicitante" name="group_by_area_solicitante_proyecto"
+                                context="{'group_by': 'area_solicitante_proyecto'}"/>
+                        <filter string="Creador del proyecto" name="group_by_creador"
+                                context="{'group_by': 'create_uid'}"/>
+                        <filter string="Fecha de creacion" name="group_by_fecha_creacion"
+                                context="{'group_by': 'fch_creacion:month'}"/>
+                        <filter string="Fecha de modificacion" name="group_by_fecha_modificacion"
+                                context="{'group_by': 'write_date:month'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+        <record id="action_open_contratacion" model="ir.actions.act_window">
+            <field name="search_view_id" ref="view_contratacion_search"/>
+        </record>
+
+        <record id="contratacion_view_search" model="ir.ui.view">
+           <field name="name">contratacion.view.search.module.name</field>
+           <field name="model">contratacion</field>
+           <field name="arch" type="xml">
+               <search>
+                   <field name="new_name" string="Nombre de proyecto"/>
+                   <field name="mcb_centro_costo" string="Centro de costo"/>
+                   <field name="asignar_coordinador" string="Coordinador responsable"/>
+                   <field name="area_solicitante_proyecto" string="Dependencia - Área Solicitante"/>
+                   <field name="fch_creacion"/>
+                   <separator/>
+                   <group expand="0" string="Agrupar por">
+                       <filter string="Estado del proyecto" name="group_by_estado_proyecto"
+                               context="{'group_by': 'coordinador_g'}"/>
+                       <filter string="Coordinador responsable" name="group_by_asignar_coordinador"
+                               context="{'group_by': 'asignar_coordinador'}"/>
+                       <filter string="Dependencia - Área Solicitante" name="group_by_area_solicitante_proyecto"
+                               context="{'group_by': 'area_solicitante_proyecto'}"/>
+                       <filter string="Creador del proyecto" name="group_by_creador"
+                               context="{'group_by': 'create_uid'}"/>
+                       <filter string="Fecha de creacion" name="group_by_fecha_creacion"
+                               context="{'group_by': 'fch_creacion:month'}"/>
+                       <filter string="Fecha de modificacion" name="group_by_fecha_modificacion"
+                               context="{'group_by': 'write_date:month'}"/>
+                   </group>
+               </search>
+           </field>
+        </record>
+
+        <record id="view_matriz_quickstart_form" model="ir.ui.view">
+            <field name="name">matriz.quickstart.form</field>
+            <field name="model">matriz.quickstart</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button string="Cargar desde config" type="object" name="action_load_google_config" class="btn-secondary"/>
+                        <button string="Autenticar con Google Drive" type="object" name="authenticate_google_drive" class="btn-primary"/>
+                        <button string="Probar Conexión" type="object" name="test_google_drive" class="btn-secondary"/>
+                        <button name="authenticate_callback" type="object" string="Autorizar código manual" attrs="{'invisible': [('auth_code', '=', False)]}" groups="base.group_system,Matriz.group_soporte,Matriz.group_contratacion_directivo"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                            <field name="name"/>
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True" groups="base.group_system,Matriz.group_soporte,Matriz.group_contratacion_directivo"/>
+                        </group>
+                        <group>
+                            <field name="redirect_uri"/>
+                            <field name="auth_code" password="True" placeholder="Se recibe y procesa automáticamente" groups="base.group_system,Matriz.group_soporte,Matriz.group_contratacion_directivo"/>
+                        </group>
+                        </group>
+                        <div class="alert alert-info" role="alert">
+                            Los archivos se leen y guardan en la carpeta <strong>config</strong> de Matriz.
+                            Registre la <strong>Redirect URI</strong> exacta en Google Cloud, en el cliente OAuth de tipo aplicación web.
+                            Luego pulse <strong>Autenticar con Google Drive</strong> y acepte los permisos.
+                            El código se recibe y procesa automáticamente; no necesita copiarlo.
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Vista de árbol -->
+        <record id="view_matriz_quickstart_tree" model="ir.ui.view">
+            <field name="name">matriz.quickstart.tree</field>
+            <field name="model">matriz.quickstart</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="redirect_uri"/>
+                    <field name="client_id"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

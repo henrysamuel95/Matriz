@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Acción lista de archivos centrales ── -->
+    <record id="action_archivo_central_list" model="ir.actions.act_window">
+        <field name="name">Archivo Central Digital</field>
+        <field name="res_model">archivo.central</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+    <!-- ── Acción servidor: abre directamente el form de ARCHIVO CENTRAL DIGITAL FINANCIERA ── -->
+    <record id="action_open_archivo_central_main" model="ir.actions.server">
+        <field name="name">Archivo Central Digital Financiera</field>
+        <field name="model_id" ref="model_archivo_central"/>
+        <field name="binding_model_id" ref="model_archivo_central"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_main()</field>
+    </record>
+
+    <!-- ── Kanban de archivos centrales ── -->
+    <record id="view_archivo_central_kanban" model="ir.ui.view">
+        <field name="name">archivo.central.kanban</field>
+        <field name="model">archivo.central</field>
+        <field name="arch" type="xml">
+            <kanban class="gd_projects_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="gd_project_card">
+                            <div class="gd_project_card_header">
+                                <i class="fa fa-archive gd_kanban_icon" style="color:#1a73e8;"/>
+                                <div class="gd_project_title">
+                                    <field name="name"/>
+                                </div>
+                            </div>
+                            <div class="gd_project_card_footer">
+                                <button type="object" name="action_sync"
+                                        class="btn btn-sm btn-outline-secondary me-1"
+                                        title="Sincronizar con Drive">
+                                    <i class="fa fa-refresh"/> Sincronizar
+                                </button>
+                                <a type="edit" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-folder-open"/> Abrir
+                                </a>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ── Formulario principal del browser ── -->
+    <record id="view_archivo_central_form" model="ir.ui.view">
+        <field name="name">archivo.central.form</field>
+        <field name="model">archivo.central</field>
+        <field name="arch" type="xml">
+            <form string="Archivo Central" create="1" edit="1" delete="0" duplicate="0"
+                  class="gd_browser_form">
+
+                <field name="selected_workspace_id" invisible="1"/>
+
+                <!-- Breadcrumb hidden (leído por gd_breadcrumb_widget.js) -->
+                <div class="gd_breadcrumb_bar" style="display:none;">
+                    <field name="breadcrumb_json" nolabel="1"/>
+                </div>
+
+                <div class="layout-container gd_layout_container">
+
+                    <!-- ═══════════════════════════
+                         LEFT SIDEBAR – ÁRBOL
+                         ═══════════════════════════ -->
+                    <div class="sidebar-left gd_sidebar_left">
+                        <aside>
+                            <div class="toggle-section">
+
+                                <!-- Buscador de carpeta -->
+                                <div class="drv_search_box drv_search_box_sidebar">
+                                    <i class="fa fa-search drv_search_icon_box"/>
+                                    <input type="text" id="ac_sidebar_search"
+                                           placeholder="Buscar carpeta..."
+                                           class="drv_search_field o_input"
+                                           autocomplete="off"/>
+                                </div>
+                                <field name="workspace_search" invisible="1"/>
+
+                                <div class="folders-title-row">
+                                    <h3 class="toggle-title2">
+                                        <i class="fa fa-folder-o"/> CARPETAS 
+                                    </h3>
+                                </div>
+
+                                <div class="toggle-content">
+                                    <ul>
+                                        <div class="workspace ac_workspace_tree">
+                                            <field name="workspace_tree_ids"
+                                                   nolabel="1" mode="tree"
+                                                   context="{'drv_sidebar': 1}"
+                                                   options="{'no_open': True, 'no_create': True, 'no_delete': True}">
+                                                <tree create="0" edit="0" delete="0"
+                                                      decoration-bf="is_selected"
+                                                      decoration-info="is_selected">
+                                                    <field name="is_selected" invisible="1"/>
+                                                    <field name="parent_id"   invisible="1"/>
+                                                    <field name="depth"        string=" "/>
+                                                    <button name="action_select_workspace"
+                                                            type="object"
+                                                            icon="fa-folder"
+                                                            class="workspace-folder-btn gd_ws_open_btn"
+                                                            attrs="{'invisible': [('is_selected','=',True)]}"/>
+                                                    <button name="action_select_workspace"
+                                                            type="object"
+                                                            icon="fa-folder-open"
+                                                            class="workspace-folder-btn gd_ws_open_btn is_current"
+                                                            attrs="{'invisible': [('is_selected','=',False)]}"/>
+                                                    <field name="name_indented" string="Nombre" readonly="1"/>
+                                                </tree>
+                                            </field>
+                                        </div>
+                                    </ul>
+                                </div>
+
+                                <field name="root_google_id" invisible="1"/>
+
+                            </div>
+                        </aside>
+                    </div>
+
+                    <!-- ═══════════════════════════
+                         CENTER – CONTENIDO
+                         ═══════════════════════════ -->
+                    <div class="section-center gd_section_center">
+                        <sheet>
+
+                            <header>
+                                <div class="drv_topbar">
+                                    <div class="drv_search_box">
+                                        <i class="fa fa-search drv_search_icon_box"/>
+                                        <input type="text" id="ac_content_search"
+                                               placeholder="Buscar en esta carpeta..."
+                                               class="drv_search_field o_input"
+                                               autocomplete="off"/>
+                                    </div>
+                                    <field name="search_query" invisible="1"/>
+                                </div>
+                            </header>
+
+                            <section>
+                                <div class="gd_center_content">
+
+                                    <!-- CARPETAS -->
+                                    <div class="drv_main_zone drv_folders_zone">
+                                        <div class="drv_zone_overlay">
+                                            <i class="fa fa-folder-open drv_zone_icon"/>
+                                            <span class="drv_zone_msg">Suelta aquí para subir carpeta</span>
+                                        </div>
+                                        <div class="drv_section_row">
+                                            <span class="gd_section_title">Carpetas</span>
+                                            <div class="drv_section_btns"
+                                                 attrs="{'invisible': [('selected_workspace_id','=',False)]}">
+                                                <button name="action_upload_folder" type="object"
+                                                        string="↑ Subir Carpeta"
+                                                        class="btn btn-sm drv_sec_btn drv_sec_btn_orange"
+                                                        groups="Matriz.group_gestion_documental"/>
+                                                <button name="action_create_folder" type="object"
+                                                        string="+ Nueva Carpeta"
+                                                        class="btn btn-sm drv_sec_btn drv_sec_btn_blue"
+                                                        groups="Matriz.group_gestion_documental"/>
+                                            </div>
+                                        </div>
+                                        <field name="folder_view_ids" nolabel="1">
+                                            <kanban class="gd_folders_kanban" create="0" edit="0"
+                                                    delete="0" records_draggable="0">
+                                                <field name="name"/>
+                                                <field name="entry_type"/>
+                                                <field name="create_date"/>
+                                                <templates>
+                                                    <t t-name="kanban-box">
+                                                        <div class="gd_folder_card">
+                                                            <button type="object" name="action_open_folder"
+                                                                    class="gd_folder_card_btn">
+                                                                <i class="fa fa-folder gd_folder_icon"/>
+                                                                <div class="gd_folder_info">
+                                                                    <span class="gd_folder_name"
+                                                                          t-att-title="record.name.raw_value">
+                                                                        <field name="name"/>
+                                                                    </span>
+                                                                </div>
+                                                            </button>
+                                                            <div class="o_dropdown_kanban gd_folder_menu dropdown">
+                                                                <a class="dropdown-toggle o-no-caret btn"
+                                                                   data-bs-toggle="dropdown" href="#" role="button">
+                                                                    <span class="fa fa-ellipsis-v"/>
+                                                                </a>
+                                                                <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_open_folder">
+                                                                        <i class="fa fa-folder-open-o"/> Abrir Carpeta
+                                                                    </a>
+                                                                    <div role="separator" class="dropdown-divider"/>
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_download_folder">
+                                                                        <i class="fa fa-download" style="color:#1a73e8;"/> Descargar Carpeta
+                                                                    </a>
+                                                                    <t groups="Matriz.group_gestion_documental">
+                                                                        <div role="separator" class="dropdown-divider"/>
+                                                                        <a class="dropdown-item text-danger"
+                                                                           role="menuitem" type="object"
+                                                                           name="action_delete_entry">
+                                                                            <i class="fa fa-trash"/> Eliminar
+                                                                        </a>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+                                                            <div class="gd_folder_meta">
+                                                                <span>
+                                                                    <i class="fa fa-calendar-o"/>
+                                                                    <field name="create_date" widget="date"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </templates>
+                                            </kanban>
+                                        </field>
+                                    </div>
+
+                                    <!-- DOCUMENTOS -->
+                                    <div class="drv_main_zone drv_files_zone">
+                                        <div class="drv_zone_overlay">
+                                            <i class="fa fa-file drv_zone_icon"/>
+                                            <span class="drv_zone_msg">Suelta aquí para subir archivos</span>
+                                        </div>
+                                        <div class="drv_section_row">
+                                            <span class="gd_section_title">Documentos</span>
+                                            <div class="drv_section_btns"
+                                                 attrs="{'invisible': [('selected_workspace_id','=',False)]}">
+                                                <button name="action_upload_file" type="object"
+                                                        string="↑ Subir Archivo"
+                                                        class="btn btn-sm drv_sec_btn drv_sec_btn_orange"
+                                                        groups="Matriz.group_gestion_documental"/>
+                                            </div>
+                                        </div>
+                                        <field name="file_view_ids" nolabel="1">
+                                            <kanban class="gd_files_kanban" create="0" edit="0"
+                                                    delete="0" records_draggable="0">
+                                                <field name="name"/>
+                                                <field name="entry_type"/>
+                                                <field name="edit_url"/>
+                                                <field name="mime_type"/>
+                                                <field name="create_date"/>
+                                                <templates>
+                                                    <t t-name="kanban-box">
+                                                        <t t-set="mime"      t-value="record.mime_type.raw_value or ''"/>
+                                                        <t t-set="is_pdf"    t-value="mime == 'application/pdf'"/>
+                                                        <t t-set="is_word"   t-value="mime.indexOf('word') >= 0 or mime.indexOf('document') >= 0"/>
+                                                        <t t-set="is_excel"  t-value="mime.indexOf('excel') >= 0 or mime.indexOf('spreadsheet') >= 0 or mime.indexOf('csv') >= 0"/>
+                                                        <t t-set="is_ppt"    t-value="mime.indexOf('powerpoint') >= 0 or mime.indexOf('presentation') >= 0"/>
+                                                        <t t-set="is_img"    t-value="mime.indexOf('image/') >= 0"/>
+                                                        <t t-set="is_txt"    t-value="mime == 'text/plain' or mime.indexOf('text/') >= 0"/>
+                                                        <t t-set="is_zip"    t-value="mime.indexOf('zip') >= 0 or mime.indexOf('rar') >= 0 or mime.indexOf('compressed') >= 0 or mime.indexOf('x-tar') >= 0"/>
+                                                        <t t-set="is_video"  t-value="mime.indexOf('video/') >= 0"/>
+                                                        <t t-set="is_audio"  t-value="mime.indexOf('audio/') >= 0"/>
+                                                        <div class="gd_file_card">
+                                                            <div class="gd_file_preview" style="display:flex;align-items:center;justify-content:center;">
+                                                                <button type="object" name="action_open_file" class="gd_preview_overlay_btn"/>
+                                                                <t t-if="is_pdf">
+                                                                    <i class="fa fa-file-pdf-o" style="font-size:4rem;color:#e74c3c;"/>
+                                                                </t>
+                                                                <t t-elif="is_word">
+                                                                    <i class="fa fa-file-word-o" style="font-size:4rem;color:#2b579a;"/>
+                                                                </t>
+                                                                <t t-elif="is_excel">
+                                                                    <i class="fa fa-file-excel-o" style="font-size:4rem;color:#217346;"/>
+                                                                </t>
+                                                                <t t-elif="is_ppt">
+                                                                    <i class="fa fa-file-powerpoint-o" style="font-size:4rem;color:#d04423;"/>
+                                                                </t>
+                                                                <t t-elif="is_img">
+                                                                    <i class="fa fa-file-image-o" style="font-size:4rem;color:#8e44ad;"/>
+                                                                </t>
+                                                                <t t-elif="is_txt">
+                                                                    <i class="fa fa-file-text-o" style="font-size:4rem;color:#546e7a;"/>
+                                                                </t>
+                                                                <t t-elif="is_zip">
+                                                                    <i class="fa fa-file-archive-o" style="font-size:4rem;color:#f39c12;"/>
+                                                                </t>
+                                                                <t t-elif="is_video">
+                                                                    <i class="fa fa-file-video-o" style="font-size:4rem;color:#e91e63;"/>
+                                                                </t>
+                                                                <t t-elif="is_audio">
+                                                                    <i class="fa fa-file-audio-o" style="font-size:4rem;color:#9c27b0;"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <i class="fa fa-file-o" style="font-size:4rem;color:#7f8c8d;"/>
+                                                                </t>
+                                                            </div>
+                                                            <div class="gd_file_body">
+                                                                <div class="gd_file_name" t-att-title="record.name.raw_value">
+                                                                    <button type="object" name="action_open_file" class="gd_file_name_btn">
+                                                                        <field name="name" class="o_text_overflow"/>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="gd_file_footer">
+                                                                    <time class="gd_file_date">
+                                                                        <field name="create_date" widget="date"/>
+                                                                    </time>
+                                                                </div>
+                                                            </div>
+                                                            <div class="o_dropdown_kanban gd_file_menu dropdown">
+                                                                <a class="dropdown-toggle o-no-caret btn"
+                                                                   data-bs-toggle="dropdown" href="#" role="button">
+                                                                    <span class="fa fa-ellipsis-v"/>
+                                                                </a>
+                                                                <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_open_file">
+                                                                        <i class="fa fa-eye"/> Abrir Documento
+                                                                    </a>
+                                                                    <t groups="Matriz.group_gestion_documental">
+                                                                        <a class="dropdown-item" role="menuitem"
+                                                                           type="object" name="action_share_entry">
+                                                                            <i class="fa fa-share-alt" style="color:#16a34a;"/> Compartir
+                                                                        </a>
+                                                                    </t>
+                                                                    <div role="separator" class="dropdown-divider"/>
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_download_pdf_entry">
+                                                                        <i class="fa fa-file-pdf-o" style="color:#d32f2f;"/> Descargar PDF
+                                                                    </a>
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_download_word_entry">
+                                                                        <i class="fa fa-file-word-o" style="color:#1565c0;"/> Descargar Word
+                                                                    </a>
+                                                                    <a class="dropdown-item" role="menuitem"
+                                                                       type="object" name="action_download_original_entry">
+                                                                        <i class="fa fa-download" style="color:#1a73e8;"/> Descargar Original
+                                                                    </a>
+                                                                    <t groups="Matriz.group_gestion_documental">
+                                                                        <div role="separator" class="dropdown-divider"/>
+                                                                        <a class="dropdown-item text-danger"
+                                                                           role="menuitem" type="object"
+                                                                           name="action_delete_entry">
+                                                                            <i class="fa fa-trash"/> Eliminar Archivo
+                                                                        </a>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </templates>
+                                            </kanban>
+                                        </field>
+                                    </div>
+
+                                </div>
+                            </section>
+                        </sheet>
+                    </div>
+                    <!-- fin center -->
+
+                </div>
+                <!-- fin layout-container -->
+
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Wizard: Nueva Carpeta ── -->
+    <record id="view_ac_create_folder_form" model="ir.ui.view">
+        <field name="name">archivo.central.create.folder.form</field>
+        <field name="model">archivo.central.create.folder</field>
+        <field name="arch" type="xml">
+            <form string="Nueva Carpeta">
+                <!-- Cabecera -->
+                <div style="background:linear-gradient(135deg,#1e3a5f 0%,#2e6da4 100%);
+                            padding:24px 28px 20px; border-radius:4px 4px 0 0; color:#fff;">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="background:rgba(255,255,255,.15);border-radius:12px;
+                                    width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fa fa-folder-open" style="font-size:24px;color:#fff;"/>
+                        </div>
+                        <div>
+                            <div style="font-size:18px;font-weight:700;letter-spacing:.3px;">
+                                Nueva Carpeta
+                            </div>
+                            <div style="font-size:12px;opacity:.75;margin-top:2px;">
+                                En: <field name="workspace_name" readonly="1" nolabel="1"
+                                           style="display:inline;color:#fff;font-weight:600;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Cuerpo -->
+                <div style="padding:24px 28px 8px;">
+                    <div style="font-size:12px;font-weight:600;color:#374151;
+                                text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">
+                        Nombre de la carpeta
+                    </div>
+                    <field name="name" nolabel="1" placeholder="Ej: Facturas 2025"
+                           style="width:100%;" autofocus="autofocus"/>
+                </div>
+                <footer>
+                    <button name="action_create" type="object" string="Crear Carpeta" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Wizard: Subir Documento ── -->
+    <record id="view_ac_upload_form" model="ir.ui.view">
+        <field name="name">archivo.central.upload.form</field>
+        <field name="model">archivo.central.upload</field>
+        <field name="arch" type="xml">
+            <form string="Subir a Drive">
+                <!-- Cabecera -->
+                <div style="background:linear-gradient(135deg,#1e3a5f 0%,#2e6da4 100%);
+                            padding:24px 28px 20px; border-radius:4px 4px 0 0; color:#fff;">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="background:rgba(255,255,255,.15);border-radius:12px;
+                                    width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fa fa-cloud-upload" style="font-size:24px;color:#fff;"/>
+                        </div>
+                        <div>
+                            <div style="font-size:18px;font-weight:700;letter-spacing:.3px;">
+                                Subir a Drive
+                            </div>
+                            <div style="font-size:12px;opacity:.75;margin-top:2px;">
+                                En: <field name="workspace_name" readonly="1" nolabel="1"
+                                           style="display:inline;color:#fff;font-weight:600;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Zona drag-and-drop -->
+                <group style="padding:16px 28px 4px;">
+                    <div id="drv_drop_zone" class="drv_drop_zone" colspan="2">
+                        <i class="fa fa-cloud-upload drv_drop_icon"/>
+                        <p id="drv_drop_label" class="drv_drop_label">
+                            Arrastra archivos aquí
+                        </p>
+                        <div class="drv_drop_sep">— o —</div>
+                        <div class="drv_drop_btns">
+                            <span class="drv_pick_btn drv_pick_files_btn">
+                                <i class="fa fa-file-o"/> Seleccionar archivos
+                            </span>
+                            <input type="file" id="drv_files_input" multiple="multiple" style="display:none"/>
+                        </div>
+                        <div class="drv_file_input" style="display:none;">
+                            <field name="file_data" widget="binary" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="browser_id" invisible="1"/>
+                            <field name="workspace_id" invisible="1"/>
+                        </div>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_upload" type="object" string="Subir"
+                            class="btn-primary drv_btn_upload_submit"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Wizard: Subir Carpeta ── -->
+    <record id="view_ac_upload_folder_form" model="ir.ui.view">
+        <field name="name">archivo.central.upload.folder.form</field>
+        <field name="model">archivo.central.upload</field>
+        <field name="arch" type="xml">
+            <form string="Subir Carpeta a Drive">
+                <!-- Cabecera -->
+                <div style="background:linear-gradient(135deg,#1e3a5f 0%,#2e6da4 100%);
+                            padding:24px 28px 20px; border-radius:4px 4px 0 0; color:#fff;">
+                    <div style="display:flex;align-items:center;gap:14px;">
+                        <div style="background:rgba(255,255,255,.15);border-radius:12px;
+                                    width:48px;height:48px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fa fa-folder-open" style="font-size:24px;color:#fff;"/>
+                        </div>
+                        <div>
+                            <div style="font-size:18px;font-weight:700;letter-spacing:.3px;">
+                                Subir Carpeta a Drive
+                            </div>
+                            <div style="font-size:12px;opacity:.75;margin-top:2px;">
+                                En: <field name="workspace_name" readonly="1" nolabel="1"
+                                           style="display:inline;color:#fff;font-weight:600;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Zona drag-and-drop -->
+                <group style="padding:16px 28px 4px;">
+                    <div id="drv_drop_zone" class="drv_drop_zone" colspan="2">
+                        <i class="fa fa-cloud-upload drv_drop_icon"/>
+                        <p id="drv_drop_label" class="drv_drop_label">
+                            Arrastra carpetas aquí
+                        </p>
+                        <div class="drv_drop_sep">— o —</div>
+                        <div class="drv_drop_btns">
+                            <span class="drv_pick_btn drv_pick_folder_btn">
+                                <i class="fa fa-folder-open-o"/> Seleccionar carpeta
+                            </span>
+                            <input type="file" id="drv_folder_input" multiple="multiple"
+                                   webkitdirectory="webkitdirectory" style="display:none"/>
+                        </div>
+                        <div class="drv_file_input" style="display:none;">
+                            <field name="file_data" widget="binary" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="browser_id" invisible="1"/>
+                            <field name="workspace_id" invisible="1"/>
+                        </div>
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_upload" type="object" string="Subir"
+                            class="btn-primary drv_btn_upload_submit"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Menú ── -->
+    <menuitem id="menu_archivo_central_root"
+              name="Archivo Central"
+              parent="Matriz.menu_principal"
+              sequence="998"
+              groups="Matriz.group_gestion_documental,Matriz.group_contratacion_financiero"
+              />
+
+    <menuitem id="menu_archivo_central"
+              name="Archivo Central Digital"
+              parent="menu_archivo_central_root"
+              action="action_open_archivo_central_main"
+              sequence="1"
+              groups="Matriz.group_gestion_documental,Matriz.group_contratacion_financiero"
+            />
+
+</odoo>

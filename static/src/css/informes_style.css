@@ -1,0 +1,980 @@
+/* ====================== */
+/* CONTENEDOR PRINCIPAL   */
+/* ====================== */
+
+.layout-container {
+    display: flex;                
+    width: 100%;                  
+    height: calc(100vh - 90px);   
+    overflow: hidden;             
+    gap: 10px;                    
+}
+
+/* ====================== */
+/* SIDEBAR IZQUIERDO FIJO */
+/* ====================== */
+
+.sidebar-left {
+    width: 300px;
+    min-width: 220px;
+    max-width: 340px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    height: 100%;
+    padding-top: 6px;
+    padding-left: 8px;
+    padding-right: 4px;
+    box-sizing: border-box;
+}
+
+/* ====================== */
+/* SECCIÓN CENTRAL        */
+/* ====================== */
+
+.section-center {
+    flex: 1 1 auto;               
+    height: 100%;                 
+    display: flex;                
+    flex-direction: column;       
+    overflow: hidden;             
+}
+
+.section-center .o_form_sheet_bg,
+.section-center .o_form_sheet {
+    flex: 1;                      
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;             
+    overflow-x: hidden;           
+    min-height: 0;                
+}
+
+.card-container {
+    flex: 0 0 auto;               
+    min-height: 0;
+    padding-bottom: 10px;
+}
+
+/* ====================== */
+/* SIDE BAR DERECHO       */
+/* ====================== */
+
+.sidebar-right,
+.sidebar-documents {
+    width: 320px;
+    min-width: 320px;
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: #2f2f2f;          
+    border-radius: 6px;
+    padding: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.sidebar-right aside,
+.sidebar-documents > aside {
+    flex: 1;
+    min-height: 0;                
+    display: flex;
+    flex-direction: column;
+    gap: 8px;                     
+    padding: 10px 15px;
+    overflow-y: auto;             
+    overflow-x: hidden;
+}
+
+/* ====================== */
+/* VISOR (PREVIEW) BLINDADO */
+/* ====================== */
+
+.sidebar-documents .preview-container {
+    position: relative; 
+    height: 38vh;
+    min-height: 180px;
+    max-height: 40vh;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #e6e6e6;
+    box-sizing: border-box;
+}
+
+.sidebar-documents .preview-container iframe,
+.sidebar-documents .preview-container img,
+.sidebar-documents .preview-container embed,
+.sidebar-documents .preview-container object,
+.sidebar-documents .preview-container div {
+    position: relative;
+    top: -7px;
+    left: -19px;
+    width: 113% !important;
+    height: 0% !important;
+    border: lawngreen;
+    margin: auto;
+    padding: 0 !important;
+    object-fit: contain;
+    object-position: center;
+    display: flow-root;
+    transform: scale(0.9);
+}
+
+/* ====================== */
+/* CAMPOS INTERNOS (SIDEBAR) */
+/* ====================== */
+
+.info-item {
+    margin-bottom: 12px;          
+}
+
+.info-item strong {
+    display: block;               
+    margin-bottom: 4px;
+    color: #ffffff;               
+}
+
+.sidebar-right .field-white-text input,
+.sidebar-right .field-white-text .o_input {
+    background: #3a3a3a !important;   
+    color: white !important;          
+    border: 1px solid #5a5a5a !important; 
+    border-radius: 4px;
+    padding: 6px 8px;
+}
+
+/* ==========================================================
+   TITULO Y BOTONES SUPERIORES DEL SIDEBAR (Carpetas +)
+   ========================================================== */
+
+.folders-title-row {
+    display: flex;
+    align-items: center;       
+}
+
+.toggle-title2 {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.toggle-title2 i {
+    margin-right: 0;
+    color: #d5006d;            
+}
+
+.folders-add-btn {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    z-index: 30;               
+    margin-left: 10px; /* Separación del título */
+}
+
+/* ==========================================================
+   WORKSPACE TREE (ÁRBOL DE CARPETAS) - ESTILO LIMPIO
+   ========================================================== */
+
+/* 1. Limpieza general de la tabla Odoo */
+.workspace .o_list_view,
+.workspace .o_list_table,
+.workspace .o_list_table tr,
+.workspace .o_list_table td {
+    border: none !important;
+    background: transparent !important;
+}
+
+.workspace .o_list_table thead, 
+.workspace .o_list_record_selector,
+.workspace .o_list_footer {
+    display: none !important; /* Ocultar encabezados y footer */
+}
+
+.workspace .o_list_view {
+    padding-bottom: 0 !important;
+}
+
+/* 2. Estilo de la Fila */
+.workspace .o_data_row {
+    border-bottom: 1px solid #eee !important;
+    height: 40px !important;
+    transition: background-color 0.1s;
+}
+
+.workspace .o_data_row:hover {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* 3. Celdas Generales */
+.workspace .o_data_cell {
+    vertical-align: middle !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+    padding-left: 0px !important; /* Reset padding */
+}
+
+/* ==========================================================
+   BOTONES DE ACCIÓN (Morado y Blanco)
+   ========================================================== */
+
+/* Configuración base para las columnas de botones */
+.workspace .o_list_button {
+    width: 40px !important; 
+    min-width: 40px !important;
+    text-align: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* A. BOTÓN IZQUIERDO: MORADO (btn-purple-square) */
+.workspace .btn-purple-square {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 4px !important;
+    background-color: #6a4c93 !important; /* Morado */
+    color: white !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-right: 10px !important; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.workspace .btn-purple-square:hover {
+    background-color: #553a7a !important;
+    cursor: pointer;
+}
+
+/* Icono dentro del botón morado */
+.workspace .btn-purple-square i {
+    font-size: 14px !important;
+    display: block !important; /* Asegurar que se vea */
+}
+
+
+/* B. BOTÓN DERECHO: BLANCO / + (btn-white-add) */
+.workspace .btn-white-add {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 4px !important;
+    background-color: transparent !important;
+    color: #999 !important; /* Gris suave */
+    border: 1px solid transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: auto !important;
+}
+
+.workspace .btn-white-add:hover {
+    background-color: #f0f0f0 !important;
+    color: #333 !important;
+    border: 1px solid #ccc !important;
+    cursor: pointer;
+}
+
+.workspace .btn-white-add i {
+    font-size: 12px !important;
+    display: block !important;
+}
+
+/* ==========================================================
+   LÓGICA DE INDENTACIÓN (NIVELES DEL ÁRBOL)
+   ========================================================== */
+
+/* ====================== */
+/* AC WORKSPACE TREE      */
+/* ====================== */
+
+.ac_workspace_tree .o_list_view thead,
+.ac_workspace_tree .o_list_view .o_optional_columns_dropdown,
+.ac_workspace_tree .o_list_view .o_list_selection_box { display: none !important; }
+
+.ac_workspace_tree .o_list_view table { border: none !important; width: 100%; table-layout: fixed; }
+
+.ac_workspace_tree .o_data_row {
+    border-bottom: none !important;
+    cursor: pointer;
+    min-height: 28px;
+}
+
+.ac_workspace_tree .o_data_row td {
+    border: none !important;
+    vertical-align: middle;
+    padding: 4px 2px !important;
+}
+
+.ac_workspace_tree td[name="depth"],
+.ac_workspace_tree td[name="is_selected"],
+.ac_workspace_tree td[name="parent_id"] { display: none !important; }
+
+/* Nombre de carpeta: permite wrap y no se superpone */
+.ac_workspace_tree td[name="name_indented"] {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow: hidden !important;
+    line-height: 1.4;
+    padding: 4px 4px !important;
+    font-size: 12px;
+    max-width: 220px;
+}
+
+.ac_workspace_tree .o_data_row:hover td { background: #f0f4ff !important; border-radius: 4px; }
+
+/* ====================== */
+
+#folders-section .o_tree_indent {
+    display: none !important; /* Ocultamos los espaciadores originales */
+}
+
+/* Nivel 0 (Raíz) */
+#folders-section tr:not(:has(.o_tree_indent)) .o_data_cell:not(.o_list_button) {
+    padding-left: 0px !important;
+}
+/* Nivel 1 */
+#folders-section tr:has(.o_tree_indent) .o_data_cell:not(.o_list_button) {
+    padding-left: 15px !important;
+}
+/* Nivel 2 */
+#folders-section tr:has(.o_tree_indent + .o_tree_indent) .o_data_cell:not(.o_list_button) {
+    padding-left: 30px !important;
+}
+/* Nivel 3 */
+#folders-section tr:has(.o_tree_indent + .o_tree_indent + .o_tree_indent) .o_data_cell:not(.o_list_button) {
+    padding-left: 45px !important;
+}
+
+/* ==========================================================
+   INFORMES / COMUNICACIONES - PANEL DE DETALLE LIMPIO
+   Estas reglas van con clase propia para no afectar otros módulos.
+   ========================================================== */
+
+.infcom-layout-container {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 560px;
+    gap: 12px !important;
+    padding: 0 10px 10px 10px;
+    background: #f5f7fb;
+    box-sizing: border-box;
+    overflow: visible !important;
+}
+
+.infcom-layout-container .infcom-section-center {
+    min-width: 0;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.infcom-layout-container .infcom-section-center .o_form_sheet_bg,
+.infcom-layout-container .infcom-section-center .o_form_sheet {
+    height: auto !important;
+    min-height: calc(100vh - 120px);
+    overflow: visible !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents {
+    width: 390px !important;
+    min-width: 390px !important;
+    max-width: 390px !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    color: #243b53 !important;
+    border: 1px solid #dfe6f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 22px rgba(16, 24, 40, 0.10) !important;
+    overflow: hidden !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents > aside {
+    height: 100% !important;
+    padding: 14px !important;
+    gap: 12px !important;
+    background: #ffffff !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+}
+
+.infcom-layout-container .sidebar-buttons {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 0 8px 0 !important;
+    min-height: 40px;
+}
+
+.infcom-layout-container .btn-action2 {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    background: #ef1f1f !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+}
+
+.infcom-layout-container .btn-action2:hover {
+    background: #c91a1a !important;
+}
+
+.infcom-layout-container .sidebar-info {
+    margin: 0 !important;
+    padding: 0 2px 2px 2px;
+}
+
+.infcom-layout-container .sidebar-info h3 {
+    margin: 0 !important;
+    color: #043484 !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container {
+    width: 100% !important;
+    height: 260px !important;
+    min-height: 260px !important;
+    max-height: 260px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid #dfe6f0 !important;
+    border-radius: 8px !important;
+    background: #f8fafc !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_widget,
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_html,
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_html > div {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container iframe,
+.infcom-layout-container .infcom-sidebar-documents .preview-container img,
+.infcom-layout-container .infcom-sidebar-documents .preview-container embed,
+.infcom-layout-container .infcom-sidebar-documents .preview-container object {
+    position: static !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: none !important;
+    display: block !important;
+    transform: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .info-item {
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    background: #ffffff !important;
+    border: 1px solid #e4eaf2 !important;
+    border-radius: 8px !important;
+    color: #243b53 !important;
+    box-sizing: border-box !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .info-item strong {
+    display: block !important;
+    margin: 0 0 5px 0 !important;
+    color: #043484 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .field-white-text,
+.infcom-layout-container .infcom-sidebar-documents .field-white-text .o_field_widget,
+.infcom-layout-container .infcom-sidebar-documents .field-white-text input,
+.infcom-layout-container .infcom-sidebar-documents .field-white-text .o_input,
+.infcom-layout-container .infcom-sidebar-documents .field-white-text a,
+.infcom-layout-container .infcom-sidebar-documents .field-white-text span {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: transparent !important;
+    color: #1f2937 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    text-overflow: clip !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+}
+
+.infcom-layout-container .sidebar-actions {
+    margin-top: 4px !important;
+}
+
+.infcom-layout-container .sidebar-actions h3 {
+    color: #043484 !important;
+    font-size: 15px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.infcom-layout-container .action-button {
+    background: #043484 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    text-align: center !important;
+}
+
+/* Panel de detalles de carpeta: no usa preview, por eso queda separado del
+   diseño del documento para no deformarlo. */
+.infcom-layout-container .infcom-sidebar-right {
+    width: 360px !important;
+    min-width: 360px !important;
+    max-width: 360px !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    color: #243b53 !important;
+    border: 1px solid #dfe6f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 22px rgba(16, 24, 40, 0.10) !important;
+    overflow: hidden !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right > aside {
+    height: 100% !important;
+    padding: 14px !important;
+    gap: 10px !important;
+    background: #ffffff !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box;
+}
+
+.infcom-layout-container .infcom-sidebar-right .sidebar-buttons {
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right .sidebar-info h3 {
+    color: #043484 !important;
+    font-size: 17px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right .info-item {
+    margin: 0 0 8px 0 !important;
+    padding: 8px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #e4eaf2 !important;
+    border-radius: 0 !important;
+    color: #243b53 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right .info-item strong {
+    display: inline-block !important;
+    min-width: 86px;
+    margin: 0 8px 0 0 !important;
+    color: #043484 !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    vertical-align: top;
+}
+
+.infcom-layout-container .infcom-sidebar-right .field-white-text,
+.infcom-layout-container .infcom-sidebar-right .field-white-text .o_field_widget,
+.infcom-layout-container .infcom-sidebar-right .field-white-text input,
+.infcom-layout-container .infcom-sidebar-right .field-white-text .o_input,
+.infcom-layout-container .infcom-sidebar-right .field-white-text a,
+.infcom-layout-container .infcom-sidebar-right .field-white-text span {
+    display: inline !important;
+    width: auto !important;
+    max-width: 220px !important;
+    background: transparent !important;
+    color: #1f2937 !important;
+    border: none !important;
+    box-shadow: none !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right .sidebar-actions {
+    margin-top: 12px !important;
+}
+
+.infcom-layout-container .infcom-sidebar-right .sidebar-actions h3 {
+    color: #043484 !important;
+    font-size: 15px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+/* ==========================================================
+   INFORMES / COMUNICACIONES - DISEÑO TIPO DRIVE
+   Carpeta: referencia 1. Documento: referencia 2.
+   ========================================================== */
+
+.infcom-layout-container .infcom-sidebar-documents,
+.infcom-layout-container .infcom-sidebar-right {
+    width: 320px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    border-left: 1px solid #dadce0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #202124 !important;
+    overflow: hidden !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents > aside,
+.infcom-layout-container .infcom-sidebar-right > aside {
+    height: 100% !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+
+.infcom-details-topbar {
+    min-height: 44px;
+    padding: 0 10px;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e8eaed;
+    box-sizing: border-box;
+}
+
+.infcom-document-topbar {
+    justify-content: flex-end !important;
+    border-bottom: none;
+}
+
+.infcom-details-tabs {
+    display: flex;
+    align-items: stretch;
+    height: 44px;
+}
+
+.infcom-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    font-size: 13px;
+    color: #1a73e8;
+    border-bottom: 2px solid transparent;
+}
+
+.infcom-tab-active {
+    background: #fde8e8;
+    color: #d93025;
+    border-bottom-color: #d93025;
+}
+
+.infcom-folder-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.infcom-layout-container .infcom-close-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: #d93025 !important;
+    box-shadow: none !important;
+    font-size: 16px !important;
+}
+
+.infcom-layout-container .infcom-close-btn:hover {
+    background: #fce8e6 !important;
+}
+
+.infcom-layout-container .infcom-edit-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+    border-radius: 4px !important;
+    background: #4a4a4a !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.infcom-folder-hero {
+    padding: 14px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #e8eaed;
+}
+
+.infcom-folder-hero > i {
+    font-size: 48px;
+    color: #4d8fcc;
+}
+
+.infcom-folder-name {
+    width: 100%;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.infcom-details-section {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e8eaed;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.infcom-details-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.infcom-details-row:last-child {
+    margin-bottom: 0;
+}
+
+.infcom-details-icon {
+    width: 18px;
+    min-width: 18px;
+    color: #5f6368;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.infcom-details-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.infcom-details-label {
+    color: #8190a5;
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.infcom-details-value,
+.infcom-details-value .o_field_widget,
+.infcom-details-value input,
+.infcom-details-value .o_input,
+.infcom-details-value a,
+.infcom-details-value span {
+    color: #003b7a !important;
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+}
+
+.infcom-file-name,
+.infcom-file-name .o_field_widget,
+.infcom-file-name span {
+    font-weight: 600 !important;
+}
+
+.infcom-location-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    padding: 4px 9px;
+    background: #f1f3f4;
+    border-radius: 14px;
+    color: #003b7a;
+}
+
+.infcom-folder-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid #e8eaed;
+}
+
+.infcom-stat-box {
+    min-height: 72px;
+    border-radius: 8px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.infcom-stat-number,
+.infcom-stat-number .o_field_widget,
+.infcom-stat-number span {
+    color: #1a73e8 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+}
+
+.infcom-stat-label {
+    color: #6b7c93;
+    font-size: 11px;
+    margin-top: 8px;
+}
+
+.infcom-folder-control {
+    padding: 12px 18px !important;
+    margin: 0 !important;
+}
+
+.infcom-folder-control .action-button {
+    float: right;
+    width: auto !important;
+    background: #043484 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding: 8px 14px !important;
+    font-weight: 700 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container {
+    width: 100% !important;
+    height: 278px !important;
+    min-height: 278px !important;
+    max-height: 278px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid #e8eaed !important;
+    border-radius: 0 !important;
+    background: #f1f3f4 !important;
+    overflow: hidden !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_widget,
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_html,
+.infcom-layout-container .infcom-sidebar-documents .preview-container .o_field_html > div {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.infcom-layout-container .infcom-sidebar-documents .preview-container iframe,
+.infcom-layout-container .infcom-sidebar-documents .preview-container img,
+.infcom-layout-container .infcom-sidebar-documents .preview-container embed,
+.infcom-layout-container .infcom-sidebar-documents .preview-container object {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    display: block !important;
+    transform: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+}
+
+/* Informes / Comunicaciones: permitir que el menú de tarjetas se vea completo.
+   Se amplía el bloque, sin crear un scroll interno adicional. */
+.infcom-layout-container,
+.infcom-layout-container .infcom-section-center,
+.infcom-layout-container .infcom-section-center .o_form_sheet_bg,
+.infcom-layout-container .infcom-section-center .o_form_sheet,
+.infcom-layout-container .infcom-card-container,
+.infcom-layout-container .infcom-card-container .o_kanban_view,
+.infcom-layout-container .infcom-card-container .o_kanban_renderer,
+.infcom-layout-container .infcom-card-container .o_kanban_record,
+.infcom-layout-container .infcom-card-container .kanban-card {
+    overflow: visible !important;
+}
+
+.infcom-layout-container .infcom-section-center .o_form_sheet_bg,
+.infcom-layout-container .infcom-section-center .o_form_sheet {
+    display: block !important;
+    height: auto !important;
+}
+
+.infcom-layout-container .infcom-folder-cards {
+    min-height: 185px !important;
+    padding-bottom: 55px !important;
+    margin-bottom: 12px !important;
+}
+
+.infcom-layout-container .infcom-folder-cards .o_kanban_view,
+.infcom-layout-container .infcom-folder-cards .o_kanban_renderer {
+    min-height: 130px !important;
+    padding-bottom: 45px !important;
+}
+
+.infcom-layout-container .gd_folder_menu,
+.infcom-layout-container .gd_file_menu {
+    position: absolute !important;
+    top: 6px !important;
+    right: 6px !important;
+    z-index: 80 !important;
+}
+
+.infcom-layout-container .gd_folder_menu .dropdown-menu.show,
+.infcom-layout-container .gd_file_menu .dropdown-menu.show {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin-top: 2px !important;
+    max-height: none !important;
+    overflow: visible !important;
+    z-index: 9999 !important;
+}

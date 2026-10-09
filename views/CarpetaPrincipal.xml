@@ -1,0 +1,745 @@
+<odoo>
+    <record id="view_carpeta_principal_form" model="ir.ui.view">
+        <field name="name">carpeta.principal.form</field>
+        <field name="model">carpeta_principal</field>
+        <field name="arch" type="xml">
+            <form string="Carpeta Principal" create="false" delete="false" duplicate="false">
+                <style>
+                    /* Animación de entrada */
+                    .sheet-fade-in {
+                        animation: fadeInUp 0.6s ease-out;
+                    }
+                    @keyframes fadeInUp {
+                        from { opacity: 0; transform: translateY(10px); }
+                        to { opacity: 1; transform: translateY(0); }
+                    }
+
+                    /* Banner de Edición */
+                    .edit-banner {
+                        border-radius: 8px;
+                        background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                        padding: 10px 20px !important;
+                        border: none !important;
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        color: #2c3e50;
+                    }
+
+                    /* Cabecera Principal */
+                    .form-header {
+                        background-color: #f8f9fa;
+                        border-radius: 12px;
+                        padding: 20px;
+                        margin-bottom: 30px;
+                        box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+                        border: 1px solid #e9ecef;
+                    }
+                    .header-table {
+                        width: 100%;
+                        border-collapse: separate;
+                        border-spacing: 15px 0;
+                    }
+                    .table-cell { vertical-align: middle; }
+                    
+                    /* Título de Sección */
+                    .document-header {
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        color: #495057;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                        margin-bottom: 20px;
+                        padding-bottom: 10px;
+                        border-bottom: 2px solid #e9ecef;
+                        text-align: center;
+                    }
+
+                    /* Grid de Documentos */
+                    .document-grid {
+                        display: flex;
+                        flex-wrap: wrap;
+                        margin: 0 -15px;
+                    }
+                    .column-left, .column-right {
+                        flex: 1 1 45%;
+                        padding: 0 15px;
+                        min-width: 350px;
+                    }
+
+                    /* TARJETAS DE DOCUMENTOS */
+                    .document-item {
+                        background: #ffffff;
+                        border: 1px solid #f1f1f1;
+                        border-radius: 10px;
+                        padding: 15px;
+                        margin-bottom: 15px;
+                        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                        position: relative;
+                    }
+                    .document-item:hover {
+                        transform: translateY(-5px);
+                        box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12);
+                        border-color: #a8d0e6;
+                    }
+                    .document-label {
+                        display: block;
+                        font-weight: 600;
+                        color: #2c3e50;
+                        margin-bottom: 10px;
+                        font-size: 0.95rem;
+                    }
+                    .document-content {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                    }
+
+                    /* Botones */
+                    .custom_drive_button {
+                        border-radius: 4px !important;
+                        transition: background 0.3s !important;
+                        text-transform: uppercase;
+                        font-size: 0.75rem !important;
+                        font-weight: bold;
+                    }
+                    .btn-custom {
+                        color: #ffffff !important;
+                        background-color: #003a70;
+                        border: 1px solid #002d58;
+                        padding: 6px 15px;
+                        border-radius: 4px;
+                        transition: all 0.2s;
+                        cursor: pointer;
+                        font-size: 0.85rem;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 5px;
+                        font-weight: 500;
+                        text-decoration: none;
+                    }
+                    .btn-custom:hover {
+                        background-color: #00264d;
+                        color: #ffffff !important;
+                        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                        border-color: #001f3f;
+                    }
+                    .btn-custom i { margin-right: 4px; }
+
+                    /* --- CLASE NUEVA PARA NOMBRE DEL ARCHIVO --- */
+                    .style_file_name {
+                        /* Cortar texto */
+                        max-width: 160px; /* Ajusta este ancho si lo quieres más largo o corto */
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis; /* Pone los ... */
+                        
+                        display: inline-block;
+                        vertical-align: middle;
+                        cursor: help; /* Muestra signo de ? o flecha indicando info */
+                        color: #555;
+                        font-style: italic;
+                    }
+
+                    .style_file_name:hover {
+                        /* Al pasar el mouse solo resaltamos */
+                        /* El nombre completo lo mostrará el navegador en el tooltip nativo */
+                        background-color: #e9ecef;
+                        border-radius: 4px;
+                        color: #000;
+                        font-weight: 500;
+                    }
+                </style>
+
+                <sheet class="sheet-fade-in">
+                    <div class="edit-banner" invisible="1">
+                        <i class="fa fa-pencil-square-o fa-2x"></i>
+                        <div style="flex-grow: 1;">
+                            <strong>Modo de Edición:</strong>
+                            <span>Activa o desactiva la capacidad de modificar los campos.</span>
+                        </div>
+                        <field name="is_editable_cp" widget="boolean_toggle" invisible="0"/>
+                    </div>
+
+                    <div class="form-container">
+                        <div class="form-header">
+                            <table class="header-table">
+                                <tr class="table-row">
+                                    <td class="table-cell" invisible="1">
+                                        <field name="name" placeholder="Nombre" attrs="{'readonly': [('is_editable_cp', '=', True)]}"/>
+                                    </td>
+                                    <td class="table-cell" invisible="1">
+                                        <field name="new_name" placeholder="Nuevo Nombre" attrs="{'readonly': [('is_editable_cp', '=', True)]}"/>
+                                    </td>
+                                    <td class="table-cell">
+                                        <field name="description" placeholder="Descripción" attrs="{'readonly': [('is_editable_cp', '=', True)]}"/>
+                                    </td>
+                                    <td class="table-cell">
+                                        <field name="fch_creacion" placeholder="Fecha de Creación" attrs="{'readonly': [('is_editable_cp', '=', True)]}"/>
+                                    </td>
+                                    <td class="table-cell">
+                                        <field name="write_date" readonly="1" placeholder="Última Modificación"/>
+                                    </td>
+                                    <td class="table-cell">
+                                        <field name="tipo_proyecto" string="Tipo de Proyecto" attrs="{'readonly': [('is_editable_cp', '=', True)]}"/>
+                                    </td>
+                                    <td class="table-cell" invisible="1">
+                                        <field name="proyecto_relacionado" string="relacion"/>
+                                    </td>
+                                     <td class="table-cell" invisible="1">
+                                        <field name="contrataciones_carpeta_id" string="relacion"/>
+                                    </td>
+                                    <td class="table-cell" invisible="1">
+                                        <field name="stage3_id" string="relacion carpeta"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="document-container">
+                            <div class="document-header">
+                                <i class="fa fa-folder-open-o"></i> Cargar Documentos
+                            </div>
+                            <div class="document-grid">
+                                <div class="column-left">
+                                    <div class="document-item">
+                                        <span class="document-label">Carta de Invitacion o Print Secop2 <span style="color:red;font-weight:bold;">*</span></span>
+                                        <div class="document-content">
+                                            <button name="action_upload_carta_invitacion"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('carta_invitacion_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="carta_invitacion_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('carta_invitacion_visible', '=', True)]}"/>
+                                            
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_carta_invitacion" type="object" class="btn-custom" attrs="{'invisible': [('carta_invitacion_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="carta_invitacion_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">CDP</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_cdp" 
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('cdp_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="cdp_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('cdp_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_cdp" type="object" class="btn-custom" attrs="{'invisible': [('cdp_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="cdp_visible" invisible="1"/>
+                                            <span style="margin-right: 5px;"></span>
+                                            <button name="abrir_otros_archivos_nueva_relacion_cdp"
+                                                    type="object" class="oe_highlight custom_drive_button">
+                                                <i class="fa fa-files-o"></i> Otros
+                                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Estudios Previos</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_estudios_previos"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('estudios_previos_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="estudios_previos_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('estudios_previos_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_estudios_previos" type="object" class="btn-custom" attrs="{'invisible': [('estudios_previos_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="estudios_previos_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Propuesta <span style="color:red;font-weight:bold;">*</span></span>
+                                        <div class="document-content">
+                                            <button name="action_upload_propuesta"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('propuesta_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="propuesta_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('propuesta_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_propuesta" type="object" class="btn-custom" attrs="{'invisible': [('propuesta_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="propuesta_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Oficio remisorio propuesta (si aplica)</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_oficio_remisorio_propuesta"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('oficio_remisorio_propuesta_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="oficio_remisorio_propuesta_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('oficio_remisorio_propuesta_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_oficio_remisorio_propuesta" type="object" class="btn-custom" attrs="{'invisible': [('oficio_remisorio_propuesta_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="oficio_remisorio_propuesta_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Resolución de contratación (si aplica)</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_resolucion_contratacion"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('resolucion_contratacion_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="resolucion_contratacion_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('resolucion_contratacion_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_resolucion_contratacion" type="object" class="btn-custom" attrs="{'invisible': [('resolucion_contratacion_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="resolucion_contratacion_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Contrato convenio</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_contrato_convenio_componente"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('contrato_convenio_componente_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="contrato_convenio_componente_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('contrato_convenio_componente_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_contrato_convenio_componente" type="object" class="btn-custom" attrs="{'invisible': [('contrato_convenio_componente_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="contrato_convenio_componente_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Pólizas <span style="color:red;font-weight:bold;">*</span></span>
+                                        <div class="document-content">
+                                            <button name="action_upload_polizas"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('polizas_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="polizas_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('polizas_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_polizas" type="object" class="btn-custom" attrs="{'invisible': [('polizas_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="polizas_visible" invisible="1"/>
+                                            <span style="margin-right: 5px;"></span>
+                                            <button name="abrir_otros_archivos_nueva_relacion"
+                                                type="object" class="oe_highlight custom_drive_button">
+                                                <i class="fa fa-files-o"></i> Otros
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Aceptación de pólizas (si aplica) <span style="color:red;font-weight:bold;">*</span></span>
+                                        <div class="document-content">
+                                            <button name="action_upload_aceptacion_polizas"
+                                                type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('aceptacion_polizas_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="aceptacion_polizas_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('aceptacion_polizas_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_aceptacion_polizas" type="object" class="btn-custom" attrs="{'invisible': [('aceptacion_polizas_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="aceptacion_polizas_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Acta de inicio/ print Secop 2 <span style="color:red;font-weight:bold;">*</span></span>
+                                        <div class="document-content">
+                                            <button name="action_upload_acta_inicio"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('acta_inicio_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="acta_inicio_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('acta_inicio_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_acta_inicio" type="object" class="btn-custom" attrs="{'invisible': [('acta_inicio_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="acta_inicio_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">RPC</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_rpc"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('rpc_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="rpc_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('rpc_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_rpc" type="object" class="btn-custom" attrs="{'invisible': [('rpc_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="rpc_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Otrosi (si aplica) / modificatorios, prorrogas</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_otrosi_modificatorios"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('otrosi_modificatorios_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="otrosi_modificatorios_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('otrosi_modificatorios_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_otrosi_modificatorios" type="object" class="btn-custom" attrs="{'invisible': [('otrosi_modificatorios_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="otrosi_modificatorios_visible" invisible="1"/>
+                                            <span style="margin-right: 5px;"></span>
+                                            <button name="abrir_otros_archivos"
+                                                type="object" class="oe_highlight custom_drive_button">
+                                                <i class="fa fa-files-o"></i> Otros
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Matriz de riesgo</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_matriz_de_riesgos"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('matriz_de_riesgos_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="matriz_de_riesgos_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('matriz_de_riesgos_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_matriz_de_riesgos" type="object" class="btn-custom" attrs="{'invisible': [('matriz_de_riesgos_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="matriz_de_riesgos_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column-right">
+                                    <div class="document-item">
+                                        <span class="document-label">Pólizas modificatorios</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_polizas_modificatorios"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('polizas_modificatorios_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="polizas_modificatorios_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('polizas_modificatorios_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_polizas_modificatorios" type="object" class="btn-custom" attrs="{'invisible': [('polizas_modificatorios_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="polizas_modificatorios_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Designación supervisor</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_designacion_supervisor"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('designacion_supervisor_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="designacion_supervisor_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('designacion_supervisor_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_designacion_supervisor" type="object" class="btn-custom" attrs="{'invisible': [('designacion_supervisor_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="designacion_supervisor_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Facturación</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_facturacion"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('facturacion_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="facturacion_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('facturacion_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_facturacion" type="object" class="btn-custom" attrs="{'invisible': [('facturacion_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <span style="margin-right: 5px;"></span>
+                                            <button name="abrir_otros_archivos_facturacion"
+                                                type="object" class="oe_highlight custom_drive_button">
+                                                <i class="fa fa-files-o"></i> Otros
+                                            </button>
+                                            <field name="facturacion_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Actas de seguimiento (si aplica)</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_actas_seguimiento"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('actas_seguimiento_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="actas_seguimiento_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('actas_seguimiento_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_actas_seguimiento" type="object" class="btn-custom" attrs="{'invisible': [('actas_seguimiento_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="actas_seguimiento_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Informes de avance/ parcial</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_informes_avance"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('informes_avance_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="informes_avance_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('informes_avance_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_informes_avance" type="object" class="btn-custom" attrs="{'invisible': [('informes_avance_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="informes_avance_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Actas supervisor parciales</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_actas_supervisor_parciales"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('actas_supervisor_parciales_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="actas_supervisor_parciales_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('actas_supervisor_parciales_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_actas_supervisor_parciales" type="object" class="btn-custom" attrs="{'invisible': [('actas_supervisor_parciales_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="actas_supervisor_parciales_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Informe Final</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_informe_final"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('informe_final_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="informe_final_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('informe_final_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_informe_final" type="object" class="btn-custom" attrs="{'invisible': [('informe_final_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="informe_final_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="document-item">
+                                        <span class="document-label">Informe de interventoría</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_informe_de_invertentoria"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('informe_de_invertentoria_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="informe_de_invertentoria_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('informe_de_invertentoria_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_informe_de_invertentoria" type="object" class="btn-custom" attrs="{'invisible': [('informe_de_invertentoria_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="informe_de_invertentoria_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="document-item">
+                                        <span class="document-label">Acta final supervisor</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_acta_final_supervisor"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('acta_final_supervisor_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="acta_final_supervisor_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('acta_final_supervisor_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_acta_final_supervisor" type="object" class="btn-custom" attrs="{'invisible': [('acta_final_supervisor_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="acta_final_supervisor_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Acta de terminación o recibo</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_acta_terminacion"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('acta_terminacion_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="acta_terminacion_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('acta_terminacion_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_declaracion_juramentada_pdf" type="object" class="btn-custom" attrs="{'invisible': [('acta_terminacion_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="acta_terminacion_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Acta final de pago</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_acta_final_pago"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('acta_final_pago_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="acta_final_pago_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('acta_final_pago_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_acta_final_pago" type="object" class="btn-custom" attrs="{'invisible': [('acta_final_pago_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="acta_final_pago_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Acta de liquidacion</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_acta_liquidacion"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('acta_liquidacion_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="acta_liquidacion_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('acta_liquidacion_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_acta_liquidacion" type="object" class="btn-custom" attrs="{'invisible': [('acta_liquidacion_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="acta_liquidacion_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">Certificado de cumplimiento</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_certificado_cumplimiento"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('certificado_cumplimiento_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="certificado_cumplimiento_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('certificado_cumplimiento_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_certificado_cumplimiento" type="object" class="btn-custom" attrs="{'invisible': [('certificado_cumplimiento_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="certificado_cumplimiento_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="document-item">
+                                        <span class="document-label">MGA</span>
+                                        <div class="document-content">
+                                            <button name="action_upload_m_g_a"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                attrs="{'invisible': [('m_g_a_visible', '=', False)], 'readonly': [('is_editable_cp', '=', True)]}"/>
+                                            <field name="m_g_a_id" options="{'no_open': True}" class="style_file_name" readonly="1" attrs="{'invisible': [('m_g_a_visible', '=', True)]}"/>
+                                            <span style="margin-right: 10px;"></span>
+                                            <button name="abrir_documento_m_g_a" type="object" class="btn-custom" attrs="{'invisible': [('m_g_a_visible', '=', True)]}">
+                                                <i class="fa fa-file-text"></i> Ver documento
+                                            </button>
+                                            <field name="m_g_a_visible" invisible="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <separator colspan="4" style="border-top:2px solid #e9ecef; margin-top: 20px;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_carpeta_principal_tree" model="ir.ui.view">
+        <field name="name">carpeta.principal.tree</field>
+        <field name="model">carpeta_principal</field>
+        <field name="arch" type="xml">
+            <tree string="Carpeta Principal">
+                <field name="name"/>
+                <field name="fch_creacion"/>
+                <field name="write_date"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_carpeta_principal_kanban" model="ir.ui.view">
+        <field name="name">carpeta.principal.kanban</field>
+            <field name="model">carpeta_principal</field>
+        <field name="arch" type="xml">
+            <kanban string="Carpetas Principales">
+                <field name="name"/>
+                <field name="fch_creacion"/>
+                <field name="write_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_details">
+                                <div>
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="fch_creacion"/>
+                                </div>
+                                <div>
+                                    <field name="write_date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+        <!-- Vista Tree para otros.archivos -->
+    <record id="view_otros_archivos_tree" model="ir.ui.view">
+        <field name="name">otros.archivos.tree</field>
+        <field name="model">otros_archivos</field>
+        <field name="arch" type="xml">
+            <tree string="Otros documentos">
+                <field name="name_char" width="50%"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_otros_archivos_form" model="ir.ui.view">
+        <field name="name">otros.archivos.form</field>
+        <field name="model">otros_archivos</field>
+        <field name="arch" type="xml">
+            <form string="Otros documentos">
+                <sheet>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista del formulario de persona_natural -->
+        <record id="view_persona_natural_visualizacion_form" model="ir.ui.view">
+            <field name="name">persona_natural_visualizacion.form</field>
+            <field name="model">persona_natural_visualizacion</field>
+            <field name="arch" type="xml">
+                <form string="Persona Natural" __validate__="1">
+                    <field name="show_fields" invisible="1"/>
+                    <sheet>
+                        <header>
+                            <root>
+                              <Titulo_proyecto style="font-weight:bold; text-align:center; display:block; margin:auto; font-size:24px;">PERSONA NATURAL</Titulo_proyecto>
+                            </root>
+                            <span style="display: inline-block; width: 20px;"></span>
+                            <div style="display: flex; align-items: center;">
+                                <label for="gestion_id" style="white-space: nowrap;">Campo para seleccionar el ID de 'PersonaJuridica'</label>
+                                <field name="gestion_id" widget="many2one" options="{'no_open': True}" style="background-color: #FFFFE0; border: 1px solid #CCCCCC; margin-right: 10px;" required="1"/>
+                                  <button name="toggle_show_fields" string="Buscar" type="object"
+                                        class="custom_button_style" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            </div>
+                        </header>
+                        <br/>
+                        <style>
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                    </style>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="razon_social" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    <field name="documentos_id" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    <field name="correo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    <field name="direccion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    <field name="telefono" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <!-- Pestaña Documentos del Representante Legal -->
+                                <page string="Documentos del Representante Legal" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1">
+                                    <group>
+                                        <field name="cedula_representante" string="Cédula Representante" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="rut" string="RUT" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_procuraduria" string="C. Procuraduría" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_contraloria" string="C. Contraloría" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_antecedentes_judiciales" string="C. Antecedentes Judiciales" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_medidas_correctivas" string="C. Medidas Correctivas" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_no_inhabilidades" string="C. No inhabilidades" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Persona Natural -->
+                                <page string="Documentos Persona Natural" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1">
+                                    <group>
+                                        <field name="hdv" string="HDV" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_estudios" string="C. Estudios" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_laboral" string="C. Laboral" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_preocupacional" string="C. Preocupacional" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_afiliacion_salud" string="C. Afiliación Salud" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_afiliacion_arl" string="C. Afiliación ARL" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_afiliacion_pension" string="C. Afiliación Pensión" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="copia_libreta_militar" string="Copia Libreta Militar" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_copia_tp" string="C. Copia o TP" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_polizas" string="C. Pólizas (Si Aplica)" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="c_bancaria" string="C. Bancaria" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Fundacion Universidad del Valle -->
+                                <page string="Documentos Fundación Universidad del Valle" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1">
+                                    <group>
+                                        <field name="formulario_contratacion" string="Formulario de contratación" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="cdp" string="CDP" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="formulario_arl" string="Formulario ARL" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="acta_aprobacion_polizas" string="Acta de aprobación de pólizas (Si Aplica)" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="acta_inicio" string="Acta de inicio (Si Aplica)" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="acta_terminacion" string="Acta de Terminación Anticipada (Si Aplica)" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="acta_liquidacion" string="Acta de liquidación (Si Aplica)" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                        <field name="numero_contrato_orden_servicio" string="Número de contrato/Orden de servicio" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                                    </group>
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="observaciones" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="html" class="oe_inline_full" attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1"/>
+                            </group>
+                            <span style="display: inline-block; width: 110px;"></span>
+                            <span attrs="{'invisible': [('show_fields', '=', False)]}" readonly="1">
+                                Documentos anexos que no se encuentren en este formulario. Si no aplica uno de los documentos especificar cual y por qué.
+                            </span>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="action_modificar" string="Modificar" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 30px;"></span>
+                        <button name="action_eliminar" string="Eliminar" type="object" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

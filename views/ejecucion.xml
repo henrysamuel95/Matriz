@@ -1,0 +1,341 @@
+<odoo>
+    <data>
+        <record id="view_ejecucion_form" model="ir.ui.view">
+            <field name="name">ejecucion.form</field>
+            <field name="model">ejecucion</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <div style="width: auto; border: 0.1px solid black; padding: 5px; background: #6ed84a;" invisible="1">
+                        <strong>Editar o no editar </strong>
+                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                    </div>
+                    <div class="o_ejecucion_actions_panel">
+                        <div class="o_ejecucion_actions_side">
+                            <button name="action_ingresar_pagos_proyecto" type="object" class="o_ejecucion_action_btn o_ejecucion_action_btn_money">
+                                <i class="fa fa-money"></i> COBROS DEL PROYECTO
+                            </button>
+                            <button name="action_ingresar_programa_pagos" type="object" class="o_ejecucion_action_btn o_ejecucion_action_btn_payment">
+                                <i class="fa fa-credit-card"></i> PAGOS DEL PROYECTO
+                            </button>
+                        </div>
+                        <div class="o_ejecucion_actions_side o_ejecucion_actions_side_right">
+                            <button name="create_informes_record" type="object" class="o_ejecucion_action_btn o_ejecucion_action_btn_reports">
+                                <i class="fa fa-folder"></i> INFORMES
+                            </button>
+                            <button name="create_comunicaciones_record" type="object" class="o_ejecucion_action_btn o_ejecucion_action_btn_messages">
+                                <i class="fa fa-comments"></i> COMUNICACIONES
+                            </button>
+                        </div>
+                    </div>
+                  <button name="action_borrar_informaciones_base"
+                                type="object"
+                                string="🗑 Borrar Info Base"
+                                class="btn btn-danger"
+                                confirm="¿Estás seguro que deseas eliminar TODA la información base vinculada?" invisible="1" groups="Matriz.group_soporte"/>
+
+                    <button name="relacionar_tablero_con_ejecucion"
+                                type="object"
+                                string="Relacionar tablero"
+                                class="btn btn-danger" invisible="1" groups="Matriz.group_soporte"/>
+                    <div class="o_ejecucion_support_panel" groups="Matriz.group_soporte">
+                        <div class="o_ejecucion_support_header">
+                            <span class="fa fa-life-ring"/>
+                            <div>
+                                <h3>Información de soporte</h3>
+                                <p>Consulta y mantenimiento de las relaciones de esta ejecución.</p>
+                            </div>
+                            <span class="o_ejecucion_support_badge">Solo soporte</span>
+                        </div>
+                        <notebook class="o_ejecucion_support_notebook">
+                            <page string="Proyecto" name="support_project">
+                                <group>
+                                    <field name="informacion_base_id"/>
+                                    <field name="proyecto_relacionado" string="Proyecto principal"/>
+                                    <field name="proyecto_relacionado2" string="Proyecto de ejecución"/>
+                                    <field name="name" string="Nombre del proyecto"/>
+                                    <field name="new_name" string="Nombre de la ejecución"/>
+                                </group>
+                            </page>
+                            <page string="Cobros y valores" name="support_values">
+                                <group>
+                                    <field name="id_proyecto" string="Registro de cobros"/>
+                                    <field name="valor_cobrado"/>
+                                    <field name="valor_por_facturar"/>
+                                    <field name="suma_total"/>
+                                </group>
+                            </page>
+                            <page string="Tablero y vistas" name="support_dashboard">
+                                <group>
+                                    <field name="vistas_director_id" string="Vista del director"/>
+                                    <field name="vistas_director3_id" string="Vista director relacionada"/>
+                                    <field name="tablero_id"/>
+                                </group>
+                            </page>
+                            <page string="Accesos a pagos y cobros" name="support_relations">
+                                <div class="o_ejecucion_support_access">
+                                    <div class="o_ejecucion_support_access_card">
+                                        <span class="fa fa-credit-card"/>
+                                        <div>
+                                            <h4>Pagos del proyecto</h4>
+                                            <p>Abre el programa de pagos y consulta sus pagos registrados.</p>
+                                            <button name="action_ingresar_programa_pagos" type="object" string="Abrir pagos" class="btn btn-outline-primary"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_ejecucion_support_access_card">
+                                        <span class="fa fa-money"/>
+                                        <div>
+                                            <h4>Cobros del proyecto</h4>
+                                            <p>Abre el registro de cobros asociado a esta ejecución.</p>
+                                            <button name="action_ingresar_pagos_proyecto" type="object" string="Abrir cobros" class="btn btn-outline-primary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+                        </notebook>
+                    </div>
+                    <div invisible="1">
+                        <h1>
+                          ACTIVIDADES
+                        </h1>
+                        <field name="entregable_ids" widget="kanban" attrs="{'readonly': [('is_editable', '=', True)]}">
+                            <kanban action="action_view_Matriz_de_entregables" type="object" create="1" >
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="oe_kanban_global_click">
+                                            <br/>
+                                            <div style="padding: 10px;">
+                                                <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                                                <field name="hiden" widget="handle" invisible="1"/>
+                                                <strong><field name="name" widget="text" style="font-size: 17px;"/></strong>
+                                                <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                                <strong style="font-size: 16px;">Avance: </strong><field name="total_final" style="font-size: 16px;"/> %
+                                                <br/>
+                                                <strong style="font-size: 16px;">Actividades no iniciadas: </strong><field name="actividades_pendiente_count" style="font-size: 16px;"/>
+                                                <br/>
+                                                <strong style="font-size: 16px;">Actividades finalizadas: </strong><field name="actividades_completas_count" style="font-size: 16px;"/>
+                                                <br/>
+                                                <strong style="font-size: 16px;">Actividades en ejecución: </strong><field name="actividades_en_progreso_count" style="font-size: 16px;"/>
+                                                <br/>
+                                                <strong style="font-size: 16px;">Actividades retrasadas: </strong><field name="actividades_retrasadas_count" style="font-size: 16px;"/>
+                                            </div>
+                                            <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                                <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                                    <span class="fa fa-ellipsis-v"/>
+                                                </a>
+                                            <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                                    <a class="dropdown-item" role="menuitem"
+                                                       type="open" attrs="{'readonly': [('is_editable', '=', True)]}" >Editar</a>
+                                                    <a class="dropdown-item" role="menuitem"
+                                                       type="object" name="action_ver_planificacion_presupuestal">Planificación Presupuestal</a>
+                                                    <a class="dropdown-item" role="menuitem"
+                                                       type="object" name="open_traceability_view">Trazabilidad</a>
+                                            </div>
+                                            </div>
+                                                <strong style="font-size: 16px;">Asignar tarea:</strong> <field name="activity_ids" widget="kanban_activity" style="font-size: 16px;"/>
+                                                <span style="display: inline-block; width: 50px;"></span>
+                                                <strong style="font-size: 16px;">Creado por: </strong><field name="user_id" options="{'no_open': True}"
+                                                                                    widget="many2one_avatar_user"
+                                                                                    class="oe_kanban_content_oe_kanban_global_clickable"
+                                                                                    domain="[('share', '=', False)]" style="font-size: 18px;"/>
+                                            </div>
+                                        </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                    </div>
+                    <table style="width: 100%">
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_praneacion" model="ir.actions.act_window">
+            <field name="name">Ver Planificación Presupuestal</field>
+            <field name="res_model">praneacion</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+        </record>
+
+
+
+
+        <record id="view_ejecucion_tree" model="ir.ui.view">
+            <field name="name">ejecucion.tree</field>
+            <field name="model">ejecucion</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_ejecucion_kanban" model="ir.ui.view">
+            <field name="name">Vista Kanban del Modelo ejecucion</field>
+            <field name="model">ejecucion</field>
+            <field name="arch" type="xml">
+                <kanban create="0" >
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- En el archivo views.xml dentro de la vista de otro_modelo style="text-align: right;" -->
+                            <div class="oe_kanban_global_click">
+                                <!-- Imagen del proyecto -->
+                                <div class="oe_kanban_image">
+                                    <img src="https://i.ibb.co/pKyfKds/LogoGo23.png" alt="Descripción de la imagen"/>
+                                </div>
+                                <br/>
+                                    <div class="o_kanban_record_title" style="width: 250px; height: 50px; overflow: hidden;">
+                                        <h4 class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                            t-att-title="record.name.value">
+                                            <field name="name" options="{'limit': 1000}"/>
+                                        </h4>
+                                    </div>
+                                <!-- Fechas de Creación y Última Modificación -->
+                                    <div class="o_kanban_record_dates">
+                                        <div class="o_kanban_record_date">
+                                            Fecha de Creación: <field name="fch_creacion"/>
+                                        </div>
+                                    </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <!-- Archivo: tu_modulo/views/actividad_view.xml -->
+        <record id="view_actividad_form" model="ir.ui.view">
+            <field name="name">actividad.form</field>
+            <field name="model">actividad</field>
+            <field name="arch" type="xml">
+                <form style="width: 1950px; height: 600px;">
+                    <style>
+                            .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1900px; /* Establece un ancho máximo si lo deseas */
+                            margin: 45px auto; /* Controla el margen al centro */
+                        }
+                    </style>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="ejecucion_id" invisible="1"/>
+                            <field name="ejecutado_act" invisible="1"/>
+                            <field name="actividad_global1" invisible="1"/>
+                            <field name="actividad_global2" invisible="1"/>
+                            <field name="total_general1_global" invisible="1"/>
+                            <field name="total_general2_global" invisible="1"/>
+                            <field name="total_general3_global" invisible="1"/>
+                            <field name="otros_rubros" widget="many2many_tags" invisible="1"/>
+                        </group>
+                            <div style="display: flex; align-items: center; border: 1px solid #808080; margin-bottom: 10px;" invisible="1">
+                                <div class="o_form_label" style="display: inline-block; color: tu_color_aqui; margin-right: 10px;">VALOR DISPONIBLE A COMPROMETER</div>
+                                <div>VIAJES <field name="viajes" string="VIAJES" style="margin-bottom: 5px;"/></div>
+                                <div>DIFUSIÓN DE RESULTADOS <field name="difusion_de_resultados" string="DIFUSIÓN DE RESULTADOS" style="margin-bottom: 5px;"/></div>
+                                <div>MATERIALES E INSUMOS <field name="materiales_e_insumos" string="MATERIALES E INSUMOS"/></div>
+                            </div>
+
+                        <!-- Campos de la tabla -->
+                        <notebook class="my-custom-class">
+                            <page string="Actividad" editable="bottom">
+                                <field name="line_ids" widget="one2many_list">
+                                    <tree editable="bottom" col="17" style="width: 100%">
+                                        <field name="item" string="Item" width="60"/>
+                                        <field name="rubro" string="Rubro" width="75" optional="show"/>
+                                        <field name="otros_rubros" width="100" optional="show"/>
+                                        <field name="tipo_requerimiento"  width="100" optional="show"/>
+                                        <field name="descripcion_gasto" width="100"/>
+                                        <field name="fecha_solicitud" width="100"/>
+                                        <field name="fecha_requerida"  width="100"/>
+                                        <field name="lugar_entrega" width="100"/>
+                                        <field name="cantidad" string="Cantidad" width="100"/>
+                                        <field name="tiempo_ejecucion_dias" width="100"/>
+                                        <field name="proveedor" width="100"/>
+                                        <field name="nit" string="NIT" width="50"/>
+                                        <field name="tipo_contractual" width="100"/>
+                                        <field name="valor_estimado"  width="100"/>
+                                        <field name="valor_ejecutado" width="100"/>
+                                        <field name="impuesto_asumido_proyecto" width="90"/>
+                                        <field name="total" string="Total" width="90"/>
+                                        <field name="estado" string="Estado" width="90"/>
+                                        <field name="total_general" string="Total Máximo" invisible="1" />
+                                        <field name="valor_ejecutado_total" string="Ejecución Máxima" invisible="1" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Datos Adicionales" editable="bottom">
+                                <!-- Nueva tabla para Datos Adicionales -->
+                                <field name="datos_adicionales">
+                                    <tree editable="bottom" col="5">
+                                        <field name="rubro" string="Rubro" width="70"  optional="show"/>
+                                        <field name="otros_rubros" width="90" optional="show"/>
+                                        <field name="actividad_global" width="50"/>
+                                        <field name="ejecutado_act_global" width="50"/>
+                                        <field name="dispo_act" width="50" optional="show"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de árbol para el modelo Actividad -->
+        <record id="view_actividad_tree" model="ir.ui.view">
+            <field name="name">actividad.tree</field>
+            <field name="model">actividad</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="0">
+                    <field name="name"/>
+                    <field name="actividad_global1"/>
+                    <field name="actividad_global2"/>
+                    <field name="total_general1_global"/>
+                    <field name="total_general2_global"/>
+                    <field name="total_general3_global"/>
+                    <field name="porcentaje_ejecucion"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_actividad_line_tree" model="ir.ui.view">
+            <field name="name">actividad.line.tree</field>
+            <field name="model">actividad_line</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="0">
+                    <field name="actividad_id"/>
+                    <field name="item"/>
+                    <field name="rubro" type="row"/>
+                    <field name="tipo_requerimiento"/>
+                    <field name="descripcion_gasto"/>
+                    <field name="fecha_solicitud"/>
+                    <field name="fecha_requerida"/>
+                    <field name="lugar_entrega"/>
+                    <field name="cantidad"/>
+                    <field name="tiempo_ejecucion_dias"/>
+                    <field name="proveedor"/>
+                    <field name="nit"/>
+                    <field name="tipo_contractual"/>
+                    <field name="valor_estimado"/>
+                    <field name="valor_ejecutado"/>
+                    <field name="impuesto_asumido_proyecto"/>
+                    <field name="total"/>
+                    <field name="estado"/>
+                    <field name="valor_ejecutado_total"/>
+                    <field name="total_general"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_actividad_line_pivot" model="ir.ui.view">
+            <field name="name">actividad.line.pivot</field>
+            <field name="model">actividad_line</field>
+            <field name="arch" type="xml">
+                <pivot>
+                </pivot>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista del formulario para el modelo programapagos -->
+        <record id="view_programapagos_form" model="ir.ui.view">
+            <field name="name">programapagos.form</field>
+            <field name="model">programapagos</field>
+            <field name="arch" type="xml">
+                <form string="Programa de Pagos" style="width: 100%">
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 16px;">
+
+    <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 16px;">
+        <strong>Valor producción: $</strong>
+        <field name="suma_total_costos_produccion_N"/>
+    </div>
+
+    <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 16px;">
+        <strong>Valor contratado: $</strong>
+        <field name="suma_valor_total_contrato3"/>
+    </div>
+
+    <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 16px;">
+        <strong>Saldo disponible: $</strong>
+        <field name="saldo_disponible_2"/>
+    </div>
+
+    <div style="background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 16px;">
+        <strong>Valor pagado: $</strong>
+        <field name="valor_pago_2suma"/>
+    </div>
+
+    <div invisible="1">
+        <strong>Saldo disponible: $</strong>
+        <field name="saldo_disponible"/>
+    </div>
+
+</div>
+                    <div style="width: auto; border: 0.1px solid black; padding: 5px; background: #6ed84a;" invisible="1">
+                        <strong>Editar o no editar </strong>
+                        <field name="is_editable_programapagos" widget="boolean_toggle" invisible="0"/>
+                    </div>
+                    <field name="proyecto_relacionado" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="new_name" invisible="1"/>
+                    <br/>
+                    <br/>
+                    <field name="show_editable_fields" invisible="1"/>
+                    <table style="background-color: #ADD8E6;  width: 100%; color: black !important; border: 0,1px solid black;" attrs="{'invisible': [('show_editable_fields', '=', False)]}" invisible="1">
+                        <tr>
+                            <td style="vertical-align: top; padding: 5px; width: 50%; background-color: #ADD8E6;">
+                                <group style="margin: 5px; padding: 5px; background-color: #ADD8E6;">
+
+                                    <field name="contratista1" string="Contratistas"
+                                           style="background-color: #D6EBF2; padding-left: 5px; border: 0,1px solid #D6EBF2"
+                                           options="{'no_create': True}"/>
+                                    <field name="valor_total_contrato3" string="Valor de contrato por contratista" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="id_contrato" string="ID Contrato" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="nuemor_de_cuotas2" string="Número de cuotas" style="background-color: #D6EBF2; border: 0.1px solid #D6EBF2; padding-left: 2px;"/>
+                                    <field name="numero_pago" string="Número de pago" style=" background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="tabla_de_forma_de_pago" string="Porcentaje de pago"
+                                           style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"
+                                           options="{'no_create': True}"/>
+                                    <field name="valor_pago" string="Valor de pago" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="0"/>
+                                    <field name="color2" invisible="1"/>
+
+
+                                    <field name="descripcion_entregable" string="Descripción del entregable" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                </group>
+                            </td>
+                            <td style="vertical-align: top; padding: 5px; width: 50%; position: relative; background-color: #ADD8E6;">
+                                <group style="margin: 5px; padding: 5px; background-color: #ADD8E6;">
+                                    <field name="num_factura_cobro" string="Número de factura / cuenta de cobro" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="fecha_pagar" string="Fecha a pagar" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="porcentaje_avance" string="Porcentaje de avance" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="porcentaje_pago" string="Porcentaje de pago" widget="progress_bar_widget"
+                                           style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="código_del_pago" string="Código del pago" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="valor_pago_2suma" string="Pago efectuado" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                    <field name="fecha_de_pago" string="Fecha de pago" style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    <field name="acumulado_por_contratista2" string="Acumulado de los pagos por empresa"
+                                           style="padding-left: 5px; background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                    <field name="contador_pago" width="50" invisible="1"/>
+                                    <field name="num_cuotas_actuales" width="50" invisible="1"/>
+                                </group>
+                            </td>
+                        </tr>
+                    </table>
+                     <br/>
+                    <style>
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 16px;
+                            font-size: 17px;
+                            border-radius: 5px;
+                            height: 40px; /* Añadir altura personalizada */
+                        }
+
+                        .custom_button_style:hover {
+                            color: white; /* El texto sigue siendo blanco al pasar el cursor */
+                        }
+                    </style>
+                    <button name="agregar_nuevo" string="AGREGAR UN PAGO" type="object" class="oe_highlight" attrs="{'invisible': [('show_editable_fields', '=', True)]}" invisible="1"/>
+                    <button name="agregar_nuevo" string="AÑADIR" type="object" class="oe_highlight" attrs="{'invisible': [('show_editable_fields', '=', False)]}" invisible="1"/>
+                    <button name="datos" type="object"  class="fa fa-search" title="Cargar o ver datos"/>
+                    <button name="agregar_todos_contratistas" type="object" string="Agregar Todos los Contratistas" class="oe_highlight" invisible="1"/>
+                    <notebook>
+                        <page string="LISTA DE PAGOS REALIZADOS">
+                            <style>
+                                .centered-column {
+                                    text-align: center;
+                                }
+                                .centered-cell {
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                            </style>
+                            <field name="programapagos_ids"
+                                   widget="one2many"
+                                   style="width: auto; height: left;"
+                                   attrs="{'readonly': [('is_editable_programapagos', '=', True)]}">
+                                <tree editable="top" default_order="id desc" create="false" col="13" delete="false"
+                                      attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                                      >
+                                    <field name="is_editable_contrato" widget="boolean_toggle" invisible="1"/>
+                                    <field name="hiden" widget="handle" invisible="1"/>
+                                    <field name="proyecto_relacionado" width="85" decoration-success="color3 == 1" invisible="1"/>
+                                    <field name="contratista1" width="85"
+                                           options="{'no_create': True}" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="proyecto_relacionado" invisible="1"/>
+                                    <field name="id_contrato" width="55"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="numero_pago" width="55"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="valor_pago" width="95" decoration-success="color3 == 1" readonly="1"/>
+                                    <field name="porcentaje_avance"
+                                           width="55" optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="descripcion_entregable" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="num_factura_cobro" width="45"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="fecha_pagar" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="pago_efectuado2" width="85" optional="show" decoration-success="color3 == 1" invisible="1"/>
+                                    <field name="pago_efectuado2_HTML" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="pago_efectuado2_valor" width="85" optional="show" decoration-success="color3 == 1" invisible="1"/>
+                                    <field name="porcentaje_pago" width="85" optional="show" decoration-success="color3 == 1" invisible="1" readonly="1"/>
+                                    <field name="porcentaje_pago_final" width="85" optional="show"  widget="progress_bar_widget" decoration-success="color3 == 1"/>
+                                    <field name="fecha_de_pago" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="fecha_de_pago_texto" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}" invisible="1"/>
+                                    <field name="código_del_pago" width="85"
+                                           optional="show" decoration-success="color3 == 1"
+                                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"/>
+                                    <field name="acomulado_1" width="85" optional="show" decoration-success="color3 == 1"/>
+                                    <field name="acomulado_total" width="85" optional="show" decoration-success="color3 == 1" invisible="1"/>
+                                    <field name="acumulado_por_contratista" width="85" optional="show" invisible="1"/>
+                                    <field name="valor_total_contrato3" width="85" optional="show" invisible="1"/>
+                                    <field name="color" invisible="1"/>
+                                    <field name="color3" invisible="1"/>
+                                    <field name="tabla_de_forma_de_pago" width="85" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <br/>
+                    <style>
+                            .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: auto; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                        }
+                            .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                        </style>
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <table style="width: 100%">
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_contrato_tree">
+            <field name="name">contrato.tree</field>
+            <field name="model">contrato</field>
+            <field name="arch" type="xml">
+                <tree string="Pagos" editable="top" default_order="id desc"
+                       create="false">
+                    <field name="is_editable_contrato" widget="boolean_toggle" invisible="0"/>
+                    <field name="hiden" widget="handle"/>
+                    <field name="contratista1" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           options="{'no_create': True}" decoration-success="color == 1"/>
+                    <field name="proyecto_relacionado" invisible="1"/>
+                    <field name="id_contrato" width="55"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="numero_pago" width="55"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="valor_pago" width="95" decoration-success="color == 1" readonly="1"/>
+                    <field name="porcentaje_avance" width="55"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="descripcion_entregable" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="num_factura_cobro" width="45"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="fecha_pagar" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="pago_efectuado2" width="85" optional="show" decoration-success="color == 1" invisible="1"/>
+                    <field name="porcentaje_pago" width="85" optional="show" widget="progressbar" decoration-success="color == 1" invisible="1"/>
+                    <field name="porcentaje_pago_final" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" widget="progressbar" decoration-success="color == 1"/>
+                    <field name="fecha_de_pago" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="código_del_pago" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="acomulado_1" width="85"
+                           attrs="{'readonly': [('is_editable_contrato', '=', True)]}"
+                           optional="show" decoration-success="color == 1"/>
+                    <field name="acumulado_por_contratista" width="85" optional="show" invisible="1"/>
+                    <field name="valor_total_contrato3" width="85" optional="show" invisible="1"/>
+                    <field name="color" width="85" invisible="1"/>
+                    <field name="tabla_de_forma_de_pago" width="85" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="contrato_view_search" model="ir.ui.view">
+           <field name="name">contrato.view.search.module.name</field>
+           <field name="model">contrato</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="contratista1"/>
+                    <field name="proyecto_relacionado" invisible="1"/>
+                    <field name="id_contrato"/>
+                    <field name="numero_pago"/>
+                    <field name="valor_pago"/>
+                    <field name="porcentaje_avance"/>
+                    <field name="descripcion_entregable"/>
+                    <field name="num_factura_cobro"/>
+                    <field name="fecha_pagar"/>
+                    <field name="pago_efectuado2"/>
+                    <field name="porcentaje_pago" invisible="1"/>
+                    <field name="porcentaje_pago_final"/>
+                    <field name="fecha_de_pago"/>
+                    <field name="código_del_pago"/>
+                    <field name="acomulado_1" />
+                    <field name="acumulado_por_contratista" invisible="1"/>
+                    <field name="valor_total_contrato3" invisible="1"/>
+                    <field name="color" invisible="1"/>
+                    <field name="tabla_de_forma_de_pago" invisible="1"/>
+               </search>
+           </field>
+        </record>
+
+        <record id="view_form_modal" model="ir.ui.view">
+            <field name="name">modal.form</field>
+            <field name="model">modal</field>
+            <field name="arch" type="xml">
+                <form string="Modal" style="background-color: #FFFFFF;">
+
+                    <div class="modal_custom_content">
+                        <sheet>
+                            <div class="modal_custom_notebook">
+                                <notebook>
+                                    <page string="Valor y fecha" class="modal_custom_page">
+                                        <field name="valor_ids">
+                                            <tree editable="bottom">
+
+                                                <field name="fecha_pago_modal2"/>
+                                                <field name="pago_real"/>
+                                                <field name="descuentos"/>
+                                                <field name="valor_pagado_modal"/>
+                                                <field name="valor_pagado_modal_sumado" invisible="1"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+                                </notebook>
+                            </div>
+                            <div class="modal_custom_details">
+                                <div>
+                                    <field name="valor_id" invisible="1"/>
+                                    <div class="modal_custom_detail_item">
+                                        <strong>TOTAL ABONADO</strong>
+                                        <field name="TOTAL"/>
+                                    </div>
+                                    <div class="modal_custom_detail_item">
+                                        <strong>VALOR PROYECTADO</strong>
+                                        <field name="valor_pago"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="modal_custom_detail_item">
+                                        <strong>FALTANTE POR PAGAR</strong>
+                                        <field name="diferencia" decoration-success="color == True" decoration-danger="color == False"/>
+                                    </div>
+                                    <field name="color" invisible="1"/>
+                                </div>
+                            </div>
+                        </sheet>
+                        <footer>
+                            <button name="action_save_and_reload" type="object" string="Guardar" class="btn-primary"/>
+                            <button string="Descartar" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="Matriz.ContratacionesSgrSidebar" t-inherit="web.KanbanRenderer" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'o_kanban_renderer')]" position="before">
+            <t t-if="props.list.resModel === 'contrataciones_sgr' &amp;&amp; projectId()">
+                <aside t-att-class="sgrPanel.collapsed ? 'mtz_sgr_sidebar collapsed' : 'mtz_sgr_sidebar'" aria-label="Saldos disponibles y utilizados SGR">
+                    <button class="mtz_sgr_sidebar_toggle" type="button"
+                            t-on-click="() => sgrPanel.collapsed = !sgrPanel.collapsed"
+                            t-att-title="sgrPanel.collapsed ? 'Mostrar saldos disponibles y utilizados SGR' : 'Ocultar saldos disponibles y utilizados SGR'">
+                        <i t-att-class="sgrPanel.collapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"/>
+                    </button>
+                    <div class="mtz_sgr_sidebar_content">
+                        <div class="mtz_sgr_sidebar_heading">
+                            <strong>SALDOS DISPONIBLES Y UTILIZADOS SGR</strong>
+                        </div>
+                        <t t-if="sgrPanel.loading">
+                            <p class="mtz_sgr_sidebar_notice"><i class="fa fa-spinner fa-spin"/> Cargando saldos...</p>
+                        </t>
+                        <t t-elif="sgrPanel.error">
+                            <p class="mtz_sgr_sidebar_notice">No se pudieron consultar los saldos.</p>
+                        </t>
+                        <t t-elif="sgrPanel.balances">
+                            <t t-if="hasVisibleSgrAmounts()">
+                                <div class="mtz_sgr_balance_list">
+                                    <t t-if="hasSgrAmount(sgrPanel.balances.es_produccion)">
+                                        <div class="mtz_sgr_balance">
+                                            <span>Saldo disponible · Producción</span>
+                                            <strong t-att-class="sgrPanel.balances.es_produccion &lt; 0 ? 'negative' : ''">
+                                                $ <t t-esc="formatSgrAmount(sgrPanel.balances.es_produccion)"/>
+                                            </strong>
+                                        </div>
+                                    </t>
+                                    <t t-if="hasSgrAmount(sgrPanel.balances.produccion_utilizada)">
+                                        <div class="mtz_sgr_balance mtz_sgr_balance--used">
+                                            <span>Recursos utilizados · Producción</span>
+                                            <strong t-att-class="sgrPanel.balances.produccion_utilizada &lt; 0 ? 'negative' : ''">
+                                                $ <t t-esc="formatSgrAmount(sgrPanel.balances.produccion_utilizada)"/>
+                                            </strong>
+                                        </div>
+                                    </t>
+                                    <t t-if="hasSgrAmount(sgrPanel.balances.es_personal_fuv)">
+                                        <div class="mtz_sgr_balance">
+                                            <span>Disponible costos FUV</span>
+                                            <strong t-att-class="sgrPanel.balances.es_personal_fuv &lt; 0 ? 'negative' : ''">
+                                                $ <t t-esc="formatSgrAmount(sgrPanel.balances.es_personal_fuv)"/>
+                                            </strong>
+                                        </div>
+                                    </t>
+                                    <t t-if="hasSgrAmount(sgrPanel.balances.contratos_vco)">
+                                        <div class="mtz_sgr_balance">
+                                            <span>Disponible contratos VCO</span>
+                                            <strong t-att-class="sgrPanel.balances.contratos_vco &lt; 0 ? 'negative' : ''">
+                                                $ <t t-esc="formatSgrAmount(sgrPanel.balances.contratos_vco)"/>
+                                            </strong>
+                                        </div>
+                                    </t>
+                                </div>
+                            </t>
+                            <t t-else="">
+                                <p class="mtz_sgr_sidebar_notice">No hay saldos con valor para mostrar.</p>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p class="mtz_sgr_sidebar_notice">Seleccione un proyecto para ver sus saldos.</p>
+                        </t>
+                    </div>
+                </aside>
+            </t>
+        </xpath>
+    </t>
+</templates>

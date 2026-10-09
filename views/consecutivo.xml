@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+            <!-- Vista de árbol para mostrar los registros de Consecutivo -->
+        <record id="view_consecutivo_tree" model="ir.ui.view">
+            <field name="name">consecutivo.tree</field>
+            <field name="model">consecutivo</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" default_order="combinacion asc, contador asc" create="0">
+                    <field name="consecutivo" width="25%"/>
+                    <field name="name" invisible="1"/>
+                    <field name="contratatos_id" invisible="0" width="15%" options="{'no_create': True}"/>
+                    <field name="combinacion" width="20%"/>
+                    <field name="contador" width="10%"/>
+                    <field name="anio_terminacion" width="10%"/>
+                    <field name="select_persona" invisible="1"/>
+                    <field name="tipo_contrato_id" invisible="1" width="15%"/>
+                    <field name="fecha_terminacion" invisible="1"/>
+                    <button name="generar_consecutivo" type="object" string="Ejecutar" class="oe_highlight" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+        <!-- Vista formulario para crear y editar registros de Consecutivo -->
+        <record id="view_consecutivo_form" model="ir.ui.view">
+            <field name="name">consecutivo.form</field>
+            <field name="model">consecutivo</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <sheet>
+                        <group>
+                            <field name="consecutivo"/>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="consecutivo_view_search" model="ir.ui.view">
+            <field name="name">consecutivo_search</field>
+            <field name="model">consecutivo</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" invisible="0"/>
+                    <field name="consecutivo" invisible="0"/>
+                    <field name="contador" invisible="0"/>
+                    <field name="combinacion" invisible="0"/>
+                    <field name="anio_terminacion" invisible="0"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_tipo_contrato_tree" model="ir.ui.view">
+            <field name="name">tipo.contrato.tree</field>
+            <field name="model">tipo.contrato</field>
+            <field name="arch" type="xml">
+                <tree string="Tipos de Contrato">
+                    <field name="name" width="50%"/>
+                    <field name="code"  width="50%"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_tipo_contrato_form" model="ir.ui.view">
+            <field name="name">tipo.contrato.form</field>
+            <field name="model">tipo.contrato</field>
+            <field name="arch" type="xml">
+                <form string="Tipo de Contrato">
+                    <sheet>
+                        <group>
+                            <!-- Nombre del Tipo de Contrato -->
+                            <field name="name"
+                                   style="color: #333; font-size: 16px; font-weight: bold; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9; width: 100%; margin-bottom: 15px;"/>
+
+                            <!-- Código del Tipo de Contrato -->
+                            <field name="code"
+                                   style="color: #333; font-size: 14px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #f9f9f9; width: 50%; margin-bottom: 20px;"/>
+                        </group>
+                       <button name="abrir_tipo_contrato" string="Meter base de datos" type="object" class="btn-primary" invisible="0"/>
+                        <button name="create_default_contract_types" type="object" string="Crear Tipos de Contrato por Defecto" class="oe_highlight" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; font-size: 16px;" invisible="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_modalidad_contratacion_tree" model="ir.ui.view">
+            <field name="name">modalidad_contratacion.tree</field>
+            <field name="model">modalidad_contratacion</field>
+            <field name="arch" type="xml">
+                <tree string="Modalidad de Contratación">
+                    <field name="name" width="70%"/>
+                    <field name="code"  width="30%"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_modalidad_contratacion_form" model="ir.ui.view">
+            <field name="name">modalidad_contratacion.form</field>
+            <field name="model">modalidad_contratacion</field>
+            <field name="arch" type="xml">
+                <form string="Modalidad de Contratación">
+                    <sheet>
+                        <group>
+                            <!-- Nombre del Tipo de Contrato -->
+                            <field name="name"
+                                   style="color: #333; font-size: 16px; font-weight: bold; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background-color: #f9f9f9; width: 100%; margin-bottom: 15px;"/>
+
+                            <!-- Código del Tipo de Contrato -->
+                            <field name="code"
+                                   style="color: #333; font-size: 14px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #f9f9f9; width: 50%; margin-bottom: 20px;"/>
+                        </group>
+                        <button name="create_default_contract_types" type="object" string="Crear Tipos de Contrato por Defecto" class="oe_highlight" style="padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; font-size: 16px;" invisible="1"/>
+                        <button name="abrir_modalidad_contratacion" string="Meter base de datos" type="object" class="btn-primary" invisible="0"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+    </data>
+</odoo>

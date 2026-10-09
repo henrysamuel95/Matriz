@@ -1,0 +1,62 @@
+<odoo>
+    <record id="view_matriz_plantilla_word_form" model="ir.ui.view">
+        <field name="name">matriz.plantilla.word.form</field>
+        <field name="model">matriz.plantilla.word</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_actualizar_plantilla_servidor"
+                            string="Sincronizar con Servidor"
+                            type="object"
+                            class="oe_highlight"
+                            confirm="¿Estás seguro de que quieres sobrescribir el archivo en el disco?"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="nombre_archivo" placeholder="ejemplo.docx"/>
+                        </group>
+                        <group>
+                            <field name="archivo_word" filename="nombre_archivo"/>
+                            <field name="ultima_actualizacion"/>
+                        </group>
+                    </group>
+                    <field name="descripcion" placeholder="Notas sobre esta plantilla..."/>
+
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_matriz_plantilla_word_tree" model="ir.ui.view">
+        <field name="name">matriz.plantilla.word.tree</field>
+        <field name="model">matriz.plantilla.word</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="nombre_archivo"/>
+                <field name="ultima_actualizacion"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_matriz_plantillas_word" model="ir.actions.act_window">
+        <field name="name">Gestión de Plantillas Word</field>
+        <field name="res_model">matriz.plantilla.word</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_matriz_plantillas" 
+              name="Plantillas Word" 
+              parent="base.menu_administration" 
+              action="action_matriz_plantillas_word" 
+              sequence="100"/>
+              
+</odoo>

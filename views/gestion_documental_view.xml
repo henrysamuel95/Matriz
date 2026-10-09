@@ -1,0 +1,736 @@
+<odoo>
+  <record id="action_gd_projects" model="ir.actions.act_window">
+    <field name="name">Gestión Documental</field>
+    <field name="res_model">gestion.documental.project</field>
+    <field name="view_mode">kanban</field>
+  </record>
+
+    <record id="view_gd_project_kanban" model="ir.ui.view">
+      <field name="name">gestion.documental.project.kanban</field>
+      <field name="model">gestion.documental.project</field>
+      <field name="arch" type="xml">
+          <kanban class="gd_projects_kanban">
+              <templates>
+                  <t t-name="kanban-box">
+                      <!-- Toda la tarjeta clicable -->
+                      <button type="object"
+                              name="action_open_workspace"
+                              class="gd_project_card_btn"
+                              style="all: unset; display: block; width: 100%; cursor: pointer;">
+                          <div class="gd_project_card">
+                              <div class="gd_project_card_header">
+                                    <i class="fa fa-folder gd_kanban_icon"/>
+                                    <div class="gd_project_title">
+                                        <field name="name"/>
+                                    </div>
+                              </div>
+                              <div class="gd_project_card_footer">
+                                  <span class="gd_open_hint">Abrir</span>
+                              </div>
+                          </div>
+                      </button>
+                  </t>
+              </templates>
+          </kanban>
+      </field>
+    </record>
+    <record id="view_gd_browser_form" model="ir.ui.view">
+        <field name="name">gestion.documental.browser.form</field>
+        <field name="model">gestion.documental.browser</field>
+        <field name="arch" type="xml">
+            <form string="Gestión Documental" create="0" edit="1" delete="0" duplicate="0" class="gd_browser_form">
+
+                <!-- flags / state -->
+                <field name="show_details_panel" invisible="1"/>
+                <field name="selected_workspace_id" invisible="1"/>
+                <field name="selected_entry_id" invisible="1"/>
+                
+                <field name="sel_entry_type" invisible="1"/>
+                <field name="sel_workspace_depth" invisible="1"/>
+                <field name="sel_has_files" invisible="1"/>
+                <field name="sel_selected_folder_has_files" invisible="1"/>
+                <field name="sel_description" invisible="1"/>
+                <field name="sel_folder_description" invisible="1"/>
+                <field name="sel_create_date" invisible="1"/>
+                <field name="sel_parent_folder_name" invisible="1"/>
+                <field name="sel_folios" invisible="1"/>
+                <field name="sel_page_total" invisible="1"/>
+                
+                <div class="gd_breadcrumb_bar" style="display: none;">
+                    <field name="breadcrumb_json" nolabel="1"/>                
+                </div>
+                <!-- LAYOUT (copiado de Comunicaciones, adaptado) -->
+                <div class="layout-container gd_layout_container">
+
+                    <!-- =========================
+                        LEFT SIDEBAR (WORKSPACE)
+                        ========================= -->
+                    <div class="sidebar-left gd_sidebar_left">
+                        <aside>
+                            <div class="toggle-section">
+                                <div>
+                                    <div class="search-filter-container">
+                                        <field name="workspace_search"
+                                            placeholder="Buscar carpeta..."
+                                            class="search-input gd_search_input"/>
+                                    </div>
+
+                                    <div class="folders-title-row">
+                                        <h3 class="toggle-title2">
+                                            <i class="fa fa-folder-o"></i>
+                                            CARPETAS
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <div id="gd-folders-section" class="toggle-content">
+                                    <ul>
+                                        <div class="workspace gd_workspace_tree">
+
+                                        <field name="workspace_view_ids"
+                                            nolabel="1"
+                                            mode="tree"
+                                            context="{'gd_sidebar': 1}"
+                                            options="{'no_open': True, 'no_create': True, 'no_delete': True}">
+
+                                                <tree create="0" edit="0" delete="0"
+                                                    decoration-bf="is_selected"
+                                                    decoration-info="is_selected">
+
+                                                    <field name="is_selected" invisible="1"/>
+                                                    <field name="parent_id" invisible="1"/>
+                                                    <field name="depth" string=" "/>
+
+                                                    <!-- Abrir carpeta -->
+                                                    <button name="action_select_workspace"
+                                                            type="object"
+                                                            icon="fa-folder"
+                                                            class="workspace-folder-btn gd_ws_open_btn"
+                                                            title="Abrir carpeta"
+                                                            attrs="{'invisible': [('is_selected','=',True)]}"/>
+
+                                                    <!-- Carpeta actual -->
+                                                    <button name="action_select_workspace"
+                                                            type="object"
+                                                            icon="fa-folder-open"
+                                                            class="workspace-folder-btn gd_ws_open_btn is_current"
+                                                            title="Carpeta actual"
+                                                            attrs="{'invisible': [('is_selected','=',False)]}"/>
+
+                                                    <field name="name" readonly="1" force_save="1"/>
+
+                                                    <!-- Botón info carpeta -->
+                                                    <button name="action_show_folder_info"
+                                                            type="object"
+                                                            icon="fa-info-circle"
+                                                            class="gd_ws_info_btn"
+                                                            style="float: right; color: #17a2b8; margin-top: 2px;"
+                                                            title="Ver información de la carpeta"/>
+
+                                                    <!-- OMITIDO: botón crear subcarpeta -->
+                                                </tree>
+                                            </field>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <!-- =========================
+                        CENTER (KANBAN DOCUMENTS)
+                        ========================= -->
+
+                    <div class="section-center gd_section_center">
+
+                        <!-- en Comunicaciones usan <sheet>. Aquí puedes mantenerlo
+                            si tu CSS depende de eso; si no, puedes dejarlo sin sheet. -->
+                        <sheet>
+                            <header>
+                                <!-- OMITIDO: botón "Nuevo" -->
+                                <div class="search-bar-container gd_search_bar">
+                                    <span style="display: inline-block; width: 600px;"></span>
+                                    <field name="search_query"
+                                        placeholder="Buscar documentos..."
+                                        class="search-input gd_search_input"/>
+                                    <span class="search-icon">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                </div>
+                            </header>
+
+                            <section>
+                                <div class="gd_center_content">
+
+                                    <!-- ══════════════ SECCIÓN CARPETAS ══════════════ -->
+                                    <div class="gd_section_header">
+                                        <span class="gd_section_title">Carpetas</span>
+                                    </div>
+
+                                    <field name="folder_view_ids" nolabel="1">
+                                        <kanban class="gd_folders_kanban" create="0" edit="0" delete="0">
+                                            <field name="name"/>
+                                            <field name="entry_type"/>
+                                            <field name="parent_workspace_name"/>
+                                            <field name="create_date"/>
+                                            <field name="create_uid"/>
+
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <div class="gd_folder_card">
+                                                        <button type="object" name="action_open_folder" class="gd_folder_card_btn">
+                                                            <i class="fa fa-folder gd_folder_icon"/>
+                                                            <div class="gd_folder_info">
+                                                                <span class="gd_folder_name"><field name="name"/></span>
+                                                                <span class="gd_folder_parent">En <field name="parent_workspace_name"/></span>
+                                                            </div>
+                                                        </button>
+                                                        <div class="o_dropdown_kanban gd_folder_menu dropdown">
+                                                            <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button">
+                                                                <span class="fa fa-ellipsis-v"/>
+                                                            </a>
+                                                            <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_view_details">
+                                                                    <i class="fa fa-info-circle"></i> Ver Detalles
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_open_folder">
+                                                                    <i class="fa fa-folder-open-o"></i> Abrir Carpeta
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="gd_folder_meta">
+                                                            <span class="gd_folder_meta_date">
+                                                                <i class="fa fa-calendar-o" style="margin-right:3px;"/>
+                                                                <field name="create_date" widget="date" readonly="1"/>
+                                                            </span>
+                                                            <span class="gd_folder_meta_user">
+                                                                <field name="create_uid" widget="many2one_avatar_user" readonly="1" options="{'no_open': True}"/>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+
+                                    <!-- ══════════════ SECCIÓN ARCHIVOS ══════════════ -->
+                                    <div class="gd_section_header"
+                                         attrs="{'invisible': [('sel_has_files', '=', False)]}">
+                                        <span class="gd_section_title">Archivos</span>
+                                    </div>
+
+                                    <field name="file_view_ids" nolabel="1"
+                                           attrs="{'invisible': [('sel_has_files', '=', False)]}">
+                                        <kanban class="gd_files_kanban" create="0" edit="0" delete="0">
+                                            <field name="name"/>
+                                            <field name="entry_type"/>
+                                            <field name="drive_id"/>
+                                            <field name="fch_creacion"/>
+                                            <field name="user_id"/>
+                                            <field name="show_on_dashboard"/>
+                                            <field name="mime_type"/>
+                                            <field name="icon_mime_type"/>
+
+                                            <templates>
+                                                <t t-name="kanban-box">
+                                                    <t t-set="mime" t-value="record.icon_mime_type.raw_value or record.mime_type.raw_value or ''"/>
+                                                    <t t-set="is_pdf"   t-value="mime == 'application/pdf'"/>
+                                                    <t t-set="is_excel" t-value="mime.indexOf('excel') >= 0 or mime.indexOf('spreadsheet') >= 0"/>
+                                                    <t t-set="is_word"  t-value="mime.indexOf('word') >= 0 or mime.indexOf('wordprocessingml') >= 0"/>
+                                                    <t t-set="is_ppt"   t-value="mime.indexOf('powerpoint') >= 0 or mime.indexOf('presentation') >= 0"/>
+                                                    <t t-set="is_img"   t-value="mime.indexOf('image/') >= 0"/>
+                                                    <div class="gd_file_card">
+                                                        <div class="gd_file_preview" style="display:flex;align-items:center;justify-content:center;">
+                                                            <button type="object" name="action_open_file" class="gd_preview_overlay_btn"/>
+                                                            <t t-if="is_pdf">
+                                                                <img src="/Matriz/static/src/img/pdf_icon.png" alt="PDF" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <t t-elif="is_excel">
+                                                                <img src="/Matriz/static/src/img/xls_icon.png" alt="Excel" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <t t-elif="is_word">
+                                                                <img src="/Matriz/static/src/img/word.png" alt="Word" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <t t-elif="is_ppt">
+                                                                <img src="/Matriz/static/src/img/ppt_icon.png" alt="PowerPoint" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <t t-elif="is_img">
+                                                                <img src="/Matriz/static/src/img/img_icon.png" alt="Imagen" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <img src="/Matriz/static/src/img/default_icon.png" alt="Archivo" style="width:64px;max-height:72px;object-fit:contain;"/>
+                                                            </t>
+                                                            <i t-if="record.show_on_dashboard.raw_value" class="fa fa-star gd_file_star"/>
+                                                        </div>
+                                                        <!-- Nombre + footer -->
+                                                        <div class="gd_file_body">
+                                                            <div class="gd_file_name" t-att-title="record.name.raw_value">
+                                                                <button type="object" name="action_open_file" class="gd_file_name_btn">
+                                                                    <field name="name" class="o_text_overflow"/>
+                                                                </button>
+                                                            </div>
+                                                            <div class="gd_file_footer">
+                                                                <time class="gd_file_date">
+                                                                    <field name="fch_creacion" widget="date"/>
+                                                                </time>
+                                                                <span class="gd_file_avatar">
+                                                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Menú contextual -->
+                                                        <div class="o_dropdown_kanban gd_file_menu dropdown">
+                                                            <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" role="button">
+                                                                <span class="fa fa-ellipsis-v"/>
+                                                            </a>
+                                                            <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_view_details">
+                                                                    <i class="fa fa-info-circle"></i> Ver Detalles
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_open_file">
+                                                                    <i class="fa fa-eye"></i> Abrir Documento
+                                                                </a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_pdf_entry">
+                                                                    <i class="fa fa-file-pdf-o" style="color:#d32f2f;"></i> Descargar PDF
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_word_entry">
+                                                                    <i class="fa fa-file-word-o" style="color:#1565c0;"></i> Descargar Word
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_original_entry">
+                                                                    <i class="fa fa-download" style="color:#1a73e8;"></i> Descargar Original
+                                                                </a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <a class="dropdown-item text-danger" role="menuitem" type="object" name="action_reportar_archivo_kanban">
+                                                                    <i class="fa fa-exclamation-triangle"></i> Reportar Problema
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </templates>
+                                        </kanban>
+                                    </field>
+
+                                </div>
+                            </section>
+                        </sheet>
+                    </div>
+
+                    <!-- =========================
+                        RIGHT PANEL (DETAILS)
+                        ========================= -->
+                    <!-- ── PANEL DETALLES: ARCHIVO ── -->
+                    <div class="sidebar-documents gd_sidebar_right"
+                        attrs="{'invisible': ['|', ('show_details_panel', '=', False), ('sel_entry_type', '!=', 'file')]}">
+                        <aside>
+                            <!-- topbar -->
+                            <div class="gd_details_topbar">
+                                <span style="font-size:13px;font-weight:500;color:#202124;">Detalles</span>
+                                <button name="action_close_details_panel" type="object" class="btn btn-sm" title="Cerrar"
+                                    style="background:none;border:none;padding:4px 6px;color:#d93025;cursor:pointer;">
+                                    <i class="fa fa-times"/>
+                                </button>
+                            </div>
+
+                            <!-- Preview -->
+                            <div class="preview-container">
+                                <field name="sel_preview_html" widget="html" nolabel="1"/>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="gd_details_section">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-file-pdf-o" style="color:#ea4335;"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Nombre</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_name" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ubicación -->
+                            <div class="gd_details_section" attrs="{'invisible': [('sel_parent_folder_name','=',False)]}">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-map-marker"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Ubicación</div>
+                                        <div class="gd_details_value">
+                                            <span class="gd_details_location_chip">
+                                                <i class="fa fa-folder" style="color:#5f6368;margin-right:4px;"/>
+                                                <field name="sel_parent_folder_name" readonly="1" nolabel="1"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- N° páginas -->
+                            <div class="gd_details_section" attrs="{'invisible': [('sel_page_total','=',0)]}">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-file-text-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">N° páginas</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_page_total" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Folios -->
+                            <div class="gd_details_section" attrs="{'invisible': [('sel_folios','=',False)]}">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-files-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Folios</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_folios" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creado por -->
+                            <div class="gd_details_section">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-user-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Creado por</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_user_id" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fecha de creación -->
+                            <div class="gd_details_section">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-calendar-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Fecha de creación</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_create_date" readonly="1" nolabel="1" widget="datetime"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="gd_details_section" attrs="{'invisible': [('sel_description','=',False)]}">
+                                <div class="gd_details_row" style="margin-bottom:0;">
+                                    <span class="gd_details_icon"><i class="fa fa-align-left"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Descripción</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_description" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <!-- ── PANEL DETALLES: CARPETA ── -->
+                    <div class="sidebar-right gd_sidebar_right"
+                         attrs="{'invisible': ['|', ('show_details_panel', '=', False), ('sel_entry_type', '=', 'file')]}">
+                        <aside>
+                            <!-- topbar -->
+                            <div class="gd_details_topbar">
+                                <span style="font-size:13px;font-weight:500;color:#202124;">Detalles</span>
+                                <button name="action_close_details_panel" type="object" class="btn btn-sm" title="Cerrar"
+                                    style="background:none;border:none;padding:4px 6px;color:#d93025;cursor:pointer;">
+                                    <i class="fa fa-times"/>
+                                </button>
+                            </div>
+
+                            <!-- Hero icono carpeta -->
+                            <div class="gd_details_hero">
+                                <i class="fa fa-folder" style="font-size:56px;color:#fbbc04;"/>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="gd_details_section">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-folder-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Nombre</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_folder_name" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creado por -->
+                            <div class="gd_details_section">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-user-o"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Creado por</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_folder_user_id" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="gd_details_section" attrs="{'invisible': [('sel_folder_description','=',False)]}">
+                                <div class="gd_details_row">
+                                    <span class="gd_details_icon"><i class="fa fa-align-left"/></span>
+                                    <div class="gd_details_body">
+                                        <div class="gd_details_label">Descripción</div>
+                                        <div class="gd_details_value">
+                                            <field name="sel_folder_description" readonly="1" nolabel="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Acciones -->
+                            <div class="gd_details_section" style="margin-top:8px;">
+                                <button name="action_open_hoja_control" type="object"
+                                        attrs="{'invisible': ['|', ('sel_selected_folder_has_files', '=', False), ('sel_workspace_depth', 'in', [-1, 0])]}"
+                                        style="display:flex;align-items:center;justify-content:center;width:100%;padding:10px;background:#003a70;color:white;border:none;border-radius:8px;cursor:pointer;margin-bottom:8px;font-size:13px;">
+                                    <i class="fa fa-arrow-right" style="margin-right:8px;"/>
+                                    Hoja de control
+                                </button>
+                                <button name="action_open_inventario_documental" type="object"
+                                        attrs="{'invisible': [('sel_workspace_depth', '!=', 0)]}"
+                                        style="display:flex;align-items:center;justify-content:center;width:100%;padding:10px;background:#28a745;color:white;border:none;border-radius:8px;cursor:pointer;font-size:13px;">
+                                    <i class="fa fa-list" style="margin-right:8px;"/>
+                                    Inventario Documental
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_gd_file_viewer_form" model="ir.ui.view">
+        <field name="name">gestion.documental.file.viewer.form</field>
+        <field name="model">gestion.documental.file.viewer</field>
+        <field name="arch" type="xml">
+            <form string="Documento" create="0" edit="0" delete="0">
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                    </group>
+
+                    <div class="preview-container">
+                        <field name="preview_html" widget="html"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_documento_archivo_gd_form" model="ir.ui.view">
+        <field name="name">documento_archivo_gd.form</field>
+        <field name="model">documento_archivo_gd</field>
+        <field name="arch" type="xml">
+            <form string="Hoja de Control Gestión Documental" create="false" delete="false" duplicate="false">
+                <header>
+                    <button name="action_calcular_folios" 
+                            string="Calcular Folios" 
+                            type="object" 
+                            class="oe_highlight" 
+                            icon="fa-list-ol"
+                            invisible="1"/>
+
+                    <button name="action_descargar_excel" 
+                            string="Descargar Excel" 
+                            type="object" 
+                            class="oe_highlight" 
+                            icon="fa-file-excel-o"/>
+                </header>
+                <sheet>
+                    <div style="border: 1px solid black; padding: 30px; background-color: white; color: black; font-family: 'Arial', sans-serif;">
+                        
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
+                            <tr>
+                                <td style="width: 20%; border-right: 1px solid black; padding: 10px; text-align: center; vertical-align: middle;">
+                                    <img src="/Matriz/static/src/img/LogoFUV.png" style="max-height: 60px; max-width: 100%;"/>
+                                </td>
+                                <td style="width: 55%; border-right: 1px solid black; text-align: center; vertical-align: middle;">
+                                    <h2 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">
+                                        Hoja de Control de Documentos para Archivo
+                                    </h2>
+                                </td>
+                                <td style="width: 25%; padding: 5px; font-size: 11px; vertical-align: middle;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                        <strong>F.EMISIÓN:</strong> <span>2020-02-10</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                        <strong>Versión:</strong> <span>1</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <strong>Código:</strong> <span>FU-F-SGD-008</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="margin-bottom: 20px;">
+                            <div style="display: inline-block; border: 1px solid black; width: 200px; text-align: center;">
+                                <div style="display: flex; border-bottom: 1px solid black; background-color: #f0f0f0;">
+                                    <div style="flex: 1; border-right: 1px solid black; font-size: 11px; font-weight: bold; padding: 2px;">Día</div>
+                                    <div style="flex: 1; border-right: 1px solid black; font-size: 11px; font-weight: bold; padding: 2px;">Mes</div>
+                                    <div style="flex: 1; font-size: 11px; font-weight: bold; padding: 2px;">Año</div>
+                                </div>
+                                <div style="display: flex;">
+                                    <div style="flex: 1; border-right: 1px solid black; padding: 5px;">
+                                        <field name="dia_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="DD"/>
+                                    </div>
+                                    <div style="flex: 1; border-right: 1px solid black; padding: 5px;">
+                                        <field name="mes_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="MM"/>
+                                    </div>
+                                    <div style="flex: 1; padding: 5px;">
+                                        <field name="anio_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="AAAA"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                            <tr>
+                                <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                    Sección/ Subsección:
+                                </td>
+                                <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                    <field name="seccion_subseccion" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                    Serie/Subserie:
+                                </td>
+                                <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                    <field name="serie_subserie" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                    Asunto/ Expediente:
+                                </td>
+                                <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                    <field name="asunto_expediente" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <field name="fecha" invisible="1"/>
+                        <field name="workspace_id" invisible="1"/>
+                        <field name="firmado_elaboracion" invisible="1"/>
+                        <field name="firma_elaboracion_hash" invisible="1"/>
+                        <field name="log_elaboracion_id" invisible="1"/>
+                        
+                        <br/>
+
+                        <div style="border: 1px solid black;">
+                            <field name="linea_ids" widget="one2many">
+                                <tree editable="bottom" create="1" delete="1" style="width: 100%; border: none;">
+                                    <field name="dia" string="Día" width="50px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                    <field name="mes" string="Mes" width="50px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                    <field name="anio" string="Año" width="60px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                    <field name="tipo_documental" string="Tipos Documentales" style="border-right: 1px solid #ddd; font-weight: bold;"/>
+                                    <field name="numero_consecutivo" string="Numero Consecutivo" style="border-right: 1px solid #ddd;"/>
+                                    <field name="folios" string="N° paginas" style="text-align: center;"/>
+                                    <field name="folios_conteo" string="Folios" style="text-align: center;"/>
+                                </tree>
+                            </field>
+                        </div>
+
+                        <br/>
+
+                        <table style="width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 6px;">
+                            <tr>
+                                <td style="width: 180px; font-weight: bold; font-size: 13px; vertical-align: bottom; padding-left: 8px;">
+                                    Firma de Elaboración
+                                </td>
+                                <td style="width: 380px; border-bottom: 1px solid black; vertical-align: bottom; padding-left: 6px;">
+                                    <field name="firma_elaboracion" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                </td>
+                                <td style="width: auto; padding-left: 12px; white-space: nowrap; vertical-align: bottom;">
+                                    <span style="font-size: 12px; font-weight: bold; margin-right: 6px;">Firma electrónica</span>
+                                    <field name="firmado_elaboracion" nolabel="1" readonly="1"/>
+                                </td>
+                            </tr>
+                            <tr attrs="{'invisible': [('firmado_elaboracion', '=', False)]}">
+                                <td></td>
+                                <td colspan="2" style="font-size: 11px; color: #555; padding-left: 6px; padding-top: 0;">
+                                    Firma electrónica Ley 527 de 1999
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 180px; font-weight: bold; font-size: 13px; vertical-align: bottom; padding-left: 8px;">
+                                    Fecha de Elaboración
+                                </td>
+                                <td style="width: 220px; border-bottom: 1px solid black; vertical-align: bottom; padding-left: 6px;">
+                                    <field name="fecha_elaboracion" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                </td>
+                                <td style="width: auto;">
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <br/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_gd_wizard_message_form" model="ir.ui.view">
+        <field name="name">gestion.documental.wizard.message.form</field>
+        <field name="model">gestion.documental.wizard.message</field>
+        <field name="arch" type="xml">
+            <form string="Resultado de la Foliación">
+                <field name="message" readonly="1" nolabel="1" widget="html" options="{'style-inline': true}"/>
+                
+                <group>
+                    <field name="observaciones" 
+                           placeholder="Especifique el problema (ej. El archivo está corrupto, tiene contraseña, etc.)..." 
+                           nolabel="1" 
+                           colspan="2" 
+                           required="1"/>
+                </group>
+                
+                <footer>
+                    <button string="Reportar al Coordinador" name="action_reportar_y_cerrar" type="object" class="btn-primary" icon="fa-paper-plane"/>
+                    <button string="Cerrar sin reportar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_gd_reportar_wizard_form" model="ir.ui.view">
+        <field name="name">gestion.documental.report.wizard.form</field>
+        <field name="model">gestion.documental.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reportar Archivo">
+                <div class="alert alert-info" role="alert" style="margin-bottom: 15px;">
+                    Se enviará un correo al coordinador y asistentes del proyecto notificando problemas con este archivo.
+                </div>
+                <group>
+                    <field name="entry_id" options="{'no_open': True}"/>
+                    <field name="workspace_name" readonly="1" string="Ubicación"/>
+                </group>
+                <group>
+                    <field name="observaciones" placeholder="Especifique el problema (ej. El archivo está corrupto, tiene contraseña, etc.)..." nolabel="1" colspan="2"/>
+                </group>
+                <footer>
+                    <button string="Enviar Reporte" name="action_enviar_reporte" type="object" class="btn-danger" icon="fa-paper-plane"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,463 @@
+.o_entes_control_panel .o_form_sheet_bg,
+.o_entes_control_panel .o_form_sheet {
+    background: #eef3f7;
+}
+
+.o_entes_control_panel .o_form_sheet {
+    border: 0;
+    box-shadow: none;
+    max-width: 1180px;
+    padding: 24px;
+}
+
+.o_entes_panel_header {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #d7e2ec;
+    border-radius: 10px;
+    box-shadow: 0 14px 32px rgba(18, 38, 63, 0.08);
+    display: grid;
+    gap: 24px;
+    grid-template-columns: 230px 1fr;
+    margin-bottom: 18px;
+    padding: 24px;
+}
+
+.o_entes_panel_logo {
+    align-items: center;
+    background: #f7fafc;
+    border: 1px solid #e0e8f0;
+    border-radius: 10px;
+    display: flex;
+    height: 92px;
+    justify-content: center;
+    padding: 14px;
+}
+
+.o_entes_panel_logo img {
+    max-height: 58px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.o_entes_panel_heading h1 {
+    color: #13293d;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 8px;
+}
+
+.o_entes_panel_heading p,
+.o_entes_search_panel p,
+.o_entes_entity_card small {
+    color: #526476;
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.o_entes_search_panel {
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #d7e2ec;
+    border-left: 5px solid #0b7285;
+    border-radius: 10px;
+    box-shadow: 0 10px 26px rgba(18, 38, 63, 0.07);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 0.7fr 1.3fr;
+    margin-bottom: 18px;
+    padding: 20px;
+}
+
+.o_entes_search_panel h2 {
+    color: #13293d;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.o_entes_search_fields {
+    align-items: center;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(190px, 1fr) minmax(230px, 1fr) auto;
+}
+
+.o_entes_search_fields .o_field_widget input,
+.o_entes_search_fields input {
+    border: 1px solid #cbd8e3;
+    border-radius: 8px;
+    min-height: 38px;
+}
+
+.o_entes_entity_grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(4, minmax(170px, 1fr));
+}
+
+.o_entes_entity_card {
+    background: #ffffff;
+    border: 1px solid #d7e2ec;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(18, 38, 63, 0.06);
+    color: #13293d;
+    display: grid;
+    gap: 8px;
+    min-height: 152px;
+    padding: 16px;
+    text-align: left;
+    white-space: normal;
+}
+
+.o_entes_entity_card:hover {
+    border-color: #93a9bd;
+    box-shadow: 0 14px 30px rgba(18, 38, 63, 0.12);
+    transform: translateY(-2px);
+}
+
+.o_entes_entity_card i {
+    align-items: center;
+    border-radius: 8px;
+    display: flex;
+    font-size: 20px;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
+}
+
+.o_entes_entity_card span {
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.o_entes_entity_procuraduria { border-top: 4px solid #2563eb; }
+.o_entes_entity_contraloria { border-top: 4px solid #059669; }
+.o_entes_entity_dnp { border-top: 4px solid #dc2626; }
+.o_entes_entity_fiscalia { border-top: 4px solid #7c3aed; }
+.o_entes_entity_procuraduria i { background: #dbeafe; color: #1d4ed8; }
+.o_entes_entity_contraloria i { background: #d1fae5; color: #047857; }
+.o_entes_entity_dnp i { background: #fee2e2; color: #dc2626; }
+.o_entes_entity_fiscalia i { background: #ede9fe; color: #6d28d9; }
+
+.o_entes_panel_actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.o_entes_control_kanban .o_kanban_renderer {
+    background: #eef3f7;
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    padding: 16px;
+}
+
+.o_entes_control_kanban .o_kanban_record {
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+.o_entes_control_kanban .o_kanban_group,
+.o_entes_control_kanban .o_kanban_header,
+.o_entes_control_kanban .o_column_quick_create,
+.o_entes_control_kanban .o_kanban_add_column,
+.o_entes_control_kanban .o_kanban_quick_add,
+.o_entes_control_kanban .o_kanban_group_header .o_kanban_quick_add {
+    display: none !important;
+}
+
+.o_entes_case_card {
+    background: #ffffff;
+    border: 1px solid #d7e2ec;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(18, 38, 63, 0.08);
+    overflow: hidden;
+    width: 100%;
+}
+
+.o_entes_case_bar { height: 5px; }
+.o_entes_case_procuraduria .o_entes_case_bar { background: #2563eb; }
+.o_entes_case_contraloria .o_entes_case_bar { background: #059669; }
+.o_entes_case_dnp .o_entes_case_bar { background: #dc2626; }
+.o_entes_case_fiscalia .o_entes_case_bar { background: #7c3aed; }
+.o_entes_case_otros .o_entes_case_bar { background: #64748b; }
+
+.o_entes_case_body { padding: 13px; }
+
+.o_entes_case_head {
+    align-items: flex-start;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.o_entes_case_org,
+.o_entes_case_year {
+    background: #f1f5f9;
+    border-radius: 7px;
+    color: #334155;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
+    padding: 5px 7px;
+}
+
+.o_entes_case_org {
+    max-width: 205px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_entes_case_card h3 {
+    color: #13293d;
+    display: -webkit-box;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 10px 0;
+    max-height: 58px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.o_entes_case_rows {
+    display: grid;
+    gap: 7px;
+}
+
+.o_entes_case_rows div,
+.o_entes_case_update {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    min-width: 0;
+    padding: 8px;
+}
+
+.o_entes_field_label {
+    color: #66788a;
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.o_entes_case_rows strong {
+    color: #253858;
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.o_entes_case_update {
+    margin-top: 7px;
+}
+
+.o_entes_case_update p {
+    color: #42526e;
+    display: -webkit-box;
+    font-size: 12px;
+    line-height: 1.35;
+    margin: 0;
+    max-height: 64px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+@media (max-width: 1100px) {
+    .o_entes_entity_grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+
+@media (max-width: 760px) {
+    .o_entes_panel_header,
+    .o_entes_search_panel,
+    .o_entes_search_fields,
+    .o_entes_entity_grid {
+        grid-template-columns: 1fr;
+    }
+}
+.o_entes_informe_panel .o_form_sheet {
+    max-width: 1180px;
+}
+
+.o_entes_informe_panel .o_entes_report_panel {
+    display: grid;
+    grid-template-columns: minmax(260px, 1fr) minmax(220px, 0.8fr) minmax(180px, 0.7fr) auto;
+    gap: 24px;
+    align-items: start;
+    padding: 26px;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+}
+
+.o_entes_informe_panel .o_entes_report_panel h2 {
+    margin: 0 0 8px;
+    color: #102a43;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.o_entes_informe_panel .o_entes_report_panel p {
+    margin: 0;
+    color: #52606d;
+    line-height: 1.5;
+}
+
+.o_entes_informe_panel .o_entes_report_controls_full {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.8fr) auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.o_entes_informe_panel .o_entes_report_controls_full .o_field_widget,
+.o_entes_informe_panel .o_entes_report_controls_full input,
+.o_entes_informe_panel .o_entes_report_controls_full select {
+    width: 100%;
+    min-height: 38px;
+}
+
+.o_entes_informe_panel .o_entes_report_controls_full .btn-primary {
+    min-height: 38px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 7px;
+    background: #0b6bcb;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (max-width: 992px) {
+    .o_entes_informe_panel .o_entes_report_panel {
+        grid-template-columns: 1fr;
+    }
+
+    .o_entes_informe_panel .o_entes_report_controls_full {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .o_entes_informe_panel .o_entes_report_controls_full {
+        grid-template-columns: 1fr;
+    }
+}
+.o_entes_informe_panel .o_entes_filter_field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.o_entes_informe_panel .o_entes_filter_field label {
+    margin: 0;
+    color: #334e68;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.o_entes_informe_panel .o_entes_report_controls_full {
+    display: contents;
+}
+
+/* Limita columnas largas en DB Matriz; el dato completo aparece al pasar el cursor. */
+.o_entes_control_editable_tree .o_entes_limit_15,
+.o_entes_control_editable_tree td.o_entes_limit_15,
+.o_entes_control_editable_tree td[name="numero_proyecto_contrato"],
+.o_entes_control_editable_tree td[name="nombre_proyecto"],
+.o_entes_control_editable_tree td[name="organo_control"],
+.o_entes_control_editable_tree td[name="seccional"],
+.o_entes_control_editable_tree td[name="numero_radicado"],
+.o_entes_control_editable_tree td[name="delito"],
+.o_entes_control_editable_tree td[name="lugar_hechos"],
+.o_entes_control_editable_tree td[name="correo_contacto"],
+.o_entes_control_editable_tree td[name="etapa"],
+.o_entes_control_editable_tree td[name="hechos_investigados"],
+.o_entes_control_editable_tree td[name="investigador_responsable"],
+.o_entes_control_editable_tree td[name="ultima_actuacion"],
+.o_entes_control_editable_tree td[name="carpeta_direccion_juridica"] {
+    width: 15ch !important;
+    max-width: 15ch !important;
+    min-width: 15ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: middle;
+}
+
+.o_entes_control_editable_tree td.o_entes_limit_15 > *,
+.o_entes_control_editable_tree td[name="numero_proyecto_contrato"] > *,
+.o_entes_control_editable_tree td[name="nombre_proyecto"] > *,
+.o_entes_control_editable_tree td[name="organo_control"] > *,
+.o_entes_control_editable_tree td[name="seccional"] > *,
+.o_entes_control_editable_tree td[name="numero_radicado"] > *,
+.o_entes_control_editable_tree td[name="delito"] > *,
+.o_entes_control_editable_tree td[name="lugar_hechos"] > *,
+.o_entes_control_editable_tree td[name="correo_contacto"] > *,
+.o_entes_control_editable_tree td[name="etapa"] > *,
+.o_entes_control_editable_tree td[name="hechos_investigados"] > *,
+.o_entes_control_editable_tree td[name="investigador_responsable"] > *,
+.o_entes_control_editable_tree td[name="ultima_actuacion"] > *,
+.o_entes_control_editable_tree td[name="carpeta_direccion_juridica"] > * {
+    display: block !important;
+    max-width: 15ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.o_entes_control_editable_tree .o_entes_limit_15:hover,
+.o_entes_control_editable_tree td.o_entes_limit_15:hover,
+.o_entes_control_editable_tree td[name="numero_proyecto_contrato"]:hover,
+.o_entes_control_editable_tree td[name="nombre_proyecto"]:hover,
+.o_entes_control_editable_tree td[name="organo_control"]:hover,
+.o_entes_control_editable_tree td[name="seccional"]:hover,
+.o_entes_control_editable_tree td[name="numero_radicado"]:hover,
+.o_entes_control_editable_tree td[name="delito"]:hover,
+.o_entes_control_editable_tree td[name="lugar_hechos"]:hover,
+.o_entes_control_editable_tree td[name="correo_contacto"]:hover,
+.o_entes_control_editable_tree td[name="etapa"]:hover,
+.o_entes_control_editable_tree td[name="hechos_investigados"]:hover,
+.o_entes_control_editable_tree td[name="investigador_responsable"]:hover,
+.o_entes_control_editable_tree td[name="ultima_actuacion"]:hover,
+.o_entes_control_editable_tree td[name="carpeta_direccion_juridica"]:hover {
+    position: relative;
+    z-index: 20;
+    max-width: 42ch;
+    min-width: 32ch;
+    overflow: visible;
+    white-space: normal;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+}
+
+.o_entes_control_editable_tree td.o_entes_limit_15:hover > *,
+.o_entes_control_editable_tree td[name="numero_proyecto_contrato"]:hover > *,
+.o_entes_control_editable_tree td[name="nombre_proyecto"]:hover > *,
+.o_entes_control_editable_tree td[name="organo_control"]:hover > *,
+.o_entes_control_editable_tree td[name="seccional"]:hover > *,
+.o_entes_control_editable_tree td[name="numero_radicado"]:hover > *,
+.o_entes_control_editable_tree td[name="delito"]:hover > *,
+.o_entes_control_editable_tree td[name="lugar_hechos"]:hover > *,
+.o_entes_control_editable_tree td[name="correo_contacto"]:hover > *,
+.o_entes_control_editable_tree td[name="etapa"]:hover > *,
+.o_entes_control_editable_tree td[name="hechos_investigados"]:hover > *,
+.o_entes_control_editable_tree td[name="investigador_responsable"]:hover > *,
+.o_entes_control_editable_tree td[name="ultima_actuacion"]:hover > *,
+.o_entes_control_editable_tree td[name="carpeta_direccion_juridica"]:hover > * {
+    max-width: 42ch !important;
+    overflow: visible !important;
+    white-space: normal !important;
+}

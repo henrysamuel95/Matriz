@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_contrataciones_sgr_kanban" model="ir.ui.view">
+        <field name="name">contrataciones.sgr.kanban</field>
+        <field name="model">contrataciones_sgr</field>
+        <field name="arch" type="xml">
+            <kanban class="contrataciones_sgr_kanban" js_class="contrataciones_sgr_kanban" default_group_by="estado_contratacion"
+                    records_draggable="false" quick_create="false" group_create="false">
+                <field name="name"/>
+                <field name="bpin"/>
+                <field name="select_persona"/>
+                <field name="proyecto_relacionado"/>
+                <field name="estado_contratacion"/>
+                <field name="fecha_iniciacion"/>
+                <field name="fecha_terminacion"/>
+                <field name="valor_total_contrato"/>
+                <field name="currency_id"/>
+                <field name="sgr_polizas_cargadas"/>
+                <field name="sgr_usuario_asignado_id"/>
+                <field name="create_uid"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click sgr-kanban-card">
+                            <div class="sgr-kanban-card__status">
+                                <widget name="estado_contratacion_sgr_compacto_kanban"/>
+                            </div>
+                            <div class="sgr-kanban-card__header">
+                                <img src="/Matriz/static/src/img/Go-S-F.png" alt=""/>
+                                <strong t-att-title="record.name.value"><field name="name"/></strong>
+                            </div>
+                            <div class="sgr-kanban-card__body">
+                                <div class="sgr-kanban-card__detail">
+                                    <span class="sgr-kanban-card__label">Proyecto</span>
+                                    <strong t-att-title="record.proyecto_relacionado.value">
+                                        <field name="proyecto_relacionado"/>
+                                    </strong>
+                                </div>
+                                <div class="sgr-kanban-card__detail">
+                                    <span class="sgr-kanban-card__label">Contratista / proveedor</span>
+                                    <strong t-if="record.select_persona.raw_value"><field name="select_persona"/></strong>
+                                    <span t-else="" class="sgr-kanban-card__empty">Tipo de persona pendiente</span>
+                                </div>
+                                <div t-if="record.bpin.raw_value" class="sgr-kanban-card__reference">
+                                    <span>BPIN</span><field name="bpin"/>
+                                </div>
+                                <div class="sgr-kanban-card__dates">
+                                    <div>
+                                        <span><i class="fa fa-play-circle"/> Iniciación</span>
+                                        <strong t-if="record.fecha_iniciacion.raw_value"><field name="fecha_iniciacion"/></strong>
+                                        <span t-else="" class="sgr-kanban-card__empty">Pendiente</span>
+                                    </div>
+                                    <div>
+                                        <span><i class="fa fa-flag-checkered"/> Terminación</span>
+                                        <strong t-if="record.fecha_terminacion.raw_value"><field name="fecha_terminacion"/></strong>
+                                        <span t-else="" class="sgr-kanban-card__empty">Pendiente</span>
+                                    </div>
+                                </div>
+                                <div class="sgr-kanban-card__value">
+                                    <span><i class="fa fa-file-text-o"/> Valor contrato</span>
+                                    <strong><field name="valor_total_contrato" widget="monetary" options="{'currency_field': 'currency_id'}"/></strong>
+                                </div>
+                                <div t-if="record.sgr_polizas_cargadas.raw_value &gt; 0"
+                                     class="sgr-kanban-card__polizas"
+                                     title="Pólizas con documento cargado en Drive">
+                                    <span><i class="fa fa-shield me-1" aria-hidden="true"/>Póliza</span>
+                                    <strong t-esc="record.sgr_polizas_cargadas.raw_value"/>
+                                </div>
+                            </div>
+                            <div class="sgr-kanban-card__footer">
+                                <t t-if="record.sgr_usuario_asignado_id.raw_value">
+                                    <span>Asignado a</span>
+                                    <field name="sgr_usuario_asignado_id" widget="many2one_avatar_user"/>
+                                </t>
+                                <t t-else="">
+                                    <span>Creado por</span>
+                                    <field name="create_uid" widget="many2one_avatar_user"/>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_sgr_tree" model="ir.ui.view">
+        <field name="name">contrataciones.sgr.tree</field>
+        <field name="model">contrataciones_sgr</field>
+        <field name="arch" type="xml">
+            <tree string="Contrataciones de Regalías">
+                <field name="name"/>
+                <field name="bpin"/>
+                <field name="select_persona"/>
+                <field name="contratista_proveedor_relacionado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_sgr_documento_soporte_tree" model="ir.ui.view">
+        <field name="name">contrataciones.sgr.documento.soporte.tree</field>
+        <field name="model">contrataciones_sgr.documento</field>
+        <field name="arch" type="xml">
+            <tree string="Relaciones documentales SGR" create="false" edit="false" delete="false">
+                <field name="sequence" string="#"/>
+                <field name="categoria"/>
+                <field name="name"/>
+                <field name="estado"/>
+                <field name="archivo_nombre"/>
+                <field name="drive_record_id"/>
+                <field name="drive_id"/>
+                <field name="fecha_carga"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_sgr_documento_soporte_form" model="ir.ui.view">
+        <field name="name">contrataciones.sgr.documento.soporte.form</field>
+        <field name="model">contrataciones_sgr.documento</field>
+        <field name="arch" type="xml">
+            <form string="Relación documental SGR" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <field name="contratacion_id"/>
+                        <field name="categoria"/>
+                        <field name="sequence"/>
+                        <field name="codigo"/>
+                        <field name="name"/>
+                        <field name="condicion"/>
+                        <field name="estado"/>
+                        <field name="archivo_nombre"/>
+                        <field name="drive_record_id"/>
+                        <field name="drive_id"/>
+                        <field name="drive_url"/>
+                        <field name="fecha_carga"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_sgr_form" model="ir.ui.view">
+        <field name="name">contrataciones.sgr.form</field>
+        <field name="model">contrataciones_sgr</field>
+        <field name="arch" type="xml">
+            <form string="Contratación de Regalías" class="sgr-contract-form">
+                <header class="mi_header_fijo fc-fuv-header sgr-contract-header">
+                    <div class="custom-value-header-full-width single-row-layout">
+                        <div class="valor-box saldo-produccion">
+                            <strong>Saldo disponible (Producción):</strong>
+                            <field name="sgr_disponible_produccion" decoration-danger="sgr_disponible_produccion &lt;= 0"/>
+                            <i class="fa fa-check-circle sgr-fund-marker" title="Fondo seleccionado" aria-label="Fondo seleccionado" attrs="{'invisible': [('select_fondos', '!=', 'es_produccion')]}"/>
+                        </div>
+                        <div class="valor-box saldo-personal">
+                            <strong>Saldo disponible (Costos FUV):</strong>
+                            <field name="sgr_disponible_costos_fuv" decoration-danger="sgr_disponible_costos_fuv &lt;= 0"/>
+                            <i class="fa fa-check-circle sgr-fund-marker" title="Fondo seleccionado" aria-label="Fondo seleccionado" attrs="{'invisible': [('select_fondos', '!=', 'es_personal_fuv')]}"/>
+                        </div>
+                        <div class="valor-box saldo-vco">
+                            <strong>Saldo disponible (Contratos VCO):</strong>
+                            <field name="sgr_disponible_vco" decoration-danger="sgr_disponible_vco &lt;= 0"/>
+                            <i class="fa fa-check-circle sgr-fund-marker" title="Fondo seleccionado" aria-label="Fondo seleccionado" attrs="{'invisible': [('select_fondos', '!=', 'contratos_vco')]}"/>
+                        </div>
+                    </div>
+                    <div class="fc-fuv-header__toolbar">
+                        <div>
+                            <field name="estado_contratacion" widget="estado_contratacion_sgr_compacto"/>
+                            <div class="sgr-flow-assignment" attrs="{'invisible': [('sgr_usuario_asignado_id', '=', False)]}">
+                                Asignado a <field name="sgr_usuario_asignado_id" readonly="1" nolabel="1"/>
+                            </div>
+                        </div>
+                        <div class="fc-fuv-header__actions">
+                            <field name="solicitud_poliza_ultima_id" invisible="1"/>
+                            <field name="registro_guardado_para_poliza" invisible="1"/>
+                            <field name="puede_solicitar_poliza_guardada" invisible="1"/>
+                            <button name="action_solicitar_poliza" type="object"
+                                    string="Solicitar póliza" icon="fa-shield" class="btn btn-primary fc-header-action-btn"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico"
+                                    attrs="{'invisible': ['|', '|', ('registro_guardado_para_poliza', '=', False), ('puede_solicitar_poliza_guardada', '=', False), ('solicitud_poliza_ultima_id', '!=', False)]}"/>
+                            <button name="action_view_solicitud_poliza" type="object"
+                                    string="Ver póliza" icon="fa-shield" class="btn btn-primary fc-header-action-btn"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico,Matriz.group_soporte"
+                                    attrs="{'invisible': [('solicitud_poliza_ultima_id', '=', False)]}"/>
+                            <div class="fc-contract-support-menu" groups="Matriz.group_soporte">
+                                <details>
+                                    <summary>Soporte <i class="fa fa-chevron-down" aria-hidden="true"/></summary>
+                                    <div class="fc-contract-support-grid">
+                                        <button name="action_soporte_diagnosticar_flujo_sgr" type="object"
+                                                string="Diagnosticar flujo" icon="fa-stethoscope"
+                                                class="btn btn-secondary"/>
+                                        <button name="action_soporte_cambiar_estado_sgr" type="object"
+                                                string="Cambiar estado" icon="fa-random"
+                                                class="btn btn-danger"/>
+                                        <button name="action_solicitar_poliza_soporte" type="object"
+                                                string="Solicitar pólizas" icon="fa-shield"
+                                                class="btn btn-secondary"/>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <sheet>
+                    <div class="sgr-form-ribbon">
+                        <div class="sgr-form-ribbon__band"><field name="estado_contratacion" nolabel="1" readonly="1"/></div>
+                    </div>
+                    <field name="sgr_estado_retorno_devolucion" invisible="1"/>
+                    <field name="fecha_firma_contrato_sgr" invisible="1"/>
+                    <field name="sgr_puede_actuar" invisible="1"/>
+                    <field name="sgr_disponible_contratos" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                    <field name="drive_file_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="polizas_fname" invisible="1"/>
+                    <field name="contratos_firmado_doc_fname" invisible="1"/>
+                    <field name="tarjeta_profesional_doc_fname" invisible="1"/>
+                    <field name="su_cdp_doc_fname" invisible="1"/>
+                    <field name="cdp_doc_fname" invisible="1"/>
+                    <field name="anexo_tributario_doc_fname" invisible="1"/>
+                    <field name="Documento_de_identidad_contador_doc_fname" invisible="1"/>
+                    <field name="anexo_tributario_juridico_doc_fname" invisible="1"/>
+                    <field name="formato_fuv_ju_doc_fname" invisible="1"/>
+                    <field name="Tarjeta_profesional_revisor_fiscal_doc_fname" invisible="1"/>
+                    <field name="declaracion_juramentada_doc_fname" invisible="1"/>
+                    <field name="contratos_doc_fname" invisible="1"/>
+                    <field name="bdd_ju_doc_fname" invisible="1"/>
+                    <field name="formato_fuv_doc_fname" invisible="1"/>
+                    <field name="acta_inicio_doc_fname" invisible="1"/>
+                    <field name="certificacion_inhabilidades_doc_fname" invisible="1"/>
+                    <field name="cert_inhabilidades_doc_fname" invisible="1"/>
+                    <field name="documentos_preparados" invisible="1"/>
+                    <field name="estudio_previo_word" invisible="1"/>
+                    <field name="estudio_previo_word_nombre" invisible="1"/>
+                    <div class="sgr-form-cover">
+                        <div class="sgr-form-cover__heading">
+                            <div class="sgr-form-cover__brand">
+                                <img src="/Matriz/static/src/img/logo_fundacion_univalle_horizontal_color.jpg" alt="Fundación Univalle"/>
+                                <span>Proyectamos futuro</span>
+                            </div>
+                            <h1>FORMULARIO DE SOLICITUD DE CONTRATACIÓN SGR</h1>
+                            <div class="sgr-form-cover__program">REGALÍAS</div>
+                        </div>
+                        <div class="sgr-form-cover__fields">
+                            <div class="sgr-field sgr-field--with-help">
+                                <label for="select_fondos" string="Seleccionar fondo para contratar"/>
+                                <field name="select_fondos" nolabel="1" required="1"/>
+                                <span class="sgr-field-help" tabindex="0" role="img" aria-label="Los saldos disponibles de SGR parten de la MCB del proyecto: Producción, Costos FUV o Contratos VCO, según el fondo. Se ajustan con los compromisos y movimientos del proyecto." title="Los saldos disponibles de SGR parten de la MCB del proyecto: Producción, Costos FUV o Contratos VCO, según el fondo. Se ajustan con los compromisos y movimientos del proyecto."><i class="fa fa-info-circle" aria-hidden="true"/></span>
+                            </div>
+                            <div class="sgr-field sgr-field--with-help">
+                                <label for="select_persona" string="Seleccione persona"/>
+                                <field name="select_persona" nolabel="1" required="1"/>
+                                <span class="sgr-field-help" tabindex="0" role="img" aria-label="El tipo de persona define los campos y documentos de SGR y filtra los contratistas disponibles. No cambia el saldo del fondo seleccionado." title="El tipo de persona define los campos y documentos de SGR y filtra los contratistas disponibles. No cambia el saldo del fondo seleccionado."><i class="fa fa-info-circle" aria-hidden="true"/></span>
+                            </div>
+                            <div class="sgr-field"><label for="proyecto_relacionado" string="Proyecto relacionado"/><field name="proyecto_relacionado" nolabel="1" readonly="1" options="{'no_open': True, 'no_create': True, 'no_create_edit': True}"/></div>
+                        </div>
+                    </div>
+                    <div class="sgr-form-body" attrs="{'invisible': ['|', ('select_fondos', '=', False), ('select_persona', '=', False)]}">
+                    <div class="sgr-contract-modes">
+                        <div class="sgr-contract-mode">
+                            <i class="fa fa-file-text-o"/>
+                            <field name="contrato_nuevo" nolabel="1"/>
+                            <label for="contrato_nuevo" string="Contrato nuevo"/>
+                        </div>
+                        <div class="sgr-contract-mode">
+                            <i class="fa fa-unlock-alt"/>
+                            <field name="otro_si" nolabel="1" attrs="{'readonly': [('estado_contratacion', '!=', 'contratado')]}"/>
+                            <label for="otro_si" string="Activar otrosí en contrato"/>
+                        </div>
+                    </div>
+                    <div class="sgr-section" attrs="{'invisible': [('otro_si', '=', False)]}">
+                        <div class="sgr-section__title">Otrosíes del contrato</div>
+                        <button name="action_nuevo_otrosi_sgr" type="object" string="Nuevo otrosí"
+                                icon="fa-plus" class="btn btn-primary"
+                                attrs="{'invisible': [('estado_contratacion', '!=', 'contratado')]}"/>
+                        <field name="otrosi_sgr_ids" nolabel="1" readonly="1"/>
+                    </div>
+                    <div class="sgr-section">
+                        <div class="sgr-section__title">Información de la solicitud</div>
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field"><label for="nombre_solicitante3" string="Nombre del solicitante"/><field name="nombre_solicitante3" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="dependencia_area_solicitante" string="Dependencia / área solicitante"/><field name="dependencia_area_solicitante" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="objeto_contrato" string="Objeto del contrato"/><field name="objeto_contrato" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="justificacion_solicitud" string="Justificación de la solicitud"/><field name="justificacion_solicitud" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="proyecto_convenio_id" string="Proyecto o convenio"/><field name="proyecto_convenio_id" nolabel="1" readonly="1" options="{'no_open': True, 'no_create': True, 'no_create_edit': True, 'no_quick_create': True}"/></div>
+                        </div>
+                    </div>
+                    <div class="sgr-section">
+                        <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', False)]}">FORMULARIO DE CONTRATACIÓN</div>
+                        <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">FORMULARIO DE CONTRATACIÓN PERSONA NATURAL</div>
+                        <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}">FORMULARIO DE CONTRATACIÓN PERSONA JURÍDICA</div>
+                        <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', 'contrato_laboral')]}">FORMULARIO DE CONTRATACIÓN CONTRATO LABORAL</div>
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field sgr-field--primary"><label for="contratista_proveedor_relacionado" string="Contratista o proveedor"/><field name="contratista_proveedor_relacionado" nolabel="1" required="1"/></div>
+                            <div class="sgr-field"><label for="bpin" string="BPIN"/><field name="bpin" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="nombre_contratista" string="Nombre del contratista"/><field name="nombre_contratista" nolabel="1" attrs="{'readonly': [('contratista_proveedor_relacionado', '!=', False)]}"/></div>
+                            <div class="sgr-field"><label for="tipo_contrato_id" string="Tipo de contrato"/><field name="tipo_contrato_id" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="fecha_solicitud" string="Fecha de solicitud"/><field name="fecha_solicitud" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="fecha_acta_inicio_sgr" string="Fecha del acta de inicio"/><field name="fecha_acta_inicio_sgr" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="fecha_iniciacion" string="Fecha de inicio del contrato"/><field name="fecha_iniciacion" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="fecha_terminacion" string="Fecha de terminación"/><field name="fecha_terminacion" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="duracion" string="Duración"/><field name="duracion" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field sgr-field--amount"><label for="valor_total_contrato" string="Valor total del contrato"/><field name="valor_total_contrato" nolabel="1" options="{'no_symbol': True}"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="perfil_profesional_estudio_previo" string="Perfil profesional para estudio previo"/><field name="perfil_profesional_estudio_previo" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="experiencia_requerida_estudio_previo" string="Experiencia requerida para estudio previo"/><field name="experiencia_requerida_estudio_previo" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="perfil_secop" string="Perfil SECOP (opcional)"/><field name="perfil_secop" nolabel="1"/></div>
+                        </div>
+                        <div class="sgr-field-grid" attrs="{'invisible': [('select_persona', 'not in', ['persona_natural', 'persona_juridica'])]}" groups="Matriz.group_soporte,Matriz.group_contratacion_juridico">
+                            <div class="sgr-field"><label for="id_del_contrato" string="Número del contrato"/><field name="id_del_contrato" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_cdp_numero" string="Número de CDP SGR"/><field name="sgr_cdp_numero" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_cdp_fecha" string="Fecha del CDP SGR"/><field name="sgr_cdp_fecha" nolabel="1"/></div>
+                        </div>
+                        <div class="sgr-field-grid" attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}" groups="Matriz.group_soporte,Matriz.group_contratacion_juridico">
+                            <div class="sgr-field sgr-field--wide"><label for="sgr_pj_consideraciones" string="Consideraciones contractuales"/><field name="sgr_pj_consideraciones" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide"><label for="sgr_pj_unspsc" string="Clasificador UNSPSC"/><field name="sgr_pj_unspsc" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_pj_convocatoria" string="Convocatoria"/><field name="sgr_pj_convocatoria" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_pj_lugar_ejecucion" string="Lugar específico de ejecución"/><field name="sgr_pj_lugar_ejecucion" nolabel="1"/></div>
+                        </div>
+                        <div class="sgr-person-details sgr-person-details--natural" attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field"><label for="documento_identidad" string="Documento de identidad"/><field name="documento_identidad" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="expedicion_contra_N" string="Fecha de expedición"/><field name="expedicion_contra_N" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="ciudad_contratista" string="Ciudad de expedición"/><field name="ciudad_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="direccion_contratista" string="Dirección"/><field name="direccion_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="correo" string="Correo electrónico"/><field name="correo" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="telefono_contratista" string="Teléfono/Celular"/><field name="telefono_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="nivel_academico2" string="Nivel académico"/><field name="nivel_academico2" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="titulo_id" string="Título académico"/><field name="titulo_id" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--experience"><label for="experiencia_garantizada" string="Experiencia del contratista verificada"/><field name="experiencia_garantizada" nolabel="1" widget="boolean_toggle"/></div>
+                        </div>
+                    </div>
+                        <div class="sgr-person-details" attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}">
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field"><label for="razon_social" string="Razón social"/><field name="razon_social" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="nit" string="NIT"/><field name="nit" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="fecha_impresion_cc" string="Fecha impresión cámara de comercio"/><field name="fecha_impresion_cc" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="ciudad_oficina_principal" string="Ciudad de oficina principal"/><field name="ciudad_oficina_principal" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="direccion_contratista" string="Dirección"/><field name="direccion_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="correo" string="Correo electrónico"/><field name="correo" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="telefono_contratista" string="Teléfono/Celular"/><field name="telefono_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="r_legal" string="Representante legal"/><field name="r_legal" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="cedula_representante_legal" string="Cédula del representante legal"/><field name="cedula_representante_legal" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="fecha_ciudad_expedicion_contra" string="Fecha de expedición del documento"/><field name="fecha_ciudad_expedicion_contra" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="ciudad_contratista" string="Ciudad de expedición"/><field name="ciudad_contratista" nolabel="1" readonly="1"/></div>
+                        </div>
+                    </div>
+                        <div class="sgr-person-details" attrs="{'invisible': [('select_persona', '!=', 'contrato_laboral')]}">
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field"><label for="documento_identidad" string="Documento de identidad"/><field name="documento_identidad" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="expedicion_contra_N" string="Fecha de expedición"/><field name="expedicion_contra_N" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="ciudad_contratista" string="Ciudad de expedición"/><field name="ciudad_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="direccion_contratista" string="Dirección"/><field name="direccion_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="correo" string="Correo electrónico"/><field name="correo" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="telefono_contratista" string="Teléfono/Celular"/><field name="telefono_contratista" nolabel="1" readonly="1"/></div>
+                            <div class="sgr-field"><label for="nivel_academico2" string="Nivel académico"/><field name="nivel_academico2" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="titulo_id" string="Título académico"/><field name="titulo_id" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="salario_basico_total" string="Salario básico"/><field name="salario_basico_total" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="seguridad_social" string="Seguridad social"/><field name="seguridad_social" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="prestaciones_sociales" string="Prestaciones sociales"/><field name="prestaciones_sociales" nolabel="1"/></div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="sgr-section" attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}" groups="Matriz.group_soporte,Matriz.group_contratacion_juridico">
+                        <div class="sgr-section__title">Datos del estudio previo SGR</div>
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field sgr-field--wide"><label for="sgr_ep_designacion" string="Designación SGR"/><field name="sgr_ep_designacion" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_ep_lugar_ejecucion" string="Lugar de ejecución"/><field name="sgr_ep_lugar_ejecucion" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_ep_proyectado_por" string="Proyectado por"/><field name="sgr_ep_proyectado_por" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="sgr_ep_revisado_por" string="Revisado por"/><field name="sgr_ep_revisado_por" nolabel="1"/></div>
+                        </div>
+                    </div>
+                    <div class="sgr-section">
+                        <div class="sgr-field"><label for="forma_pago" string="Forma de pago"/><field name="forma_pago" nolabel="1"/></div>
+                        <div class="sgr-section__title sgr-section__title--payment">Tabla para formas de pagos</div>
+                        <div class="sgr-field sgr-field--count"><label for="numero_de_cuotas" string="Digitar número de cuotas"/><field name="numero_de_cuotas" nolabel="1"/></div>
+                        <div class="sgr-table-scroll">
+                            <field name="tabla_de_forma_de_pago" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="numero_de_pagos" string="# Pagos" readonly="1"/>
+                                    <field name="cantidad_de_dinero" string="Cantidad de dinero"/>
+                                    <field name="pago" string="% Pago" readonly="1"/>
+                                    <field name="porcentaje_acumulado" string="% Acumulado" readonly="1"/>
+                                    <field name="tecnico" string="% Técnico"/>
+                                    <field name="condicion" string="Observaciones"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <div class="sgr-payment-totals">
+                            <div><span>Total % de pago:</span><field name="total_pago_porcentaje" nolabel="1" readonly="1"/></div>
+                            <div><span>Monto total:</span><field name="total_de_cantidad_de_dinero" nolabel="1" readonly="1"/></div>
+                            <div><span>Total porcentaje técnico:</span><field name="total_porcentaje_tecnico" nolabel="1" readonly="1"/></div>
+                        </div>
+                        <div class="sgr-field sgr-activities" attrs="{'invisible': [('select_persona', '=', 'persona_juridica')]}"><label for="actividades_especificas_natu" string="Actividades específicas"/><field name="actividades_especificas_natu" nolabel="1"/></div>
+                        <div class="sgr-field sgr-activities" attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}"><label for="actividades_especificas" string="Actividades específicas"/><field name="actividades_especificas" nolabel="1"/></div>
+                    </div>
+                    <div class="sgr-section">
+                        <div class="sgr-section__title sgr-tax-title"><i class="fa fa-info-circle"/> Información tributaria y presupuestal</div>
+                        <div class="sgr-tax-grid">
+                            <div class="sgr-tax-column">
+                                <div class="sgr-field"><label for="mcb_centro_costo" string="Unidad de negocio"/><field name="mcb_centro_costo" nolabel="1" readonly="1"/></div>
+                                <div class="sgr-field sgr-tax-option"><label for="f_electronica" string="Facturación electrónica"/><field name="f_electronica" nolabel="1" widget="boolean_toggle"/></div>
+                            </div>
+                            <div class="sgr-tax-column">
+                                <div class="sgr-field"><label for="codigo_ciiu" string="Código CIIU"/><field name="codigo_ciiu" nolabel="1"/></div>
+                                <div class="sgr-field sgr-tax-option"><label for="r_iva" string="Responsable de IVA"/><field name="r_iva" nolabel="1" widget="boolean_toggle"/></div>
+                            </div>
+                            <div class="sgr-tax-column">
+                                <div class="sgr-field"><label for="compromiso_presupuestal" string="RPC"/><field name="compromiso_presupuestal" nolabel="1"/></div>
+                                <div class="sgr-field sgr-tax-option"><label for="no_r_iva" string="No responsable de IVA"/><field name="no_r_iva" nolabel="1" widget="boolean_toggle"/></div>
+                            </div>
+                        </div>
+                        <div class="sgr-tax-details">
+                            <div class="sgr-field"><label for="declaracion_renta" string="Declaración de renta"/><field name="declaracion_renta" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="regimen_simple_tributacion" string="Régimen Simple"/><field name="regimen_simple_tributacion" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="regimen_especial" string="Régimen especial"/><field name="regimen_especial" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="regimen_ordinario" string="Régimen ordinario"/><field name="regimen_ordinario" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="no_disponibilidad_presupuestal" string="Disponibilidad presupuestal"/><field name="no_disponibilidad_presupuestal" nolabel="1"/></div>
+                            <div class="sgr-field"><label for="fecha_cdp_d" string="Fecha de disponibilidad"/><field name="fecha_cdp_d" nolabel="1"/></div>
+                        </div>
+                    </div>
+                    <div class="sgr-section">
+                        <div class="sgr-table-scroll">
+                            <field name="departamentos_y_municipios_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="departamentos" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="municipios2" options="{'no_create': True, 'no_open': True}"/>
+                                </tree>
+                            </field>
+                        </div>
+                    </div>
+                    <div class="sgr-section sgr-documents-section" attrs="{'invisible': [('select_persona', 'not in', ['persona_natural', 'contrato_laboral'])]}">
+                        <div class="sgr-documents-heading">
+                            <div>
+                                <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">Documentación anexa · Persona natural</div>
+                                <div class="sgr-section__title" attrs="{'invisible': [('select_persona', '!=', 'contrato_laboral')]}">Documentación anexa · Contrato laboral</div>
+                            </div>
+                            <button name="action_actualizar_documentos_proveedor" type="object" string="Traer documentos faltantes" icon="fa-refresh" class="btn btn-primary sgr-document-command" attrs="{'invisible': ['|', ('contratista_proveedor_relacionado', '=', False), ('drive_file_id', '=', False)]}"/>
+                            <button name="action_ver_relaciones_documentales" type="object" string="Relaciones documentales" icon="fa-link" class="btn btn-primary sgr-document-command" groups="Matriz.group_soporte" attrs="{'invisible': [('drive_file_id', '=', False)]}"/>
+                        </div>
+                        <div class="sgr-document-save-note" attrs="{'invisible': [('drive_file_id', '!=', False)]}">
+                            Guarda la contratación para habilitar la carga en Drive.
+                        </div>
+                        <field name="documentos_natural_preview" widget="html" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('drive_file_id', '!=', False)]}"/>
+                        <field name="documentos_natural_ids" nolabel="1" class="sgr-document-list" domain="[('categoria', '=', 'pn')]"
+                               attrs="{'invisible': [('drive_file_id', '=', False)]}">
+                            <tree create="false" delete="false">
+                                <field name="sequence" string="#" readonly="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="condicion" readonly="1"/>
+                                <field name="drive_id" invisible="1"/>
+                                <button name="action_subir_documento" type="object" string="Suba su archivo" icon="fa-upload" class="oe_highlight custom_drive_button sgr-document-upload" attrs="{'invisible': [('drive_id', '!=', False)]}"/>
+                                <button name="action_ver_documento" type="object" string="Ver documento" icon="fa-file-text" class="documento-button sgr-document-view" attrs="{'invisible': [('drive_id', '=', False)]}"/>
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="sgr-section sgr-documents-section" attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}">
+                        <div class="sgr-documents-heading">
+                            <div>
+                                <div class="sgr-section__title">Documentación anexa · Persona jurídica</div>
+                            </div>
+                            <button name="action_actualizar_documentos_proveedor" type="object" string="Traer documentos faltantes" icon="fa-refresh" class="btn btn-primary sgr-document-command" attrs="{'invisible': ['|', ('contratista_proveedor_relacionado', '=', False), ('drive_file_id', '=', False)]}"/>
+                            <button name="action_ver_relaciones_documentales" type="object" string="Relaciones documentales" icon="fa-link" class="btn btn-primary sgr-document-command" groups="Matriz.group_soporte" attrs="{'invisible': [('drive_file_id', '=', False)]}"/>
+                        </div>
+                        <div class="sgr-document-save-note" attrs="{'invisible': [('drive_file_id', '!=', False)]}">
+                            Guarda la contratación para habilitar la carga en Drive.
+                        </div>
+                        <field name="documentos_juridica_preview" widget="html" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('drive_file_id', '!=', False)]}"/>
+                        <field name="documentos_juridica_ids" nolabel="1" class="sgr-document-list" domain="[('categoria', '=', 'pj')]"
+                               attrs="{'invisible': [('drive_file_id', '=', False)]}">
+                            <tree create="false" delete="false">
+                                <field name="sequence" string="#" readonly="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="condicion" readonly="1"/>
+                                <field name="drive_id" invisible="1"/>
+                                <button name="action_subir_documento" type="object" string="Suba su archivo" icon="fa-upload" class="oe_highlight custom_drive_button sgr-document-upload" attrs="{'invisible': [('drive_id', '!=', False)]}"/>
+                                <button name="action_ver_documento" type="object" string="Ver documento" icon="fa-file-text" class="documento-button sgr-document-view" attrs="{'invisible': [('drive_id', '=', False)]}"/>
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="sgr-section sgr-documents-section">
+                        <div class="sgr-documents-heading">
+                            <div class="sgr-section__title">Soportes del contrato</div>
+                        </div>
+                        <div class="sgr-document-save-note" attrs="{'invisible': [('drive_file_id', '!=', False)]}">
+                            Guarda la contratación para habilitar la carga en Drive.
+                        </div>
+                        <field name="documentos_soporte_preview" widget="html" class="sgr-support-list" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('drive_file_id', '!=', False)]}"/>
+                        <field name="documentos_soporte_ids" nolabel="1" class="sgr-document-list sgr-support-list" domain="[('categoria', '=', 'soporte')]"
+                               attrs="{'invisible': [('drive_file_id', '=', False)]}">
+                            <tree create="false" delete="false">
+                                <field name="sequence" string="#" readonly="1"/>
+                                <field name="name" readonly="1"/>
+                                <field name="drive_id" invisible="1"/>
+                                <button name="action_subir_documento" type="object" string="Suba su archivo" icon="fa-upload" class="oe_highlight custom_drive_button sgr-document-upload" attrs="{'invisible': [('drive_id', '!=', False)]}"/>
+                                <button name="action_ver_documento" type="object" string="Ver documento" icon="fa-file-text" class="documento-button sgr-document-view" attrs="{'invisible': [('drive_id', '=', False)]}"/>
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="sgr-section"
+                         groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_sgr_juridico_secop,Matriz.group_contratacion_recursos">
+                        <div class="sgr-section__title">Observaciones</div>
+                        <div class="sgr-field-grid">
+                            <div class="sgr-field sgr-field--wide" groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"><label for="observaciones" string="Coordinador / asistente de coordinación"/><field name="observaciones" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide" groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero"><label for="observaciones_finacie" string="Financiera"/><field name="observaciones_finacie" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide" groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_sgr_juridico_secop"><label for="observaciones_juri" string="Jurídica"/><field name="observaciones_juri" nolabel="1"/></div>
+                            <div class="sgr-field sgr-field--wide" groups="Matriz.group_contratacion_recursos"><label for="observaciones_recursos" string="Recursos humanos"/><field name="observaciones_recursos" nolabel="1"/></div>
+                        </div>
+                    </div>
+                    <div class="sgr-form-actions">
+                        <div class="sgr-form-actions__workflow"
+                             attrs="{'invisible': [('sgr_puede_actuar', '=', False)]}">
+                        <button name="action_aprobar_sgr" type="object" string="Aprobar" class="btn sgr-flow-approve"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['coordinador_1', 'coordinador_2', 'coordinador_polizas_firma']), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_aprobar_sgr" type="object" string="Contratar" class="btn sgr-flow-approve"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'coordinador_confirmacion'), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_devolver_sgr" type="object" string="Devolver" class="btn sgr-flow-return"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['coordinador_2', 'coordinador_polizas_firma', 'coordinador_confirmacion']), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_retornar_ajustes_sgr" type="object" string="Retornar ajustes" class="btn sgr-flow-resume"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['coordinador_1', 'coordinador_2', 'coordinador_polizas_firma']), ('sgr_estado_retorno_devolucion', '=', False)]}"/>
+                        <button name="action_aprobar_sgr" type="object" string="Aprobar" class="btn sgr-flow-approve"
+                                groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['juridico_1', 'juridico_2', 'juridico_acta_inicio', 'juridico_acta_aprobacion']), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_devolver_sgr" type="object" string="Devolver" class="btn sgr-flow-return"
+                                groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['juridico_1', 'juridico_2', 'juridico_acta_inicio', 'juridico_acta_aprobacion']), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_retornar_ajustes_sgr" type="object" string="Retornar ajustes" class="btn sgr-flow-resume"
+                                groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico"
+                                attrs="{'invisible': ['|', ('estado_contratacion', 'not in', ['juridico_1', 'juridico_2', 'juridico_acta_inicio', 'juridico_acta_aprobacion']), ('sgr_estado_retorno_devolucion', '=', False)]}"/>
+                        <button name="action_aprobar_sgr" type="object" string="Aprobar" class="btn sgr-flow-approve"
+                                groups="Matriz.group_contratacion_sgr_juridico_secop"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'juridico_secop'), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_devolver_sgr" type="object" string="Devolver" class="btn sgr-flow-return"
+                                groups="Matriz.group_contratacion_sgr_juridico_secop"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'juridico_secop'), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_retornar_ajustes_sgr" type="object" string="Retornar ajustes" class="btn sgr-flow-resume"
+                                groups="Matriz.group_contratacion_sgr_juridico_secop"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'juridico_secop'), ('sgr_estado_retorno_devolucion', '=', False)]}"/>
+                        <button name="action_aprobar_sgr" type="object" string="Aprobar" class="btn sgr-flow-approve"
+                                groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'financiero'), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_devolver_sgr" type="object" string="Devolver" class="btn sgr-flow-return"
+                                groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'financiero'), ('sgr_estado_retorno_devolucion', '!=', False)]}"/>
+                        <button name="action_retornar_ajustes_sgr" type="object" string="Retornar ajustes" class="btn sgr-flow-resume"
+                                groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero"
+                                attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'financiero'), ('sgr_estado_retorno_devolucion', '=', False)]}"/>
+                        </div>
+                        <button name="generar_contrato_sgr_pn_docx" type="object" string="Descargar contrato Word"
+                                icon="fa-file-word-o" title="Generar contrato de persona natural" class="btn btn-primary sgr-contract-template-open"
+                                attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}"/>
+                        <button name="generar_estudio_previo_sgr_docx" type="object" string="Descargar estudio previo Word"
+                                icon="fa-file-word-o" title="Generar estudio previo SGR de persona natural" class="btn btn-primary sgr-contract-template-open"
+                                groups="Matriz.group_soporte"
+                                attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}"/>
+                        <button name="generar_contrato_sgr_pj_docx" type="object" string="Descargar contrato Word"
+                                icon="fa-file-word-o" title="Generar contrato de persona jurídica" class="btn btn-primary sgr-contract-template-open"
+                                attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}"/>
+                    </div>
+                    </div>
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_contrataciones_sgr" model="ir.actions.act_window">
+        <field name="name">Contratistas SGR</field>
+        <field name="res_model">contrataciones_sgr</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <record id="action_open_contrataciones_sgr_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_contrataciones_sgr_kanban"/>
+        <field name="act_window_id" ref="action_open_contrataciones_sgr"/>
+    </record>
+
+    <record id="action_open_contrataciones_sgr_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_contrataciones_sgr_tree"/>
+        <field name="act_window_id" ref="action_open_contrataciones_sgr"/>
+    </record>
+
+    <record id="action_open_contrataciones_sgr_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_contrataciones_sgr_form"/>
+        <field name="act_window_id" ref="action_open_contrataciones_sgr"/>
+    </record>
+
+    <menuitem id="menu_coordinacion_contratistas_sgr"
+              name="Contratistas SGR"
+              parent="menu_horizontaltres"
+              sequence="30"
+              action="action_open_contrataciones_sgr"/>
+</odoo>

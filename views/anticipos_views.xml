@@ -1,0 +1,1239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="view_anticipos_form" model="ir.ui.view">
+    <field name="name">anticipos.form.moderno</field>
+    <field name="model">anticipos</field>
+    <field name="arch" type="xml">
+
+    <form string="Solicitud Anticipos" class="form_moderno_anticipos">
+
+      <header class="mi_header_fijo">                            
+      <field name="state" invisible="1"/>
+        <field name="state" 
+              widget="statusbar"
+              class="estado_moderno"
+              statusbar_visible="coordinador,ventanilla,tesoreria,completado"/>
+      </header>
+        <!-- Sección de soporte -->
+<div style="width: 71%; margin: 10px auto; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 8px; padding: 12px; display: block;" invisible="1">
+    <details style="outline: none;">
+        <summary style="cursor: pointer; font-weight: bold; color: #842029; padding: 10px; list-style: none;">
+            <i class="fa fa-chevron-right" style="margin-right: 10px; font-size: 0.8em;"></i> 
+            Soporte
+        </summary>
+        <div class="subtitulo_seccion_4">Carpeta</div>
+            <field name="drive_file_id" invisible=""/>
+        </details>
+</div>
+      <sheet>
+
+<!-- Encabezado visual -->
+<div class="card_header_moderno">
+    <div class="ch_left">
+        <img src="/Matriz/static/src/img/LogoFUV.png" alt="Logo"/>
+    </div>
+    <div class="ch_center">
+        <h2>SOLICITUD DE ANTICIPOS</h2>
+        <span>Gestión Financiera</span>
+        <div class="fecha_actualizacion">Actualización: 2021-03-25</div>
+    </div>
+    <div class="ch_right">
+        <div class="item">F. EMISIÓN: 2021-03-25</div>
+        <div class="item">Versión: 1</div>
+        <div class="codigo">FU-GFI-012</div>
+    </div>
+</div>
+
+<field name="person_type" invisible="1"/>
+
+
+<!-- TARJETA: Información General -->
+<div class="card_seccion">
+    <div class="titulo_seccion">Información general</div>
+    <div class="grid_4col">
+        <div>
+            <div class="subtitulo_seccion_4">Nombre y número de proyecto</div>
+            <field name="proyecto_id" class="campo_hover campo_solo_lectura" readonly="1" options="{'no_open': True}"/>
+        </div>
+
+        <div groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador">
+            <div class="subtitulo_seccion_4">Seleccionar tipo de persona</div>
+            <field name="person_type" class="campo_solo_lectura campo_hover" required="1" placeholder="Seleccionar tipo de persona"/>
+        </div>
+
+        <div groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador">
+            <div class="subtitulo_seccion_4">Fecha de solicitud</div>
+            <field name="fecha_solicitud" class="campo_solo_lectura campo_hover"/>
+        </div>
+
+        <div groups="Matriz.group_contratacion_financiero,Matriz.group_presupuestos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_director_financiero">
+            <div class="subtitulo_seccion_4">Seleccionar tipo de persona</div>
+            <field name="person_type" class="campo_solo_lectura campo_hover" readonly="1"/>
+        </div>
+
+        <div groups="Matriz.group_contratacion_financiero,Matriz.group_presupuestos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_director_financiero">
+            <div class="subtitulo_seccion_4">Fecha de solicitud</div>
+            <field name="fecha_solicitud" class="campo_solo_lectura campo_hover" readonly="1"/>
+        </div>
+
+        <div>
+            <field name="es_usuario_ventanilla" invisible="1"/>
+            <div style="display: flex; align-items: center;">
+                <div class="subtitulo_seccion_4">Consecutivo</div>
+                <span class="custom-tooltip-trigger"
+                    data-tooltip="La información de este campo es asignada por el área de ventanilla."
+                    style="margin-left: 5px; cursor: help; color: #00A09D;">ⓘ</span>
+            </div>
+            <field name="id_consecutivo" class="campo_solo_lectura campo_hover"
+                   attrs="{'readonly': [('es_usuario_ventanilla', '=', False)]}"/>
+        </div>
+    </div>
+</div>
+
+<!-- TARJETA: Datos del Solicitante SECCIÓN PARA COORDINADORES -->
+<!-- ######################################################### -->
+<!-- ######################################################### -->
+<!-- ######################################################### -->
+<div class="card_seccion" groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador">
+    <div class="titulo_seccion">Datos del solicitante</div>
+
+    <div class="grid_2col con_divisor">
+
+        <!-- Columna izquierda -->
+        <div class="columna">
+            <div style="display:flex; gap:20px;">
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Nombres</div>
+                    <field name="nombres"
+                        class="campo_solo_lectura campo_hover"
+                        required="1"
+                        attrs="{'invisible': [('nombres', '=', False)]}"/>
+                    <field name="nombres"
+                        class="campo_solo_lectura border-alert-red2"
+                        required="1"
+                        attrs="{'invisible': [('nombres', '!=', False)]}"/>
+                </div>
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Apellidos</div>
+                    <field name="apellidos"
+                        class="campo_solo_lectura campo_hover"
+                        required="1"
+                        attrs="{'invisible': [('apellidos', '=', False)]}"/>
+                    <field name="apellidos"
+                        class="campo_solo_lectura border-alert-red2"
+                        required="1"
+                        attrs="{'invisible': [('apellidos', '!=', False)]}"/>
+                </div>
+            </div>
+
+            <div style="flex:1;">
+                <div class="subtitulo_seccion_4">Correo electrónico</div>
+                <field name="correo"
+                    class="campo_solo_lectura campo_hover"
+                    required="1"
+                    attrs="{'invisible': [('correo', '=', False)]}"/>
+                <field name="correo"
+                    class="campo_solo_lectura border-alert-red2"
+                    required="1"
+                    attrs="{'invisible': [('correo', '!=', False)]}"/>
+            </div>
+
+            <div class="columna">
+                <div style="display:flex; gap:20px;">
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Cargo</div>
+                        <field name="cargo_2" class="campo_solo_lectura campo_hover" style="width:100%;"/>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Valor anticipo</div>
+                        <field name="valor_anticipo" class="campo_solo_lectura border-alert-red2" required="1" attrs="{'invisible': [('valor_anticipo', '!=', 0)]}"/>
+                        <field name="valor_anticipo" class="campo_solo_lectura campo_hover" required="1" attrs="{'invisible': [('valor_anticipo', '=', 0)]}"/>
+                    </div>
+                </div>
+            </div>
+
+            <span class="subtitulo_seccion_anticipos">Tipo de cuenta</span>
+            <div class="documento_opciones" style="display:flex; padding: 5px 0; margin-top: -15px;">
+                <div class="doc_linea" style="display:flex; align-items:center; white-space:nowrap; width:100%;">
+                    <style>
+                        .separar_opciones.o_field_radio.o_horizontal {
+                            justify-content: flex-start !important;
+                            display: flex !important;
+                            width: 100%;
+                        }
+                        .separar_opciones .o_radio_item {
+                            margin-right: 90px !important;
+                            margin-left: 5px !important;
+                            padding: 0 !important;
+                        }
+                        .separar_opciones .form-check-label {
+                            margin-left: 5px !important;
+                        }
+                    </style>
+                    <field name="tipo_cuenta"
+                        widget="radio"
+                        options="{'horizontal': true}"
+                        nolabel="1"
+                        class="separar_opciones"/>
+                </div>
+            </div>
+
+            <div class="columna">
+                <div style="display:flex; gap:20px;">
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Número de cuenta bancaria</div>
+                        <field name="cuenta_ahorros" invisible="1"/>
+                        <field name="cuenta_ahorros" class="campo_solo_lectura border-alert-red2" required="1" attrs="{'invisible': [('cuenta_ahorros', '!=', False)]}" style="width:100%;"/>
+                        <field name="cuenta_ahorros" class="campo_solo_lectura campo_hover" required="1" attrs="{'invisible': [('cuenta_ahorros', '=', False)]}"/>
+                    </div>
+                    <div class="doc_linea" style="display:flex:1; align-items:center; white-space:nowrap; height: 39px; margin-top: 21px;">
+                        <label for="pagare_firmado" style="margin-bottom:0; cursor:pointer; font-weight:bold;">Pagaré firmado</label>
+                        <field name="pagare_firmado" nolabel="1" style="margin-left:5px; margin-top:0;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="columna">
+
+            <div class="subtitulo_seccion">Documento de identidad</div>
+
+            <span class="subtitulo_seccion_anticipos">Seleccionar tipo de documento</span>
+
+            <div class="contenedor_documentos">
+                <!-- Opción NIT -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <label for="doc_nit" style="margin-bottom: 0; cursor: pointer; font-weight: bold;">NIT:</label>
+                    <field name="doc_nit" nolabel="1" style="margin-left: 5px;"/>
+                </div>
+
+                <!-- Opción CC -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <label for="doc_cc" style="margin-bottom: 0; cursor: pointer; font-weight: bold;">CC:</label>
+                    <field name="doc_cc" nolabel="1" style="margin-left: 5px;" />
+                </div>
+
+                <!-- Opción C. Extranjería -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <label for="doc_extranjera" style="margin-bottom: 0; cursor: pointer; font-weight: bold;">C. Extranjería:</label>
+                    <field name="doc_extranjera" nolabel="1" style="margin-left: 5px;" />
+                </div>
+            </div>
+
+
+
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top: 10px;">
+                <div style="display: flex; flex-direction: column;">
+                    <div class="subtitulo_seccion_4"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        Ciudad
+                    </div>
+                    <field name="ciudad_residencia"
+                        class="campo_solo_lectura campo_hover"
+                        options="{'no_create': True, 'no_open': True}"
+                        style="width: 100%; margin-top: -2px; display: block;"/>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    
+                    <field name="doc_nit" invisible="1"/>
+                    <field name="doc_cc" invisible="1"/>
+
+                    <!-- Título dinámico -->
+                    <div class="subtitulo_seccion_4"
+                        attrs="{'invisible': [('doc_nit', '=', False)]}"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        No. NIT
+                    </div>
+
+                    <div class="subtitulo_seccion_4"
+                        attrs="{'invisible': [('doc_nit', '=', True)]}"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        No. Documento
+                    </div>
+
+                    <!-- Campos en la misma línea -->
+                    <div style="display: flex; gap: 10px;">
+                        
+                        <!-- Número -->
+                        <field name="numero"
+                            class="campo_solo_lectura campo_hover"
+                            style="flex: 1;"/>
+
+                        <!-- Dígito de verificación -->
+                        <field name="digito_verificacion"
+                            class="campo_solo_lectura campo_hover"
+                            placeholder="DV"
+                            attrs="{'invisible': [('doc_nit', '=', False)]}"
+                            style="width: 50px;"/>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="display:flex; gap:20px; width: 100%; margin-top: 10px;">
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Centro de costo</div>
+                    <field name="centro_costo" class="campo_hover campo_solo_lectura" style="width: 100%; margin-top: 2px; display: block;"/>
+                </div>
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Fecha a legalizar</div>
+                    <field name="fecha_legalizar" class="campo_solo_lectura campo_hover" style="width: 100%; margin-top: 2px; display: block;"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+<!-- TARJETA: Datos del Solicitante DEMAS ROLES -->
+<!-- ######################################################### -->
+<!-- ######################################################### -->
+<!-- ######################################################### -->
+<div class="card_seccion" groups="Matriz.group_contratacion_financiero,Matriz.group_presupuestos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_director_financiero">
+    <div class="titulo_seccion">Datos del solicitante</div>
+
+    <div class="grid_2col con_divisor">
+
+        <!-- Columna izquierda -->
+        <div class="columna">
+            <div style="display:flex; gap:20px;">
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Nombres</div>
+                    <field name="nombres"
+                        class="campo_solo_lectura campo_hover"
+                        readonly="1"/>
+                </div>
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Apellidos</div>
+                    <field name="apellidos"
+                        class="campo_solo_lectura campo_hover"
+                        readonly="1"/>
+                </div>
+            </div>
+
+            <div style="flex:1;">
+                <div class="subtitulo_seccion_4">Correo electrónico</div>
+                <field name="correo"
+                    class="campo_solo_lectura campo_hover"
+                    readonly="1"/>
+            </div>
+
+            <div class="columna">
+                <div style="display:flex; gap:20px;">
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Cargo</div>
+                        <field name="cargo_2" class="campo_solo_lectura campo_hover" style="width:100%;" readonly="1"/>
+                    </div>
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Valor anticipo</div>
+                        <field name="valor_anticipo" class="campo_solo_lectura campo_hover" readonly="1"/>
+                    </div>
+                </div>
+            </div>
+
+            <span class="subtitulo_seccion_anticipos">Tipo de cuenta</span>
+            <div class="documento_opciones" style="display:flex; padding: 5px 0; margin-top: -15px;">
+                <div class="doc_linea" style="display:flex; align-items:center; white-space:nowrap; width:100%;">
+                    <style>
+                        .separar_opciones.o_field_radio.o_horizontal {
+                            justify-content: flex-start !important;
+                            display: flex !important;
+                            width: 100%;
+                        }
+                        .separar_opciones .o_radio_item {
+                            margin-right: 90px !important;
+                            margin-left: 5px !important;
+                            padding: 0 !important;
+                        }
+                        .separar_opciones .form-check-label {
+                            margin-left: 5px !important;
+                        }
+                    </style>
+                    <field name="tipo_cuenta"
+                        widget="radio"
+                        options="{'horizontal': true}"
+                        nolabel="1"
+                        readonly="1"
+                        class="separar_opciones"/>
+                </div>
+            </div>
+
+            <div class="columna">
+                <div style="display:flex; gap:20px;">
+                    <div style="flex:1;">
+                        <div class="subtitulo_seccion_4">Número de cuenta bancaria</div>
+                        <field name="cuenta_ahorros" invisible="1"/>
+                        <field name="cuenta_ahorros" class="campo_solo_lectura campo_hover" readonly="1"/>
+                    </div>
+                    <div class="doc_linea" style="display:flex:1; align-items:center; white-space:nowrap; height: 39px; margin-top: 21px;">
+                        <label for="pagare_firmado" style="margin-bottom:0; cursor:pointer; font-weight:bold;">Pagaré firmado</label>
+                        <field name="pagare_firmado" nolabel="1" style="margin-left:5px; margin-top:0;" readonly="1"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="columna">
+            
+            <div class="subtitulo_seccion">Documento de identidad</div>
+
+            <span class="subtitulo_seccion_anticipos">Seleccionar tipo de documento</span>
+
+            <div class="contenedor_documentos">
+                <!-- Opción NIT -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <div style="margin-bottom: 0; cursor: pointer; color: #495057;">NIT:</div>
+                    <field name="doc_nit"  style="margin-left: 5px;" readonly="1"/>
+                </div>
+
+                <!-- Opción CC -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <div style="margin-bottom: 0; cursor: pointer; color: #495057;">CC:</div>
+                    <field name="doc_cc" style="margin-left: 5px;" readonly="1"/>
+                </div>
+
+                <!-- Opción C. Extranjería -->
+                <div style="display: flex; align-items: center; white-space: nowrap;">
+                    <div style="margin-bottom: 0; cursor: pointer; color: #495057;">C. Extranjería:</div>
+                    <field name="doc_extranjera"  style="margin-left: 5px;" readonly="1"/>
+                </div>
+            </div>
+
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top: 10px;">
+                <div style="display: flex; flex-direction: column;">
+                    <div class="subtitulo_seccion_4"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        Ciudad
+                    </div>
+                    <field name="ciudad_residencia"
+                        class="campo_solo_lectura campo_hover"
+                        readonly="1"
+                        options="{'no_create': True, 'no_open': True}"
+                        style="width: 100%; margin-top: -2px; display: block;"/>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <field name="doc_nit" invisible="1"/>
+                    <field name="doc_cc" invisible="1"/>
+                    <div class="subtitulo_seccion_4"
+                        attrs="{'invisible': [('doc_nit', '=', False)]}"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        No. NIT
+                    </div>
+                    <div class="subtitulo_seccion_4"
+                        attrs="{'invisible': [('doc_nit', '=', True)]}"
+                        style="height: 25px; display: flex; align-items: center; margin-bottom: 5px;">
+                        No. Documento
+                    </div>
+                    <field name="numero"
+                           readonly="1"
+                           class="campo_solo_lectura campo_hover"
+                           style="width: 100%; margin: 0; display: block;"/>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:20px; width: 100%; margin-top: 10px;">
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Centro de costo</div>
+                    <field name="centro_costo" class="campo_hover campo_solo_lectura" style="width: 100%; margin-top: 2px; display: block;"/>
+                </div>
+                <div style="flex:1;">
+                    <div class="subtitulo_seccion_4">Fecha a legalizar</div>
+                    <field name="fecha_legalizar" class="campo_solo_lectura campo_hover" style="width: 100%; margin-top: 2px; display: block;" readonly="1"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+        <!-- Nota informativa -->
+         <div class="card_seccion_motivos">
+         <div class="titulo_seccion">Nota</div>
+          El funcionario asignado se compromete a entregar los soportes originales y en buen estado, 
+          los cuales reflejarán el gasto ante el departamento de Contabilidad, de lo contrario le serán descontados. 
+          Los soportes entregados no pueden ser superiores a un mes, a partir de la entrega del anticipo, según corresponda.
+        </div>
+
+
+        <!-- TARJETA: Motivo -->
+        <div class="card_seccion">
+          <div class="titulo_seccion">Motivo de la solicitud</div>
+          <field name="motivo" class="campo_hover" style="height: auto !important;" groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+          <field name="motivo" class="campo_hover" style="height: auto !important;" readonly="1"
+                groups="Matriz.group_contratacion_financiero,Matriz.group_presupuestos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_director_financiero"/>
+        </div>
+
+
+
+       <div class="card_seccion" attrs="{'invisible': [('person_type', '!=', 'pn')]}">
+            
+            <div class="titulo_seccion"> Documentos persona natural (PN)</div>
+
+            <div class="row mt-3">
+                
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;">
+                    <span class="unique_pn_label">RUT</span>
+                    
+                    <field name="rut_pn_document_visible" invisible="1"/>
+
+                    <button name="action_upload_rut_pn_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('rut_pn_document_visible', '=', False)]}" 
+                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+
+                    
+                    <field name="rut_pn_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('rut_pn_document_visible', '=', True)]}"/>
+                    
+                    <button name="abrir_documento_rut_pn" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('rut_pn_document_visible', '=', True)]}"/>
+                </div>
+                
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;">
+                    <span class="unique_pn_label">Documento de identidad</span>
+                    
+                    <field name="doc_identidad_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_doc_identidad_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('doc_identidad_document_visible', '=', False)]}" 
+                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+                    
+                    <field name="doc_identidad_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('doc_identidad_document_visible', '=', True)]}" />
+                            
+                    <button name="abrir_documento_doc_identidad" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('doc_identidad_document_visible', '=', True)]}"/>
+                </div>
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col">
+                    <span class="unique_pn_label">Certificación bancaria</span>
+                    
+                    <field name="cert_bancaria_pn_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_cert_bancaria_pn_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('cert_bancaria_pn_document_visible', '=', False)]}"
+                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+                    
+                    <field name="cert_bancaria_pn_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('cert_bancaria_pn_document_visible', '=', True)]}"/>
+                            
+                    <button name="abrir_documento_cert_bancaria_pn" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('cert_bancaria_pn_document_visible', '=', True)]}"/>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col"
+                     groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador">
+                    <span class="unique_pn_label">Compromiso legalización</span>
+
+                    <field name="compromiso_legalizacion_pn_document_visible" invisible="1"/>
+
+                    <button name="action_upload_compromiso_legalizacion_pn_document"
+                            type="object"
+                            string="Subir Archivo"
+                            class="unique_pn_btn_upload w-100"
+                            attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', False)]}"/>
+
+                    <field name="compromiso_legalizacion_pn_document_id"
+                            options="{'no_open': True}"
+                            class="unique_pn_file_box d-block text-truncate"
+                            readonly="1"
+                            attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', True)]}"/>
+
+                    <button name="abrir_documento_compromiso_legalizacion_pn"
+                            type="object"
+                            class="unique_pn_btn_view w-100"
+                            string=" Ver Documento"
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', True)]}"/>
+                </div>
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', True)]}"
+                     groups="Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_consulta_coordinacion_financiera">
+                    <span class="unique_pn_label">Compromiso legalización</span>
+
+                    <field name="compromiso_legalizacion_pn_document_visible" invisible="1"/>
+
+                    <field name="compromiso_legalizacion_pn_document_id"
+                            options="{'no_open': True}"
+                            class="unique_pn_file_box d-block text-truncate"
+                            readonly="1"
+                            attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', True)]}"/>
+
+                    <button name="abrir_documento_compromiso_legalizacion_pn"
+                            type="object"
+                            class="unique_pn_btn_view w-100"
+                            string=" Ver Documento"
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('compromiso_legalizacion_pn_document_visible', '=', True)]}"/>
+                </div>
+
+            </div>
+
+            <div class="row mt-4">
+                <!-- primera columna -->
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;" groups="Matriz.group_presupuestos" invisible="1">
+                    <span class="unique_pn_label">RPC</span>
+                    
+                    <field name="rpc_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_rpc_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('rpc_document_visible', '=', False)]}" 
+                            groups="Matriz.group_presupuestos"/>
+                    
+                    <field name="rpc_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('rpc_document_visible', '=', True)]}" />
+                    
+                    <button name="abrir_documento_rpc" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('rpc_document_visible', '=', True)]}"/>
+                </div>
+
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;" invisible="1"
+                     groups="Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_consulta_coordinacion_financiera"
+                     attrs="{'invisible': [('rpc_document_visible', '=', True)]}">
+                     
+                    <span class="unique_pn_label">RPC</span>
+                    
+                    <field name="rpc_document_visible" invisible="1"/>
+                                    
+                    <field name="rpc_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('rpc_document_visible', '=', True)]}" />
+                    
+                    <button name="abrir_documento_rpc" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('rpc_document_visible', '=', True)]}"/>
+                </div>
+
+
+
+                <!-- segunda columna -->
+                <!-- <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;" groups="Matriz.group_presupuestos">
+                    <span class="unique_pn_label">AT</span>
+                    
+                    <field name="at_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_at_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('at_document_visible', '=', False)]}"
+                            groups="Matriz.group_presupuestos"/>
+                    
+                    <field name="at_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('at_document_visible', '=', True)]}" />
+                            
+                    <button name="abrir_documento_at" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('at_document_visible', '=', True)]}"/>
+                </div> -->
+
+                <!-- <div class="col-md-4 col-sm-12 text-center unique_pn_col" 
+                     groups="Matriz.group_tesoreria,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos"
+                     attrs="{'invisible': [('at_document_visible', '=', True)]}"            
+                     style="border-right: 1px solid #dcdcdc;">
+                    <span class="unique_pn_label">AT</span>
+                    
+                    <field name="at_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_at_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('at_document_visible', '=', False)]}"
+                            groups="Matriz.group_presupuestos"/>
+                    
+                    <field name="at_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('at_document_visible', '=', True)]}" />
+                            
+                    <button name="abrir_documento_at" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('at_document_visible', '=', True)]}"/>
+                </div> -->
+
+                <!-- tercera columna -->
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" groups="Matriz.group_tesoreria">
+                    <span class="unique_pn_label">Comprobante de pago</span>
+                    
+                    <field name="comprobante_pago_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_comprobante_pago_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', False)]}"
+                            groups="Matriz.group_tesoreria"/>
+                    
+                    <field name="comprobante_pago_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', True)]}" />
+                            
+                    <button name="abrir_documento_comprobante_pago" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', True)]}"/>
+                </div>
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col"
+                     attrs="{'invisible': [('comprobante_pago_document_visible', '=', True)]}"
+                     groups="Matriz.group_presupuestos,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_consulta_coordinacion_financiera">
+                    <span class="unique_pn_label">Comprobante de pago</span>
+                    
+                    <field name="comprobante_pago_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_comprobante_pago_document" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', False)]}"
+                            groups="Matriz.group_tesoreria"/>
+                    
+                    <field name="comprobante_pago_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', True)]}" />
+                            
+                    <button name="abrir_documento_comprobante_pago" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('comprobante_pago_document_visible', '=', True)]}"/>
+                </div>
+
+
+
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;" groups="Matriz.group_tesoreria">
+                    <span class="unique_pn_label">Soporte de pago</span>
+                    
+                    <field name="soporte_de_pago_document_visible" invisible="1"/>
+                    
+                    <button name="action_upload_soporte_de_pago" 
+                            type="object" 
+                            string="Subir Archivo" 
+                            class="unique_pn_btn_upload w-100" 
+                            attrs="{'invisible': [('soporte_de_pago_document_visible', '=', False)]}"/>
+                    
+                    <field name="soporte_de_pago_document_id" 
+                            options="{'no_open': True}" 
+                            class="unique_pn_file_box d-block text-truncate" 
+                            readonly="1" 
+                            attrs="{'invisible': [('soporte_de_pago_document_visible', '=', True)]}" />
+                    
+                    <button name="abrir_documento_soporte_de_pago" 
+                            type="object" 
+                            class="unique_pn_btn_view w-100" 
+                            string=" Ver Documento" 
+                            icon="fa-file-text-o"
+                            attrs="{'invisible': [('soporte_de_pago_document_visible', '=', True)]}"/>
+                </div>
+       
+
+   
+                
+                <div class="col-md-4 col-sm-12 text-center unique_pn_col" style="border-right: 1px solid #dcdcdc;"
+                        attrs="{'invisible': [('soporte_de_pago_document_visible', '=', True)]}"
+                        groups="Matriz.group_presupuestos,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_consulta_coordinacion_financiera">
+                        <span class="unique_pn_label">Soporte de pago</span>
+                        
+                        <field name="soporte_de_pago_document_visible" invisible="1"/>
+                        
+                        <button name="action_upload_soporte_de_pago" 
+                                type="object" 
+                                string="Subir Archivo" 
+                                class="unique_pn_btn_upload w-100" 
+                                attrs="{'invisible': [('soporte_de_pago_document_visible', '=', False)]}" 
+                                groups="Matriz.group_tesoreria"/>
+                        
+                        <field name="soporte_de_pago_document_id" 
+                                options="{'no_open': True}" 
+                                class="unique_pn_file_box d-block text-truncate" 
+                                readonly="1" 
+                                attrs="{'invisible': [('soporte_de_pago_document_visible', '=', True)]}" />
+                        
+                        <button name="abrir_documento_soporte_de_pago" 
+                                type="object" 
+                                class="unique_pn_btn_view w-100" 
+                                string=" Ver Documento" 
+                                icon="fa-file-text-o"
+                                attrs="{'invisible': [('soporte_de_pago_document_visible', '=', True)]}"/>
+        
+                </div>
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+<br/>
+
+<div class="card_seccion" attrs="{'invisible': [('person_type', '!=', 'pj')]}">
+    <div class="titulo_seccion">Documentos persona jurídica (PJ)</div>
+
+    <div class="row mt-3">
+        
+        <div    class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;" 
+                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador">
+                
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;">
+                <span class="unique_pn_label">RUT</span>
+                <field name="rut_pj_document_visible" invisible="1"/>
+                <button name="action_upload_rut_pj_document" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('rut_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+                <field name="rut_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('rut_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_rut_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('rut_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">Certificación bancaria</span>
+                <field name="cert_bancaria_pj_document_visible" invisible="1"/>
+                <button name="action_upload_cert_bancaria_pj_document" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+                <field name="cert_bancaria_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_cert_bancaria_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+
+        <div    class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;" 
+                attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', True)]}"
+                groups="Matriz.group_presupuestos,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_consulta_coordinacion_financiera">
+            
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;">
+                <span class="unique_pn_label">RUT</span>
+                <field name="rut_pj_document_visible" invisible="1"/>
+                <field name="rut_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('rut_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_rut_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('rut_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">Certificación bancaria</span>
+                <field name="cert_bancaria_pj_document_visible" invisible="1"/>
+                <field name="cert_bancaria_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_cert_bancaria_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('cert_bancaria_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;"
+             groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador">
+            <div class="text-center">
+                <span class="unique_pn_label">Cuenta de cobro</span>
+                <field name="cuenta_cobro_pj_document_visible" invisible="1"/>
+                <button name="action_upload_cuenta_cobro_pj_document"
+                        type="object"
+                        string="Subir Archivo"
+                        class="unique_pn_btn_upload w-100"
+                        attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', False)]}"
+                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+                <field name="cuenta_cobro_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_cuenta_cobro_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+        <div    class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;"
+                attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', True)]}"
+                groups="Matriz.group_presupuestos,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_consulta_coordinacion_financiera">
+            <div class="text-center">
+                <span class="unique_pn_label">Cuenta de cobro</span>
+                <field name="cuenta_cobro_pj_document_visible" invisible="1"/>
+                <field name="cuenta_cobro_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_cuenta_cobro_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('cuenta_cobro_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;" groups="Matriz.group_presupuestos" invisible="1">
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;" invisible="1">
+                <span class="unique_pn_label">AT</span>
+                <field name="at_pj_document_visible" invisible="1"/>
+                <button name="action_upload_at_pj_document" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('at_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_presupuestos"/>
+                <field name="at_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('at_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_at_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('at_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">RPC</span>
+                <field name="rpc_pj_document_visible" invisible="1"/>
+                <button name="action_upload_rpc_pj_document" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('rpc_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_presupuestos"/>
+                <field name="rpc_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('rpc_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_rpc_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('rpc_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+
+        <div     class="col-md-4 col-sm-12 unique_pn_col" style="border-right: 1px solid #dcdcdc;" invisible="1"
+                attrs="{'invisible': [('rpc_pj_document_visible', '=', True)]}"
+                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria,Matriz.group_consulta_coordinacion_financiera">
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;" invisible="1">
+                <span class="unique_pn_label" >AT</span>
+                <field name="at_pj_document_visible" invisible="1"/>
+                <field name="at_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('at_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_at_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('at_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">RPC</span>
+                <field name="rpc_pj_document_visible" invisible="1"/>
+                <field name="rpc_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('rpc_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_rpc_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('rpc_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+
+
+        <div class="col-md-4 col-sm-12 unique_pn_col" groups="Matriz.group_tesoreria">
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;">
+                <span class="unique_pn_label">Comprobante de pago</span>
+                <field name="comprobante_pago_pj_document_visible" invisible="1"/>
+                <button name="action_upload_comprobante_pago_pj_document" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_tesoreria"/>
+                <field name="comprobante_pago_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_comprobante_pago_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">Soporte de pago</span>
+                <field name="soporte_de_pago_pj_document_visible" invisible="1"/>
+                <button name="action_upload_soporte_de_pago_pj" type="object" string="Subir Archivo" 
+                        class="unique_pn_btn_upload w-100" 
+                        attrs="{'invisible': [('soporte_de_pago_pj_document_visible', '=', False)]}" 
+                        groups="Matriz.group_tesoreria"/>
+                <field name="soporte_de_pago_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('soporte_de_pago_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_soporte_de_pago_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('soporte_de_pago_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+
+        <div    class="col-md-4 col-sm-12 unique_pn_col" 
+                attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', True)]}"
+                groups="Matriz.group_presupuestos,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_recursos,Matriz.group_contratacion_ventanilla_unica,Matriz.group_consulta_coordinacion_financiera">
+            <div class="text-center pb-4 mb-4" style="border-bottom: 1px solid #eee;">
+                <span class="unique_pn_label">Comprobante de pago</span>
+                <field name="comprobante_pago_pj_document_visible" invisible="1"/>
+                <field name="comprobante_pago_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_comprobante_pago_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('comprobante_pago_pj_document_visible', '=', True)]}"/>
+            </div>
+            <div class="text-center">
+                <span class="unique_pn_label">Soporte de pago</span>
+                <field name="soporte_de_pago_pj_document_visible" invisible="1"/>
+                <field name="soporte_de_pago_pj_document_id" options="{'no_open': True}" class="unique_pn_file_box d-block text-truncate" readonly="1" attrs="{'invisible': [('soporte_de_pago_pj_document_visible', '=', True)]}" />
+                <button name="abrir_documento_soporte_de_pago_pj" type="object" class="unique_pn_btn_view w-100" string=" Ver Documento" icon="fa-file-text-o" attrs="{'invisible': [('soporte_de_pago_pj_document_visible', '=', True)]}"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+        <div class="card_seccion" groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador">
+          <div class="titulo_seccion">Observaciones Coordinador</div>
+          <field name="observaciones_coordinador" class="campo_hover" style="height: auto !important;"/>
+        </div>
+        <div class="card_seccion" groups="Matriz.group_presupuestos" invisible="1">
+          <div class="titulo_seccion">Observaciones Presupuesto</div>
+          <field name="observaciones_presupuesto" class="campo_hover" style="height: auto !important;"/>
+        </div>
+        <div class="card_seccion" groups="Matriz.group_contratacion_ventanilla_unica">
+          <div class="titulo_seccion">Observaciones Ventanilla</div>
+          <field name="observaciones_ventanilla" class="campo_hover" style="height: auto !important;"/>
+        </div>
+        <div class="card_seccion" groups="Matriz.group_tesoreria">
+          <div class="titulo_seccion">Observaciones Tesorería</div>
+          <field name="observaciones_tesoreria" class="campo_hover" style="height: auto !important;"/>
+        </div>
+
+
+
+        <!-- Acciones / botones -->
+        <div class="acciones_modernas">
+          <button name="aprueba_coordinador_anticipos"
+                  string="Enviar a Ventanilla"
+                  type="object"
+                  groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador"
+                  attrs="{'invisible': ['|', ('state', '!=', 'coordinador'), ('devuelto_por_ventanilla', '=', True)]}"
+                  class="btn_green_moderno"/>
+
+          <button name="migrar_anticipo_legacy_a_ventanilla"
+                  string="Migrar a Ventanilla"
+                  type="object"
+                  groups="Matriz.group_contratacion_ventanilla_unica"
+                  attrs="{'invisible': [('state', '!=', 'financiera')]}"
+                  class="btn_green_moderno"/>
+
+          <button name="aprueba_ventanilla_anticipos"
+                  string="Enviar a Tesorería"
+                  type="object"
+                  groups="Matriz.group_contratacion_ventanilla_unica"
+                  attrs="{'invisible': [('state', '!=', 'ventanilla')]}"
+                  class="btn_green_moderno"/>
+
+          <button name="aprueba_tesoreria_anticipos"
+                  string="Completar solicitud"
+                  type="object"
+                  groups="Matriz.group_tesoreria"
+                  attrs="{'invisible': [('state', '=', 'completado')]}"
+                  class="btn_green_moderno"/>
+            
+            
+
+
+            <field name="devuelto_por_ventanilla" invisible="1"/>
+            <button name="devolver_a_coordinador_desde_ventanilla" 
+                    string="Devolver a Coordinador" 
+                    type="object" 
+                    class="btn-danger"
+                    groups="Matriz.group_contratacion_ventanilla_unica"
+                    states="ventanilla"/> 
+
+            <button name="retornar_a_ventanilla" 
+                    string="Re-enviar a Ventanilla" 
+                    type="object" 
+                    class="btn_blue_moderno"
+                    groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador"
+                    attrs="{'invisible': [('devuelto_por_ventanilla', '=', False)]}"/>
+
+          <!-- Rechazdos -->
+          <button name="devolver_ventanilla_a_coordinador"
+                  string="Devolver a Coordinación"
+                  type="object"
+                  groups="Matriz.group_contratacion_ventanilla_unica"
+                  attrs="{'invisible': [('state', '!=', 'ventanilla')]}"
+                  class="btn_red_moderno"/>
+
+          <button name="rechaza_tesoreria_anticipos"
+                  string="Devolver a ventanilla"
+                  type="object"
+                  groups="Matriz.group_tesoreria"
+                  class="btn_red_moderno"/>
+
+
+        </div>
+        <br/>
+        
+        <div groups="Matriz.group_soporte" invisible="1">
+            <td colspan="2" style="padding: 10px;">
+                <label for="users_with_access">Usuarios con acceso:</label>
+                <field name="users_with_access" widget="many2many_avatar_user"
+                        options="{'no_create_edit': False}"
+                        class="oe_kanban_content_oe_kanban_global_clickable"
+                        style="background-color: #D6EBF2; border: 1px solid #CCCCCC; margin-top: 5px;"/>
+            </td>
+        </div>
+        <!-- Chatter -->
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids"/>
+        </div>
+      </sheet>
+    </form>
+
+    </field>
+  </record>
+
+  <record id="view_anticipos_kanban" model="ir.ui.view">
+      <field name="name">anticipos.kanban</field>
+      <field name="model">anticipos</field>
+      <field name="arch" type="xml">
+<kanban class="o_kanban_anticipos">
+    <field name="state"/>
+    <field name="proyecto_id"/>
+    <field name="nombre_completo"/>
+    <field name="valor_anticipo"/>
+
+    <templates>
+        <t t-name="kanban-box">
+            <div class="oe_kanban_global_click d-flex flex-column p-0" style="min-height: 160px; border-radius: 8px; overflow: hidden; background-color: white;">
+                
+                <t t-if="record.state.raw_value == 'completado'">
+                    <div style="position: absolute; top: 0; right: 0; background-color: #28a745; color: white; padding: 2px 10px; font-weight: bold; font-size: 9px; border-radius: 0 8px 0 8px; text-transform: uppercase; z-index: 10;">
+                        Completado
+                    </div>
+                </t>
+                <!-- Header blanco con línea azul -->
+                <div class="p-3" style="background-color: white; border-bottom: 3px solid #004a99;">
+                    <div class="d-flex align-items-start">
+                        <div style="flex: 1; min-width: 0;">
+                            <small class="text-uppercase text-muted fw-bold" style="letter-spacing: 0.5px; font-size: 10px;">Proyecto</small>
+                            <h5 class="mb-0 fw-bold" 
+                                style="color: #004a99; font-size: 14px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;"
+                                t-att-title="record.proyecto_id.value">
+                                <field name="proyecto_id"/>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o_kanban_record_body p-3 flex-grow-1">
+
+                    <div class="row g-0">
+                        <div class="col-12 mb-2 d-flex align-items-center">
+                            <i class="fa fa-user text-muted me-2" style="width: 15px;"/> 
+                            <strong class="text-dark me-1">Solicitante:</strong>
+                            <span class="text-muted"><field name="nombre_completo"/></span>
+                        </div>
+                        <div class="col-12 mb-2 d-flex align-items-center">
+                            <!-- Cambiado a fa-hashtag para denotar número/secuencia única, y text-primary para resaltar -->
+                            <i class="fa fa-hashtag fa-fw text-primary me-2"/> 
+                            <strong class="text-dark me-1">Consecutivo:</strong>
+                            <span class="text-dark fw-bold"><field name="id_consecutivo"/></span>
+                        </div>
+                        <div class="col-12 d-flex align-items-center">
+                            <i class="fa fa-money text-muted me-2" style="width: 15px;"/>
+                            <strong class="text-dark me-1">Monto:</strong>
+                            <span class="fw-bold text-success"><field name="valor_anticipo"/></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="o_kanban_record_bottom p-2 px-3 border-top bg-light">
+                    <div class="oe_kanban_bottom_left d-flex align-items-center">
+                        <small class="text-muted fw-bold me-2" style="font-size: 9px; letter-spacing: 0.5px;">ESTADO ACTUAL:</small>
+                        <field name="state" 
+                               widget="badge" 
+                               decoration-info="state == 'coordinador'" 
+                               decoration-warning="state == 'financiera'" 
+                               decoration-primary="state == 'ventanilla'" 
+                               decoration-danger="state == 'tesoreria'" 
+                               decoration-success="state == 'completado'"/>
+                    </div>
+                    <div class="oe_kanban_bottom_right">
+                        <field name="create_uid" widget="many2one_avatar_user"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </templates>
+    </kanban>
+      </field>
+  </record>
+
+<record id="view_anticipos_tree" model="ir.ui.view">
+      <field name="name">anticipos.tree</field>
+      <field name="model">anticipos</field>
+      <field name="arch" type="xml">
+        <tree create="0">
+            <field name="state"/>
+            <field name="proyecto_id"/>
+            <field name="nombre_completo"/>
+            <field name="valor_anticipo"/>                                                                                   
+        </tree>
+    </field>
+</record>
+
+<record id="view_anticipos_search" model="ir.ui.view">
+    <field name="name">anticipos.search</field>
+    <field name="model">anticipos</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="proyecto_id"/>
+            <field name="nombre_completo"/>
+        </search>
+    </field>
+</record>
+
+  <!-- Simple action to open anticipos (optional) -->
+  <record id="action_anticipos" model="ir.actions.act_window">
+    <field name="name">Anticipos</field>
+    <field name="res_model">anticipos</field>
+    <field name="view_mode">kanban,tree,form</field>
+  </record>
+</odoo>

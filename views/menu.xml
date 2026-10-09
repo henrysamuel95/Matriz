@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Menú principal -->
+        <menuitem id="menu_principal" name="SGO" sequence="1" web_icon="home"/>
+
+        <!-- Acción para abrir el módulo de contratación -->
+        <record id="action_open_contratacion" model="ir.actions.act_window">
+            <field name="name">PRINCIPAL</field>
+            <field name="res_model">contratacion</field>
+            <field name="view_mode">kanban,tree,form,activity</field>
+        </record>
+        <menuitem id="menu_consulta_principal"
+                  name="Principal"
+                  parent="menu_principal"
+                  sequence="1"
+                  action="action_open_contratacion"
+                  groups="Matriz.group_consulta_coordinacion_financiera"/>
+        <!-- Acción para abrir el módulo MCB -->
+        <record id="action_open_MCB" model="ir.actions.act_window">
+            <field name="name">MCB</field>
+            <field name="res_model">mcb</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="view_id" ref="Matriz.view_mcb_kanban"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No se han encontrado registros de MCB.
+                </p>
+            </field>
+        </record>
+        <!-- Acción para abrir el módulo Ficha Resumen -->
+        <record id="action_open_ficharesumen" model="ir.actions.act_window">
+            <field name="name">Ficha resumen</field>
+            <field name="res_model">ficharesumen</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <!-- Acción para abrir el módulo Otrosi -->
+        <record id="action_open_otrosi" model="ir.actions.act_window">
+            <field name="name">Otrosí</field>
+            <field name="res_model">otro_si</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record id="action_open_otrosi_form_direct" model="ir.actions.act_window">
+            <field name="name">Formulario de otrosi</field>
+            <field name="res_model">otro_si</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+                <!-- Acción para abrir el módulo Otrosi -->
+<!--        <record id="action_open_cuadrofuv" model="ir.actions.act_window">-->
+<!--            <field name="name">Cuadro FUV-ADMON</field>-->
+<!--            <field name="res_model">cuadrofuv</field>-->
+<!--            <field name="view_mode">tree,form,graph</field>-->
+<!--        </record>-->
+        <!-- Acción para abrir el módulo Plan Contratacion -->
+        <record id="action_open_plancontratacion" model="ir.actions.act_window">
+            <field name="name">Plan contratación</field>
+            <field name="res_model">plancontratacion</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <!-- Acción para abrir el módulo Base Datos Contratacion -->
+<!--        <record id="action_open_basedatoscontratacion" model="ir.actions.act_window">-->
+<!--            <field name="name">Base datos contratación</field>-->
+<!--            <field name="res_model">basedatoscontratacion</field>-->
+<!--            <field name="view_mode">tree,form,kanban</field>-->
+<!--        </record>-->
+        <!-- Acción para abrir el módulo Plan de Trabajo -->
+        <record id="action_open_plandetrabajo" model="ir.actions.act_window">
+            <field name="name">Plan de trabajo</field>
+            <field name="res_model">plandetrabajo</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record id="action_open_persona_juridica_visualizacion" model="ir.actions.act_window">
+            <field name="name">Persona jurídica</field>
+            <field name="res_model">persona_juridica_visualizacion</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <!-- Agrega otras configuraciones de acción aquí -->
+        </record>
+        <record id="action_open_persona_natural_visualizacion" model="ir.actions.act_window">
+            <field name="name">Persona natural</field>
+            <field name="res_model">persona_juridica_visualizacion</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <!-- Agrega otras configuraciones de acción aquí -->
+        </record>
+        <!-- Acción para el nuevo módulo -->
+        <record id="action_open_informacion_base_agregar" model="ir.actions.act_window">
+            <field name="name">Informacion base</field>
+            <field name="res_model">informacion_base_agregar</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- Acción para abrir el módulo contrataciones -->
+        <record id="action_open_contrataciones_fuv" model="ir.actions.act_window">
+            <field name="name">Contrataciones FUV</field>
+            <field name="res_model">contrataciones_fuv</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <record id="action_open_contrataciones_fuv_form_direct" model="ir.actions.act_window">
+            <field name="name">Formulario de contratacion</field>
+            <field name="res_model">contrataciones_fuv</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+                <!-- Acción para abrir el módulo contrataciones -->
+        <record id="action_open_ejecucion" model="ir.actions.act_window">
+            <field name="name">Ejecución</field>
+            <field name="res_model">ejecucion</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_open_tablero_avances" model="ir.actions.act_window">
+            <field name="name">Tablero de control</field>
+            <field name="res_model">tablero_avances</field>
+            <field name="view_mode">kanban,form,tree,graph</field>
+        </record>
+        <record id="action_open_formulario_cdp" model="ir.actions.act_window">
+            <field name="name">Formulario CDP</field>
+            <field name="res_model">formulario_cdp</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <record id="action_open_proceso_gestion_tributaria" model="ir.actions.act_window">
+            <field name="name">Gestión tributaria</field>
+            <field name="res_model">proceso_gestion_tributaria</field>
+            <field name="view_mode">form,tree</field>
+        </record>
+        <record id="action_vistas_director_consulta_server" model="ir.actions.server">
+            <field name="name">Tablero de Control</field>
+            <field name="model_id" ref="model_vistas_director"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_first_record()
+            </field>
+        </record>
+        <record id="action_open_estado_proyectos_inf" model="ir.actions.act_window">
+            <field name="name">Estados de proyecto</field>
+            <field name="res_model">estado_proyectos_inf</field>
+            <field name="view_mode">kanban,form,tree</field>
+        </record>
+        <record id="action_open_departamento" model="ir.actions.act_window">
+            <field name="name">Departamento</field>
+            <field name="res_model">departamento</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_open_municipio" model="ir.actions.act_window">
+            <field name="name">Municipio</field>
+            <field name="res_model">municipio</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+                <!-- Acción para abrir el módulo de contratación -->
+        <record id="action_open_regalias" model="ir.actions.act_window">
+            <field name="name">Base de datos FUV semáforo</field>
+            <field name="res_model">regalias</field>
+            <field name="view_mode">tree,kanban,form,pivot,calendar,activity</field>
+        </record>
+
+        <record id="action_open_proyectos_regalias" model="ir.actions.act_window">
+            <field name="name">Base de datos contratistas proyectos regalías</field>
+            <field name="res_model">proyectos_regalias</field>
+            <field name="view_mode">tree,form,pivot,calendar,activity</field>
+        </record>
+
+        <record id="action_open_option" model="ir.actions.act_window">
+            <field name="name">Menu</field>
+            <field name="res_model">option</field>
+            <field name="view_mode">kanban</field>
+        </record>
+
+        <record id="action_open_programacion_pagos" model="ir.actions.act_window">
+            <field name="name">Programación de pagos</field>
+            <field name="res_model">programacion_pagos</field>
+            <field name="view_mode">kanban,form,tree</field>
+        </record>
+
+        <record id="action_open_visor_documento_pdf" model="ir.actions.act_window">
+            <field name="name">Documentos</field>
+            <field name="res_model">visor_documento_pdf</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_open_subir_documento" model="ir.actions.act_window">
+            <field name="name">Documentos</field>
+            <field name="res_model">subir_documento</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="action_open_tablero_avances_proyecto" model="ir.actions.act_window">
+            <field name="name">Análisis de proyectos</field>
+            <field name="res_model">avances_proyectos</field>
+            <field name="view_mode">tree,form,graph,pivot</field>
+        </record>
+
+        <record id="action_open_drive" model="ir.actions.act_window">
+            <field name="name">Drive</field>
+            <field name="res_model">drive</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_open_drive_stage" model="ir.actions.act_window">
+            <field name="name">Drive</field>
+            <field name="res_model">drive_stage</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <!-- Acción para abrir la vista de Reporte de proyectos -->
+        <record id="action_reporte_proyectos" model="ir.actions.act_window">
+            <field name="name">Reporte de proyectos</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">reporte_proyectos</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+                <!-- Acción para abrir la vista Kanban primero -->
+        <record id="action_reportes_form" model="ir.actions.act_window">
+            <field name="name">Reportes de Contratistas</field>
+            <field name="res_model">reportes</field>
+            <field name="view_mode">kanban,form,tree</field>
+        </record>
+
+                        <!-- Acción para abrir la vista Kanban primero
+        <record id="action_mongo_db_model" model="ir.actions.act_window">
+            <field name="name">MongoDB Model</field>
+            <field name="res_model">mongo.db.model</field>
+            <field name="view_mode">tree,form</field>
+        </record>-->
+
+
+        <!-- Action Contratistas y Proveedores -->
+        <record id="action_contratista_proveedor" model="ir.actions.act_window">
+            <field name="name">Contratistas y proveedores</field>
+            <field name="res_model">contratista_proveedor</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_consulta_orden_compra_bienes" model="ir.actions.act_window">
+            <field name="name">Órdenes de bienes</field>
+            <field name="res_model">orden_compra_bienes</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_consulta_orden_compra_servicios" model="ir.actions.act_window">
+            <field name="name">Órdenes de servicios</field>
+            <field name="res_model">orden_compra_servicios</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+
+        <record id="action_quickstart" model="ir.actions.act_window">
+            <field name="name">Google Drive API</field>
+            <field name="res_model">matriz.quickstart</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+           <!-- Acción para abrir las vistas de Consecutivo -->
+        <record id="action_consecutivo" model="ir.actions.act_window">
+            <field name="name">Consecutivos</field>
+            <field name="res_model">consecutivo</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+                 <!-- Acción para abrir las vistas de Acta entrega documentos -->
+        <record id="action_acta_entrega_documentos" model="ir.actions.act_window">
+            <field name="name">Acta entrega documentos</field>
+            <field name="res_model">acta_entrega_documentos</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_bdd_rpc" model="ir.actions.act_window">
+            <field name="name">BDD</field>
+            <field name="res_model">bdd_rpc</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_open_drive_stage_provedor" model="ir.actions.act_window">
+            <field name="name">Contratistas</field>
+            <field name="res_model">drive_stage_provedor</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_experiencia_fuv" model="ir.actions.act_window">
+            <field name="name">DB Experiencia FUV</field>
+            <field name="res_model">experiencia_fuv</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_experiencia_fuv_consulta_server" model="ir.actions.server">
+            <field name="name">Consultas Experiencia FUV</field>
+            <field name="model_id" ref="model_experiencia_fuv_consulta"/>
+            <field name="state">code</field>
+            <field name="code">action = env['experiencia.fuv.consulta'].action_open_panel()</field>
+        </record>
+
+        <!--BDD EPS-->
+        <record id="action_open_eps" model="ir.actions.act_window">
+            <field name="name">EPS</field>
+            <field name="res_model">eps</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--BDD ARL-->
+        <record id="action_open_arl" model="ir.actions.act_window">
+            <field name="name">ARL</field>
+            <field name="res_model">arl</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--BDD Fondos de pensiones-->
+        <record id="action_open_fondopension" model="ir.actions.act_window">
+            <field name="name">FondoPension</field>
+            <field name="res_model">fondopension</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--BDD Cajas de compensación-->
+        <record id="action_open_cajascompensacion" model="ir.actions.act_window">
+            <field name="name">CajasCompesancion</field>
+            <field name="res_model">cajascompensacion</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="action_open_login" model="ir.actions.act_window">
+            <field name="name">Usuarios</field>
+            <field name="res_model">login</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+
+        <record id="view_cuentas_de_cobros_search" model="ir.ui.view">
+            <field name="name">cuentas_de_cobros.search</field>
+            <field name="model">cuentas_de_cobros</field>
+            <field name="arch" type="xml">
+                <search string="Buscar cuentas de cobro">
+                    <field name="name"/>
+                    <field name="documento_de_identificacion"/>
+                    <field name="proyecto_regalias_id"/>
+                    <field name="contrato_regalias_id"/>
+                    <filter string="Fundación Univalle" name="filter_cuentas_fuv" domain="[('origen_cuenta', '=', 'fuv')]"/>
+                    <filter string="Regalías" name="filter_cuentas_regalias" domain="[('origen_cuenta', '=', 'regalias')]"/>
+                    <separator/>
+                    <filter string="Agrupar por origen" name="group_origen_cuenta" context="{'group_by': 'origen_cuenta'}"/>
+                    <filter string="Agrupar por proyecto Regalías" name="group_proyecto_regalias" context="{'group_by': 'proyecto_regalias_id'}"/>
+                    <filter string="Agrupar por contrato Regalías" name="group_contrato_regalias" context="{'group_by': 'contrato_regalias_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cuentas_de_cobros" model="ir.actions.act_window">
+            <field name="name">Cuentas de Cobros</field>
+            <field name="res_model">cuentas_de_cobros</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="Matriz.view_cuentas_de_cobros_search"/>
+        </record>
+
+        <record id="action_info_contrataciones" model="ir.actions.act_window">
+            <field name="name">info</field>
+            <field name="res_model">info_contrataciones</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_otrosi_bdd" model="ir.actions.act_window">
+            <field name="name">Resumen Otrosí</field>
+            <field name="res_model">otrosi_bdd</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_contrataciones_fuv_relacion" model="ir.actions.act_window">
+            <field name="name">Resumen Contrataciones</field>
+            <field name="res_model">contrataciones_fuv_relacion</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_certificacion_cumplimiento" model="ir.actions.act_window">
+            <field name="name">Certificación Conjunta</field>
+            <field name="res_model">certificacion_cumplimiento</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_declaracion_juramentada" model="ir.actions.act_window">
+            <field name="name">Declaraciones Juramentadas</field>
+            <field name="res_model">declaracion_juramentada</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_informe_actividades" model="ir.actions.act_window">
+            <field name="name">Informes de Actividades</field>
+            <field name="res_model">informe_actividades</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="action_open_cuenta_de_cobros" model="ir.actions.act_window">
+            <field name="name">Carpeta</field>
+            <field name="res_model">cuenta_de_cobros</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <record id="menu_experiencia_fuv" model="ir.ui.menu">
+            <field name="name">Experiencia FUV</field>
+            <field name="parent_id" ref="menu_principal"/>
+            <field name="sequence">150</field>
+            <field name="action" eval="False"/>
+            <field name="groups_id" eval="[(6, 0, [
+                ref('Matriz.group_contratacion_financiero'),
+                ref('Matriz.group_contratacion_director_financiero'),
+                ref('Matriz.group_contratacion_coordinador'),
+                ref('Matriz.group_contratacion_regalias'),
+                ref('Matriz.group_contratacion_directivo'),
+                ref('Matriz.group_contratacion_estructuracion'),
+                ref('Matriz.group_soporte')
+            ])]"/>
+        </record>
+
+        <menuitem id="menu_experiencia_fuv_consultas" name="Consultas" sequence="10"
+                  action="action_experiencia_fuv_consulta_server"
+                  parent="menu_experiencia_fuv"
+                  groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_regalias,Matriz.group_contratacion_directivo,Matriz.group_contratacion_estructuracion,Matriz.group_soporte"/>
+
+        <menuitem id="menu_experiencia_fuv_db" name="DB Matriz" sequence="20"
+                  action="action_experiencia_fuv"
+                  parent="menu_experiencia_fuv"
+                  groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_regalias,Matriz.group_contratacion_directivo,Matriz.group_contratacion_estructuracion,Matriz.group_soporte"/>
+
+        <record id="action_vistas_sql" model="ir.actions.act_window">
+            <field name="name">Vistas SQL</field>
+            <field name="res_model">vistas_sql</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record id="action_seguimiento_financiera" model="ir.actions.act_window">
+            <field name="name">Cierre financiera</field>
+            <field name="res_model">seguimiento_financiera</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+
+        <!--################################################################################-->
+        <!-- <menuitem id="menu_vistas_sql"
+                  name="Vistas Sgo-Siesa"
+                  sequence="165"
+                  parent="menu_principal"
+                  action="action_vistas_sql" groups= "Matriz.group_contratacion_directivo"/>
+
+
+         <record id="action_open_sql" model="ir.actions.act_window">
+            <field name="name">Ingresar SQL</field>
+            <field name="res_model">sql</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+
+        <menuitem id="menu_vertical_director_cerotres" name="Prueba SQL"
+            parent="menu_horizontalcuatro" sequence="110" action="action_open_sql"/>  -->
+
+        <!--################################################################################-->
+
+
+
+        <!--################################################################################-->
+                <!-- Menú padre (solo contenedor, SIN acción) -->
+        <menuitem id="menu_parent_entes_control" name="Entes de control" parent="menu_principal" sequence="135" groups="Matriz.group_contratacion_directivo,Matriz.group_soporte,Matriz.group_direccion_ejecutiva"/>
+
+        <record id="action_entes_control" model="ir.actions.act_window">
+            <field name="name">Entes de Control</field>
+            <field name="res_model">entes_control</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_entes_control_tree"/>
+            <field name="context">{'create': True, 'edit': True, 'delete': True}</field>
+        </record>
+
+
+        <record id="action_entes_control_consulta_server" model="ir.actions.server">
+            <field name="name">Consultas</field>
+            <field name="model_id" ref="model_entes_control_consulta"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_panel()</field>
+        </record>
+
+        
+        <record id="action_entes_control_informe_server" model="ir.actions.server">
+            <field name="name">Informes</field>
+            <field name="model_id" ref="model_entes_control_informe"/>
+            <field name="state">code</field>
+            <field name="code">action = model.action_open_panel()</field>
+        </record>
+
+        <menuitem id="menu_entes_control_consulta"
+                  name="Consultas"
+                  parent="menu_parent_entes_control"
+                  sequence="10"
+                  action="action_entes_control_consulta_server"/>
+
+        
+        <menuitem id="menu_entes_control_informes"
+                  name="Informe"
+                  parent="menu_parent_entes_control"
+                  sequence="30"
+                  action="action_entes_control_informe_server"/>
+
+        <!-- Menú hijo con acción -->
+        <menuitem id="menu_entes_control" name="DB Matriz" parent="menu_parent_entes_control" sequence="20" action="action_entes_control" groups="Matriz.group_soporte,Matriz.group_direccion_ejecutiva"/>
+
+        <!--################################################################################-->
+
+
+<menuitem id="menu_actas" name="Acta entrega documentos" sequence="160" parent="menu_principal" groups="Matriz.group_soporte,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador,Matriz.group_tesoreria,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria_auxiliar,Matriz.group_contabilidad,Matriz.group_consulta_coordinacion_financiera,Matriz.group_consulta_global_cuentas_cobro,Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_firmante_director_financiero_certificacion,Matriz.group_aprobador_cesion_derechos"/>
+
+        
+        <record id="action_server_abrir_municipios" model="ir.actions.server">
+            <field name="name">Abrir Municipios Nuevos</field>
+            <field name="model_id" ref="model_proceso_gestion_tributaria"/>
+            <field name="state">code</field>
+            <field name="code">action = model.abrir_municipios_nuevos()</field>
+        </record>
+
+        <menuitem id="menu_acta_entrega_documentos" name="Cuentas de cobros" sequence="10" action="action_acta_entrega_documentos" parent="menu_actas" groups="Matriz.group_soporte,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador,Matriz.group_tesoreria,Matriz.group_contratacion_ventanilla_unica,Matriz.group_tesoreria_auxiliar,Matriz.group_contabilidad,Matriz.group_consulta_coordinacion_financiera,Matriz.group_consulta_global_cuentas_cobro,Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_firmante_director_financiero_certificacion,Matriz.group_aprobador_cesion_derechos"/>
+
+        <menuitem id="menu_categoria_bdd" name="BDD" sequence="20" parent="menu_actas" groups="Matriz.group_soporte"/>
+
+            <menuitem id="menu_carpetas" name="Carpeta" sequence="10" action="action_open_cuenta_de_cobros" parent="menu_categoria_bdd" groups="Matriz.group_soporte"/>
+            <menuitem id="menu_contratos" name="BDD Contrataciones" sequence="20" action="action_contrataciones_fuv_relacion" parent="menu_categoria_bdd" groups="Matriz.group_soporte" />
+            <menuitem id="menu_otrosi" name="BDD Otrosí" sequence="30" action="action_otrosi_bdd" parent="menu_categoria_bdd" groups="Matriz.group_soporte" />
+            <menuitem id="menu_certificacion" name="Certificación Conjunta" sequence="40" action="action_certificacion_cumplimiento" parent="menu_categoria_bdd" groups="Matriz.group_soporte"/>
+            <menuitem id="menu_informes" name="Informes de Actividades" sequence="50" action="action_informe_actividades" parent="menu_categoria_bdd" groups="Matriz.group_soporte"/>
+            <menuitem id="menu_declaracion" name="Declaración Juramentada" sequence="60" action="action_declaracion_juramentada" parent="menu_categoria_bdd" groups="Matriz.group_soporte"/>
+
+        <menuitem id="menu_categoria_usuarios" name="Usuarios" sequence="30" parent="menu_actas" groups="Matriz.group_soporte,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador"/>
+
+            <menuitem id="menu_usuarios" name="Administrar usuarios" sequence="10" action="action_open_login" parent="menu_categoria_usuarios" groups="Matriz.group_soporte,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador"/>
+
+
+        <menuitem id="menu_drive" name="Carpeta" sequence="150" action="action_open_drive_stage_provedor" parent="menu_principal" groups="Matriz.group_contratacion_directivo"/>
+
+
+
+         <menuitem id="menu_contratista_proveedor" name="Contratistas y proveedores" 
+                   sequence="150" action="action_contratista_proveedor"
+                   groups= "Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                   parent="menu_principal"/>
+
+
+        <menuitem id="menu_bdd_rpc" name="BDD" sequence="160" action="action_bdd_rpc" parent="menu_principal"/>
+
+
+<!--
+        <menuitem id="menu_mongo_db_model" name="Buscar" sequence="140" action="action_mongo_db_model" parent="menu_principal"/>
+-->
+
+        <!-- Menú principal de Reportes -->
+        <menuitem id="menu_parent_id" name="Reportes" parent="menu_principal" sequence="130" action="action_open_contratacion" groups= "Matriz.group_soporte,Matriz.group_presupuestos,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_recursos,Matriz.group_consulta_coordinacion_financiera"/>
+
+        <!-- Submenú de Contratistas -->
+        <menuitem id="menu_vertical_reportes" name="Contratistas" parent="menu_parent_id" sequence="10" action="action_reportes_form"/>
+
+
+        <menuitem id="menu_reporte_proyectos" name="Reporte de proyectos" parent="menu_parent_id" sequence="20" action="action_reporte_proyectos"/>
+
+
+        <menuitem id="menu_quickstart_root" name="Google Drive API" parent="base.menu_administration" sequence="2" action="action_quickstart"/>
+
+        <!--
+        <menuitem id="menu_action_open_visor_documento_pdf" name="Documentos" sequence="15" action="action_open_visor_documento_pdf"/>
+        -->
+        <menuitem id="menu_action_open_option" name="GO-SGR" sequence="2" action="action_open_option"/>
+
+        <menuitem id="menu_horizontal_regalias" parent="menu_action_open_option" name="Menú" sequence="15"/>
+        <menuitem id="menu_action_open_proyectos_regalias" name="Proyectos regalías" sequence="15" action="action_open_proyectos_regalias" parent="menu_horizontal_regalias"/>
+        <menuitem id="menu_regalias" name="Semáforo de proyectos SGR" sequence="15" action="action_open_regalias" parent="menu_horizontal_regalias"/>
+        <!--  <menuitem id="menu_horizontal" name="Menú" parent="menu_principal" sequence="5" action="action_open_contratacion"/>
+        <menuitem id="menu_vertical_contratacion_2" name="OTROSI" parent="menu_horizontal" sequence="30" action="action_open_otrosi"/>
+        <menuitem id="menu_vertical_contratacion_3" name="Plan Contratacion" parent="menu_horizontal" sequence="40" action="action_open_plancontratacion"/>
+        <menuitem id="menu_vertical_contratacion_4" name="BASE DATOS CONTRATACION" parent="menu_horizontal" sequence="50" action="action_open_basedatoscontratacion"/>
+        <menuitem id="menu_vertical_contratacion_5" name="PLAN DE TRABAJO" parent="menu_horizontal" sequence="60" action="action_open_plandetrabajo"/>
+        <menuitem id="menu_vertical_contratacion_6" name="CUADRO FUV-ADMON" parent="menu_horizontal" sequence="70" action="action_open_cuadrofuv"/> -->
+
+        <menuitem id="menu_horizontaluno" name="Financiera" parent="menu_principal" sequence="80" action="action_open_contratacion" groups= "Matriz.group_contratacion_financiero,Matriz.group_actividades_financieras,Matriz.group_supervisor_actividades_financieras,Matriz.group_consulta_coordinacion_financiera"/>
+        <!-- Menú vertical: financiero -->
+        <menuitem id="menu_vertical_financiera" name="MCB" parent="menu_horizontaluno" sequence="10" action="action_open_MCB"/>
+        <menuitem id="menu_vertical_financiera_cerouno" name="Contratistas" parent="menu_horizontaluno" sequence="20" action="action_open_contrataciones_fuv"/>
+        <menuitem id="menu_financiera_orden_compra_bienes" name="Órdenes de bienes" parent="menu_horizontaluno" sequence="21" action="action_consulta_orden_compra_bienes"/>
+        <menuitem id="menu_financiera_orden_compra_servicios" name="Órdenes de servicios" parent="menu_horizontaluno" sequence="22" action="action_consulta_orden_compra_servicios"/>
+        <menuitem id="menu_vertical_financiera_programacion_pagos" name="Programación de pagos" parent="menu_horizontaluno" sequence="30" action="action_open_programacion_pagos"/>
+        <menuitem id="menu_vertical_financiera_municipios_nuevos" name="Agregar Municipios AT" parent="menu_horizontaluno" sequence="40" action="action_server_abrir_municipios" groups="Matriz.group_contratacion_impuestos"/>
+        <menuitem id="menu_seguimiento_financiera" name="Cierre financiera" parent="menu_horizontaluno"  sequence="40" action="action_seguimiento_financiera" groups= "Matriz.group_actividades_financieras,Matriz.group_supervisor_actividades_financieras,Matriz.group_consulta_coordinacion_financiera"/>
+
+        <menuitem id="menu_horizontaldos" name="Jurídica" parent="menu_principal" sequence="90" action="action_open_contratacion" groups= "Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico"/>
+        <!-- Menú vertical: juridico -->
+        <!--<menuitem id="menu_vertical_juridica_cerouno" name="Contratos" parent="menu_horizontaldos" sequence="20" action="action_open_contrataciones_fuv"/>-->
+
+
+        <menuitem id="menu_horizontaltres" name="Coordinación" parent="menu_principal" sequence="100" action="action_open_contratacion" groups= "Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+        <!-- Menú vertical: coordinador -->
+        <menuitem id="menu_vertical_coordinacion" name="Crear proyecto" parent="menu_horizontaltres" sequence="10" action="action_open_informacion_base_agregar" groups= "Matriz.group_contratacion_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+        <menuitem id="menu_vertical_coordinacion_cerouno" name="Ficha resumen" parent="menu_horizontaltres" sequence="20" action="action_open_ficharesumen"/>
+        <menuitem id="menu_vertical_coordinacion_cerodos" name="Contratistas" parent="menu_horizontaltres" sequence="30" action="action_open_contrataciones_fuv"/>
+        <menuitem id="menu_coordinacion_orden_compra_bienes" name="Órdenes de bienes" parent="menu_horizontaltres" sequence="31" action="action_consulta_orden_compra_bienes"/>
+        <menuitem id="menu_coordinacion_orden_compra_servicios" name="Órdenes de servicios" parent="menu_horizontaltres" sequence="32" action="action_consulta_orden_compra_servicios"/>
+        <menuitem id="menu_vertical_coordinacion_cerotres" name="Tablero de control" parent="menu_horizontaltres" sequence="40" action="action_vistas_director_consulta_server"/>
+        <menuitem id="menu_vertical_coordinacion_ceroccuatro" name="Contratistas" parent="menu_horizontaldos" sequence="60" action="action_open_contrataciones_fuv"/>
+        <menuitem id="menu_juridica_orden_compra_bienes" name="Órdenes de bienes" parent="menu_horizontaldos" sequence="61" action="action_consulta_orden_compra_bienes"/>
+        <menuitem id="menu_juridica_orden_compra_servicios" name="Órdenes de servicios" parent="menu_horizontaldos" sequence="62" action="action_consulta_orden_compra_servicios"/>
+        <menuitem id="menu_vertical_coordinacion_cerocinco" name="Consecutivo" parent="menu_horizontaltres" sequence="70" action="action_consecutivo"/>
+
+        <menuitem id="menu_horizontalcuatro" name="Dirección" parent="menu_principal" sequence="110" action="action_open_contratacion" groups= "Matriz.group_contratacion_director_fuv"/>
+        <!-- Menú vertical: director -->
+        <menuitem id="menu_vertical_director" name="Tablero de control" parent="menu_horizontalcuatro" sequence="10" action="action_vistas_director_consulta_server"/>
+        <menuitem id="menu_vertical_director_cerouno" name="Estado de proyectos" parent="menu_horizontalcuatro" sequence="20" action="action_open_estado_proyectos_inf"/>
+        <menuitem id="menu_vertical_director_cerodos" name="Análisis de proyectos" parent="menu_horizontalcuatro" sequence="30" action="action_open_tablero_avances_proyecto"/>
+
+        <!--
+        <menuitem id="menu_vertical_director_cerotres" name="Drive" parent="menu_horizontalcuatro" sequence="40" action="action_open_drive_stage"/>
+        -->
+        <!-- ===================================================== -->
+        <!-- BOTÓN PARA ACTUALIZAR EL MÓDULO MATRIZ DESDE EL MENÚ -->
+        <!-- ===================================================== -->
+        
+        <record id="action_update_module_matriz" model="ir.actions.server">
+            <field name="name">Actualizar módulo Matriz</field>
+            <field name="model_id" ref="base.model_ir_module_module"/>
+            <field name="state">code</field>
+            <field name="code">
+                env['ir.module.module'].search([('name', '=', 'Matriz')]).button_immediate_upgrade()
+            </field>
+        </record>
+
+
+        <menuitem id="menu_update_module_matriz"
+                  name="🔄 Actualizar módulo"
+                  parent="menu_principal"
+                  sequence="999"
+                  action="action_update_module_matriz"
+                  groups="base.group_system"/>
+       
+    </data>
+</odoo>

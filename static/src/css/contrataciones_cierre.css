@@ -1,0 +1,1605 @@
+.fc-cierre-wizard-form .modal-dialog {
+    max-width: 980px;
+}
+
+.fc-cierre-wizard-form {
+    min-width: min(920px, calc(100vw - 56px));
+}
+
+.fc-cierre-wizard-form .o_form_sheet_bg,
+.fc-cierre-proceso-form .o_form_sheet_bg {
+    background: #ffffff;
+}
+
+.fc-cierre-wizard-form .o_form_sheet,
+.fc-cierre-proceso-form .o_form_sheet {
+    max-width: 1180px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.fc-cierre-shell {
+    display: grid;
+    gap: 16px;
+}
+
+.fc-cierre-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px 22px;
+    border-radius: 8px;
+    border: 1px solid #dbe5f2;
+    border-left: 4px solid #0057a8;
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+}
+
+.fc-cierre-hero-process {
+    background: #ffffff;
+}
+
+.fc-cierre-hero-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 150px;
+    min-height: 82px;
+    padding-right: 18px;
+    border-right: 1px solid #dbe5f2;
+}
+
+.fc-cierre-hero-brand img {
+    display: block;
+    max-width: 132px;
+    max-height: 74px;
+    object-fit: contain;
+}
+
+.fc-cierre-hero-copy {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.fc-cierre-kicker {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: #0057a8;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.fc-cierre-hero h1 {
+    margin: 0;
+    color: #062b55;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.fc-cierre-hero p {
+    max-width: 660px;
+    margin: 8px 0 0;
+    color: #34445c;
+    font-size: 13px;
+}
+
+.fc-cierre-flow-widget {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: flex-start;
+    gap: 4px;
+    max-width: 100%;
+    min-width: 0;
+    --estado-color: #22a447;
+}
+
+.fc-cierre-flow-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 100%;
+    min-height: 28px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--estado-color);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+    text-transform: uppercase;
+}
+
+.fc-cierre-flow-start .fc-cierre-flow-badge {
+    --estado-color: #0d6efd;
+}
+
+.fc-cierre-flow-badge::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 280px;
+    height: 12px;
+}
+
+.fc-cierre-flow-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #ffffff;
+}
+
+.fc-cierre-flow-badge strong {
+    overflow: hidden;
+    max-width: 230px;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fc-cierre-flow-count {
+    padding-left: 7px;
+    border-left: 1px solid rgba(255, 255, 255, 0.45);
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+.fc-cierre-flow-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 40;
+    display: none;
+    min-width: 280px;
+    max-width: min(340px, calc(100vw - 32px));
+    padding: 10px;
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.2);
+}
+
+.fc-cierre-flow-widget:hover .fc-cierre-flow-popover {
+    display: grid;
+    gap: 7px;
+}
+
+.fc-cierre-flow-popover::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 18px;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #dbe3ef;
+    border-left: 1px solid #dbe3ef;
+    background: #ffffff;
+    transform: rotate(45deg);
+}
+
+.fc-cierre-flow-step {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 8px;
+    align-items: center;
+    padding: 7px 8px;
+    border-radius: 6px;
+    background: #f8fafc;
+}
+
+.fc-cierre-flow-step-current {
+    border-left: 4px solid var(--estado-color);
+    background: #eef4ff;
+}
+
+.fc-cierre-flow-step span {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.fc-cierre-flow-step strong {
+    overflow: hidden;
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-overflow: clip;
+    white-space: normal;
+    word-break: normal;
+}
+
+.fc-cierre-flow-more {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 4px;
+}
+
+.fc-cierre-flow-more summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 6px 8px;
+    color: #0f4c9c;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 800;
+    list-style: none;
+}
+
+.fc-cierre-flow-more summary::-webkit-details-marker {
+    display: none;
+}
+
+.fc-cierre-flow-more-icon {
+    transition: transform 0.18s ease;
+}
+
+.fc-cierre-flow-more[open] .fc-cierre-flow-more-icon {
+    transform: rotate(180deg);
+}
+
+.fc-cierre-flow-more-label-open {
+    display: none;
+}
+
+.fc-cierre-flow-more[open] .fc-cierre-flow-more-label-closed {
+    display: none;
+}
+
+.fc-cierre-flow-more[open] .fc-cierre-flow-more-label-open {
+    display: inline;
+}
+
+.fc-cierre-flow-list {
+    display: grid;
+    gap: 6px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 4px 2px 2px;
+}
+
+.fc-cierre-flow-list-item {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 7px;
+    border-radius: 6px;
+    color: #475569;
+    font-size: 11px;
+}
+
+.fc-cierre-flow-list-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.fc-cierre-flow-list-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fc-cierre-flow-list-current {
+    color: var(--estado-color);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.fc-cierre-flow-list-item-current {
+    background: #eef4ff;
+    color: #0f172a;
+    font-weight: 800;
+}
+
+.fc-cierre-flow-list-item-current .fc-cierre-flow-list-number {
+    background: var(--estado-color);
+    color: #ffffff;
+}
+
+.fc-cierre-card {
+    padding: 16px 18px;
+    border: 1px solid #dbe5f2;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.fc-cierre-context-card {
+    border-top: 4px solid #0057a8;
+}
+
+.fc-cierre-condition-card {
+    border-left: 4px solid #00a7b5;
+}
+
+.fc-cierre-relation-select .o_field_widget {
+    width: 100% !important;
+    margin-top: 6px;
+}
+
+.fc-cierre-relation-select select {
+    min-height: 42px;
+    border-radius: 7px;
+}
+
+.fc-cierre-relation-value {
+    max-width: 360px;
+    margin-top: 12px;
+    padding: 9px 12px;
+    border: 1px solid #9fcbd8;
+    border-radius: 7px;
+    background: #eef8fb;
+}
+
+.fc-cierre-relation-value > span {
+    display: block;
+    margin-bottom: 4px;
+    color: #506173;
+    font-size: 12px;
+}
+
+.fc-cierre-relation-value .o_field_widget {
+    color: #08315f;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.fc-cierre-support-card {
+    border-color: #f3c4ca;
+    background: #fff5f6;
+}
+
+.fc-cierre-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #08315f;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fc-cierre-section-title i {
+    color: #0069b4;
+    font-size: 16px;
+}
+
+.fc-cierre-type-zone {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.fc-cierre-type-zone .o_field_radio,
+.fc-cierre-type-zone .fc-finalizacion-radio-grid,
+.fc-cierre-type-zone .o_radio {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    white-space: normal !important;
+}
+
+.fc-cierre-type-zone .o_radio_item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 46px;
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    padding: 10px 14px 10px 42px;
+    border: 1px solid #d8e3f1;
+    border-radius: 8px;
+    background: #f8fbff;
+}
+
+.fc-cierre-type-zone .o_radio_item input[type="radio"] {
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    opacity: 0;
+}
+
+.fc-cierre-type-zone .o_radio_item::before {
+    content: "\f00c";
+    position: absolute;
+    left: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #9db2cc;
+    border-radius: 4px;
+    color: transparent;
+    font-family: FontAwesome;
+    font-size: 11px;
+    line-height: 1;
+    background: #ffffff;
+}
+
+.fc-cierre-type-zone .o_radio_item:has(input[type="radio"]:checked) {
+    border-color: #0069b4;
+    background: #eef6ff;
+    box-shadow: 0 6px 14px rgba(0, 105, 180, 0.12);
+}
+
+.fc-cierre-type-zone .o_radio_item:has(input[type="radio"]:checked)::before {
+    border-color: #0069b4;
+    background: #0069b4;
+    color: #ffffff;
+}
+
+.fc-cierre-type-zone .o_radio_item label {
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.fc-cierre-detail-grid {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.7fr) minmax(240px, 1fr);
+    gap: 14px 24px;
+    align-items: start;
+}
+
+.fc-cierre-detail-field {
+    min-width: 0;
+}
+
+.fc-cierre-detail-option,
+.fc-cierre-detail-date {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid #d8e3f1;
+    border-radius: 8px;
+    background: #f8fbff;
+}
+
+.fc-cierre-detail-option {
+    gap: 10px;
+}
+
+.fc-cierre-detail-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+.fc-cierre-detail-option label {
+    margin: 0;
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.fc-cierre-detail-date {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 12px;
+}
+
+.fc-cierre-detail-date-label {
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.fc-cierre-detail-date .o_field_widget {
+    width: 100%;
+}
+
+.fc-cierre-detail-date input {
+    min-height: 30px;
+}
+
+.fc-cierre-detail-field-full {
+    grid-column: 1 / -1;
+}
+
+.fc-cierre-detail-field-full .o_field_widget {
+    width: 100%;
+}
+
+.fc-cierre-request-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.fc-cierre-request-item {
+    min-width: 0;
+    min-height: 66px;
+    padding: 11px 13px;
+    border: 1px solid #9fcbd8;
+    border-radius: 8px;
+    background: #ADD8E6;
+}
+
+.fc-cierre-request-item-wide {
+    grid-column: span 2;
+}
+
+.fc-cierre-request-item-full {
+    grid-column: 1 / -1;
+    min-height: 84px;
+}
+
+.fc-cierre-request-item span {
+    display: block;
+    margin-bottom: 6px;
+    color: #506173;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: none;
+}
+
+.fc-cierre-request-item .o_field_widget {
+    max-width: 100%;
+    color: #0f172a;
+    font-weight: 500;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: anywhere;
+}
+
+.fc-cierre-context-grid .o_field_widget.o_readonly_modifier,
+.fc-cierre-context-grid .o_field_widget .o_readonly_modifier {
+    display: block !important;
+    min-height: 34px;
+    padding: 7px 9px !important;
+    border: 1px solid #9fcbd8 !important;
+    border-radius: 6px !important;
+    background-color: #ADD8E6 !important;
+    color: #0f172a !important;
+    font-weight: 500;
+}
+
+.fc-cierre-proceso-form .o_notebook .o_field_widget.o_readonly_modifier:not(.o_field_boolean),
+.fc-cierre-proceso-form .o_notebook .o_field_widget .o_readonly_modifier {
+    display: block !important;
+    min-height: 32px;
+    padding: 6px 8px !important;
+    border: 1px solid #9fcbd8 !important;
+    border-radius: 6px !important;
+    background-color: #ADD8E6 !important;
+    color: #0f172a !important;
+}
+
+.fc-cierre-request-item-full .o_field_text {
+    min-height: 34px;
+    font-weight: 500;
+}
+
+/* Resumen compacto: cuatro datos arriba y las razones en una sola fila inferior. */
+.fc-cierre-proceso-form .fc-cierre-request-grid {
+    grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(150px, 1fr));
+    gap: 4px;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-item {
+    min-height: 0;
+    padding: 4px 10px;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-item-full {
+    min-height: 0;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-item span {
+    margin-bottom: 2px;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-item-full .o_field_text {
+    min-height: 0;
+}
+
+/* Solo la variante editable se presenta como un campo blanco convencional. */
+.fc-cierre-proceso-form .fc-cierre-request-reasons-editable {
+    padding: 8px 10px;
+    background: #ffffff;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-reasons-editable .o_field_widget,
+.fc-cierre-proceso-form .fc-cierre-request-reasons-editable textarea {
+    width: 100% !important;
+    min-height: 72px !important;
+    margin: 0;
+    background: #ffffff !important;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-reasons-editable textarea.o_input {
+    padding: 8px 10px !important;
+    border: 1px solid #86b7fe !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    color: #212529 !important;
+    resize: vertical;
+}
+
+.fc-cierre-proceso-form .fc-cierre-request-reasons-editable textarea.o_input:focus {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.12) !important;
+    outline: 0;
+}
+
+.fc-cierre-proceso-form .oe_chatter {
+    border-top: 1px solid #dbe5f2;
+    background: #ffffff;
+}
+
+.fc-cierre-proceso-form .oe_chatter .o_Chatter {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* El formulario usa todo el ancho y el chatter siempre queda debajo. */
+.fc-cierre-proceso-form {
+    flex-flow: column nowrap !important;
+}
+
+.fc-cierre-proceso-form .o_form_sheet_bg,
+.fc-cierre-proceso-form .o_FormRenderer_chatterContainer,
+.fc-cierre-proceso-form .o_FormRenderer_chatterContainer.o-aside {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+
+.fc-cierre-proceso-form .o_form_sheet {
+    width: calc(100% - 32px);
+    max-width: 1600px;
+    background-color: #02225b;
+}
+
+/* Zona principal: documentos a la izquierda y etapa activa a la derecha. */
+.fc-cierre-workspace-grid {
+    display: grid;
+    grid-template-columns: minmax(520px, 1.05fr) minmax(480px, .95fr);
+    align-items: stretch;
+    gap: 14px;
+}
+
+.fc-cierre-workspace-grid .fc-cierre-documents {
+    margin: 0;
+}
+
+.fc-cierre-workspace-grid > .o_notebook {
+    min-width: 0;
+    height: 100%;
+    margin-top: 0;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.fc-cierre-workspace-grid > .o_notebook > .nav-tabs {
+    margin: 0;
+    padding: 10px 12px 0;
+    border-bottom: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.fc-cierre-workspace-grid > .o_notebook > .tab-content {
+    border: 0;
+    border-radius: 0;
+}
+
+@media (max-width: 1100px) {
+    .fc-cierre-workspace-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.fc-cierre-body-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #dbe5f2;
+}
+
+.fc-cierre-body-action {
+    min-width: 128px;
+    padding: 8px 18px;
+    font-weight: 800;
+    letter-spacing: 0;
+}
+.fc-cierre-wizard-form textarea,
+.fc-cierre-proceso-form textarea {
+    min-height: 96px;
+    border-radius: 8px;
+}
+
+.fc-cierre-primary-action {
+    font-weight: 800;
+}
+
+.fc-cierre-proceso-form .o_notebook {
+    margin-top: 16px;
+}
+
+.fc-cierre-proceso-form .o_notebook .tab-content {
+    border: 1px solid #dbe5f2;
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+    background: #ffffff;
+}
+
+/* Dentro de las dos columnas, el borde pertenece al notebook completo. */
+.fc-cierre-proceso-form .fc-cierre-workspace-grid > .o_notebook {
+    margin-top: 0;
+}
+
+.fc-cierre-proceso-form .fc-cierre-workspace-grid > .o_notebook > .tab-content {
+    border: 0;
+    border-radius: 0;
+}
+
+.fc-cierre-notebook-panel {
+    padding: 18px;
+}
+
+.fc-cierre-director-guidance {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-left: 4px solid #2563eb;
+    border-radius: 6px;
+    background: #eff6ff;
+    color: #1e3a5f;
+}
+
+.fc-cierre-director-guidance i {
+    margin-top: 2px;
+    color: #2563eb;
+}
+
+.fc-cierre-director-guidance div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fc-cierre-director-guidance span {
+    font-size: 12px;
+}
+
+.fc-cierre-responsible-card,
+.fc-cierre-assignment-actions {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.fc-cierre-responsible-card .o_field_widget {
+    width: 100%;
+}
+
+.fc-cierre-assignment-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 6px;
+}
+
+.fc-cierre-assignment-buttons button {
+    min-width: 120px;
+    padding: 7px 10px;
+    font-weight: 700;
+}
+
+.fc-cierre-released-value {
+    align-items: center;
+}
+
+.fc-cierre-released-value .o_field_widget {
+    min-width: 180px;
+}
+
+.fc-cierre-notebook-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding: 4px 0 4px 10px;
+    border-left: 4px solid #1f7aea;
+    background: #ffffff;
+}
+
+.fc-cierre-documents {
+    margin: 16px 0;
+    padding: 0 18px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+.fc-cierre-documents-head,
+.fc-cierre-document-row {
+    display: grid;
+    align-items: center;
+    gap: 16px;
+}
+
+.fc-cierre-documents-head {
+    grid-template-columns: 1fr auto;
+    padding: 16px 0 12px;
+}
+
+.fc-cierre-documents-head div,
+.fc-cierre-document-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fc-cierre-documents-head span,
+.fc-cierre-document-info span {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.fc-cierre-documents-head i {
+    color: #64748b;
+    font-size: 20px;
+}
+
+.fc-cierre-document-row {
+    grid-template-columns: minmax(240px, 1fr) 76px minmax(190px, auto);
+    min-height: 62px;
+    border-top: 1px solid #edf2f7;
+}
+
+.fc-cierre-document-ready,
+.fc-cierre-document-pending {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.fc-cierre-document-ready {
+    color: #15803d;
+}
+
+.fc-cierre-document-pending {
+    color: #94a3b8;
+}
+
+.fc-cierre-document-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.fc-cierre-proceso-form .fc-cierre-document-view,
+.fc-ordenes-especiales-form .fc-cierre-document-view {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 8px;
+    background-color: #2ecc71;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.fc-cierre-proceso-form .fc-cierre-document-view:hover,
+.fc-cierre-proceso-form .fc-cierre-document-view:focus,
+.fc-ordenes-especiales-form .fc-cierre-document-view:hover,
+.fc-ordenes-especiales-form .fc-cierre-document-view:focus {
+    background-color: #27ae60;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .fc-cierre-document-row {
+        grid-template-columns: 1fr auto;
+        padding: 12px 0;
+    }
+
+    .fc-cierre-document-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+.fc-cierre-notebook-head i {
+    margin-top: 2px;
+    color: #5f6b76;
+    font-size: 16px;
+}
+
+.fc-cierre-notebook-head strong {
+    display: block;
+    color: #3f4650;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.fc-cierre-notebook-head span {
+    display: block;
+    margin-top: 3px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.fc-cierre-notebook-grid {
+    margin: 0 !important;
+}
+
+.fc-cierre-notebook-grid textarea {
+    min-height: 92px;
+}
+
+.fc-cierre-hidden-fields {
+    display: none;
+}
+
+.fc-cierre-task-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.fc-cierre-task-card,
+.fc-cierre-data-card,
+.fc-cierre-note-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.fc-cierre-task-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 74px;
+    padding: 13px 15px;
+}
+
+.fc-cierre-task-card-wide {
+    grid-column: 1 / -1;
+}
+
+.fc-cierre-task-title,
+.fc-cierre-note-title,
+.fc-cierre-data-card > span {
+    display: block;
+    color: #3f4650;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.fc-cierre-task-help {
+    display: block;
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.fc-cierre-task-card .o_field_widget {
+    margin: 0 !important;
+}
+
+.fc-cierre-task-card .o_field_boolean {
+    flex: 0 0 auto;
+}
+
+.fc-cierre-task-card-wide .o_field_widget:not(.o_field_boolean) {
+    flex: 0 1 420px;
+}
+
+.fc-cierre-note-card {
+    margin-top: 12px;
+    padding: 13px 15px;
+}
+
+.fc-cierre-note-card .o_field_widget {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.fc-cierre-note-card textarea {
+    min-height: 44px;
+    height: auto;
+    field-sizing: content;
+    resize: vertical;
+}
+
+.fc-cierre-return-note textarea {
+    min-height: 44px;
+    height: auto;
+}
+
+.fc-cierre-data-card {
+    min-height: 68px;
+    padding: 12px 14px;
+}
+
+.fc-cierre-data-card .o_field_widget {
+    display: block;
+    margin-top: 7px;
+}
+
+.fc-cierre-release-reference {
+    border-color: #7db8df;
+    background: #eef8ff;
+}
+
+.fc-cierre-release-reference .o_field_widget {
+    color: #075985;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.fc-cierre-support-panel {
+    margin-top: 18px;
+    border: 1px solid #f0b44d;
+    border-radius: 8px;
+    background: #fffdf7;
+    overflow: hidden;
+}
+
+.fc-cierre-support-panel > summary {
+    padding: 11px 14px;
+    cursor: pointer;
+    background: #f6c96f;
+    color: #4b3507;
+    font-weight: 700;
+    list-style: none;
+}
+
+.fc-cierre-support-panel > summary i {
+    margin-right: 7px;
+}
+
+.fc-cierre-support-content {
+    padding: 14px;
+}
+
+.fc-cierre-support-intro {
+    margin-bottom: 10px;
+    color: #66501f;
+    font-size: 12px;
+}
+
+.fc-cierre-support-warning,
+.fc-cierre-support-ok {
+    padding: 10px 12px;
+    border-radius: 6px;
+}
+
+.fc-cierre-support-warning {
+    border: 1px solid #f6c453;
+    background: #fff7dc;
+    color: #6d4c00;
+}
+
+.fc-cierre-support-warning ul {
+    margin: 6px 0 0;
+    padding-left: 20px;
+}
+
+.fc-cierre-support-ok {
+    border: 1px solid #86d39c;
+    background: #effcf2;
+    color: #176b31;
+}
+
+.fc-cierre-support-reason {
+    margin-top: 12px;
+}
+
+.fc-cierre-support-reason .o_field_widget,
+.fc-cierre-support-reason textarea {
+    width: 100% !important;
+}
+
+.fc-cierre-support-reason textarea {
+    min-height: 52px;
+}
+
+.fc-cierre-support-section {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #ead9b2;
+}
+
+.fc-cierre-support-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 9px;
+}
+
+@media (max-width: 768px) {
+    .fc-cierre-hero {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .fc-cierre-flow-widget {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .fc-cierre-flow-popover {
+        right: auto;
+        left: 0;
+        width: min(310px, calc(100vw - 56px));
+    }
+
+    .fc-cierre-flow-popover::before {
+        right: auto;
+        left: 24px;
+    }
+
+    .fc-cierre-task-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-type-zone .o_field_radio,
+    .fc-cierre-type-zone .fc-finalizacion-radio-grid,
+    .fc-cierre-type-zone .o_radio {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-type-zone .o_radio_item {
+        display: block;
+        margin-right: 0;
+    }
+
+    .fc-cierre-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-detail-date {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-request-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-request-item-wide,
+    .fc-cierre-request-item-full {
+        grid-column: auto;
+    }
+
+    .fc-cierre-detail-field-full {
+        grid-column: auto;
+    }
+}
+
+
+/* Órdenes especiales: carga múltiple de documentos. */
+.fc-ordenes-upload-multiple .o_attach,
+.fc-ordenes-upload-multiple .o_select_file_button {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    min-height: 38px;
+    padding: 8px 14px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background-color: #043484 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 6px rgba(4, 52, 132, 0.18);
+}
+
+.fc-ordenes-upload-multiple .o_attach:hover,
+.fc-ordenes-upload-multiple .o_attach:focus,
+.fc-ordenes-upload-multiple .o_select_file_button:hover,
+.fc-ordenes-upload-multiple .o_select_file_button:focus {
+    background-color: #0b4aa2 !important;
+    color: #ffffff !important;
+}
+
+.fc-ordenes-upload-multiple .o_attach {
+    font-size: 0 !important;
+}
+
+.fc-ordenes-upload-multiple .o_attach i {
+    font-size: 14px !important;
+}
+
+.fc-ordenes-upload-multiple .o_attach::after {
+    content: "SUBIR ARCHIVOS";
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0.2px;
+}
+
+
+/* Órdenes especiales: adjuntos seleccionados visibles como tarjetas compactas. */
+.fc-ordenes-upload-multiple {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.fc-ordenes-upload-multiple .o_attachments,
+.fc-ordenes-upload-multiple .o_attachment_many2many {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.fc-ordenes-upload-multiple .o_attachment,
+.fc-ordenes-upload-multiple .o_attachment_wrap {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    min-height: 42px;
+    padding: 5px 8px !important;
+    border: 1px solid #d9e2ef;
+    border-radius: 7px;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.fc-ordenes-upload-multiple .o_attachment_name,
+.fc-ordenes-upload-multiple .o_attachment_name span,
+.fc-ordenes-upload-multiple .o_attachment_wrap .o_field_widget {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.fc-ordenes-upload-multiple .o_attachment_delete,
+.fc-ordenes-upload-multiple .fa-times,
+.fc-ordenes-upload-multiple .fa-trash {
+    cursor: pointer;
+}
+
+
+/* Distribuir los adjuntos seleccionados en columnas de máximo 3 elementos. */
+.fc-ordenes-upload-multiple {
+    display: grid !important;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, minmax(42px, auto)) auto;
+    grid-auto-columns: minmax(230px, 320px);
+    gap: 7px 10px;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    max-width: 680px;
+    margin: 8px auto 0;
+}
+
+/* Cada adjunto ocupa una celda compacta; no todo el ancho del popup. */
+.fc-ordenes-upload-multiple > .o_attachment_wrap,
+.fc-ordenes-upload-multiple > .o_attachment,
+.fc-ordenes-upload-multiple .o_attachment_wrap,
+.fc-ordenes-upload-multiple .o_attachment {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 320px !important;
+    min-height: 42px;
+    margin: 0 !important;
+}
+
+/* El botón de selección queda centrado debajo de todas las columnas. */
+.fc-ordenes-upload-multiple .o_attach,
+.fc-ordenes-upload-multiple .o_select_file_button {
+    grid-column: 1 / -1 !important;
+    grid-row: 4 !important;
+    justify-self: center;
+    width: auto !important;
+    margin-top: 4px !important;
+}
+
+.fc-ordenes-upload-multiple .o_attachment_name,
+.fc-ordenes-upload-multiple .o_attachment_name span,
+.fc-ordenes-upload-multiple .o_attachment_wrap .o_field_widget {
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+@media (max-width: 720px) {
+    .fc-ordenes-upload-multiple {
+        display: flex !important;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        gap: 6px;
+    }
+
+    .fc-ordenes-upload-multiple > .o_attachment_wrap,
+    .fc-ordenes-upload-multiple > .o_attachment,
+    .fc-ordenes-upload-multiple .o_attachment_wrap,
+    .fc-ordenes-upload-multiple .o_attachment {
+        max-width: 100% !important;
+    }
+}
+
+
+/* Órdenes especiales: cabecera de flujo fija y menú Soporte con mejor respiración. */
+.o_form_view .oe-special-flow-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 30 !important;
+    min-height: 66px;
+    padding: 9px 14px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #d9e2ef;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.oe-special-flow-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 48px;
+}
+
+.oe-special-flow-header__inner > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 4px 0;
+}
+
+.o_form_view .oe-special-support-menu {
+    flex: 0 0 285px !important;
+    width: 285px !important;
+    margin: 3px 6px 3px 0 !important;
+    padding: 6px 8px !important;
+    box-sizing: border-box;
+    border: 1px solid #f1aeb5 !important;
+    border-radius: 9px !important;
+    background: #f8d7da !important;
+}
+
+.oe-special-support-menu__summary {
+    cursor: pointer;
+    min-height: 36px;
+    padding: 7px 9px !important;
+    box-sizing: border-box;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: #842029;
+    border-radius: 6px;
+}
+
+.oe-special-support-menu__summary::-webkit-details-marker {
+    display: none;
+}
+
+.o_form_view .oe-special-support-menu__grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 10px 8px 8px !important;
+    border-top: 1px solid #f1aeb5;
+}
+
+.o_form_view .oe-special-support-menu__grid > button {
+    min-height: 36px;
+    margin: 0 !important;
+    padding: 7px 10px !important;
+    border-radius: 5px;
+}
+
+@media (max-width: 900px) {
+    .oe-special-flow-header__inner {
+        flex-wrap: wrap;
+    }
+
+    .o_form_view .oe-special-support-menu {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Guía general del proceso de cierre contractual. */
+.fc-cierre-guide-trigger {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 7px 12px !important;
+    border: 1px solid #b7c9e5 !important;
+    border-radius: 8px !important;
+    background: #f3f7ff !important;
+    color: #123767 !important;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.fc-cierre-guide-trigger:hover,
+.fc-cierre-guide-trigger:focus {
+    border-color: #7da3d9 !important;
+    background: #e4edff !important;
+    color: #02225b !important;
+}
+
+.modal-dialog:has(.fc-cierre-guide-form) {
+    width: min(900px, calc(100vw - 32px));
+    max-width: 900px;
+}
+
+.fc-cierre-guide {
+    max-width: 860px;
+    margin: 0 auto;
+    color: #24344c;
+}
+
+.fc-cierre-guide-hero {
+    padding: 22px 28px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #02225b 0%, #0b5cab 100%);
+}
+
+.fc-cierre-guide-eyebrow {
+    color: #bfdbff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+.fc-cierre-guide-hero h2 {
+    margin: 7px 0 4px;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.fc-cierre-guide-hero p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 13px;
+}
+
+.fc-cierre-guide-intro,
+.fc-cierre-guide-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin: 16px 28px 6px;
+    padding: 11px 13px;
+    border: 1px solid #d7e5fa;
+    border-radius: 8px;
+    background: #f5f9ff;
+    color: #365575;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.fc-cierre-guide-steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 24px;
+    padding: 8px 28px;
+}
+
+.fc-cierre-guide-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e7edf6;
+}
+
+.fc-cierre-guide-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e7f0ff;
+    color: #043484;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.fc-cierre-guide-step h3,
+.fc-cierre-guide-card h3 {
+    margin: 0 0 3px;
+    color: #123767;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.fc-cierre-guide-step p,
+.fc-cierre-guide-card p {
+    margin: 0;
+    color: #52647c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.fc-cierre-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px 28px;
+}
+
+.fc-cierre-guide-card {
+    padding: 12px 14px;
+    border: 1px solid #dfe7f2;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.fc-cierre-guide-warning {
+    margin-top: 6px;
+    margin-bottom: 20px;
+    border-color: #f2d59a;
+    background: #fff9ec;
+    color: #70531b;
+}
+
+@media (max-width: 900px) {
+    .fc-cierre-guide-trigger {
+        order: 3;
+    }
+}
+
+@media (max-width: 680px) {
+    .fc-cierre-guide-steps,
+    .fc-cierre-guide-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-cierre-guide-hero,
+    .fc-cierre-guide-steps,
+    .fc-cierre-guide-grid {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .fc-cierre-guide-intro,
+    .fc-cierre-guide-warning {
+        margin-left: 18px;
+        margin-right: 18px;
+    }
+}

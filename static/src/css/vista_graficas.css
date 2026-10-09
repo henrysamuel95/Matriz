@@ -1,0 +1,1092 @@
+/* Contenedor principal del dashboard con fuente moderna de sistema (evitando imports externos para no romper el asset bundle global de Odoo) */
+.all, .select, .container_header, .dashboard-content, .indicator, .dashboard-item {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* Paleta unificada del Dashboard Director (Global / Proyectos / Coordinadores) */
+:root {
+    --dash-teal: #0E7C6B;
+    --dash-teal-soft: #D7EDE8;
+    --dash-indigo: #4C5FD5;
+    --dash-indigo-soft: #E1E4F8;
+    --dash-pos: #1F9D6B;
+    --dash-warn: #E0A100;
+    --dash-neg: #D64541;
+    --dash-ink: #0F1B2D;
+    --dash-muted: #6B7891;
+    --dash-muted-2: #98A2B3;
+    --dash-border: #E3E8F0;
+    --dash-warn-soft: #FCEFD2;
+}
+
+/* Aviso "En construcción" para indicadores/gráficas de Ejecución Técnica (dato aún no confiable
+   en toda la aplicación). Reusar esta misma clase en cualquier lugar nuevo que muestre técnica. */
+.badge-en-construccion {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 7px;
+    border-radius: 99px;
+    background: var(--dash-warn-soft);
+    color: var(--dash-warn);
+    margin-left: 6px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.o_web_client {
+    background-color: #f3f4f6 !important;
+}
+
+.o_content {
+    background-color: transparent !important;
+}
+
+.all {
+    background-color: #f3f4f6;
+    padding: 8px;
+}
+
+/* Romper la limitación de ancho de la hoja de formulario nativa de Odoo solo para nuestro Dashboard */
+.o_form_view:has(.select) .o_form_sheet,
+.o_form_view:has(.dashboard) .o_form_sheet {
+    max-width: 100% !important;
+    width: 100% !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.o_form_view:has(.select) .o_form_sheet_bg,
+.o_form_view:has(.dashboard) .o_form_sheet_bg {
+    background-color: #f3f4f6 !important;
+}
+
+/* Cabecera / Consola de Filtros */
+.select {
+    display: flex;
+    gap: 16px;
+    background-color: #ffffff;
+    padding: 18px 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Empujar el último hijo directo del contenedor .select al extremo derecho usando Flexbox puro */
+.select > :last-child {
+    margin-left: auto !important;
+}
+
+/* Topbar "Detalle de Proyecto" (modo Proyectos, con un proyecto seleccionado) -- banda adicional
+   debajo de .select, no la reemplaza (.select sigue siendo la única forma de cambiar de modo). */
+.project-topbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border: 1px solid var(--dash-border);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+}
+
+.project-topbar-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--dash-teal);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.project-topbar-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--dash-indigo-soft);
+    color: var(--dash-indigo);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* El campo Odoo (o_field_widget) envuelve las iniciales en su propio div de ancho completo con
+   text-align izquierdo por defecto, lo que descentra el texto pese al flex del contenedor padre. */
+.project-topbar-avatar .o_field_widget {
+    width: auto;
+    text-align: center;
+}
+
+.project-topbar-brand h1 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dash-ink);
+    line-height: 1.1;
+    margin: 0;
+}
+
+.project-topbar-brand p {
+    font-size: 12px;
+    color: var(--dash-muted);
+    margin-top: 3px;
+}
+
+.project-topbar-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.project-topbar-pill {
+    background: #F8FAFC;
+    border: 1px solid var(--dash-border);
+    border-radius: 9px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dash-ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.project-topbar-pill-lbl {
+    color: var(--dash-muted-2);
+    font-weight: 500;
+}
+
+button.project-topbar-link {
+    color: var(--dash-teal) !important;
+    cursor: pointer;
+    background: #F8FAFC !important;
+    border: 1px solid var(--dash-border) !important;
+    box-shadow: none !important;
+}
+
+/* Botones y Selectores */
+.oe_highlight.custom_button_style {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #334155 !important;
+    border-radius: 10px !important;
+    padding: 10px 18px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: all 0.2s ease;
+}
+
+.oe_highlight.custom_button_style:hover {
+    border-color: #cbd5e1 !important;
+    background-color: #f1f5f9 !important;
+}
+
+/* Botón de Acción Principal (CTAs) */
+button.oe_highlight.custom_button_style {
+    background: linear-gradient(135deg, var(--dash-teal), #0b6357) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    height: 44px;
+    border-radius: 10px !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px !important;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(14, 124, 107, 0.2), 0 2px 4px -2px rgba(14, 124, 107, 0.2) !important;
+    transition: all 0.2s ease !important;
+}
+
+button.oe_highlight.custom_button_style:hover {
+    background: linear-gradient(135deg, #0b6357, #094f46) !important;
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(14, 124, 107, 0.3) !important;
+}
+
+.indicator-title-button {
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+.indicator-value-header {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* Contenedor principal de indicadores KPIs */
+.container_header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.container_header .indicator {
+    flex: 1;
+    min-width: 200px;
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 15px 16px;
+    border: 1px solid #f1f5f9;
+    border-left: 4px solid #cbd5e1; /* Borde izquierdo por defecto */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Colores de acento temáticos para los KPIs, alineados a la paleta unificada del dashboard */
+.container_header .indicator:nth-child(1) { border-left-color: var(--dash-teal); }
+.container_header .indicator:nth-child(2) { border-left-color: var(--dash-indigo); }
+.container_header .indicator:nth-child(3) { border-left-color: var(--dash-pos); }
+.container_header .indicator:nth-child(4) { border-left-color: var(--dash-warn); }
+.container_header .indicator:nth-child(5) { border-left-color: var(--dash-neg); }
+.container_header .indicator:nth-child(6) { border-left-color: var(--dash-muted); }
+.container_header .indicator:nth-child(7) { border-left-color: var(--dash-teal); }
+
+.container_header .indicator:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.indicator-title {
+    font-weight: 600;
+    font-size: 11px;
+    color: #64748b; /* Slate 500 */
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0;
+}
+
+.indicator-value {
+    font-size: 23px;
+    color: #0f172a; /* Slate 900 */
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    font-variant-numeric: tabular-nums;
+}
+
+.indicator-foot {
+    font-size: 11px;
+    color: #98a2b3;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Flujo Neto (Cash Gap): color e ícono cambian según el signo del valor */
+.flujo-neto-negativo,
+.flujo-neto-positivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.flujo-neto-negativo,
+.flujo-neto-negativo .o_field_monetary {
+    color: var(--dash-neg) !important;
+}
+
+.flujo-neto-positivo,
+.flujo-neto-positivo .o_field_monetary {
+    color: var(--dash-pos) !important;
+}
+
+.flujo-neto-negativo .fa,
+.flujo-neto-positivo .fa {
+    font-size: 16px;
+}
+
+.indicator-foot .o_field_monetary {
+    font-weight: 600;
+    color: #64748b;
+}
+
+/* Dashboard e Items de Gráficos */
+.dashboard-content {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+    margin-bottom: 24px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Distribución fija en filas de a 2, tal como estaba diseñada originalmente
+        (Proyectos/Coordinadores). El modo Global ya no depende de esta regla: usa #prueba_1_dashboard
+        con filas explícitas propias, así que este valor no le afecta. */
+    gap: 16px;
+    background-color: transparent;
+    padding: 0;
+}
+
+.dashboard-item {
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dashboard-item:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+.dashboard-item-full {
+    grid-column: span 2;
+}
+
+@media (max-width: 992px) {
+    .dashboard-item-full {
+        grid-column: span 1;
+    }
+}
+
+/* Modo Global (#prueba_1_dashboard), Proyectos (#dash_proyecto_dashboard) y Coordinadores
+   (#dash_coordinador_dashboard): filas explícitas con proporciones fijas, igual que los mockups, en
+   vez de dejar que auto-fit reparta los paneles según el ancho disponible. Se apoyan en IDs propios
+   para no afectar la grilla .dashboard genérica (usada por vistas más viejas que no migraron a este
+   patrón de filas). */
+#prueba_1_dashboard,
+#dash_proyecto_dashboard,
+#dash_coordinador_dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#prueba_1_dashboard .dash-row,
+#dash_proyecto_dashboard .dash-row,
+#dash_coordinador_dashboard .dash-row {
+    display: grid;
+    gap: 16px;
+}
+
+#prueba_1_dashboard .dash-row-a,
+#dash_proyecto_dashboard .dash-row-a,
+#dash_coordinador_dashboard .dash-row-a { grid-template-columns: 1.75fr 1fr; }
+#prueba_1_dashboard .dash-row-b,
+#dash_proyecto_dashboard .dash-row-b { grid-template-columns: repeat(3, 1fr); }
+/* Coordinadores: panel de ejecución + 2 gauges -- el panel necesita más ancho que un gauge, a
+   diferencia de Global/Proyectos donde las 3 columnas de dash-row-b son paneles equivalentes. */
+#dash_coordinador_dashboard .dash-row-b { grid-template-columns: 1.4fr 1fr 1fr; }
+#dash_proyecto_dashboard .dash-row-c,
+#dash_coordinador_dashboard .dash-row-c { grid-template-columns: 1fr 1fr; }
+#prueba_1_dashboard .dash-row-full,
+#dash_proyecto_dashboard .dash-row-full,
+#dash_coordinador_dashboard .dash-row-full { grid-template-columns: 1fr; }
+
+@media (max-width: 992px) {
+    #prueba_1_dashboard .dash-row-a,
+    #prueba_1_dashboard .dash-row-b,
+    #prueba_1_dashboard .dash-row-full,
+    #dash_proyecto_dashboard .dash-row-a,
+    #dash_proyecto_dashboard .dash-row-b,
+    #dash_proyecto_dashboard .dash-row-c,
+    #dash_proyecto_dashboard .dash-row-full,
+    #dash_coordinador_dashboard .dash-row-a,
+    #dash_coordinador_dashboard .dash-row-b,
+    #dash_coordinador_dashboard .dash-row-c,
+    #dash_coordinador_dashboard .dash-row-full {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-item h2 {
+    margin: 0;
+    font-size: 13px;
+    color: #475569; /* Slate 600 */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Ícono de ayuda contextual (tooltip nativo vía title=""), reusado en títulos de gráficas
+   e indicadores KPI -- antes era un style="" inline repetido 34 veces en vista_director.xml. */
+.chart-info-icon {
+    font-size: 12px;
+    color: #94a3b8;
+    cursor: help;
+    margin-left: 5px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.chart-info-icon:hover {
+    color: var(--dash-teal);
+    transform: scale(1.25);
+}
+
+/* Botón de ayuda por gráfica/indicador: icono discreto que abre el glosario de ese tema en un modal */
+.dashboard-item h2 button.chart-help-btn,
+.indicator-title button.chart-help-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    vertical-align: middle;
+}
+
+.dashboard-item h2 button.chart-help-btn .fa.fa-question-circle,
+.indicator-title button.chart-help-btn .fa.fa-question-circle {
+    color: #94a3b8;
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.dashboard-item h2 button.chart-help-btn:hover .fa.fa-question-circle,
+.indicator-title button.chart-help-btn:hover .fa.fa-question-circle {
+    color: var(--dash-indigo);
+    transform: scale(1.25);
+}
+
+/* Widgets de Gráficos */
+.chart_widget,
+.pie_chart_widget,
+.line_chart_widget,
+.polar_area_chart_widget {
+    width: 100%;
+    height: 22rem; /* Altura optimizada para evitar leyendas amontonadas */
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .select {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .select > :last-child {
+        margin-left: 0 !important;
+        margin-top: 12px !important;
+        width: 100% !important;
+    }
+    
+    .container_header .indicator {
+        min-width: 100%;
+    }
+    
+    .dashboard {
+        grid-template-columns: 1fr; /* Colapsa a 1 columna en pantallas medianas y pequeñas */
+    }
+}
+
+.o_field_widget .o_input_dropdown {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    position: relative;
+    width: 100%;
+    padding-top: 3px;
+}
+
+.o_list_renderer .o_list_table thead {
+    position: sticky;
+
+}
+
+
+
+
+
+/* Aqui las headers*/
+/* === Headers === */
+.min-w-0 {
+    position: relative;
+    overflow: visible;
+    white-space: normal;
+    text-align: left;
+    padding: 3px; /* Añadir espacio interno para mayor separación */
+}
+
+/* Alinear celdas de datos a la izquierda (excepto botones y selectores de fila) */
+.o_list_renderer .o_list_table tbody > tr > td:not(.o_list_record_selector):not(.o_handle_cell):not(.o_list_button):not(.o_list_record_remove) {
+    text-align: left;
+    padding: 3px 3px; /* Añadir espacio interno */
+}
+
+/* Alinear encabezados de columnas con números a la izquierda */
+.o_list_renderer .o_list_table thead .o_list_number_th {
+    text-align: left !important;
+    padding: 3px 3px; /* Igualar el espaciado de las celdas */
+}
+
+/* === Scroll Horizontal === */
+/* Evitar el scroll horizontal en el contenido principal */
+html .o_web_client > .o_action_manager > .o_action .o_content {
+    overflow-x: hidden;
+}
+
+/* Separar visualmente las columnas */
+.o_list_renderer .o_list_table th,
+.o_list_renderer .o_list_table td {
+    border-right: 1px solid #ddd; /* Separación entre columnas */
+}
+
+.o_list_renderer .o_list_table th:last-child,
+.o_list_renderer .o_list_table td:last-child {
+    border-right: none; /* Eliminar el borde de la última columna */
+}
+
+/* Mejorar la legibilidad de los encabezados */
+.o_list_renderer .o_list_table thead th {
+    background-color: #f9f9f9;
+    /*font-weight: bold;*/
+    padding: 3px;
+    border-bottom: 1px solid #ccc; /* Línea inferior para encabezados */
+}
+
+
+
+/* ============================================================
+   Estilos de Contrataciones (kanban) y Ficha Resumen (.mtz-contratacion-*, .mtz-ficha-*).
+   Restaurados tras el merge de Dev_actualizacion del 2026-07-31: el merge resolvió el
+   conflicto de este archivo quedándose enteramente con la versión local (dashboard
+   director), descartando por completo la versión remota que traía este bloque -- lo que
+   dejaba sin restricción de tamaño el logo de las tarjetas kanban de Contrataciones
+   (.mtz-contratacion-logo img se renderizaba a tamaño natural, gigante).
+   ============================================================ */
+.mtz-contratacion-kanban .o_kanban_record {
+    overflow: visible !important;
+}
+
+.mtz-contratacion-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 282px;
+    min-height: 320px;
+    overflow: visible;
+    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #e3e7ed;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.mtz-contratacion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
+}
+
+.mtz-contratacion-header {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    grid-template-rows: auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 66px;
+    padding: 12px 12px 10px;
+    border-bottom: 3px solid #00489a;
+}
+
+.mtz-contratacion-logo {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #00489a;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.mtz-contratacion-logo img {
+    max-width: 23px;
+    max-height: 23px;
+    object-fit: contain;
+}
+
+.mtz-contratacion-title {
+    grid-column: auto;
+    min-width: 0;
+    color: #00489a;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mtz-contratacion-body {
+    flex: 1;
+    padding: 14px 12px 12px;
+}
+
+.mtz-contratacion-section {
+    display: block;
+}
+
+.mtz-contratacion-section small {
+    display: block;
+    color: #6b7280;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.mtz-contratacion-section strong {
+    display: block;
+    margin-top: 3px;
+    color: #111827;
+    font-size: 13px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mtz-contratacion-dates {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background: #f8f9fa;
+}
+
+.mtz-contratacion-dates div {
+    display: grid;
+    grid-template-columns: 14px 1fr;
+    align-items: start;
+    column-gap: 2px;
+}
+
+.mtz-contratacion-dates .mtz-contratacion-date-wide {
+    grid-column: 1 / -1;
+    padding-top: 7px;
+    border-top: 1px solid #e3e7ed;
+}
+
+.mtz-contratacion-dates i {
+    color: #4b5563;
+    font-size: 9px;
+    line-height: 14px;
+}
+
+.mtz-contratacion-dates span {
+    color: #6b7280;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.mtz-contratacion-dates strong {
+    grid-column: 2;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.mtz-contratacion-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid #d9dee7;
+}
+
+.mtz-contratacion-line span {
+    color: #4b5563;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.mtz-contratacion-line strong {
+    min-width: 0;
+    color: #00489a;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mtz-contratacion-line-primary {
+    padding: 8px 0 0;
+    border-top-color: #b9d3f0;
+}
+
+.mtz-contratacion-line-primary span {
+    color: #00489a;
+}
+
+.mtz-contratacion-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 52px;
+    padding: 10px 12px;
+    border-top: 1px solid #e3e7ed;
+    background: #f8f9fa;
+}
+
+.mtz-contratacion-footer-responsable {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+    min-width: 0;
+}
+
+.mtz-contratacion-footer-responsable span {
+    color: #00489a;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.mtz-contratacion-footer-responsable strong {
+    min-width: 0;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mtz-contratacion-footer-responsable .mtz-contratacion-empty {
+    color: #6b7280;
+    font-style: italic;
+    overflow: visible;
+}
+
+.mtz-contratacion-info {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #0057b8;
+    border: 1px solid #9dbce3;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1;
+    cursor: help;
+    overflow: visible;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 72, 154, 0.16);
+}
+
+.mtz-contratacion-info-popover {
+    position: absolute;
+    right: -8px;
+    bottom: 26px;
+    z-index: 30;
+    display: none;
+    width: 280px;
+    max-width: calc(100vw - 36px);
+    padding: 10px 12px;
+    border: 1px solid #d5e0ef;
+    border-radius: 7px;
+    background: #fff;
+    color: #334155;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.mtz-contratacion-info-popover::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    bottom: -7px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-right: 1px solid #d5e0ef;
+    border-bottom: 1px solid #d5e0ef;
+    transform: rotate(45deg);
+}
+
+.mtz-contratacion-info-popover b {
+    display: block;
+    margin-bottom: 6px;
+    color: #00489a;
+    font-size: 11px;
+}
+
+.mtz-contratacion-info-popover span {
+    display: block;
+    color: #334155;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.mtz-contratacion-info:hover .mtz-contratacion-info-popover {
+    display: block;
+}
+
+.mtz-ficha-actionbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 8px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+}
+
+.mtz-ficha-actionbar .mtz-ficha-primary-action {
+    border-radius: 6px !important;
+    padding: 7px 14px !important;
+    background: #00489a !important;
+    border-color: #00489a !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    box-shadow: 0 3px 8px rgba(0, 72, 154, 0.16);
+}
+
+.mtz-ficha-brand-card {
+    padding: 12px 16px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.07) !important;
+}
+
+.mtz-ficha-brand-card:hover {
+    transform: none !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08) !important;
+}
+
+.mtz-ficha-brand {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-height: 82px;
+}
+
+.mtz-ficha-brand-logo {
+    max-height: 62px !important;
+}
+
+.mtz-ficha-brand-meta {
+    color: #1f2937 !important;
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+}
+
+@media (max-width: 768px) {
+    .mtz-ficha-actionbar {
+        padding: 8px 10px;
+    }
+
+    .mtz-ficha-actionbar .mtz-ficha-primary-action {
+        width: 100%;
+        white-space: normal;
+    }
+
+    .mtz-ficha-brand {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .mtz-ficha-brand-logo {
+        max-height: 48px !important;
+    }
+
+    .mtz-ficha-brand-meta {
+        font-size: 10px !important;
+    }
+}
+
+.mtz-contratacion-activity {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.mtz-contratacion-badge {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 190px;
+    min-height: 20px;
+    padding: 4px 12px;
+    border-radius: 0 6px 0 8px;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.16);
+}
+
+.mtz-contratacion-badge-red {
+    background: #dc3545;
+}
+
+.mtz-contratacion-badge-yellow {
+    background: #fd7e14;
+}
+
+.mtz-contratacion-badge-green {
+    background: #28a745;
+}
+
+.mtz-contratacion-dot {
+    display: none;
+}
+
+.mtz-contratacion-popover {
+    position: absolute;
+    top: 31px;
+    right: 0;
+    z-index: 20;
+    display: none;
+    width: 250px;
+    padding: 9px;
+    border: 1px solid #d9e2ef;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    text-transform: none;
+}
+
+.mtz-contratacion-badge:hover .mtz-contratacion-popover {
+    display: grid;
+    gap: 7px;
+}
+
+.mtz-contratacion-popover::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    right: 18px;
+    width: 12px;
+    height: 12px;
+    transform: rotate(45deg);
+    background: #ffffff;
+    border-left: 1px solid #d9e2ef;
+    border-top: 1px solid #d9e2ef;
+}
+
+.mtz-contratacion-step {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    background: #f8fafc;
+}
+
+.mtz-contratacion-step-current {
+    background: #eaf1ff;
+    border-left: 4px solid #28a745;
+}
+
+.mtz-contratacion-step span {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.mtz-contratacion-step strong {
+    min-width: 0;
+    color: #111827;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .mtz-contratacion-card {
+        width: min(100%, 280px);
+    }
+
+    .mtz-contratacion-popover {
+        right: auto;
+        left: 0;
+        width: 230px;
+    }
+}

@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_programacion_pagos_form" model="ir.ui.view">
+            <field name="name">programacion.pagos.form</field>
+            <field name="model">programacion_pagos</field>
+            <field name="arch" type="xml">
+                <form string="Programación de Pagos">
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Agregar el nombre aquí..."/>
+                        </h1>
+                    </div>
+                    <br/>
+                     <label for="total_valor_a_pagar" string="Valor total pagado:" invisible="1"/>
+                    <field name="total_valor_a_pagar" invisible="1"/>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_create_programacion_pagos" model="ir.actions.act_window">
+            <field name="name">Crear Programación de Pagos</field>
+            <field name="res_model">programacion_pagos</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_programacion_pagos_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+        <record id="view_programacion_pagos_kanban" model="ir.ui.view">
+            <field name="name">programacion.pagos.kanban</field>
+            <field name="model">programacion_pagos</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" action="Linea_programacion_pagos" type="object" on_create="Matriz.open_create_programacion_pagos">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_record_title" style="width: 250px; height: 50px; overflow: hidden;">
+                                    <h4 class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                        t-att-title="record.name.value">
+                                        <field name="name" options="{'limit': 1000}"/>
+                                    </h4>
+                                </div>
+                                <field name="hiden" widget="handle" invisible="1"/>
+                                <div class="oe_kanban_bottom_left">
+                                    <strong style="font-size: 14px;">Valor total pagado: </strong><field name="total_valor_a_pagar"/>
+                                    <br/>
+                                    <strong style="font-size: 14px;">Valor a pagar pendiente: </strong><field name="total_valor_a_pagar_pendiente"/>
+                                    <br/>
+                                    <strong style="font-size: 14px;">Valor a pagar pendiente del día de hoy: </strong><field name="total_valor_a_pagar_programado"/>
+                                    <br/>
+                                    <strong style="font-size: 14px;">Fecha de creación: </strong><field name="fch_creacion"/>
+                                </div>
+                                <br/>
+                                <div class="oe_kanban_bottom_left">
+                                    <strong style="font-size: 14px;">Asignar tarea:</strong> <field name="activity_ids" widget="kanban_activity" style="font-size: 17px;"/>
+                                    <span style="display: inline-block; width: 62px;"></span>
+                                    <strong style="font-size: 14px;">Creado por:  </strong><field name="create_uid" options="{'no_open': True}" widget="many2one_avatar_user" class="oe_kanban_content_oe_kanban_global_clickable" domain="[('share', '=', False)]" style="font-size: 17px;"/>
+                                </div>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                           <a class="dropdown-item" role="menuitem" type="object" name="open_linea_programacion_pagos_calendar">Calendario</a>
+                                            <a class="dropdown-item" role="menuitem" type="object" name="Pendientes_vista">Pendientes</a>
+                                            <a class="dropdown-item" role="menuitem" type="object" name="pagos_programados_de_hoy">Pagos programados para el día de hoy</a>
+                                            <a class="dropdown-item" role="menuitem" type="object" name="open_traceability_view">Trazabilidad</a>
+                                        </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="view_pendientes_tabla_tree" model="ir.ui.view">
+            <field name="name">pendientes_tabla.tree</field>
+            <field name="model">pendientes_tabla</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="Pendientes">
+                    <field name="centro_de_costo" width="40" options="{'no_create': True}"/>
+                    <field name="documento" width="40"/>
+                    <field name="fecha_documento" width="40"/>
+                    <field name="codigo_tercero" width="40"/>
+                    <field name="nombre_tercero" width="40"/>
+                    <field name="valor_a_pagar" width="40"/>
+                    <field name="fecha_estimada_de_pago" width="100" />
+                    <field name="fecha_de_pago" width="100"/>
+                    <field name="total_valor_a_pagar_pendiente" string="VALOR A PAGAR PENDIENTE" sum="Total" decoration-bf="1" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_programacion_pagos_tree" model="ir.ui.view">
+            <field name="name">programacion_pagos.tree</field>
+            <field name="model">programacion_pagos</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="total_valor_a_pagar"/>
+                    <field name="total_valor_a_pagar_pendiente"/>
+                    <field name="total_valor_a_pagar_programado"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pendientes_tabla_calendar" model="ir.ui.view">
+            <field name="name">pendientes_tabla.calendar</field>
+            <field name="model">pendientes_tabla</field>
+            <field name="arch" type="xml">
+                <calendar string="Pendientes" date_start="fecha_estimada_de_pago" event_open_popup="true">
+                    <field name="centro_de_costo" options="{'no_create': True}"/>
+                    <field name="documento"/>
+                    <field name="fecha_documento"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="valor_a_pagar"/>
+                    <field name="fecha_estimada_de_pago"/>
+                    <field name="fecha_de_pago"/>
+                    <!-- Otros campos que deseas mostrar en la vista de calendario -->
+                </calendar>
+            </field>
+        </record>
+
+
+        <record id="view_pendientes_tabla_form" model="ir.ui.view">
+            <field name="name">pendientes_tabla.pagos.form</field>
+            <field name="model">pendientes_tabla</field>
+                <field name="arch" type="xml">
+                    <form string="Pendientes">
+                        <sheet>
+                            <div class="oe_title">
+                                <h1>Detalle de la tabla de pendientes</h1>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="centro_de_costo"/>
+                                    <field name="documento"/>
+                                </group>
+                                <group>
+                                    <field name="fecha_documento"/>
+                                    <field name="codigo_tercero"/>
+                                    <field name="nombre_tercero"/>
+                                    <field name="fecha_estimada_de_pago"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="valor_a_pagar" class="oe_inline"/>
+                                <field name="fecha_de_pago" class="oe_inline"/>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+
+        <record id="pendientes_tabla_view_search" model="ir.ui.view">
+           <field name="name">pendientes_tabla.view.search.module.name</field>
+           <field name="model">pendientes_tabla</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="centro_de_costo" options="{'no_create': True}"/>
+                    <field name="documento"/>
+                    <field name="fecha_documento"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="valor_a_pagar"/>
+                    <field name="total_valor_a_pagar_pendiente" string="VALOR A PAGAR PENDIENTE"/>
+                    <field name="fecha_estimada_de_pago"/>
+                    <field name="fecha_de_pago" />
+               </search>
+           </field>
+        </record>
+
+        <record id="view_pagos_programados_de_hoy_tree" model="ir.ui.view">
+            <field name="name">pagos_programados_de_hoy.tree</field>
+            <field name="model">pagos_programados_de_hoy</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="Pagos programados para el día de hoy">
+                    <field name="centro_de_costo" width="40" options="{'no_create': True}"/>
+                    <field name="documento" width="40"/>
+                    <field name="fecha_documento" width="40"/>
+                    <field name="codigo_tercero" width="40"/>
+                    <field name="nombre_tercero" width="40"/>
+                    <field name="valor_a_pagar" width="40"/>
+                    <field name="fecha_de_pago" width="40"/>
+                    <field name="total_valor_a_pagar_programado" string="VALOR A PAGAR PENDIENTE DEL DÍA DE HOY" sum="Total" decoration-bf="1" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_pagos_programados_de_hoy_calendar" model="ir.ui.view">
+            <field name="name">pagos_programados_de_hoy.calendar</field>
+            <field name="model">pagos_programados_de_hoy</field>
+            <field name="arch" type="xml">
+                <calendar string="Pagos programados para el día de hoy" date_start="fecha_documento" event_open_popup="true">
+                    <field name="centro_de_costo" options="{'no_create': True}"/>
+                    <field name="documento"/>
+                    <field name="fecha_documento"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="valor_a_pagar"/>
+                    <field name="fecha_de_pago"/>
+                    <!-- Otros campos que deseas mostrar en la vista de calendario -->
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_pagos_programados_de_hoy_form" model="ir.ui.view">
+            <field name="name">pagos_programados_de_hoy.pagos.form</field>
+            <field name="model">pagos_programados_de_hoy</field>
+                <field name="arch" type="xml">
+                    <form string="Pendientes">
+                        <sheet>
+                            <div class="oe_title">
+                                <h1>Detalle de la tabla de pagos programados para el día de hoy</h1>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="centro_de_costo"/>
+                                    <field name="documento"/>
+                                </group>
+                                <group>
+                                    <field name="fecha_documento"/>
+                                    <field name="codigo_tercero"/>
+                                    <field name="nombre_tercero"/>
+                                    <field name="fecha_de_pago" class="oe_inline"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="valor_a_pagar" class="oe_inline"/>
+                            </group>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+
+        <record id="pagos_programados_de_hoy_view_search" model="ir.ui.view">
+           <field name="name">pagos_programados_de_hoy.view.search.module.name</field>
+           <field name="model">pagos_programados_de_hoy</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="centro_de_costo"/>
+                    <field name="documento"/>
+                    <field name="fecha_documento"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="valor_a_pagar"/>
+                    <field name="total_valor_a_pagar_programado" string="VALOR A PAGAR PENDIENTE DEL DÍA DE HOY"/>
+                    <field name="fecha_de_pago"/>
+               </search>
+           </field>
+        </record>
+
+        <record id="view_linea_programacion_pagos_tree" model="ir.ui.view">
+            <field name="name">linea_programacion_pagos.tree</field>
+            <field name="model">linea_programacion_pagos</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" string="Pendientes">
+                    <field name="documento" width="50"/>
+                    <field name="fecha_documento" width="50" />
+                    <field name="codigo_tercero" width="50"/>
+                    <field name="nombre_tercero" width="50"/>
+                    <field name="valor_a_pagar" width="100" invisible="1"/>
+                    <field name="directora" width="100"/>
+                    <field name="fecha" width="100"/>
+                    <field name="observaciones_tesoreria" width="80"/>
+                    <field name="total_valor_a_pagar" string="VALOR TOTAL PAGADO" sum="Total" decoration-bf="1" optional="show"/>
+                </tree>
+            </field>
+        </record>
+        <record id="linea_programacion_pagos_view_search" model="ir.ui.view">
+           <field name="name">linea_programacion_pagos.view.search.module.name</field>
+           <field name="model">linea_programacion_pagos</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="documento"/>
+                    <field name="fecha_documento"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="total_valor_a_pagar" string="VALOR TOTAL PAGADO" sum="Total" decoration-bf="1"/>
+                    <field name="valor_a_pagar" invisible="1"/>
+                    <field name="directora"/>
+                    <field name="observaciones_tesoreria"/>
+                    <field name="fecha"/>
+               </search>
+           </field>
+        </record>
+
+
+
+
+        <record id="view_linea_programacion_pagos_calendar" model="ir.ui.view">
+            <field name="name">programacion.pagos.calendar</field>
+            <field name="model">linea_programacion_pagos</field>
+            <field name="arch" type="xml">
+                <calendar string="Programación de Pagos" date_start="fecha" event_open_popup="true">
+                    <field name="fecha_documento"/>
+                    <field name="fecha"/>
+                    <field name="codigo_tercero"/>
+                    <field name="nombre_tercero"/>
+                    <field name="directora"/>
+                    <field name="observaciones_tesoreria"/>
+                    <!-- Otros campos que deseas mostrar en la vista de calendario -->
+                </calendar>
+            </field>
+        </record>
+
+
+        <record id="view_linea_programacion_pagos_form" model="ir.ui.view">
+            <field name="name">linea.programacion.pagos.form</field>
+            <field name="model">linea_programacion_pagos</field>
+                <field name="arch" type="xml">
+                    <form string="Programación de Pagos">
+                        <sheet>
+                            <div class="oe_title">
+                                <h1>Detalle de Programación de Pagos</h1>
+                            </div>
+                            <group>
+                                <group>
+                                    <field name="documento"/>
+                                    <field name="fecha_documento"/>
+                                </group>
+                                <group>
+                                    <field name="codigo_tercero"/>
+                                    <field name="nombre_tercero"/>
+                                    <field name="directora"/>
+                                    <field name="fecha"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="valor_a_pagar" class="oe_inline"/>
+                            </group>
+                            <notebook>
+                                <page string="Observaciones">
+                                    <field name="observaciones_tesoreria" widget="html"/>
+                                </page>
+                                <!-- Add more pages if needed -->
+                            </notebook>
+                        </sheet>
+                    </form>
+                </field>
+            </record>
+
+
+
+
+        <!-- Security Access Rights -->
+        <record id="model_traceability_record_access" model="ir.model.access">
+            <field name="name">traceability.record.access</field>
+            <field name="model_id" ref="model_traceability_record"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_traceability_record_form" model="ir.ui.view">
+            <field name="name">traceability.record.form</field>
+            <field name="model">traceability.record</field>
+            <field name="arch" type="xml">
+                <form string="Traceability Record">
+                    <sheet>
+                        <group>
+                            <field name="model_name" readonly="1"/>
+                            <field name="field_name" readonly="1"/>
+                            <field name="new_value" readonly="1"/>
+                            <field name="change_date" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="many2many_tags" options="{'no_create': True}" readonly="1"/>
+                            <field name="activity_ids" readonly="1"/>
+                            <field name="message_ids" readonly="1"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_traceability_record_tree" model="ir.ui.view">
+            <field name="name">traceability.record.tree</field>
+            <field name="model">traceability.record</field>
+            <field name="arch" type="xml">
+                <tree string="Traceability Records" create="false">
+                    <field name="model_name"/>
+                    <field name="field_name"/>
+                    <field name="new_value"/>
+                    <field name="change_date"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_traceability_record" model="ir.actions.act_window">
+            <field name="name">Traceability Records</field>
+            <field name="res_model">traceability.record</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new Traceability Record.
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

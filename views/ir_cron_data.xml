@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="email_actividades_vencidas" model="mail.template">
+        <field name="name">Alerta de Tarea Vencida</field>
+        <field name="model_id" ref="Matriz.model_entregables_2"/>
+        <field name="subject">Alerta: Tarea Vencida</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email_formatted }}</field>
+        <field name="description">Se envía automáticamente cuando una tarea está vencida.</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFFFF; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;">
+                            <tbody>
+                                <!-- CONTENIDO -->
+                                <tr>
+                                    <td style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-size: 20px; font-weight: bold;">Tarea vencida</span><br/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        Estimado <t t-out="object.name or ''">usuario</t>,<br/><br/>
+                                                        La siguiente tarea está vencida:<br/>
+                                                        <!-- Inserta aquí los detalles de la tarea vencida -->
+                                                        <br/><br/>
+                                                        Por favor, tome las medidas necesarias para resolver este problema.<br/><br/>
+                                                        Atentamente,<br/><br/>
+                                                        <img src="https://i.postimg.cc/TwJzHGbX/FIRMA-DIRECTOR-FUV.jpg" alt="" width="500" height="150"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <hr width="100%" style="background-color: rgb(204,204,204); border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <record id="email_actividades_vencidas_antes_de_ocho_dias" model="mail.template">
+        <field name="name">Alerta de tarea a punto de vencer</field>
+        <field name="model_id" ref="Matriz.model_entregables_2"/>
+        <field name="subject">Alerta: Tarea a punto de vencer</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email_formatted }}</field>
+        <field name="description">Se envía automáticamente cuando una tarea está a punto de vencer.</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFFFF; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;">
+                            <tbody>
+                                <!-- CONTENIDO -->
+                                <tr>
+                                    <td style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-size: 20px; font-weight: bold;">Tarea a punto de vencer</span><br/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        Estimado <t t-out="object.name or ''">usuario</t>,<br/><br/>
+                                                        La siguiente tarea está a punto de vencer:<br/>
+                                                        <!-- Inserta aquí los detalles de la tarea vencida -->
+                                                        <br/><br/>
+                                                        Por favor, tome las medidas necesarias para resolver este problema.<br/><br/>
+                                                        Atentamente,<br/><br/>
+                                                        <img src="https://i.postimg.cc/TwJzHGbX/FIRMA-DIRECTOR-FUV.jpg" alt="" width="500" height="150"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <hr width="100%" style="background-color: rgb(204,204,204); border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!--- Alertas de regalias-->
+
+
+    <record id="email_actividades_vencidas_SEMAFORO_2" model="mail.template">
+        <field name="name">Alerta de proyecto pronto a vencer</field>
+        <field name="model_id" ref="Matriz.model_regalias"/>
+        <field name="subject">Alerta: quedan 20 días</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email_formatted }}</field>
+        <field name="description">Se envía automáticamente cuando un proyecto está vencido.</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFFFF; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;">
+                            <tbody>
+                                <!-- CONTENIDO -->
+                                <tr>
+                                    <td style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-size: 20px; font-weight: bold;">Alerta</span><br/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        Estimado <t t-out="object.name or ''">usuario</t>,<br/><br/>
+                                                        Atención: Quedan 20 días o menos para la fecha límite:<br/>
+                                                        <!-- Inserta aquí los detalles de la tarea vencida -->
+                                                        <br/><br/>
+                                                        Por favor, tome las medidas necesarias para resolver este problema.<br/><br/>
+                                                        Atentamente,<br/><br/>
+                                                        <img src="https://i.postimg.cc/TwJzHGbX/FIRMA-DIRECTOR-FUV.jpg" alt="" width="500" height="150"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <hr width="100%" style="background-color: rgb(204,204,204); border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+
+    <record id="email_actividades_vencidas_SEMAFORO_3" model="mail.template">
+        <field name="name">Alerta de proyecto a punto de vencer</field>
+        <field name="model_id" ref="Matriz.model_regalias"/>
+        <field name="subject">Alerta: solo quedan 10 días para la fecha límite</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email_formatted }}</field>
+        <field name="description">Se envía automáticamente cuando un proyecto está vencido.</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFFFF; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;">
+                            <tbody>
+                                <!-- CONTENIDO -->
+                                <tr>
+                                    <td style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-size: 20px; font-weight: bold;">Alerta</span><br/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        Estimado <t t-out="object.name or ''">usuario</t>,<br/><br/>
+                                                        Alerta naranja: Solo quedan 10 días para la fecha límite. Es hora de intensificar los esfuerzos para cumplir con el plazo:<br/>
+                                                        <!-- Inserta aquí los detalles de la tarea vencida -->
+                                                        <br/><br/>
+                                                        Por favor, tome las medidas necesarias para resolver este problema.<br/><br/>
+                                                        Atentamente,<br/><br/>
+                                                        <img src="https://i.postimg.cc/TwJzHGbX/FIRMA-DIRECTOR-FUV.jpg" alt="" width="500" height="150"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <hr width="100%" style="background-color: rgb(204,204,204); border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+
+    <record id="email_actividades_vencidas_SEMAFORO_4" model="mail.template">
+        <field name="name">Alerta, el proyecto venció</field>
+        <field name="model_id" ref="Matriz.model_regalias"/>
+        <field name="subject">Alerta: el proyecto venció</field>
+        <field name="email_from">{{ (object.company_id.email_formatted or user.email_formatted) }}</field>
+        <field name="email_to">{{ object.email_formatted }}</field>
+        <field name="description">Se envía automáticamente cuando una tarea está vencida.</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="background-color: #FFFFFF; font-family: Verdana, Arial, sans-serif; color: #454748; width: 100%; border-collapse: separate;">
+                <tr>
+                    <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse: separate;">
+                            <tbody>
+                                <!-- CONTENIDO -->
+                                <tr>
+                                    <td style="min-width: 590px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse: separate;">
+                                            <tr>
+                                                <td style="text-align: left;">
+                                                    <span style="font-size: 20px; font-weight: bold;">Proyecto vencida</span><br/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="font-size: 13px;">
+                                                    <div>
+                                                        Estimado <t t-out="object.name or ''">usuario</t>,<br/><br/>
+                                                        ¡Alerta roja! La fecha límite ha expirado. Es crucial abordar este asunto de inmediato para evitar retrasos adicionales:<br/>
+                                                        <!-- Inserta aquí los detalles de la tarea vencida -->
+                                                        <br/><br/>
+                                                        Por favor, tome las medidas necesarias para resolver este problema.<br/><br/>
+                                                        Atentamente,<br/><br/>
+                                                        <img src="https://i.postimg.cc/TwJzHGbX/FIRMA-DIRECTOR-FUV.jpg" alt="" width="500" height="150"/>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: center;">
+                                                    <hr width="100%" style="background-color: rgb(204,204,204); border: medium none; clear: both; display: block; font-size: 0px; min-height: 1px; line-height: 0; margin: 16px 0px 16px 0px;"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

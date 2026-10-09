@@ -1,0 +1,224 @@
+<odoo>
+    <record id="view_signature_mixin_kanban" model="ir.ui.view">
+        <field name="name">signature.mixin.kanban</field>
+        <field name="model">signature.mixin</field>
+        <field name="arch" type="xml">
+            <kanban string="Trazabilidad de Firmas" create="false" edit="false" class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="nombre_documento"/>
+                <field name="signature_user_id"/>
+                <field name="signature_display_partner_id"/>
+                <field name="signature_date"/>
+                <field name="signature_ip"/>
+                <field name="modelo_origen"/>
+                <field name="signature_hash"/>
+                <field name="tipo_accion"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click" style="width: 300px; min-height: 205px; border-radius: 8px; padding: 0; background: #ffffff; box-shadow: 0 2px 7px rgba(0,0,0,0.16); overflow: hidden;">
+                            <div style="padding: 14px 14px 10px 14px; display: flex; justify-content: space-between; gap: 8px; align-items: flex-start;">
+                                <div style="min-width: 0;">
+                                    <div style="font-size: 14px; font-weight: 700; color: #043484; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <field name="name"/>
+                                    </div>
+                                    <div style="font-size: 12px; color: #607086; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <field name="nombre_documento"/>
+                                    </div>
+                                </div>
+                                <span t-if="record.tipo_accion.raw_value == 'firma'" style="background: #dff5e8; color: #087a37; border-radius: 14px; padding: 4px 9px; font-size: 11px; font-weight: 700; white-space: nowrap;">
+                                    Registrada
+                                </span>
+                                <span t-if="record.tipo_accion.raw_value == 'refirma'" style="background: #fff2d8; color: #a45a00; border-radius: 14px; padding: 4px 9px; font-size: 11px; font-weight: 700; white-space: nowrap;">
+                                    Reemplazada
+                                </span>
+                                <span t-if="record.tipo_accion.raw_value == 'eliminacion'" style="background: #fde2e2; color: #b42318; border-radius: 14px; padding: 4px 9px; font-size: 11px; font-weight: 700; white-space: nowrap;">
+                                    Eliminada
+                                </span>
+                            </div>
+
+                            <div style="border-top: 3px solid #043484;"></div>
+
+                            <div style="padding: 11px 14px 12px 14px;">
+                                <div style="display: grid; gap: 7px; font-size: 12px; color: #26384d;">
+                                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <i class="fa fa-user" style="color: #043484; width: 15px;"/>
+                                    <span style="font-weight: 600;">Firmado por:</span>
+                                    <field name="signature_display_partner_id"/>
+                                </div>
+                                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <i class="fa fa-calendar" style="color: #043484; width: 15px;"/>
+                                    <span style="font-weight: 600;">Fecha:</span>
+                                    <field name="signature_date"/>
+                                </div>
+                                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <i class="fa fa-map-marker" style="color: #043484; width: 15px;"/>
+                                    <span style="font-weight: 600;">IP:</span>
+                                    <field name="signature_ip"/>
+                                </div>
+                                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    <i class="fa fa-file-text-o" style="color: #043484; width: 15px;"/>
+                                    <span style="font-weight: 600;">Modelo:</span>
+                                    <field name="modelo_origen"/>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 10px; padding: 7px 8px; background: #f4f7fb; border-radius: 6px; font-size: 11px; color: #4d5b6a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                <span style="font-weight: 700; color: #043484;">SHA-256:</span>
+                                <field name="signature_hash"/>
+                            </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_signature_mixin_tree" model="ir.ui.view">
+        <field name="name">signature.mixin.tree</field>
+        <field name="model">signature.mixin</field>
+        <field name="arch" type="xml">
+            <tree string="Listado de Firmas SHA-256" decoration-success="signature_hash != False" create="false" edit="false">
+                <field name="name"/>
+                <field name="nombre_documento"/> 
+                <field name="signature_display_partner_id" string="Firmado por" widget="many2one_avatar"/>
+                <field name="signature_date"/>
+                <field name="signature_ip"/>
+                <field name="modelo_origen" optional="show"/>
+                <field name="signature_hash" optional="show"/>
+                <field name="tipo_accion" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_signature_mixin_search" model="ir.ui.view">
+        <field name="name">signature.mixin.search</field>
+        <field name="model">signature.mixin</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Firmas">
+                <field name="name"/>
+                <field name="nombre_documento"/>
+                <field name="modelo_origen"/>
+                <field name="signature_hash"/>
+                <field name="signature_ip"/>
+                <field name="signature_display_partner_id"/>
+                <separator/>
+                <filter string="Con Hash (Firmados)" name="has_hash" domain="[('signature_hash', '!=', False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Usuario técnico" name="group_user" context="{'group_by':'signature_user_id'}"/>
+                    <filter string="IP" name="group_ip" context="{'group_by':'signature_ip'}"/>
+                    <filter string="Modelo (Origen)" name="group_model" context="{'group_by':'modelo_origen'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_signature_mixin_form" model="ir.ui.view">
+        <field name="name">signature.mixin.form</field>
+        <field name="model">signature.mixin</field>
+        <field name="arch" type="xml">
+            <form string="Detalle de Trazabilidad" create="false" edit="false">
+                <header>
+                    <field name="tipo_accion" widget="statusbar" statusbar_visible="firma,refirma,eliminacion"/>
+
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Referencia de Documento"/>
+                        <h1>
+                            <field name="name" placeholder="Ej. Firma Contratista - Informe 001"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="📍 Información del Firmante" name="signer_info">
+                            <field name="signature_display_partner_id" widget="many2one_avatar"/>
+                            <field name="signature_user_id" widget="many2one_avatar_user" invisible="1"/>
+                            <field name="signature_date"/>
+                            <label for="signature_mac"/>
+                            <div class="o_row">
+                                <i class="fa fa-map-marker" title="Ubicación IP"/> 
+                                <field name="signature_mac"/>
+                            </div>
+                            <label for="signature_ip"/>
+                             <div class="o_row">
+                                <i class="fa fa-map-marker" title="Ubicación IP"/> 
+                                 <field name="signature_ip"/>
+                            </div>
+                        </group>
+
+                        <group string="🔐 Evidencia Digital" name="evidence">
+                            <group>
+                                <field name="signature_accepted" widget="boolean_toggle" string="Aceptación Digital"/>
+                                <label for="signature_image" string="Firma (Imagen)" style="margin-top: 10px; font-weight: bold;" invisible="1"/>
+                                
+                                <field name="signature_image" widget="image" class="oe_avatar" nolabel="1" options="{'size': [150, 150]}" style="margin-top: 5px;" invisible="1"/>
+                            </group>
+                            
+                            <group></group> 
+                        </group>
+
+                        </group> <group string="📄 Origen del Documento" name="document_origin">
+                            <group>
+                                <field name="nombre_documento"/>
+                                <field name="modelo_origen"/>
+                            </group>
+                            <group>
+                                <field name="registro_origen_id"/>
+                            </group>
+                        </group>
+                        <br/>
+
+                    <notebook>
+                        <page string="Sello de Seguridad (Hash)" name="security_hash">
+                            <group>
+                                <field name="signature_hash" widget="CopyClipboardChar" string="SHA/FHA Hash"/>
+                            </group>
+                            <div class="alert alert-info" role="alert" style="margin-top: 20px;">
+                                <i class="fa fa-info-circle"/> Este código es único y certifica que la firma y los datos adjuntos no han sido alterados desde su creación.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_signature_mixin" model="ir.actions.act_window">
+        <field name="name">Trazabilidad de Firmas</field>
+        <field name="res_model">signature.mixin</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <record id="action_signature_mixin_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_signature_mixin_tree"/>
+        <field name="act_window_id" ref="action_signature_mixin"/>
+    </record>
+
+    <record id="action_signature_mixin_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_signature_mixin_kanban"/>
+        <field name="act_window_id" ref="action_signature_mixin"/>
+    </record>
+
+    <record id="action_signature_mixin_view_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_signature_mixin_form"/>
+        <field name="act_window_id" ref="action_signature_mixin"/>
+    </record>
+
+    <menuitem id="menu_signature_root" name="Firmas Digitales" sequence="10"/>
+    <menuitem id="menu_signature_all" name="Trazabilidad de firmas" 
+              parent="menu_categoria_usuarios"
+              action="action_signature_mixin" 
+              sequence="10" groups="Matriz.group_soporte"/>
+</odoo>

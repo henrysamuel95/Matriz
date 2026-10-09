@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista Tree de terceros -->
+    <record id="view_terceros_sql_tree" model="ir.ui.view">
+        <field name="name">tercero_sql_temp.tree</field>
+        <field name="model">tercero_sql_temp</field>
+        <field name="arch" type="xml">
+            <tree string="Terceros sincronizados">
+                <field name="tercero" string="Cédula o NIT"/>
+                <field name="razon_social" string="Razón social"/>
+                <field name="categoria" string="Categoría"/>
+                <button name="obtener_detalles_tercero" string="Ver movimientos" type="object" icon="fa-search"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda -->
+    <record id="view_terceros_sql_search" model="ir.ui.view">
+        <field name="name">tercero_sql_temp.search</field>
+        <field name="model">tercero_sql_temp</field>
+        <field name="arch" type="xml">
+            <search string="Buscar terceros">
+                <field name="tercero"/>
+                <field name="razon_social"/>
+                <field name="categoria"/>
+            </search>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,5 @@
+/* static/src/css/kanban_styles.css */
+
+.o_kanban_view .o_kanban_record {
+    background-color: rgba(12, 45, 255, 0.1) !important;
+}

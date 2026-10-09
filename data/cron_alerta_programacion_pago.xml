@@ -1,0 +1,14 @@
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_alerta_programacion_pago_auxiliar_tesoreria" model="ir.cron">
+            <field name="name">Cuenta de cobro: alerta fecha tentativa de pago</field>
+            <field name="model_id" ref="model_acta_entrega_documentos"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_alerta_programacion_pago_auxiliar_tesoreria()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>

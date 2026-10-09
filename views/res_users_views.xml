@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_tree_inherit_roles" model="ir.ui.view">
+        <field name="name">res.users.tree.inherit.roles</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree"/>
+        <field name="arch" type="xml">
+
+            <!-- Se conservan en el modelo, pero no se muestran en este listado. -->
+            <xpath expr="//field[@name='lang']" position="replace"/>
+            <xpath expr="//field[@name='state']" position="replace"/>
+
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="rol_coordinador" optional="show"/>
+                <field name="rol_asistente_coordinador" optional="show"/>
+                <field name="rol_directivo" optional="show"/>
+                <field name="roles_groups" string="Roles Matriz" widget="many2many_tags" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

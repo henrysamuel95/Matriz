@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_report_basedatoscontratacion" model="ir.actions.report">
+        <field name="name">Contrato</field>
+        <field name="model">basedatoscontratacion</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Matriz.report_basedatoscontratacion</field>
+        <field name="report_file">Matriz.report_basedatoscontratacion</field>
+        <field name="print_report_name">('Contrato - %s' % object.nombre_solicitante)</field>
+        <field name="binding_model_id" ref="model_basedatoscontratacion"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+
+
+    <template id="report_contrataciones_fuv">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page" >
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>

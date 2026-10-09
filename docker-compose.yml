@@ -1,0 +1,67 @@
+
+
+services:
+  gofuv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gofuv
+    depends_on:
+      - fuvdb
+      - siesadb  # Asegura que SQL Server inicie antes
+    ports:
+      - "8080:8069"
+    volumes:
+      - fuv-data:/var/lib/odoo
+      - .:/mnt/extra-addons/Matriz
+    environment:
+      - HOST=fuvdb
+      - USER=odoo
+      - PASSWORD=odoo
+    # Esto intercepta 'host.docker.internal' y lo redirige internamente a 'siesadb'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    # --db-filter fija la base a odoo_local: sin esto, con 2 bases
+    # disponibles (fuvdb vacía + odoo_local) y sin sesión, las rutas
+    # públicas (auth='public') no resuelven a qué base dirigir la
+    # petición. Solo afecta este docker-compose.yml de desarrollo local.
+    command: -- --dev=xml,reload,qwebs --db-filter=^odoo_local$$
+
+  fuvdb:
+    image: postgres:16 
+    container_name: fuvdb
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    volumes:
+      - fuv-db:/var/lib/postgresql/data
+
+  siesadb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: siesadb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=ClaveFuerte_2026!  # La clave de tu imagen
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./siesa_data:/var/opt/mssql/data      # <- Cambiado de volumen con nombre a carpeta local
+      - ./siesa_backups:/var/opt/mssql/backup  # Carpeta local para mapear el .bak
+
+  # Servidor SMTP falso para pruebas locales (nunca entrega correos de
+  # verdad) — evita agotar cuentas reales de correo y que las pruebas le
+  # lleguen a direcciones de staff real. Se activa solo con
+  # MAILPIT_LOCAL_DEV=1 en el .env — ver models/mailpit_local_dev.py.
+  # Solo para desarrollo local, no producción.
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: matriz-mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"   # UI web: http://localhost:8025
+      - "1025:1025"   # SMTP (gofuv lo usa internamente como 'mailpit:1025')
+
+volumes:
+  fuv-data:
+  fuv-db:

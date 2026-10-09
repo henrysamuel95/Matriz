@@ -1,0 +1,180 @@
+<div class="card_seccion" attrs="{'invisible': [('select_persona', 'in', ['persona_juridica', 'contrato_laboral'])]}" style="width: 100%;" groups="Matriz.group_contratacion_coordinador">
+
+       <div class="titulo_seccion">FORMULARIO DE CONTRATACIÓN PERSONA NATURAL</div>
+
+       <!-- Contenido del Formulario -->
+       <div style="display: flex; gap: 20px; width: 100%;">
+              <!-- Primera columna -->
+              <div style="width: 50%; display: flex; flex-direction: column; gap: 5px;">
+
+              <!-- Fila 1 -->
+
+              <div style="border: 1px solid #e3e3e3; border-radius: 8px; padding: 10px; margin-bottom: 2px;">
+                     <div style="display: flex; align-items: center; margin-bottom: 5px;" groups="Matriz.group_contratacion_coordinador" >
+                            <label for="contratista_proveedor_relacionado">Seleccionar contratista</label>
+                            
+                            <field name="contratista_proveedor_relacionado"
+                                   groups="Matriz.group_contratacion_coordinador"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   placeholder="Selecciona aquí el contratista por NIT o Cédula"
+                                   attrs="{'readonly': [('estado_contratacion', '=', 'contratado')]}"
+                                   style="width: 60%; padding-left: 34px;"
+                                   class="campo_hover campo_solo_lectura"/>   
+                                   <span class="custom-tooltip-trigger" style="padding-left: 5px;" data-tooltip="Seleccione un contratista de la lista o ingrese su nombre, cédula o NIT para buscarlo en el sistema.">ⓘ</span>                         
+                     </div>
+
+
+                     <div style="display: flex; align-items: center; margin-bottom: 5px;"
+                     attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                     <div style="color: black; font-size: 14px; width: 31%; text-align: left;">Nombre</div>
+                     
+                     <field name="new_name" 
+                            placeholder="Ingrese el nombre aquí"
+                            readonly="1"
+                            style="border-radius: 4px; padding: 5px; width: 69%; display: block; background-color: #ADD8E6;"
+                            attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                     </div>
+
+                     <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Fecha de iniciación</div>
+                            <field name="fecha_iniciacion" placeholder="Ingrese la fecha de iniciación"
+                                   attrs="{'readonly': [('is_editable', '=', True)]}"
+                                   style="width: 90%;"
+                                   class="campo_hover campo_solo_lectura"/>
+                     </div>
+
+                     <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Fecha de terminación</div>
+                            <field name="fecha_terminacion" placeholder="Ingrese la fecha de terminación"
+                                   string="Fecha de Terminación"
+                                   attrs="{'readonly': [('is_editable', '=', True)]}"
+                                   style="width: 90%;"
+                                   class="campo_hover campo_solo_lectura"/>
+                     </div>
+
+                     <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                            <div style="color: gray; font-size: 14px; width: 41%; text-align: left;">Duración</div>
+                            <field name="duracion" string="Duración" 
+                                   placeholder="Duracion del contrato"
+                                   style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"/>
+                     </div>
+                     
+              </div>
+
+              <!-- Fila 2 -->
+
+              <div style="border: 1px solid #e3e3e3; border-radius: 8px; padding: 4px; margin-bottom: 2px;">
+                     <div style="display: flex; align-items: center; margin-bottom: 15px;" attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                     
+                     <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Documento id</div>
+                     <field name="documento_identidad" placeholder="Ingrese el documento de identidad aquí"
+                            readonly="1"
+                            style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                            attrs="{'readonly': [('is_editable', '=', True)], 'invisible': [('select_persona', '!=', 'persona_natural')]}" />
+                     </div>
+
+                     <div style="display: flex; align-items: center; margin-bottom: 4px;"
+                            attrs="{'readonly': [('is_editable', '=', True)], 'invisible': [('select_persona', '!=', 'persona_juridica')]}">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Fecha impresión cámara de comercio</div>
+                            <field name="fecha_impresion_cc" placeholder="Ingrese la fecha de impresión aquí"
+                                   readonly="1"
+                                   style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"/>
+                     </div>
+                     <div style="display: flex; align-items: center; margin-bottom: 4px;"
+                            attrs="{'invisible': [('select_persona', '!=', 'persona_juridica')]}">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Ciudad de oficina principal</div>
+                            <field name="ciudad_oficina_principal" placeholder="Ingrese la ciudad de oficina principal aquí"
+                                   readonly="1"
+                                   style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                   attrs="{'readonly': [('is_editable', '=', True)], 'invisible': [('select_persona', '!=', 'persona_juridica')]}"
+                                   options="{'no_open': True}"/>
+                     </div>
+                     <div style="display: flex; align-items: center; margin-bottom: 4px;"
+                            attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Fecha de expedición del documento</div>
+                            <field name="expedicion_contra_N" placeholder="Ingrese la fecha de expedición del documento"
+                                   readonly="1"
+                                   attrs="{'readonly': [('is_editable', '=', True)]}"
+                                   style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"/>
+                     </div>
+                     <div style="display: flex; align-items: center; margin-bottom: 4px;"
+                            attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                            <div style="color: black; font-size: 14px; width: 40%; text-align: left;">Ciudad de expedición</div>
+                            <field name="ciudad_contratista" placeholder="Ingrese la ciudad de expedición del doucmento"
+                                   readonly="1"
+                                   style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                   attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                     </div>
+              </div>
+
+              </div>
+
+              <!-- Segunda columna -->
+              <div style="width: 50%; display: flex; flex-direction: column; gap: 10px;">
+                     <!-- Fila 1 -->
+                     <div style="border: 1px solid #e3e3e3; border-radius: 8px; padding: 10px;">
+
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <label for="tipo_contrato_id">Tipo de contrato</label>
+                                   <field name="tipo_contrato_id" placeholder="Seleccionar o crear, un tipo de contrato."
+                                          style="width: 90%; padding-left: 64px;"  
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"
+                                          class="campo_hover campo_solo_lectura"/>                
+                            </div>     
+
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <label for="valor_total_contrato" >Valor total del contrato (PS)</label>
+                                   <field name="valor_total_contrato" placeholder="Ingrese el valor total del contrato"
+                                          class="campo_hover campo_solo_lectura"
+                                          style="width: 90%; padding-left: 34px;"  
+                                          widget="monetary"
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <div style="color: black; font-size: 14px; width: 36%; text-align: left;">Valor en letras</div>
+                                   <field name="valor_en_letras" placeholder="Ingrese el valor en letras"
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"
+                                          readonly="1"
+                                          style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"/>
+                            </div>
+                     </div>
+                     <!-- Fila 4 -->
+                     <div style="border: 1px solid #e3e3e3; border-radius: 8px; padding: 10px; margin-bottom: 2px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <div style="color: black; font-size: 14px; width: 36%; text-align: left;">Dirección</div>
+                                   <field name="direccion_contratista" placeholder="Ingrese la dirección aquí"
+                                          readonly="1"
+                                          style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;"
+                                   attrs="{'invisible': [('select_persona', '!=', 'persona_natural')]}">
+                                   <div style="color: black; font-size: 14px; width: 36%; text-align: left;">Ciudad de residencia</div>
+                                   <field name="ciudad_residencia" placeholder="Ingrese la ciudad de residencia aquí"
+                                          readonly="1"
+                                          style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                          attrs="{'readonly': [('is_editable', '=', True)], 'invisible': [('select_persona', '!=', 'persona_natural')]}"
+                                          options="{'no_open': True}"/>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <div style="color: black; font-size: 14px; width: 36%; text-align: left;">Correo electrónico</div>
+                                   <field name="correo" placeholder="Ingrese el correo electrónico"
+                                          readonly="1"
+                                          style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                                   <div style="color: black; font-size: 14px; width: 36%; text-align: left;">Teléfono/Celular</div>
+                                   <field name="telefono_contratista" placeholder="Ingrese el teléfono o celular"
+                                          readonly="1"
+                                          style="border-radius: 4px; padding: 5px; width: 90%; display: block; background-color: #ADD8E6;"
+                                          attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                            </div>
+                     </div>
+              </div>
+
+
+
+       </div>
+</div>

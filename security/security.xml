@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- GRUPOS Y CATEGORIAS -->
+    <record id="cat_sgo_admin_control" model="ir.module.category">
+        <field name="name">SGO - Administración y Control</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="cat_sgo_direccion_coord" model="ir.module.category">
+        <field name="name">SGO - Dirección y Coordinación</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="cat_sgo_financiero_tesoreria" model="ir.module.category">
+        <field name="name">SGO - Financiero y Tesorería</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="cat_sgo_juridico_estruc" model="ir.module.category">
+        <field name="name">SGO - Jurídico y Estructuración</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="cat_sgo_apoyo_externo" model="ir.module.category">
+        <field name="name">SGO - Apoyo y Externos</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- GRUPO Dirección y Coordinación -->
+    <record id="group_contratacion_usuario" model="res.groups">
+        <field name="name">Asistente</field>
+        <field name="category_id" ref="cat_sgo_direccion_coord"/>
+    </record>
+    <record id="group_contratacion_directivo" model="res.groups">
+        <field name="name">Directivo</field>
+        <field name="category_id" ref="cat_sgo_direccion_coord"/>
+        <field name="implied_ids" eval="[(4, ref('group_contratacion_usuario'))]"/>
+    </record>
+    <record id="group_contratacion_director_fuv" model="res.groups">
+        <field name="name">Director FUV</field>
+        <field name="category_id" ref="cat_sgo_direccion_coord"/>
+    </record>
+    <record id="group_contratacion_coordinador" model="res.groups">
+        <field name="name">Coordinador</field>
+        <field name="category_id" ref="cat_sgo_direccion_coord"/>
+    </record>
+    <record id="group_contratacion_asis_coordinador" model="res.groups">
+        <field name="name">Asistente coordinador</field>
+        <field name="category_id" ref="cat_sgo_direccion_coord"/>
+    </record>
+    <!-- El Asistente de Coordinador solo debe ver cuentas que el contratista
+         ya finalizó y envió desde el portal. Mientras notificacion_enviada=False,
+         la cuenta permanece "En elaboración" y no aparece en su listado. -->
+    <record id="acta_entrega_documentos_asis_coordinador_radicadas_rule" model="ir.rule">
+        <field name="name">Asistente coordinador - solo cuentas radicadas</field>
+        <field name="model_id" ref="model_acta_entrega_documentos"/>
+        <field name="domain_force">[('notificacion_enviada', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_contratacion_asis_coordinador'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <!-- Soporte debe poder consultar todas las cuentas, incluso las que siguen
+         en elaboración. Esta regla también evita que la restricción del
+         Asistente de Coordinación limite a un usuario que pertenezca a ambos grupos. -->
+    <record id="acta_entrega_documentos_soporte_todas_rule" model="ir.rule">
+        <field name="name">Soporte - todas las cuentas</field>
+        <field name="model_id" ref="model_acta_entrega_documentos"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_soporte'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="group_usuarios_principales" model="res.groups">
+        <field name="name">Usuarios Principales</field>
+        <field name="category_id" ref="Matriz.cat_sgo_direccion_coord"/>
+    </record>
+    <record id="group_direccion_ejecutiva" model="res.groups">
+        <field name="name">Dirección ejecutiva</field>
+        <field name="category_id" ref="Matriz.cat_sgo_direccion_coord"/>
+    </record>
+
+
+
+    <!-- roles -->
+
+    <!-- GRUPO Administración y Control -->
+
+    <record id="group_soporte" model="res.groups">
+        <field name="name">Super-administrador</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+    <record id="group_auditoria_financiera" model="res.groups">
+        <field name="name">Auditoría financiera global</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+    <record id="group_presupuestos" model="res.groups">
+        <field name="name">Presupuesto</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+    <record id="group_interventoria_finan" model="res.groups">
+        <field name="name">Interventoría financiera</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+
+    <record id="group_gestion_documental" model="res.groups">
+        <field name="name">Gestor Documental</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+
+    <record id="group_consulta_coordinacion_financiera" model="res.groups">
+        <field name="name">Usuario de consulta</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+
+    <record id="group_consulta_global_cuentas_cobro" model="res.groups">
+        <field name="name">Consulta global de cuentas de cobro</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+        <field name="comment">Permite consultar todas las cuentas de cobro, incluidas las finalizadas y rechazadas, sin crear, editar ni eliminar.</field>
+    </record>
+
+    <!-- Rol auxiliar: únicamente controla la visibilidad del botón
+         "Ver cierre" en el formulario de Contrataciones FUV. -->
+    <record id="group_ver_cierre_contractual" model="res.groups">
+        <field name="name">Cierre contractual y pólizas</field>
+        <field name="category_id" ref="cat_sgo_admin_control"/>
+    </record>
+
+
+
+    <!-- GRUPO Financiero y Tesorería -->
+
+    <record id="group_contratacion_director_financiero" model="res.groups">
+        <field name="name">Director financiero</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_firmante_director_financiero_certificacion" model="res.groups">
+        <field name="name">Firmante Director Financiero - Certificación conjunta</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+        <field name="comment">Usuario autorizado para firmar la certificación conjunta antes de enviarla a Contabilidad.</field>
+    </record>
+    <record id="group_contratacion_financiero" model="res.groups">
+        <field name="name">Financiero</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+
+    <record id="group_financiera_cierre_contrato" model="res.groups">
+        <field name="name">Financiera cierre contrato</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_actividades_financieras" model="res.groups">
+        <field name="name">Actividades financieras</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_supervisor_actividades_financieras" model="res.groups">
+        <field name="name">Supervisor de actividades financieras</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_contratacion_impuestos" model="res.groups">
+        <field name="name">Impuestos</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_tesoreria" model="res.groups">
+        <field name="name">Tesorería</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_tesoreria_auxiliar" model="res.groups">
+        <field name="name">Auxiliar de tesorería</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_contabilidad" model="res.groups">
+        <field name="name">Auditoría contable</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+    <record id="group_contratacion_ventanilla_unica" model="res.groups">
+        <field name="name">Ventanilla única</field>
+        <field name="category_id" ref="cat_sgo_financiero_tesoreria"/>
+    </record>
+
+    <!-- GRUPO JURÍDICO Y ESTRUCTURACIÓN -->
+
+    <record id="group_contratacion_director_juridico" model="res.groups">
+        <field name="name">Director jurídico</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+    </record>
+    <record id="group_contratacion_juridico" model="res.groups">
+        <field name="name">Jurídico</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+    </record>
+    <record id="group_contratacion_sgr_juridico_secop" model="res.groups">
+        <field name="name">Jurídico SECOP</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+        <field name="comment">Rol reservado para el futuro flujo jurídico SECOP de contratación SGR.</field>
+    </record>
+    <record id="group_aprobador_cesion_derechos" model="res.groups">
+        <field name="name">Aprobador cesión de derechos</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+    </record>
+    <record id="acta_entrega_documentos_aprobador_cesion_rule" model="ir.rule">
+        <field name="name">Actas asignadas al aprobador de cesión</field>
+        <field name="model_id" ref="model_acta_entrega_documentos"/>
+        <field name="domain_force">[('cesion_derechos', '=', True), ('estado_cesion_derechos', '=', 'pendiente_juridica'), ('usuarios_juridico_cesion', 'in', [user.id])]</field>
+        <field name="groups" eval="[(4, ref('group_aprobador_cesion_derechos'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="group_contratacion_estructuracion" model="res.groups">
+        <field name="name">Estructuración</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+    </record>
+    <record id="group_contratacion_regalias" model="res.groups">
+        <field name="name">Regalías</field>
+        <field name="category_id" ref="cat_sgo_juridico_estruc"/>
+    </record>
+
+    <!-- GRUPO APOYO EXTERNO -->
+
+    <record id="group_contratacion_recursos" model="res.groups">
+        <field name="name">Recursos humanos</field>
+        <field name="category_id" ref="cat_sgo_apoyo_externo"/>
+    </record>
+    <record id="group_contratacion_externo" model="res.groups">
+        <field name="name">Usuario externo</field>
+        <field name="category_id" ref="cat_sgo_apoyo_externo"/>
+    </record>
+
+
+    <record id="contratacion_matriz_propios_rule" model="ir.rule">
+        <field name="name">Contrataciones de matriz propias</field>
+        <field name="model_id" ref="model_contratacion"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_contratacion_usuario'))]"/>
+    </record>
+
+    <record id="contratacion_matriz_todos_rule" model="ir.rule">
+        <field name="name">Contrataciones de matriz todos</field>
+        <field name="model_id" ref="model_contratacion"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_contratacion_directivo'))]"/>
+    </record>
+
+    <record id="contratacion_matriz_director_fuv_rule" model="ir.rule">
+        <field name="name">Contrataciones de matriz director FUV</field>
+        <field name="model_id" ref="model_contratacion"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_contratacion_director_fuv'))]"/>
+    </record>
+
+    <record id="contratacion_matriz_consulta_todos_rule" model="ir.rule">
+        <field name="name">Contrataciones de matriz consulta todos</field>
+        <field name="model_id" ref="model_contratacion"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_consulta_coordinacion_financiera'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="contratista_proveedor_externo_rule" model="ir.rule">
+        <field name="name">Public access to contratista</field>
+        <field name="model_id" ref="model_contratista_proveedor"/>
+        <field name="domain_force">[('access_token', '!=', False)]</field>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+    </record>
+
+    <record id="drive_firma_solicitud_publica_rule" model="ir.rule">
+        <field name="name">Public access to drive.firma.solicitud</field>
+        <field name="model_id" ref="model_drive_firma_solicitud"/>
+        <field name="domain_force">[('token', '!=', False)]</field>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+    </record>
+
+
+    <record id="sgo_mass_job_own_rule" model="ir.rule">
+        <field name="name">Procesos masivos propios</field>
+        <field name="model_id" ref="model_sgo_mass_job"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="sgo_mass_job_line_own_rule" model="ir.rule">
+        <field name="name">Registros de procesos masivos propios</field>
+        <field name="model_id" ref="model_sgo_mass_job_line"/>
+        <field name="domain_force">[('job_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- El portal usa controladores con token y sudo. Esta regla evita que el
+         usuario público consulte directamente toda la base financiera por RPC. -->
+    <record id="detalle_por_un_public_no_direct_access_rule" model="ir.rule">
+        <field name="name">Detalles sin consulta pública directa</field>
+        <field name="model_id" ref="model_detalle_por_un"/>
+        <field name="domain_force">[('id', '=', 0)]</field>
+        <field name="groups" eval="[(4, ref('base.group_public'))]"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,353 @@
+/* Botón Crear formulario certificación conjunta */
+button[name="action_open_certificacion_cumplimiento"] {
+    background-color: #043484 !important;
+    border-color: #043484 !important;
+    color: white !important;
+}
+
+/* Estilos para la vista Kanban */
+.o_kanban_global_area {
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.o_kanban_record_title {
+    font-weight: bold;
+}
+
+.o_kanban_record_bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+.o_document_icon {
+    width: 50px; /* Ajustar tamaño según necesidades */
+    height: 50px; /* Ajustar tamaño según necesidades */
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.o_document_icon.doc_pdf {
+    background-image: url('/Matriz/static/src/img/pdf_icon.png'); /* Ruta de la imagen para PDF */
+}
+
+.o_document_icon.doc_doc,
+.o_document_icon.doc_docx {
+    background-image: url('/Matriz/static/src/img/word.png'); /* Ruta de la imagen para Word */
+}
+
+.o_document_icon.doc_xls,
+.o_document_icon.doc_xlsx {
+    background-image: url('/Matriz/static/src/img/xls_icon.png'); /* Ruta de la imagen para Excel */
+}
+
+.o_document_icon.doc_txt {
+    background-image: url('/Matriz/static/src/img/txt_icon.png'); /* Ruta de la imagen para TXT */
+}
+
+.o_document_icon.doc_ppt,
+.o_document_icon.doc_pptx {
+    background-image: url('/Matriz/static/src/img/ppt_icon.png'); /* Ruta de la imagen para PowerPoint */
+}
+
+.o_document_icon.doc_rar,
+.o_document_icon.doc_zip {
+    background-image: url('/Matriz/static/src/img/rar_icon.png'); /* Ruta de la imagen para WinRAR/ZIP */
+}
+
+.o_document_icon.doc_img {
+    background-image: url('/Matriz/static/src/img/img_icon.png'); /* Ruta de la imagen para imágenes */
+}
+
+.o_document_icon.default {
+    background-image: url('/Matriz/static/src/img/default_icon.png'); /* Ruta de la imagen por defecto */
+}
+
+/* Estilos para el menú desplegable */
+.o_dropdown_kanban .dropdown-toggle {
+    color: #333;
+}
+
+.o_dropdown_kanban .dropdown-item {
+    color: #333;
+}
+
+.o_dropdown_kanban .dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+
+
+
+/* Estilo de los cuadros en la vista Kanban */
+.kanban-card2 {
+    width: 1000px;  /* Ajusta el ancho de los cuadros en la vista Kanban */
+    height: 660px; /* Ajusta la altura de los cuadros */
+    padding: 25px;  /* Añade un poco más de espacio interior */
+    background-color: #f0f0f5;  /* Fondo claro */
+    border-radius: 8px;  /* Bordes redondeados */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15); /* Añade sombra para mejorar la visibilidad */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Estilo para la vista previa dentro del cuadro */
+.kanban-preview-area {
+    width: 300px;  /* Ancho fijo para el cuadro */
+    height: 300px; /* Altura fija para que sea cuadrado */
+    background-color: #f0f0f5;
+    overflow: hidden;  /* Evita el desbordamiento del contenido */
+    margin-bottom: 10px;  /* Espaciado para separar de otros elementos */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Asegurar que el contenido HTML dentro del área de previsualización se ajuste */
+.kanban-preview-area field[name="preview_html"] {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* Asegura que el contenido HTML se ajuste sin deformarse */
+}
+
+/* Estilo de los íconos dentro de los cuadros */
+.kanban-icon-area {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* Título del registro dentro del cuadro */
+.kanban-record-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #222;  /* Título de los registros con color oscuro */
+}
+
+/* Información de la parte inferior del cuadro */
+.kanban-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilo para las fechas y usuario */
+.kanban-footer-left,
+.kanban-footer-right {
+    font-size: 14px;
+    color: #666;  /* Color gris claro para la información */
+}
+
+/* Estilo para el dropdown de opciones del cuadro */
+.kanban-dropdown {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+}
+
+/* Ajuste de tamaño y espaciado de los íconos del archivo */
+.kanban-file-icon {
+    width: 45px;  /* Tamaño más grande para los íconos */
+    height: 45px;
+    margin-bottom: 12px;
+}
+
+/* Asegurando que la sección de detalles se ajuste correctamente */
+.kanban-details {
+    flex-grow: 1;
+}
+
+
+
+.custom-tag-field {
+    background-color: #f9f9f9; /* Fondo claro */
+    border: 1px solid #ddd; /* Borde suave */
+    border-radius: 5px; /* Esquinas redondeadas */
+    padding: 10px; /* Espaciado interno */
+    font-family: 'Arial', sans-serif; /* Fuente personalizada */
+}
+
+.custom-tag-field .o_tag {
+    background-color: #16e023; /* Fondo de las etiquetas */
+    color: #fff; /* Texto blanco */
+    border-radius: 8px; /* Esquinas redondeadas */
+    padding: 5px 10px; /* Espaciado interno de etiquetas */
+    margin: 3px; /* Espaciado entre etiquetas */
+    font-size: 14px; /* Tamaño del texto */
+}
+
+.custom-tag-field .o_tag:hover {
+    background-color: #007bff;
+}
+
+/* Iconos del kanban de drive más compactos */
+.o_kanban_attachment .o_kanban_image img {
+    max-width: 36px !important;
+    max-height: 36px !important;
+    width: 36px !important;
+}
+
+/* ── Tarjetas Drive Kanban ── */
+
+/* Wrapper horizontal solo para el kanban de drive */
+.drv_kanban_view .o_kanban_records_wrapper {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-start !important;
+    padding: 8px !important;
+}
+.drv_kanban_view .o_kanban_record {
+    width: 180px !important;
+    min-width: 180px !important;
+    max-width: 180px !important;
+    flex: 0 0 180px !important;
+    margin: 10px !important;
+    padding: 0 !important;
+}
+
+.o_kanban_record .drv_card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.1);
+    cursor: pointer;
+    transition: box-shadow .15s;
+}
+.o_kanban_record .drv_card:hover {
+    box-shadow: 0 4px 14px rgba(0,0,0,.16);
+}
+
+/* Área de vista previa (parte superior de la tarjeta) */
+.drv_card_preview {
+    width: 100%;
+    height: 180px;
+    background: #fff;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Contenedor escalado del HTML preview */
+.drv_preview_outer {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: block;
+    background: #fff;
+}
+.drv_preview_inner {
+    width: 600px;
+    height: 540px;
+    transform: scale(0.333);
+    transform-origin: top left;
+    pointer-events: none;
+    overflow: hidden;
+    background: #fff;
+}
+.drv_preview_inner .o_field_html,
+.drv_preview_inner .o_field_html * {
+    pointer-events: none;
+    background: #fff !important;
+}
+
+/* Icono de tipo de archivo (fallback) */
+.drv_card_preview .drv_icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    margin: auto;
+}
+
+/* Cuerpo inferior de la tarjeta */
+.drv_card_body {
+    padding: 8px 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Nombre del archivo/carpeta */
+.drv_card_name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #111827;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+/* Footer: fecha + avatar */
+.drv_card_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2px;
+}
+.drv_card_date {
+    font-size: 11px;
+    color: #6b7280;
+}
+.drv_card_avatar .o_field_widget {
+    display: flex;
+    align-items: center;
+}
+.drv_card_avatar .o_m2o_avatar > img,
+.drv_card_avatar img {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Menú de opciones (esquina superior derecha) */
+.drv_card_menu {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 10;
+}
+.drv_card_menu .dropdown-toggle {
+    background: rgba(255,255,255,.85);
+    border-radius: 4px;
+    padding: 2px 5px;
+    color: #374151;
+    line-height: 1;
+}
+.drv_card_menu .dropdown-toggle:hover {
+    background: #fff;
+}
+
+
+
+
+
+
+
+
+
+

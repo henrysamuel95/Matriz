@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<templates>
+    <t t-name="EstadoContratacionField" owl="1">
+        <div t-ref="EstadoContratacionField-root" class="estado-contratacion">
+            <div class="estado-contratacion-item estado-contratacion-item-coordinador" data-status="coordinador">
+                Coordinador
+            </div>
+            <div class="estado-contratacion-item estado-contratacion-item-financiera" data-status="financiera">
+                Financiera
+            </div>
+            <div class="estado-contratacion-item estado-contratacion-item-juridico" data-status="juridico">
+                Jurídico
+            </div>
+            <div class="estado-contratacion-item estado-contratacion-item-recursos-humanos" data-status="recursos_humanos">
+                Recursos h
+            </div>
+            <div class="estado-contratacion-item estado-contratacion-item-contratado" data-status="contratado">
+                Contratado
+            </div>
+        </div>
+    </t>
+</templates>

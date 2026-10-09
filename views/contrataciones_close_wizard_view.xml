@@ -1,0 +1,1273 @@
+<odoo>
+    <record id="view_cierre_contractual_guia_usuario_form" model="ir.ui.view">
+        <field name="name">contrataciones.fuv.cierre.guia.usuario.form</field>
+        <field name="model">contrataciones_fuv.cierre.guia.usuario</field>
+        <field name="arch" type="xml">
+            <form string="Guía de usuario · Cierre contractual" class="fc-cierre-guide-form">
+                <div class="fc-cierre-guide">
+                    <div class="fc-cierre-guide-hero">
+                        <span class="fc-cierre-guide-eyebrow"><i class="fa fa-compass"/> GUÍA RÁPIDA</span>
+                        <h2>Así funciona el cierre contractual</h2>
+                        <p>Guía general para actas de anulación, liquidación de mutuo acuerdo y liquidación unilateral.</p>
+                    </div>
+
+                    <div class="fc-cierre-guide-intro">
+                        <i class="fa fa-info-circle"/>
+                        <span>La etapa actual aparece en la parte superior del proceso. Cada área completa sus documentos y controles antes de enviarlo a la siguiente etapa.</span>
+                    </div>
+
+                    <div class="fc-cierre-guide-steps">
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">1</span>
+                            <div><h3>Coordinación solicita</h3><p>Selecciona el tipo de cierre, registra las razones y confirma las condiciones exigidas. En anulación puede adjuntar la solicitud; en los demás cierres puede registrar una terminación anticipada.</p></div>
+                        </div>
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">2</span>
+                            <div><h3>Financiera certifica</h3><p>Un usuario con el rol <strong>Financiera cierre contrato</strong> carga el certificado financiero y remite el proceso a Jurídica. No necesita estar vinculado a la lista del proyecto.</p></div>
+                        </div>
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">3</span>
+                            <div><h3>Jurídica revisa y prepara</h3><p>Dirección Jurídica asigna un responsable con rol Jurídico. El responsable revisa los soportes, prepara el acta y la envía para firma. Tampoco necesita pertenecer a la lista del proyecto.</p></div>
+                        </div>
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">4</span>
+                            <div><h3>Coordinación carga el acta firmada</h3><p>Cuando corresponde, Coordinación carga el acta firmada y confirma su recepción. El sistema informa al responsable financiero asignado en el proceso.</p></div>
+                        </div>
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">5</span>
+                            <div><h3>Se libera el RFC</h3><p>Presupuesto registra la liberación de recursos y carga el soporte requerido cuando exista un valor por liberar. Los controles visibles indican qué falta antes de continuar.</p></div>
+                        </div>
+                        <div class="fc-cierre-guide-step">
+                            <span class="fc-cierre-guide-number">6</span>
+                            <div><h3>El proceso finaliza</h3><p>Al completar las validaciones, el cierre queda finalizado y la trazabilidad permanece en el chatter del proceso y del contrato.</p></div>
+                        </div>
+                    </div>
+
+                    <div class="fc-cierre-guide-grid">
+                        <div class="fc-cierre-guide-card">
+                            <h3><i class="fa fa-folder-open-o"/> Documentos</h3>
+                            <p>Cada tipo de cierre muestra únicamente sus soportes: solicitud, certificado financiero, borrador o acta preparada, acta firmada y soporte de liberación cuando aplique.</p>
+                        </div>
+                        <div class="fc-cierre-guide-card">
+                            <h3><i class="fa fa-undo"/> Devoluciones</h3>
+                            <p>Si hay una corrección, use el botón de devolución de la etapa. La observación es obligatoria al devolver y queda registrada en la trazabilidad.</p>
+                        </div>
+                        <div class="fc-cierre-guide-card">
+                            <h3><i class="fa fa-bell-o"/> Notificaciones</h3>
+                            <p>El sistema avisa a los responsables cuando reciben el proceso. La carga del acta firmada también informa al financiero asignado mediante un enlace directo.</p>
+                        </div>
+                        <div class="fc-cierre-guide-card">
+                            <h3><i class="fa fa-eye"/> Acceso</h3>
+                            <p>Los responsables reciben acceso lector a la carpeta documental cuando se les envía o asigna el proceso. Si el permiso ya existe, el sistema lo conserva sin duplicarlo.</p>
+                        </div>
+                    </div>
+
+                    <div class="fc-cierre-guide-warning">
+                        <i class="fa fa-exclamation-triangle"/>
+                        <span><strong>Antes de avanzar:</strong> verifica que los documentos estén cargados, los controles de la etapa estén activos y las observaciones sean claras. Esta guía es informativa y no cambia el estado del proceso.</span>
+                    </div>
+                </div>
+                <footer>
+                    <button string="Entendido" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_close_contract_wizard" model="ir.ui.view">
+        <field name="name">close.contract.wizard.form</field>
+        <field name="model">contrataciones_fuv.close.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Solicitar cierre contractual" class="fc-cierre-wizard-form">
+                <sheet>
+                    <field name="confirmar_cierre" invisible="1"/>
+                    <field name="archivo_acta" invisible="1"/>
+                    <field name="archivo_acta_nombre" invisible="1"/>
+                    <field name="archivo_acta_visible" invisible="1"/>
+                    <field name="archivo_acta_id" invisible="1"/>
+                    <field name="contract_id" invisible="1"/>
+                    <field name="drive_file_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="otrosi_candidato_ids" invisible="1"/>
+                    <!-- El usuario usa un solo selector; estos campos técnicos
+                         conservan las relaciones reales con contrato/otrosí. -->
+                    <field name="objeto_cierre" invisible="1"/>
+                    <field name="otrosi_id" invisible="1"/>
+                    <field name="otrosi_descripcion" invisible="1"/>
+                    <field name="valor_contrato_original" invisible="1"/>
+                    <field name="valor_otrosi_formalizados" invisible="1"/>
+                    <field name="valor_otrosi_seleccionado" invisible="1"/>
+                    <field name="valor_contractual_actualizado" invisible="1"/>
+
+                    <div class="fc-cierre-shell">
+                        <div class="fc-cierre-hero">
+                            <div class="fc-cierre-hero-brand">
+                                <img src="/Matriz/static/src/img/LogoFUV.png" alt="Fundación Univalle"/>
+                            </div>
+                            <div class="fc-cierre-hero-copy">
+                                <span class="fc-cierre-kicker">Solicitud de cierre</span>
+                                <p>Registra el motivo y el tipo de acta para iniciar la certificación financiera.</p>
+                            </div>
+                            <div class="fc-cierre-flow-widget fc-cierre-flow-start">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Coordinador (solicita)</strong>
+                                    <span class="fc-cierre-flow-count">1/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Coordinador (solicita)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Financiera (certifica)</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fc-cierre-card fc-cierre-context-card">
+                            <div class="fc-cierre-section-title">
+                                <i class="fa fa-file-text-o"/>
+                                <span>Contrato base</span>
+                            </div>
+                            <group col="4" class="fc-cierre-context-grid">
+                                <field name="contratista_nombre" readonly="1"/>
+                                <field name="proyecto_id" readonly="1" options="{'no_open': True}"/>
+                            </group>
+                        </div>
+
+                        <div class="fc-cierre-card">
+                            <div class="fc-cierre-section-title">
+                                <i class="fa fa-check-square-o"/>
+                                <span>Tipo de cierre</span>
+                            </div>
+                            <div class="fc-cierre-type-zone">
+                                <field name="tipo_acta" widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                            </div>
+                        </div>
+
+                        <div class="fc-cierre-card"
+                             attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                            <div class="fc-cierre-section-title">
+                                <i class="fa fa-link"/>
+                                <span>Valor total del contrato</span>
+                            </div>
+                            <group col="4">
+                                <field name="valor_contrato_original" readonly="1" string="Valor del contrato" widget="monetary"/>
+                                <field name="valor_otrosi_formalizados" readonly="1" string="Valor de los otrosí" widget="monetary"/>
+                            </group>
+                            <div class="fc-cierre-relation-value">
+                                <span>Total: contrato + otrosí</span>
+                                <field name="valor_documento_seleccionado" readonly="1"
+                                       nolabel="1" widget="monetary"
+                                       options="{'currency_field': 'currency_id'}"/>
+                            </div>
+                        </div>
+
+                        <div class="fc-cierre-card">
+                            <div class="fc-cierre-section-title">
+                                <i class="fa fa-pencil-square-o"/>
+                                <span>Detalle de la solicitud</span>
+                            </div>
+                            <div class="fc-cierre-detail-grid">
+                                <div class="fc-cierre-detail-field fc-cierre-detail-option"
+                                     attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                    <field name="terminacion_anticipada" nolabel="1"/>
+                                    <label for="terminacion_anticipada" string="Terminación anticipada"/>
+                                </div>
+                                <div class="fc-cierre-detail-field fc-cierre-detail-date"
+                                     attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                    <span class="fc-cierre-detail-date-label">Fecha de terminación</span>
+                                    <field name="fecha_terminacion_solicitada"
+                                           placeholder="Fecha de terminación solicitada"
+                                           nolabel="1"
+                                           style="height: 1.5em;"
+                                           attrs="{'required': [('terminacion_anticipada', '=', True)]}"/>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="card_seccion">
+                                <field name="razones_solicitud"
+                                        placeholder="Describe las razones técnicas y contractuales de la solicitud..."/>
+                            </div>
+                        </div>
+
+                    </div>
+                </sheet>
+
+                <footer>
+                    <button string="Guardar solicitud"
+                            type="object"
+                            name="action_confirmar_cierre"
+                            class="btn-success fc-cierre-primary-action"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_fuv_cierre_proceso_form" model="ir.ui.view">
+        <field name="name">contrataciones_fuv.cierre.proceso.form</field>
+        <field name="model">contrataciones_fuv.cierre.proceso</field>
+        <field name="arch" type="xml">
+            <form string="Proceso de cierre contractual" class="fc-cierre-proceso-form" create="false" duplicate="false">
+                <sheet style="background-color: #02225b; position: relative; margin-top: 0; max-width: none !important; width: 100% !important;">
+                    <field name="estado" invisible="1"/>
+                    <field name="estado_retorno_devolucion" invisible="1"/>
+                    <div class="fc-cierre-shell">
+                        <div class="fc-cierre-hero fc-cierre-hero-process">
+                            <div class="fc-cierre-hero-brand">
+                                <img src="/Matriz/static/src/img/LogoFUV.png" alt="Fundación Univalle"/>
+                            </div>
+                            <div class="fc-cierre-hero-copy">
+                                <span class="fc-cierre-kicker">Proceso activo</span>
+                                <h1><field name="name" readonly="1"/></h1>
+                                <p>Seguimiento del cierre, certificación, revisión jurídica y liberación de recursos.</p>
+                            </div>
+                            <button name="action_abrir_guia_usuario"
+                                    type="object"
+                                    string="Guía de usuario"
+                                    icon="fa-question-circle"
+                                    class="fc-cierre-guide-trigger"/>
+                            <div class="fc-cierre-flow-widget fc-cierre-flow-start" attrs="{'invisible': [('estado', '!=', 'solicitud')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Coordinador (solicita)</strong>
+                                    <span class="fc-cierre-flow-count">1/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Coordinador (solicita)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Financiera (certifica)</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <div class="fc-cierre-flow-widget" attrs="{'invisible': [('estado', '!=', 'financiera')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Financiera (certifica)</strong>
+                                    <span class="fc-cierre-flow-count">2/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Anterior</span>
+                                        <strong>Coordinador (solicita)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Financiera (certifica)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Jurídico (revisa)</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <div class="fc-cierre-flow-widget" attrs="{'invisible': [('estado', '!=', 'juridica')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Jurídico (revisa)</strong>
+                                    <span class="fc-cierre-flow-count">3/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Anterior</span>
+                                        <strong>Financiera (certifica)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Jurídico (revisa)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Coordinador (firma)</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <div class="fc-cierre-flow-widget" attrs="{'invisible': [('estado', '!=', 'firma_coordinador')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Coordinador (firma)</strong>
+                                    <span class="fc-cierre-flow-count">4/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Anterior</span>
+                                        <strong>Jurídico (revisa)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Coordinador (firma)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Presupuesto (libera RFC)</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <div class="fc-cierre-flow-widget" attrs="{'invisible': [('estado', '!=', 'liberacion_rfc')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Presupuesto (libera RFC)</strong>
+                                    <span class="fc-cierre-flow-count">5/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Anterior</span>
+                                        <strong>Coordinador (firma)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Presupuesto (libera RFC)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Siguiente</span>
+                                        <strong>Finalizado</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                            <div class="fc-cierre-flow-widget" attrs="{'invisible': [('estado', '!=', 'finalizado')]}">
+                                <div class="fc-cierre-flow-badge">
+                                    <span class="fc-cierre-flow-dot"/>
+                                    <strong>Finalizado</strong>
+                                    <span class="fc-cierre-flow-count">6/6</span>
+                                </div>
+                                <div class="fc-cierre-flow-popover">
+                                    <div class="fc-cierre-flow-step">
+                                        <span>Anterior</span>
+                                        <strong>Presupuesto (libera RFC)</strong>
+                                    </div>
+                                    <div class="fc-cierre-flow-step fc-cierre-flow-step-current">
+                                        <span>Actual</span>
+                                        <strong>Finalizado</strong>
+                                    </div>
+                                    <details class="fc-cierre-flow-more">
+                                        <summary>
+                                            <i class="fa fa-chevron-down fc-cierre-flow-more-icon"/>
+                                            <span class="fc-cierre-flow-more-label-closed">Ver más</span>
+                                            <span class="fc-cierre-flow-more-label-open">Ver menos</span>
+                                        </summary>
+                                        <div class="fc-cierre-flow-list">
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">1</span><span class="fc-cierre-flow-list-label">Coordinador (solicita)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">2</span><span class="fc-cierre-flow-list-label">Financiera (certifica)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">3</span><span class="fc-cierre-flow-list-label">Jurídico (revisa)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">4</span><span class="fc-cierre-flow-list-label">Coordinador (firma)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">5</span><span class="fc-cierre-flow-list-label">Presupuesto (libera RFC)</span></div>
+                                            <div class="fc-cierre-flow-list-item"><span class="fc-cierre-flow-list-number">6</span><span class="fc-cierre-flow-list-label">Finalizado</span></div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fc-cierre-card fc-cierre-request-card">
+                            <div class="fc-cierre-section-title">
+                                <i class="fa fa-clipboard"/>
+                                <span>Solicitud</span>
+                            </div>
+                            <div class="fc-cierre-request-grid">
+                                <div class="fc-cierre-request-item fc-cierre-request-item-project">
+                                    <span>Proyecto</span>
+                                    <field name="proyecto_id" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                </div>
+                                <div class="fc-cierre-request-item">
+                                    <span>Tipo de acta</span>
+                                    <field name="tipo_acta" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="fc-cierre-request-item">
+                                    <span>Solicitado por</span>
+                                    <field name="solicitado_por_id" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                </div>
+                                <div class="fc-cierre-request-item">
+                                    <span>Fecha de solicitud</span>
+                                    <field name="fecha_solicitud" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="fc-cierre-request-item" attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                    <span>Valor del contrato al solicitar</span>
+                                    <field name="valor_contrato_original" readonly="1" nolabel="1" widget="monetary"/>
+                                </div>
+                                <div class="fc-cierre-request-item" attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                    <span>Valor de los otrosí al solicitar</span>
+                                    <field name="valor_otrosi_formalizados" readonly="1" nolabel="1" widget="monetary"/>
+                                </div>
+                                <div class="fc-cierre-request-item"
+                                     attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                    <span>Total del contrato + otrosí al solicitar</span>
+                                    <field name="valor_documento_cierre" readonly="1" nolabel="1"
+                                           widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                </div>
+                                <div class="fc-cierre-request-item" attrs="{'invisible': [('terminacion_anticipada', '=', False)]}">
+                                    <span>Terminación anticipada</span>
+                                    <field name="terminacion_anticipada" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="fc-cierre-request-item" attrs="{'invisible': [('terminacion_anticipada', '=', False)]}">
+                                    <span>Fecha de terminación</span>
+                                    <field name="fecha_terminacion_solicitada" readonly="1" nolabel="1"/>
+                                </div>
+                                <br/>
+                                <div class="fc-cierre-request-item fc-cierre-request-item-full"
+                                     attrs="{'invisible': [('puede_editar_razones_solicitud', '=', True)]}">
+                                    <span>Razones de la solicitud</span>
+                                    <field name="razones_solicitud" readonly="1"/>
+                                </div>
+
+                                <div class="fc-cierre-request-item fc-cierre-request-item-full fc-cierre-request-reasons-editable"
+                                     attrs="{'invisible': [('puede_editar_razones_solicitud', '=', False)]}">
+                                    <span>Razones de la solicitud</span>
+                                    <field name="razones_solicitud"
+                                           nolabel="1"
+                                           placeholder="Describe las razones técnicas y contractuales de la solicitud..."/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fc-cierre-workspace-grid">
+                        <div class="fc-cierre-documents"
+                             attrs="{'invisible': [('tipo_acta', '!=', 'anulacion')]}">
+                            <div class="fc-cierre-documents-head">
+                                <div>
+                                    <strong>Documentos del acta de anulación</strong>
+                                    <span>Los documentos cargados pueden ser consultados por todos los participantes del flujo.</span>
+                                </div>
+                                <i class="fa fa-folder-open-o" title="Destino: carpeta Cierre contractual"/>
+                            </div>
+
+                            <field name="puede_editar_solicitud" invisible="1"/>
+                            <field name="puede_cargar_certificado_anulacion" invisible="1"/>
+                            <field name="puede_cargar_borrador_anulacion" invisible="1"/>
+                            <field name="puede_cargar_acta_firmada_anulacion" invisible="1"/>
+                            <field name="puede_cargar_soporte_rfc_anulacion" invisible="1"/>
+                            <field name="solicitud_anulacion_id" invisible="1"/>
+                            <field name="soporte_liberacion_rfc_id" invisible="1"/>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Solicitud de anulación (opcional)</strong>
+                                    <span>Responsable: Coordinación · Las razones ya quedan registradas en el proceso</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('solicitud_anulacion_id', '!=', False)]}">Opcional</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('solicitud_anulacion_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_solicitud_anulacion" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', '|', ('solicitud_anulacion_id', '!=', False), ('estado', '!=', 'solicitud'), ('puede_editar_solicitud', '=', False)]}"/>
+                                    <button name="action_ver_solicitud_anulacion" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('solicitud_anulacion_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Certificado financiero 0%</strong>
+                                    <span>Responsable: Financiera</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('certificado_financiero_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('certificado_financiero_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_certificado_financiero_anulacion" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('certificado_financiero_id', '!=', False), ('puede_cargar_certificado_anulacion', '=', False)]}"/>
+                                    <button name="action_ver_certificado_financiero_anulacion" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('certificado_financiero_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Borrador del acta de anulación</strong>
+                                    <span>Responsable: Jurídica</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('acta_borrador_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('acta_borrador_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_borrador_acta_anulacion" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('acta_borrador_id', '!=', False), ('puede_cargar_borrador_anulacion', '=', False)]}"/>
+                                    <button name="action_ver_borrador_acta_anulacion" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('acta_borrador_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Acta de anulación firmada</strong>
+                                    <span>Responsable: Coordinación</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('acta_firmada_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('acta_firmada_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_acta_anulacion_firmada" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('acta_firmada_id', '!=', False), ('puede_cargar_acta_firmada_anulacion', '=', False)]}"/>
+                                    <button name="action_ver_acta_anulacion_firmada" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('acta_firmada_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>ARC</strong>
+                                    <span>Responsable: Presupuesto</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('soporte_liberacion_rfc_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('soporte_liberacion_rfc_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_soporte_liberacion_rfc_anulacion" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('soporte_liberacion_rfc_id', '!=', False), ('puede_cargar_soporte_rfc_anulacion', '=', False)]}"/>
+                                    <button name="action_ver_soporte_liberacion_rfc_anulacion" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('soporte_liberacion_rfc_id', '=', False)]}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentos exclusivos de la liquidación por mutuo acuerdo.
+                             Se cargan en la misma carpeta Drive "Cierre contractual". -->
+                        <div class="fc-cierre-documents"
+                             attrs="{'invisible': [('tipo_acta', '!=', 'normal')]} ">
+                            <div class="fc-cierre-documents-head">
+                                <div>
+                                    <strong>Documentos de la liquidación por mutuo acuerdo</strong>
+                                    <span>Cada área carga su documento durante la etapa que le corresponde.</span>
+                                </div>
+                                <i class="fa fa-folder-open-o" title="Destino: carpeta Cierre contractual"/>
+                            </div>
+
+                            <field name="puede_cargar_certificado_mutuo" invisible="1"/>
+                            <field name="puede_cargar_soporte_solicitud_mutuo" invisible="1"/>
+                            <field name="puede_cargar_acta_mutuo" invisible="1"/>
+                            <field name="puede_cargar_acta_firmada_mutuo" invisible="1"/>
+                            <field name="puede_cargar_soporte_saldos_mutuo" invisible="1"/>
+                            <field name="soporte_solicitud_mutuo_id" invisible="1"/>
+                            <field name="soporte_liberacion_saldos_id" invisible="1"/>
+
+                            <!-- Soporte opcional presentado por Coordinación al iniciar
+                                 el mutuo acuerdo; no condiciona el avance del proceso. -->
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Soporte de la solicitud de mutuo acuerdo (opcional)</strong>
+                                    <span>Responsable: Coordinación o Asistencia de coordinación</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('soporte_solicitud_mutuo_id', '!=', False)]}">Opcional</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('soporte_solicitud_mutuo_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_soporte_solicitud_mutuo" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('soporte_solicitud_mutuo_id', '!=', False), ('puede_cargar_soporte_solicitud_mutuo', '=', False)]}"/>
+                                    <button name="action_ver_soporte_solicitud_mutuo" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('soporte_solicitud_mutuo_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Certificado financiero con porcentaje de ejecución</strong>
+                                    <span>Responsable: Financiera</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('certificado_financiero_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('certificado_financiero_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_certificado_financiero_mutuo" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('certificado_financiero_id', '!=', False), ('puede_cargar_certificado_mutuo', '=', False)]}"/>
+                                    <button name="action_ver_certificado_financiero_mutuo" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('certificado_financiero_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Acta de liquidación de mutuo acuerdo para firma</strong>
+                                    <span>Responsable: Jurídica</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('acta_borrador_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('acta_borrador_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_acta_mutuo_para_firma" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('acta_borrador_id', '!=', False), ('puede_cargar_acta_mutuo', '=', False)]}"/>
+                                    <button name="action_ver_acta_mutuo_para_firma" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('acta_borrador_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Acta de liquidación de mutuo acuerdo firmada</strong>
+                                    <span>Responsable: Coordinación o Asistencia de coordinación</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('acta_firmada_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('acta_firmada_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_acta_mutuo_firmada" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('acta_firmada_id', '!=', False), ('puede_cargar_acta_firmada_mutuo', '=', False)]}"/>
+                                    <button name="action_ver_acta_mutuo_firmada" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('acta_firmada_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Soporte de liberación de saldos</strong>
+                                    <span>Responsable: Presupuesto · Requerido cuando se libera un valor</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('soporte_liberacion_saldos_id', '!=', False)]}">Pendiente si aplica</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('soporte_liberacion_saldos_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_soporte_liberacion_saldos_mutuo" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('soporte_liberacion_saldos_id', '!=', False), ('puede_cargar_soporte_saldos_mutuo', '=', False)]}"/>
+                                    <button name="action_ver_soporte_liberacion_saldos_mutuo" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('soporte_liberacion_saldos_id', '=', False)]}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documentos exclusivos de la liquidación unilateral.
+                             Jurídica carga el acto ya firmado y el sistema lo notifica. -->
+                        <div class="fc-cierre-documents"
+                             attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]} ">
+                            <div class="fc-cierre-documents-head">
+                                <div>
+                                    <strong>Documentos de la liquidación unilateral</strong>
+                                    <span>Los documentos se guardan en la carpeta Cierre contractual del contratista.</span>
+                                </div>
+                                <i class="fa fa-folder-open-o" title="Destino: carpeta Cierre contractual"/>
+                            </div>
+
+                            <field name="puede_cargar_certificado_unilateral" invisible="1"/>
+                            <field name="puede_cargar_soporte_solicitud_unilateral" invisible="1"/>
+                            <field name="puede_cargar_acta_unilateral" invisible="1"/>
+                            <field name="puede_cargar_soporte_rfc_unilateral" invisible="1"/>
+                            <field name="soporte_solicitud_unilateral_id" invisible="1"/>
+                            <field name="acta_unilateral_firmada_id" invisible="1"/>
+                            <field name="soporte_liberacion_rfc_unilateral_id" invisible="1"/>
+
+                            <!-- Soporte opcional presentado por Coordinación al iniciar
+                                 la liquidación unilateral; no bloquea el avance del flujo. -->
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Soporte de la solicitud unilateral (opcional)</strong>
+                                    <span>Responsable: Coordinación o Asistencia de coordinación</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('soporte_solicitud_unilateral_id', '!=', False)]}">Opcional</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('soporte_solicitud_unilateral_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_soporte_solicitud_unilateral" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('soporte_solicitud_unilateral_id', '!=', False), ('puede_cargar_soporte_solicitud_unilateral', '=', False)]}"/>
+                                    <button name="action_ver_soporte_solicitud_unilateral" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('soporte_solicitud_unilateral_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Certificado financiero con porcentaje de ejecución</strong>
+                                    <span>Responsable: Financiera</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('certificado_financiero_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('certificado_financiero_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_certificado_financiero_unilateral" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('certificado_financiero_id', '!=', False), ('puede_cargar_certificado_unilateral', '=', False)]}"/>
+                                    <button name="action_ver_certificado_financiero_unilateral" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('certificado_financiero_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Acta de liquidación unilateral firmada</strong>
+                                    <span>Responsable: Jurídica · Debe estar firmada por Dirección Ejecutiva</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('acta_unilateral_firmada_id', '!=', False)]}">Pendiente</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('acta_unilateral_firmada_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_acta_unilateral_firmada" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('acta_unilateral_firmada_id', '!=', False), ('puede_cargar_acta_unilateral', '=', False)]}"/>
+                                    <button name="action_ver_acta_unilateral_firmada" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('acta_unilateral_firmada_id', '=', False)]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-document-row">
+                                <div class="fc-cierre-document-info">
+                                    <strong>Soporte de liberación del RFC</strong>
+                                    <span>Responsable: Financiera o Presupuesto · Requerido cuando se libera un valor</span>
+                                </div>
+                                <span class="fc-cierre-document-pending"
+                                      attrs="{'invisible': [('soporte_liberacion_rfc_unilateral_id', '!=', False)]}">Pendiente si aplica</span>
+                                <span class="fc-cierre-document-ready"
+                                      attrs="{'invisible': [('soporte_liberacion_rfc_unilateral_id', '=', False)]}">Cargado</span>
+                                <div class="fc-cierre-document-actions">
+                                    <button name="action_cargar_soporte_liberacion_rfc_unilateral" type="object"
+                                            string="CARGAR" icon="fa-upload" class="btn-primary"
+                                            attrs="{'invisible': ['|', ('soporte_liberacion_rfc_unilateral_id', '!=', False), ('puede_cargar_soporte_rfc_unilateral', '=', False)]}"/>
+                                    <button name="action_ver_soporte_liberacion_rfc_unilateral" type="object"
+                                            string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                            attrs="{'invisible': [('soporte_liberacion_rfc_unilateral_id', '=', False)]}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    <field name="puede_editar_financiera" invisible="1"/>
+                    <field name="puede_editar_razones_solicitud" invisible="1"/>
+                    <field name="puede_editar_juridica" invisible="1"/>
+                    <field name="puede_asignar_juridico" invisible="1"/>
+                    <field name="puede_editar_firma_coordinador" invisible="1"/>
+                    <field name="puede_editar_liberacion_rfc" invisible="1"/>
+                    <field name="puede_editar_observacion_devolucion" invisible="1"/>
+
+                    <notebook attrs="{'invisible': [('estado', '=', 'solicitud')]}">
+                        <page string="Financiera">
+                            <div class="fc-cierre-notebook-panel">
+                                <div class="fc-cierre-notebook-head">
+                                    <i class="fa fa-calculator"/>
+                                    <div>
+                                        <strong>Certificación financiera</strong>
+                                        <span>Registro de revisión y observaciones del certificado financiero.</span>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-task-grid">
+                                    <div class="fc-cierre-data-card">
+                                        <span>Responsable de Financiera</span>
+                                        <field name="financiero_responsable_id"
+                                               nolabel="1"
+                                               readonly="1"
+                                               options="{'no_open': True}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Certificado financiero</span>
+                                            <span class="fc-cierre-task-help">Marcar cuando el certificado haya sido expedido o revisado.</span>
+                                        </div>
+
+                                        <!-- Campo aux invisible que calcula si NO es financiera -->
+                                        <field name="is_not_financiera" invisible="1"/>
+
+                                        <!-- Un solo campo controlado dinámicamente -->
+                                        <field name="certificado_financiero_revisado" 
+                                            nolabel="1" 
+                                            widget="boolean_toggle"
+                                            attrs="{'readonly': [('puede_editar_financiera', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-data-card"
+                                         attrs="{'invisible': [('tipo_acta', 'not in', ['normal', 'incumplimiento'])]} ">
+                                        <span>Porcentaje de ejecución financiera</span>
+                                        <field name="porcentaje_ejecucion_financiera"
+                                               nolabel="1"
+                                               attrs="{'readonly': [('puede_editar_financiera', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-data-card"
+                                         attrs="{'invisible': [('tipo_acta', 'not in', ['normal', 'incumplimiento'])]} ">
+                                        <span>Saldo certificado por liberar</span>
+                                        <field name="saldo_por_liberar"
+                                               nolabel="1"
+                                               widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                               attrs="{'readonly': [('puede_editar_financiera', '=', False)]}"/>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-hidden-fields">
+                                    <field name="certificado_financiero_id" invisible="1"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </div>
+                            </div>
+                        </page>
+                
+                        <page string="Jurídica" attrs="{'invisible': [('estado', 'in', ['solicitud', 'financiera'])]}">
+                            <div class="fc-cierre-notebook-panel">
+                                <div class="fc-cierre-director-guidance"
+                                     groups="Matriz.group_contratacion_director_juridico"
+                                     attrs="{'invisible': [('estado', '!=', 'juridica')]}">
+                                    <i class="fa fa-info-circle"/>
+                                    <div>
+                                        <strong>Dirección Jurídica: elige cómo continuar</strong>
+                                        <span>Selecciona un jurídico para asignarle el proceso. Si no asignas a nadie, el proceso quedará a tu cargo.</span>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-notebook-head">
+                                    <i class="fa fa-balance-scale"/>
+                                    <div>
+                                        <strong>Revisión jurídica</strong>
+                                        <span>Asignación, revisión de soportes y preparación del acta.</span>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-task-grid">
+                                    <div class="fc-cierre-task-card fc-cierre-responsible-card">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Responsable de Jurídica</span>
+                                            <span class="fc-cierre-task-help">Profesional asignado para revisar y preparar el acta.</span>
+                                        </div>
+                                        <field name="is_not_juridico" invisible="1"/>
+                                        <field name="juridicos_asignables_ids" invisible="1"/>
+                                        <field name="juridico_responsable_id" nolabel="1"
+                                               class="campo_hover campo_solo_lectura"
+                                               domain="[('id', 'in', juridicos_asignables_ids), ('active', '=', True)]"
+                                               options="{'no_create': True, 'no_open': True}"
+                                               attrs="{'readonly': [('puede_asignar_juridico', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card fc-cierre-assignment-actions"
+                                         groups="Matriz.group_contratacion_director_juridico">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Asignación del proceso</span>
+                                            <span class="fc-cierre-task-help">Asigna el proceso al profesional seleccionado.</span>
+                                        </div>
+                                        <div class="fc-cierre-assignment-buttons">
+                                            <button name="action_asignar_juridico_cierre"
+                                                    type="object"
+                                                    string="ASIGNAR RESPONSABLE"
+                                                    class="btn-success"
+                                                    attrs="{'invisible': ['|', ('estado', '!=', 'juridica'), ('puede_asignar_juridico', '=', False)], 'readonly': [('juridico_responsable_id', '=', False)]}"/>
+                                        </div>
+                                    </div>
+                                    <div class="fc-cierre-task-card">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Soportes revisados</span>
+                                            <span class="fc-cierre-task-help">Contrato inicial, certificado financiero y soportes relacionados.</span>
+                                        </div>
+                                        <field name="juridica_reviso_soportes" nolabel="1" widget="boolean_toggle"
+                                               attrs="{'readonly': [('puede_editar_juridica', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Acta preparada</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '=', 'incumplimiento')]}">Marcar cuando el acta quede lista para continuar el trámite.</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]}">Confirma que el acto unilateral firmado por Dirección Ejecutiva está listo para notificar.</span>
+                                        </div>
+                                        <field name="acta_juridica_preparada" nolabel="1" widget="boolean_toggle"
+                                               attrs="{'readonly': [('puede_editar_juridica', '=', False)]}"/>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-hidden-fields">
+                                    <field name="acta_borrador_id" invisible="1"/>
+                                    <field name="acta_firmada_id" invisible="1"/>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Cierre" attrs="{'invisible': [('estado', 'in', ['solicitud', 'financiera', 'juridica'])]}">
+                            <div class="fc-cierre-notebook-panel">
+                                <div class="fc-cierre-notebook-head">
+                                    <i class="fa fa-check-circle"/>
+                                    <div>
+                                        <strong>Cierre y liberación</strong>
+                                        <span>Acta firmada, liberación del RFC y notificación al contratista cuando aplique.</span>
+                                    </div>
+                                </div>
+                                <div class="fc-cierre-task-grid">
+                                    <div class="fc-cierre-task-card"
+                                         attrs="{'invisible': [('tipo_acta', '=', 'incumplimiento')]} ">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Acta firmada recibida</span>
+                                            <span class="fc-cierre-task-help">Coordinación confirma la carga del acta firmada.</span>
+                                        </div>
+                                        <field name="acta_firmada_recibida" nolabel="1" widget="boolean_toggle"
+                                               attrs="{'readonly': [('puede_editar_firma_coordinador', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card">
+                                        <div>
+                                            <span class="fc-cierre-task-title"
+                                                  attrs="{'invisible': [('tipo_acta', '=', 'normal')]}">RFC liberado</span>
+                                            <span class="fc-cierre-task-title"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'normal')]}">Liberación de saldos revisada</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'anulacion')]}">Presupuesto confirma la liberación de recursos.</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'normal')]}">Confirma la liberación o que no existen saldos por liberar.</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]}">Financiera o Presupuesto confirma la liberación del RFC si aplica.</span>
+                                        </div>
+                                        <field name="rfc_liberado" nolabel="1" widget="boolean_toggle"
+                                               attrs="{'readonly': [('puede_editar_liberacion_rfc', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card fc-cierre-task-card-wide fc-cierre-release-reference">
+                                        <div>
+                                            <span class="fc-cierre-task-title"
+                                                  attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">Valor total del contrato + otrosí</span>
+                                            <span class="fc-cierre-task-title"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'anulacion')]}">Valor total del contrato a liberar</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">Referencia inicial. El valor realmente liberado puede ser menor según la ejecución y los pagos realizados.</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'anulacion')]}">El contrato nunca inició; el sistema utilizará automáticamente este valor completo.</span>
+                                        </div>
+                                        <field name="valor_referencia_liberacion"
+                                               nolabel="1"
+                                               readonly="1"
+                                               widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                    </div>
+                                    <div class="fc-cierre-task-card fc-cierre-task-card-wide fc-cierre-released-value"
+                                         attrs="{'invisible': [('tipo_acta', '=', 'anulacion')]}">
+                                        <div>
+                                            <span class="fc-cierre-task-title">Valor liberado del RFC</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '=', 'incumplimiento')]}">Presupuesto registra el valor que posteriormente retornará al disponible de origen.</span>
+                                            <span class="fc-cierre-task-help"
+                                                  attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]}">Financiera o Presupuesto registra el valor que retornará al disponible de origen.</span>
+                                        </div>
+                                        <field name="valor_liberado_rfc"
+                                               nolabel="1"
+                                               widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"
+                                               attrs="{'readonly': [('puede_editar_liberacion_rfc', '=', False)]}"/>
+                                    </div>
+                                    <div class="fc-cierre-data-card">
+                                        <span>
+                                            Fecha liberación RFC
+                                            <i class="fa fa-info-circle"
+                                               title="Campo automático: se registra al finalizar la liberación del RFC."/>
+                                        </span>
+                                        <field name="fecha_liberacion_rfc" readonly="1" nolabel="1"/>
+                                    </div>
+                                    <div class="fc-cierre-data-card">
+                                        <span>
+                                            Liberado por
+                                            <i class="fa fa-info-circle"
+                                               title="Campo automático: identifica al usuario que finalizó la liberación."/>
+                                        </span>
+                                        <field name="liberado_por_id"
+                                               readonly="1"
+                                               nolabel="1"
+                                               options="{'no_open': True}"/>
+                                    </div>
+                                    <!-- La notificación al contratista solo pertenece al
+                                         flujo de liquidación unilateral (incumplimiento). -->
+                                    <div class="fc-cierre-data-card"
+                                         attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]}">
+                                        <span>Contratista notificado</span>
+                                        <field name="contratista_notificado" readonly="1" nolabel="1" widget="boolean_toggle"/>
+                                    </div>
+                                    <div class="fc-cierre-data-card"
+                                         attrs="{'invisible': [('tipo_acta', '!=', 'incumplimiento')]}">
+                                        <span>Fecha notificación contratista</span>
+                                        <field name="fecha_notificacion_contratista" readonly="1" nolabel="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    </div>
+
+                    <field name="puede_editar_observaciones_etapa" invisible="1"/>
+                    <div class="fc-cierre-note-card fc-cierre-return-note"
+                         attrs="{'invisible': [('puede_editar_observaciones_etapa', '=', False)]}">
+                        <div class="fc-cierre-note-title">Observaciones de la etapa</div>
+                        <field name="observaciones_etapa"
+                               nolabel="1"
+                               placeholder="Opcional al enviar o aprobar. Obligatorio si vas a devolver el proceso."/>
+                    </div>
+
+                    <div class="fc-cierre-body-actions">
+                        <button name="action_enviar_certificacion_financiera"
+                                type="object"
+                                string="ENVIAR"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': [('estado', '!=', 'solicitud')]}"/>
+                        <button name="action_enviar_revision_juridica"
+                                type="object"
+                                string="ENVIAR"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_financiera_cierre_contrato"
+                                attrs="{'invisible': [('estado', '!=', 'financiera')]}"/>
+                        <button name="action_devolver_a_coordinacion_desde_financiera"
+                                type="object"
+                                string="DEVOLVER A COORDINACIÓN"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_financiera_cierre_contrato"
+                                attrs="{'invisible': [('estado', '!=', 'financiera')]}"/>
+                        <button name="action_enviar_firma_coordinador"
+                                type="object"
+                                string="ENVIAR"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                 attrs="{'invisible': ['|', '|', ('estado', '!=', 'juridica'), ('tipo_acta', '=', 'incumplimiento'), ('puede_editar_juridica', '=', False)]}"/>
+                        <button name="action_devolver_a_financiera_desde_juridica"
+                                type="object"
+                                string="DEVOLVER A FINANCIERA"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                 attrs="{'invisible': ['|', ('estado', '!=', 'juridica'), ('puede_editar_juridica', '=', False)]}"/>
+                        <button name="action_devolver_a_coordinacion_desde_juridica"
+                                type="object"
+                                string="DEVOLVER A COORDINACIÓN"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                 attrs="{'invisible': ['|', ('estado', '!=', 'juridica'), ('puede_editar_juridica', '=', False)]}"/>
+                        <button name="action_enviar_liberacion_rfc_unilateral"
+                                type="object"
+                                string="NOTIFICAR Y ENVIAR A LIBERACIÓN"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                 attrs="{'invisible': ['|', '|', ('estado', '!=', 'juridica'), ('tipo_acta', '!=', 'incumplimiento'), ('puede_editar_juridica', '=', False)]}"/>
+                        <button name="action_enviar_liberacion_rfc"
+                                type="object"
+                                string="ENVIAR"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': [('estado', '!=', 'firma_coordinador')]}"/>
+                        <button name="action_devolver_a_juridica_desde_firma"
+                                type="object"
+                                string="DEVOLVER A JURÍDICA"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': [('estado', '!=', 'firma_coordinador')]}"/>
+                        <button name="action_finalizar_cierre_contractual"
+                                type="object"
+                                string="FINALIZAR"
+                                class="btn-success fc-cierre-body-action"
+                                groups="Matriz.group_presupuestos,Matriz.group_financiera_cierre_contrato"
+                                attrs="{'invisible': ['|', ('estado', '!=', 'liberacion_rfc'), ('puede_editar_liberacion_rfc', '=', False)]}"/>
+                        <button name="action_devolver_a_coordinacion_desde_presupuesto"
+                                type="object"
+                                string="DEVOLVER A COORDINACIÓN"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_presupuestos"
+                                attrs="{'invisible': ['|', ('estado', '!=', 'liberacion_rfc'), ('tipo_acta', '=', 'incumplimiento')]}"/>
+                        <button name="action_devolver_a_juridica_desde_presupuesto_unilateral"
+                                type="object"
+                                string="DEVOLVER A JURÍDICA"
+                                class="btn-danger fc-cierre-body-action"
+                                groups="Matriz.group_presupuestos,Matriz.group_financiera_cierre_contrato"
+                                attrs="{'invisible': ['|', ('estado', '!=', 'liberacion_rfc'), ('tipo_acta', '!=', 'incumplimiento')]}"/>
+                    </div>
+
+                    <details class="fc-cierre-support-panel" groups="Matriz.group_soporte">
+                        <summary>
+                            <i class="fa fa-wrench"/>
+                            SOPORTE CIERRE CONTRACTUAL
+                        </summary>
+                        <div class="fc-cierre-support-content">
+                            <div class="fc-cierre-support-intro">
+                                Herramientas de recuperación. No envían correos ni reemplazan
+                                las aprobaciones normales del flujo.
+                            </div>
+                            <field name="soporte_diagnostico" nolabel="1" readonly="1"/>
+                            <div class="fc-cierre-support-reason">
+                                <label for="soporte_motivo" string="Motivo obligatorio"/>
+                                <field name="soporte_motivo"
+                                       nolabel="1"
+                                       placeholder="Describe el incidente y por qué se requiere la corrección..."/>
+                            </div>
+
+                            <div class="fc-cierre-support-section"
+                                 attrs="{'invisible': [('estado', 'in', ['finalizado', 'cancelado'])]}">
+                                <strong>Recuperar etapa operativa</strong>
+                                <div class="fc-cierre-support-buttons">
+                                    <button name="action_soporte_cambiar_estado_cierre"
+                                            type="object" string="SOLICITUD"
+                                            class="btn-secondary"
+                                            context="{'estado_soporte_destino': 'solicitud'}"
+                                            attrs="{'invisible': [('estado', '=', 'solicitud')]}"/>
+                                    <button name="action_soporte_cambiar_estado_cierre"
+                                            type="object" string="FINANCIERA"
+                                            class="btn-secondary"
+                                            context="{'estado_soporte_destino': 'financiera'}"
+                                            attrs="{'invisible': [('estado', '=', 'financiera')]}"/>
+                                    <button name="action_soporte_cambiar_estado_cierre"
+                                            type="object" string="JURÍDICA"
+                                            class="btn-secondary"
+                                            context="{'estado_soporte_destino': 'juridica'}"
+                                            attrs="{'invisible': [('estado', '=', 'juridica')]}"/>
+                                    <button name="action_soporte_cambiar_estado_cierre"
+                                            type="object" string="COORDINADOR (FIRMA)"
+                                            class="btn-secondary"
+                                            context="{'estado_soporte_destino': 'firma_coordinador'}"
+                                            attrs="{'invisible': [('estado', '=', 'firma_coordinador')]}"/>
+                                    <button name="action_soporte_cambiar_estado_cierre"
+                                            type="object" string="LIBERACIÓN RFC"
+                                            class="btn-secondary"
+                                            context="{'estado_soporte_destino': 'liberacion_rfc'}"
+                                            attrs="{'invisible': [('estado', '=', 'liberacion_rfc')]}"/>
+                                </div>
+                            </div>
+
+                            <div class="fc-cierre-support-section">
+                                <strong>Reparaciones relacionadas</strong>
+                                <div class="fc-cierre-support-buttons">
+                                    <button name="action_soporte_reparar_carpeta_cierre"
+                                            type="object" string="RECUPERAR CARPETA DRIVE"
+                                            icon="fa-folder-open-o" class="btn-primary"/>
+                                    <button name="action_soporte_limpiar_retorno_cierre"
+                                            type="object" string="LIMPIAR RETORNO ATASCADO"
+                                            icon="fa-eraser" class="btn-warning"
+                                            attrs="{'invisible': [('estado_retorno_devolucion', '=', False)]}"/>
+                                    <button name="action_soporte_abrir_fc_cierre"
+                                            type="object" string="ABRIR FC RELACIONADO"
+                                            icon="fa-external-link" class="btn-secondary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    </div>
+                    <br/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_contrataciones_fuv_cierre_proceso_tree" model="ir.ui.view">
+        <field name="name">contrataciones_fuv.cierre.proceso.tree</field>
+        <field name="model">contrataciones_fuv.cierre.proceso</field>
+        <field name="arch" type="xml">
+            <tree create="false" delete="false">
+                <field name="name"/>
+                <field name="contract_id"/>
+                <field name="tipo_acta"/>
+                <field name="estado"/>
+                <field name="juridico_responsable_id"/>
+                <field name="solicitado_por_id"/>
+                <field name="fecha_solicitud"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

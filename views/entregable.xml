@@ -1,0 +1,2621 @@
+<odoo>
+    <record id="view_objetivo_form" model="ir.ui.view">
+        <field name="name">objetivo.form</field>
+        <field name="model">objetivo</field>
+        <field name="arch" type="xml">
+            <form string="Objetivo específico">
+                <h1>
+                  OBJETIVO ESPECÍFICOS
+                </h1>
+                <group>
+                    <field name="name" invisible="1"/>
+                    <field name="new_name" invisible="1"/>
+                    <field name="id_proyecto" invisible="1"/>
+                    <field name="proyecto_relacionado3" invisible="1"/>
+                    <field name="id_programa" invisible="1"/>
+                </group>
+                <field name="componente_ids" widget="kanban">
+                    <kanban action="action_view_Matriz_de_componente" type="object" create="1">
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click">
+                                    <br/>
+                                        <div style="padding: 10px;">
+                                            <strong><field name="name" widget="text"/></strong>
+                                        </div>
+                                    <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                            <a class="dropdown-item" role="menuitem" type="open">Editar</a>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right" style="padding: 10px;">
+                                        <strong>Creado por: </strong><field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+                <br/>
+                <table style="width: 100%">
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </table>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_entregables3_form" model="ir.ui.view">
+        <field name="name">entregables3.form</field>
+        <field name="model">entregables3</field>
+        <field name="arch" type="xml">
+            <form string="Entregables">
+                <group>
+                    <field name="proyec_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                </group>
+                <br/>
+                <h1>
+                  ENTREGABLES
+                </h1>
+                <br/>
+                <field name="entregable_ids" widget="kanban">
+                    <kanban action="Ejecución" type="object" create="1">
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click">
+                                    <br/>
+                                        <div style="padding: 10px;">
+                                            <strong><field name="name" widget="text"/></strong>
+                                        </div>
+                                    <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                            <a class="dropdown-item" role="menuitem" type="open">Editar</a>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right" style="padding: 10px;">
+                                        <strong>Creado por: </strong><field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+                <br/>
+                <table style="width: 100%">
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </table>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_abrir_entregables3_form" model="ir.ui.view">
+        <field name="name">abrir_entregables3.form</field>
+        <field name="model">abrir_entregables3</field>
+        <field name="arch" type="xml">
+            <form string="Entregables">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ACTIVIDAD"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_subactividad_form" model="ir.ui.view">
+        <field name="name">subactividad.form</field>
+        <field name="model">subactividad</field>
+        <field name="arch" type="xml">
+            <form string="Sub actividad">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ENTREGABLE"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_abrir_actividades_form" model="ir.ui.view">
+        <field name="name">abrir_actividades.form</field>
+        <field name="model">abrir_actividades</field>
+        <field name="arch" type="xml">
+            <form string="actividades">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="COMPONENTE"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_actividades_form" model="ir.ui.view">
+        <field name="name">actividades.form</field>
+        <field name="model">actividades</field>
+        <field name="arch" type="xml">
+            <form string="actividades">
+                <group>
+                    <field name="proyec_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                </group>
+                <br/>
+                <h1>
+                  ACTIVIDADES
+                </h1>
+                <br/>
+                <field name="entregables3_ids" widget="kanban">
+                    <kanban action="action_view_Matriz_de_entregables" type="object" create="1">
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click">
+                                    <br/>
+                                        <div style="padding: 10px;">
+                                            <strong><field name="name" widget="text"/></strong>
+                                        </div>
+                                    <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                            <a class="dropdown-item" role="menuitem" type="open">Editar</a>
+
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right" style="padding: 10px;">
+                                        <strong>Creado por: </strong><field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+                <br/>
+                <table style="width: 100%">
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </table>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_componente_form" model="ir.ui.view">
+        <field name="name">componente.form</field>
+        <field name="model">componente</field>
+        <field name="arch" type="xml">
+            <form string="componentes">
+                <group>
+                    <field name="proyec_id" invisible="1"/>
+                    <field name="name" invisible="1"/>
+                </group>
+                <br/>
+                <h1>
+                  COMPONENTES
+                </h1>
+                <br/>
+                <field name="actividades_ids" widget="kanban">
+                    <kanban action="action_view_Matriz_de_actividades" type="object" create="1">
+                        <templates>
+                            <t t-name="kanban-box">
+                                <div class="oe_kanban_global_click">
+                                    <br/>
+                                        <div style="padding: 10px;">
+                                            <strong><field name="name" widget="text"/></strong>
+                                        </div>
+                                    <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                        <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                            <a class="dropdown-item" role="menuitem" type="open">Editar</a>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right" style="padding: 10px;">
+                                        <strong>Creado por: </strong><field name="user_id" widget="many2one_avatar_user" domain="[('share', '=', False)]"/>
+                                    </div>
+                                </div>
+                            </t>
+                        </templates>
+                    </kanban>
+                </field>
+                <br/>
+                <table style="width: 100%">
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </table>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_abrir_componente_form" model="ir.ui.view">
+        <field name="name">abrir_componente.form</field>
+        <field name="model">abrir_componente</field>
+        <field name="arch" type="xml">
+            <form string="componentes">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="OBJETIVO ESPECÍFICO"/>
+                        </h1>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_entregables_2_form" model="ir.ui.view">
+        <field name="name">entregables_2.form</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <form string="Entregable">
+                <sheet>
+                    <field name="proyec_id"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="# Acción"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="otros_accion" placeholder="Acción"/>
+                            <field name="estado" placeholder="Acción"/>
+                            <field name="verificador" placeholder="Verificador"/>
+                        </group>
+                        <group>
+                            <field name="unidad_medida" placeholder="Unidad de Medida"/>
+                            <field name="cantidad" placeholder="Cantidad"/>
+                            <field name="porcentaje" placeholder="Porcentaje"/>
+                        </group>
+                    </group>
+                    <group>
+                         <field name="duracion_periodos" placeholder="Duración (períodos)"/>
+                        <field name="fecha_inicio" placeholder="Fecha de Inicio"/>
+                        <field name="fecha_fin" placeholder="Fecha de Finalización"/>
+                    </group>
+                    <group>
+                        <field name="total_porcentaje" placeholder="Total porcentaje"/>
+                        <field name="total" placeholder="Total"/>
+                        <field name="total_final" placeholder="Total final"/>
+                    </group>
+                    <group>
+                        <field name="actividades_completas_count"/>
+                        <field name="actividades_en_progreso_count"/>
+                        <field name="actividades_retrasadas_count"/>
+                        <field name="actividades_pendiente_count"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_entregable_form" model="ir.ui.view">
+        <field name="name">entregable.form</field>
+        <field name="model">entregable</field>
+        <field name="arch" type="xml">
+            <form string="Entregable">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="ACTIVIDAD" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                        </h1>
+                        <field name="proyec2_id" invisible="1"/>
+                        <field name="avances_id" invisible="1"/>
+                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                    </div>
+                    <table class="excel_table" invisible="1">
+                        <tr>
+                            <th style="border: 1px solid black;">Objetivo Específico</th>
+                            <th style="border: 1px solid black;">Número de Componente</th>
+                            <th style="border: 1px solid black;">Componente</th>
+                            <th style="border: 1px solid black;">Número de Actividad</th>
+                            <th style="border: 1px solid black;">Actividad</th>
+                            <th style="border: 1px solid black;">Un Entregable</th>
+                            <th style="border: 1px solid black;">Entregable</th>
+                            <th style="border: 1px solid black;">Valor proyectó</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="objetivo_especifico" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="nu_componente" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="componente" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="nu_actividad" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="actividad" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="nu_entregable" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="entregable" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                            <td style="border: 1px solid black; text-align: center; vertical-align: middle;">
+                                <field name="valor_entregable" style="width: 100%; text-align: center;" attrs="{'readonly': [('is_editable', '=', True)]}"/></td>
+                        </tr>
+                    </table>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana_form" model="ir.ui.view">
+        <field name="name">ventana.form</field>
+        <field name="model">ventana</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                    </style>
+                <sheet>
+                    <table class="oe_view_noheader oe_view_table oe_view_grid">
+                        <group>
+                            <field name="matriz_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="porcentaje_programado" style="color: purple;"/>
+                            <field name="porcentaje_aprobado"
+                                   decoration-warning="estados == 'retraso_menor'"
+                                   decoration-danger="estados == 'retraso_significativo'"
+                                   decoration-success="estados == 'al_dia'"
+                                   decoration-primary="estados == 'fecha_cercana_cierre'"/>
+                            <field name="retraso_holgura" style="color: red;"/>
+                            <field name="division_porcentajes" style="color: Brown;"/>
+                        </group>
+                        <field name="estados"
+                           decoration-warning ="estados == 'retraso_menor'"
+                           decoration-danger ="estados == 'retraso_significativo'"
+                           decoration-success ="estados == 'al_dia'"
+                           decoration-primary ="estados == 'fecha_cercana_cierre'"/>
+                    </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="view_ventana2_form" model="ir.ui.view">
+        <field name="name">ventana2.form</field>
+        <field name="model">ventana2</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz2_id" invisible="0"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados2 == 'retraso_menor'"
+                               decoration-danger="estados2 == 'retraso_significativo'"
+                               decoration-success="estados2 == 'al_dia'"
+                               decoration-primary="estados2 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados2"
+                           decoration-warning ="estados2 == 'retraso_menor'"
+                           decoration-danger ="estados2 == 'retraso_significativo'"
+                           decoration-success ="estados2 == 'al_dia'"
+                           decoration-primary ="estados2 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana3_form" model="ir.ui.view">
+        <field name="name">ventana3.form</field>
+        <field name="model">ventana3</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz3_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados3 == 'retraso_menor'"
+                               decoration-danger="estados3 == 'retraso_significativo'"
+                               decoration-success="estados3 == 'al_dia'"
+                               decoration-primary="estados3 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados3"
+                           decoration-warning ="estados3 == 'retraso_menor'"
+                           decoration-danger ="estados3 == 'retraso_significativo'"
+                           decoration-success ="estados3 == 'al_dia'"
+                           decoration-primary ="estados3 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana4_form" model="ir.ui.view">
+        <field name="name">ventana4.form</field>
+        <field name="model">ventana4</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz4_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados4 == 'retraso_menor'"
+                               decoration-danger="estados4 == 'retraso_significativo'"
+                               decoration-success="estados4 == 'al_dia'"
+                               decoration-primary="estados4 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados4"
+                           decoration-warning ="estados4 == 'retraso_menor'"
+                           decoration-danger ="estados4 == 'retraso_significativo'"
+                           decoration-success ="estados4 == 'al_dia'"
+                           decoration-primary ="estados4 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana5_form" model="ir.ui.view">
+        <field name="name">ventana5.form</field>
+        <field name="model">ventana5</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz5_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados5 == 'retraso_menor'"
+                               decoration-danger="estados5 == 'retraso_significativo'"
+                               decoration-success="estados5 == 'al_dia'"
+                               decoration-primary="estados5 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados5"
+                           decoration-warning ="estados5 == 'retraso_menor'"
+                           decoration-danger ="estados5 == 'retraso_significativo'"
+                           decoration-success ="estados5 == 'al_dia'"
+                           decoration-primary ="estados5 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana6_form" model="ir.ui.view">
+        <field name="name">ventana6.form</field>
+        <field name="model">ventana6</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz6_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados6 == 'retraso_menor'"
+                               decoration-danger="estados6 == 'retraso_significativo'"
+                               decoration-success="estados6 == 'al_dia'"
+                               decoration-primary="estados6 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados6"
+                           decoration-warning ="estados6 == 'retraso_menor'"
+                           decoration-danger ="estados6 == 'retraso_significativo'"
+                           decoration-success ="estados6 == 'al_dia'"
+                           decoration-primary ="estados6 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana7_form" model="ir.ui.view">
+        <field name="name">ventana7.form</field>
+        <field name="model">ventana7</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz7_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados7 == 'retraso_menor'"
+                               decoration-danger="estados7 == 'retraso_significativo'"
+                               decoration-success="estados7 == 'al_dia'"
+                               decoration-primary="estados7 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados7"
+                           decoration-warning ="estados7 == 'retraso_menor'"
+                           decoration-danger ="estados7 == 'retraso_significativo'"
+                           decoration-success ="estados7 == 'al_dia'"
+                           decoration-primary ="estados7 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana8_form" model="ir.ui.view">
+        <field name="name">ventana8.form</field>
+        <field name="model">ventana8</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz8_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados8 == 'retraso_menor'"
+                               decoration-danger="estados8 == 'retraso_significativo'"
+                               decoration-success="estados8 == 'al_dia'"
+                               decoration-primary="estados8 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados8"
+                           decoration-warning ="estados8 == 'retraso_menor'"
+                           decoration-danger ="estados8 == 'retraso_significativo'"
+                           decoration-success ="estados8 == 'al_dia'"
+                           decoration-primary ="estados8 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana9_form" model="ir.ui.view">
+        <field name="name">ventana9.form</field>
+        <field name="model">ventana9</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz9_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados9 == 'retraso_menor'"
+                               decoration-danger="estados9 == 'retraso_significativo'"
+                               decoration-success="estados9 == 'al_dia'"
+                               decoration-primary="estados9 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados9"
+                           decoration-warning ="estados9 == 'retraso_menor'"
+                           decoration-danger ="estados9 == 'retraso_significativo'"
+                           decoration-success ="estados9 == 'al_dia'"
+                           decoration-primary ="estados9 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana10_form" model="ir.ui.view">
+        <field name="name">ventana10.form</field>
+        <field name="model">ventana10</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz10_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados10 == 'retraso_menor'"
+                               decoration-danger="estados10 == 'retraso_significativo'"
+                               decoration-success="estados10 == 'al_dia'"
+                               decoration-primary="estados10 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados10"
+                           decoration-warning ="estados10 == 'retraso_menor'"
+                           decoration-danger ="estados10 == 'retraso_significativo'"
+                           decoration-success ="estados10 == 'al_dia'"
+                           decoration-primary ="estados10 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana11_form" model="ir.ui.view">
+        <field name="name">ventana11.form</field>
+        <field name="model">ventana11</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz11_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados11 == 'retraso_menor'"
+                               decoration-danger="estados11 == 'retraso_significativo'"
+                               decoration-success="estados11 == 'al_dia'"
+                               decoration-primary="estados11 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados11"
+                           decoration-warning ="estados11 == 'retraso_menor'"
+                           decoration-danger ="estados11 == 'retraso_significativo'"
+                           decoration-success ="estados11 == 'al_dia'"
+                           decoration-primary ="estados11 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana12_form" model="ir.ui.view">
+        <field name="name">ventana12.form</field>
+        <field name="model">ventana12</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz12_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados12 == 'retraso_menor'"
+                               decoration-danger="estados12 == 'retraso_significativo'"
+                               decoration-success="estados12 == 'al_dia'"
+                               decoration-primary="estados12 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados12"
+                           decoration-warning ="estados12 == 'retraso_menor'"
+                           decoration-danger ="estados12 == 'retraso_significativo'"
+                           decoration-success ="estados12 == 'al_dia'"
+                           decoration-primary ="estados12 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana13_form" model="ir.ui.view">
+        <field name="name">ventana13.form</field>
+        <field name="model">ventana13</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz13_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados13 == 'retraso_menor'"
+                               decoration-danger="estados13 == 'retraso_significativo'"
+                               decoration-success="estados13 == 'al_dia'"
+                               decoration-primary="estados13 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados13"
+                           decoration-warning ="estados13 == 'retraso_menor'"
+                           decoration-danger ="estados13 == 'retraso_significativo'"
+                           decoration-success ="estados13 == 'al_dia'"
+                           decoration-primary ="estados13 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana14_form" model="ir.ui.view">
+        <field name="name">ventana14.form</field>
+        <field name="model">ventana14</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz14_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados14 == 'retraso_menor'"
+                               decoration-danger="estados14 == 'retraso_significativo'"
+                               decoration-success="estados14 == 'al_dia'"
+                               decoration-primary="estados14 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados14"
+                           decoration-warning ="estados14 == 'retraso_menor'"
+                           decoration-danger ="estados14 == 'retraso_significativo'"
+                           decoration-success ="estados14 == 'al_dia'"
+                           decoration-primary ="estados14 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana15_form" model="ir.ui.view">
+        <field name="name">ventana15.form</field>
+        <field name="model">ventana15</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz15_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados15 == 'retraso_menor'"
+                               decoration-danger="estados15 == 'retraso_significativo'"
+                               decoration-success="estados15 == 'al_dia'"
+                               decoration-primary="estados15 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados15"
+                           decoration-warning ="estados15 == 'retraso_menor'"
+                           decoration-danger ="estados15 == 'retraso_significativo'"
+                           decoration-success ="estados15 == 'al_dia'"
+                           decoration-primary ="estados15 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana16_form" model="ir.ui.view">
+        <field name="name">ventana16.form</field>
+        <field name="model">ventana16</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz16_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados16 == 'retraso_menor'"
+                               decoration-danger="estados16 == 'retraso_significativo'"
+                               decoration-success="estados16 == 'al_dia'"
+                               decoration-primary="estados16 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados16"
+                           decoration-warning ="estados16 == 'retraso_menor'"
+                           decoration-danger ="estados16 == 'retraso_significativo'"
+                           decoration-success ="estados16 == 'al_dia'"
+                           decoration-primary ="estados16 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana17_form" model="ir.ui.view">
+        <field name="name">ventana17.form</field>
+        <field name="model">ventana17</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz17_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados17 == 'retraso_menor'"
+                               decoration-danger="estados17 == 'retraso_significativo'"
+                               decoration-success="estados17 == 'al_dia'"
+                               decoration-primary="estados17 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados17"
+                           decoration-warning ="estados17 == 'retraso_menor'"
+                           decoration-danger ="estados17 == 'retraso_significativo'"
+                           decoration-success ="estados17 == 'al_dia'"
+                           decoration-primary ="estados17 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana18_form" model="ir.ui.view">
+        <field name="name">ventana18.form</field>
+        <field name="model">ventana18</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz18_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados18 == 'retraso_menor'"
+                               decoration-danger="estados18 == 'retraso_significativo'"
+                               decoration-success="estados18 == 'al_dia'"
+                               decoration-primary="estados18 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados18"
+                           decoration-warning ="estados18 == 'retraso_menor'"
+                           decoration-danger ="estados18 == 'retraso_significativo'"
+                           decoration-success ="estados18 == 'al_dia'"
+                           decoration-primary ="estados18 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana19_form" model="ir.ui.view">
+        <field name="name">ventana19.form</field>
+        <field name="model">ventana19</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz19_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados19 == 'retraso_menor'"
+                               decoration-danger="estados19 == 'retraso_significativo'"
+                               decoration-success="estados19 == 'al_dia'"
+                               decoration-primary="estados19 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados19"
+                           decoration-warning ="estados19 == 'retraso_menor'"
+                           decoration-danger ="estados19 == 'retraso_significativo'"
+                           decoration-success ="estados19 == 'al_dia'"
+                           decoration-primary ="estados19 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana20_form" model="ir.ui.view">
+        <field name="name">ventana20.form</field>
+        <field name="model">ventana20</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz20_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados20 == 'retraso_menor'"
+                               decoration-danger="estados20 == 'retraso_significativo'"
+                               decoration-success="estados20 == 'al_dia'"
+                               decoration-primary="estados20 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados20"
+                           decoration-warning ="estados20 == 'retraso_menor'"
+                           decoration-danger ="estados20 == 'retraso_significativo'"
+                           decoration-success ="estados20 == 'al_dia'"
+                           decoration-primary ="estados20 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana21_form" model="ir.ui.view">
+        <field name="name">ventana21.form</field>
+        <field name="model">ventana21</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz21_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados21 == 'retraso_menor'"
+                               decoration-danger="estados21 == 'retraso_significativo'"
+                               decoration-success="estados21 == 'al_dia'"
+                               decoration-primary="estados21 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados21"
+                           decoration-warning ="estados21 == 'retraso_menor'"
+                           decoration-danger ="estados21 == 'retraso_significativo'"
+                           decoration-success ="estados21 == 'al_dia'"
+                           decoration-primary ="estados21 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana22_form" model="ir.ui.view">
+        <field name="name">ventana22.form</field>
+        <field name="model">ventana22</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz22_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados22 == 'retraso_menor'"
+                               decoration-danger="estados22 == 'retraso_significativo'"
+                               decoration-success="estados22 == 'al_dia'"
+                               decoration-primary="estados22 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados22"
+                           decoration-warning ="estados22 == 'retraso_menor'"
+                           decoration-danger ="estados22 == 'retraso_significativo'"
+                           decoration-success ="estados22 == 'al_dia'"
+                           decoration-primary ="estados22 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana23_form" model="ir.ui.view">
+        <field name="name">ventana23.form</field>
+        <field name="model">ventana23</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz23_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados23 == 'retraso_menor'"
+                               decoration-danger="estados23 == 'retraso_significativo'"
+                               decoration-success="estados23 == 'al_dia'"
+                               decoration-primary="estados23 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados23"
+                           decoration-warning ="estados23 == 'retraso_menor'"
+                           decoration-danger ="estados23 == 'retraso_significativo'"
+                           decoration-success ="estados23 == 'al_dia'"
+                           decoration-primary ="estados23 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana24_form" model="ir.ui.view">
+        <field name="name">ventana24.form</field>
+        <field name="model">ventana24</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz24_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados24 == 'retraso_menor'"
+                               decoration-danger="estados24 == 'retraso_significativo'"
+                               decoration-success="estados24 == 'al_dia'"
+                               decoration-primary="estados24 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados24"
+                           decoration-warning ="estados24 == 'retraso_menor'"
+                           decoration-danger ="estados24 == 'retraso_significativo'"
+                           decoration-success ="estados24 == 'al_dia'"
+                           decoration-primary ="estados24 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana25_form" model="ir.ui.view">
+        <field name="name">ventana25.form</field>
+        <field name="model">ventana25</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz25_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados25 == 'retraso_menor'"
+                               decoration-danger="estados25 == 'retraso_significativo'"
+                               decoration-success="estados25 == 'al_dia'"
+                               decoration-primary="estados25 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados25"
+                           decoration-warning ="estados25 == 'retraso_menor'"
+                           decoration-danger ="estados25 == 'retraso_significativo'"
+                           decoration-success ="estados25 == 'al_dia'"
+                           decoration-primary ="estados25 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana26_form" model="ir.ui.view">
+        <field name="name">ventana26.form</field>
+        <field name="model">ventana26</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz26_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados26 == 'retraso_menor'"
+                               decoration-danger="estados26 == 'retraso_significativo'"
+                               decoration-success="estados26 == 'al_dia'"
+                               decoration-primary="estados26 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados26"
+                           decoration-warning ="estados26 == 'retraso_menor'"
+                           decoration-danger ="estados26 == 'retraso_significativo'"
+                           decoration-success ="estados26 == 'al_dia'"
+                           decoration-primary ="estados26 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana27_form" model="ir.ui.view">
+        <field name="name">ventana27.form</field>
+        <field name="model">ventana27</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz27_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados27 == 'retraso_menor'"
+                               decoration-danger="estados27 == 'retraso_significativo'"
+                               decoration-success="estados27 == 'al_dia'"
+                               decoration-primary="estados27 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados27"
+                           decoration-warning ="estados27 == 'retraso_menor'"
+                           decoration-danger ="estados27 == 'retraso_significativo'"
+                           decoration-success ="estados27 == 'al_dia'"
+                           decoration-primary ="estados27 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana28_form" model="ir.ui.view">
+        <field name="name">ventana28.form</field>
+        <field name="model">ventana28</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz28_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados28 == 'retraso_menor'"
+                               decoration-danger="estados28 == 'retraso_significativo'"
+                               decoration-success="estados28 == 'al_dia'"
+                               decoration-primary="estados28 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados28"
+                           decoration-warning ="estados28 == 'retraso_menor'"
+                           decoration-danger ="estados28 == 'retraso_significativo'"
+                           decoration-success ="estados28 == 'al_dia'"
+                           decoration-primary ="estados28 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana29_form" model="ir.ui.view">
+        <field name="name">ventana29.form</field>
+        <field name="model">ventana29</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz29_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados29 == 'retraso_menor'"
+                               decoration-danger="estados29 == 'retraso_significativo'"
+                               decoration-success="estados29 == 'al_dia'"
+                               decoration-primary="estados29 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados29"
+                           decoration-warning ="estados29 == 'retraso_menor'"
+                           decoration-danger ="estados29 == 'retraso_significativo'"
+                           decoration-success ="estados29 == 'al_dia'"
+                           decoration-primary ="estados29 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ventana30_form" model="ir.ui.view">
+        <field name="name">ventana30.form</field>
+        <field name="model">ventana30</field>
+        <field name="arch" type="xml">
+            <form style="width: 400px; height: 200px;">
+                <style>
+                    .modal-dialog {
+                            width: 96%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 500px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                </style>
+                <sheet>
+                  <table class="oe_view_noheader oe_view_table oe_view_grid">
+                    <group>
+                        <field name="matriz30_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="porcentaje_programado" style="color: purple;"/>
+                        <field name="porcentaje_aprobado"
+                               decoration-warning="estados30 == 'retraso_menor'"
+                               decoration-danger="estados30 == 'retraso_significativo'"
+                               decoration-success="estados30 == 'al_dia'"
+                               decoration-primary="estados30 == 'fecha_cercana_cierre'"/>
+                        <field name="retraso_holgura" style="color: red;"/>
+                        <field name="division_porcentajes" style="color: Brown;"/>
+                    </group>
+                    <field name="estados30"
+                           decoration-warning ="estados30 == 'retraso_menor'"
+                           decoration-danger ="estados30 == 'retraso_significativo'"
+                           decoration-success ="estados30 == 'al_dia'"
+                           decoration-primary ="estados30 == 'fecha_cercana_cierre'"/>
+                  </table>
+                    <footer>
+                        <button name="Guardar" type="object" string="Guardar" class="oe_highlight"/>
+                        <button name="Guardar" type="object" string="Descartar"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_matriz_entregables_tree" model="ir.ui.view">
+        <field name="name">matriz.entregables.tree</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" string="Matriz de Entregables">
+                <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                <field name="proyec_id" invisible="1"/>
+                <field name="hiden" widget="handle"/>
+                <field name="name" width="50" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="otros_accion" width="100" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <button name="action_ingresar_rubros" type="object" class="fa fa-arrow-right" />
+                <field name="estado" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="verificador" width="90" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="unidad_medida" width="90" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="cantidad" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="porcentaje" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="duracion_periodos" width="90" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="fecha_inicio" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="fecha_fin" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="diferencia_dias" width="60" invisible="1" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                <field name="ultima_fecha_correo_enviado" width="60" invisible="1"/>
+                <field name="cron_job_id" width="60" invisible="1"/>
+                <button name="email_actividades" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="user_id" width="60" invisible="1"/>
+                <field name="estados" width="60"
+                       decoration-warning ="estados == 'retraso_menor'"
+                       decoration-danger ="estados == 'retraso_significativo'"
+                       decoration-success ="estados == 'al_dia'"
+                       decoration-primary ="estados == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo1" width="30"
+                       decoration-warning="estados == 'retraso_menor'"
+                       decoration-danger="estados == 'retraso_significativo'"
+                       decoration-success="estados == 'al_dia'"
+                       decoration-primary="estados == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo1_html" width="60" widget="html"
+                       decoration-warning="estados == 'retraso_menor'"
+                       decoration-danger="estados == 'retraso_significativo'"
+                       decoration-success="estados == 'al_dia'"
+                       decoration-primary="estados == 'fecha_cercana_cierre'"/>
+                <button name="open_popup" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados2" width="60"
+                       decoration-warning ="estados2 == 'retraso_menor'"
+                       decoration-danger ="estados2 == 'retraso_significativo'"
+                       decoration-success ="estados2 == 'al_dia'"
+                       decoration-primary ="estados2 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo2" width="30"
+                       decoration-warning="estados2 == 'retraso_menor'"
+                       decoration-danger="estados2 == 'retraso_significativo'"
+                       decoration-success="estados2 == 'al_dia'"
+                       decoration-primary="estados2 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo2_html" width="60" widget="html"
+                       decoration-warning="estados2 == 'retraso_menor'"
+                       decoration-danger="estados2 == 'retraso_significativo'"
+                       decoration-success="estados2 == 'al_dia'"
+                       decoration-primary="estados2 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p2" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados3" width="60"
+                       decoration-warning ="estados3 == 'retraso_menor'"
+                       decoration-danger ="estados3 == 'retraso_significativo'"
+                       decoration-success ="estados3 == 'al_dia'"
+                       decoration-primary ="estados3 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo3" width="30"
+                       decoration-warning="estados3 == 'retraso_menor'"
+                       decoration-danger="estados3 == 'retraso_significativo'"
+                       decoration-success="estados3 == 'al_dia'"
+                       decoration-primary="estados3 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo3_html" width="60" widget="html"
+                       decoration-warning="estados3 == 'retraso_menor'"
+                       decoration-danger="estados3 == 'retraso_significativo'"
+                       decoration-success="estados3 == 'al_dia'"
+                       decoration-primary="estados3 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p3" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados4" width="60"
+                       decoration-warning ="estados4 == 'retraso_menor'"
+                       decoration-danger ="estados4 == 'retraso_significativo'"
+                       decoration-success ="estados4 == 'al_dia'"
+                       decoration-primary ="estados4 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo4" width="30"
+                       decoration-warning="estados4 == 'retraso_menor'"
+                       decoration-danger="estados4 == 'retraso_significativo'"
+                       decoration-success="estados4 == 'al_dia'"
+                       decoration-primary="estados4 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo4_html" width="60" widget="html"
+                       decoration-warning="estados4 == 'retraso_menor'"
+                       decoration-danger="estados4 == 'retraso_significativo'"
+                       decoration-success="estados4 == 'al_dia'"
+                       decoration-primary="estados4 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p4" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados5" width="60"
+                       decoration-warning ="estados5 == 'retraso_menor'"
+                       decoration-danger ="estados5 == 'retraso_significativo'"
+                       decoration-success ="estados5 == 'al_dia'"
+                       decoration-primary ="estados5 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo5" width="30"
+                       decoration-warning="estados5 == 'retraso_menor'"
+                       decoration-danger="estados5 == 'retraso_significativo'"
+                       decoration-success="estados5 == 'al_dia'"
+                       decoration-primary="estados5 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo5_html" width="30"
+                       decoration-warning="estados5 == 'retraso_menor'"
+                       decoration-danger="estados5 == 'retraso_significativo'"
+                       decoration-success="estados5 == 'al_dia'"
+                       decoration-primary="estados5 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p5" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados6" width="60"
+                       decoration-warning ="estados6 == 'retraso_menor'"
+                       decoration-danger ="estados6 == 'retraso_significativo'"
+                       decoration-success ="estados6 == 'al_dia'"
+                       decoration-primary ="estados6 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo6" width="30"
+                       decoration-warning="estados6 == 'retraso_menor'"
+                       decoration-danger="estados6 == 'retraso_significativo'"
+                       decoration-success="estados6 == 'al_dia'"
+                       decoration-primary="estados6 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo6_html" width="30"
+                       decoration-warning="estados6 == 'retraso_menor'"
+                       decoration-danger="estados6 == 'retraso_significativo'"
+                       decoration-success="estados6 == 'al_dia'"
+                       decoration-primary="estados6 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p6" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados7" width="60"
+                       decoration-warning ="estados7 == 'retraso_menor'"
+                       decoration-danger ="estados7 == 'retraso_significativo'"
+                       decoration-success ="estados7 == 'al_dia'"
+                       decoration-primary ="estados7 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo7" width="30"
+                       decoration-warning="estados7 == 'retraso_menor'"
+                       decoration-danger="estados7 == 'retraso_significativo'"
+                       decoration-success="estados7 == 'al_dia'"
+                       decoration-primary="estados7 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo7_html" width="30"
+                       decoration-warning="estados7 == 'retraso_menor'"
+                       decoration-danger="estados7 == 'retraso_significativo'"
+                       decoration-success="estados7 == 'al_dia'"
+                       decoration-primary="estados7 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p7" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados8" width="60"
+                       decoration-warning ="estados8 == 'retraso_menor'"
+                       decoration-danger ="estados8 == 'retraso_significativo'"
+                       decoration-success ="estados8 == 'al_dia'"
+                       decoration-primary ="estados8 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo8" width="30"
+                       decoration-warning="estados8 == 'retraso_menor'"
+                       decoration-danger="estados8 == 'retraso_significativo'"
+                       decoration-success="estados8 == 'al_dia'"
+                       decoration-primary="estados8 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo8_html" width="30"
+                       decoration-warning="estados8 == 'retraso_menor'"
+                       decoration-danger="estados8 == 'retraso_significativo'"
+                       decoration-success="estados8 == 'al_dia'"
+                       decoration-primary="estados8 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p8" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados9" width="60"
+                       decoration-warning ="estados9 == 'retraso_menor'"
+                       decoration-danger ="estados9 == 'retraso_significativo'"
+                       decoration-success ="estados9 == 'al_dia'"
+                       decoration-primary ="estados9 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo9" width="30"
+                       decoration-warning="estados9 == 'retraso_menor'"
+                       decoration-danger="estados9 == 'retraso_significativo'"
+                       decoration-success="estados9 == 'al_dia'"
+                       decoration-primary="estados9 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo9_html" width="30"
+                       decoration-warning="estados9 == 'retraso_menor'"
+                       decoration-danger="estados9 == 'retraso_significativo'"
+                       decoration-success="estados9 == 'al_dia'"
+                       decoration-primary="estados9 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p9" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados10" width="60"
+                       decoration-warning ="estados10 == 'retraso_menor'"
+                       decoration-danger ="estados10 == 'retraso_significativo'"
+                       decoration-success ="estados10 == 'al_dia'"
+                       decoration-primary ="estados10 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo10" width="30"
+                       decoration-warning="estados10 == 'retraso_menor'"
+                       decoration-danger="estados10 == 'retraso_significativo'"
+                       decoration-success="estados10 == 'al_dia'"
+                       decoration-primary="estados10 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo10_html" width="30"
+                       decoration-warning="estados10 == 'retraso_menor'"
+                       decoration-danger="estados10 == 'retraso_significativo'"
+                       decoration-success="estados10 == 'al_dia'"
+                       decoration-primary="estados10 == 'fecha_cercana_cierre'"/>
+                <button name="open_popup_p10" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados11" width="60"
+                       decoration-warning ="estados11 == 'retraso_menor'"
+                       decoration-danger ="estados11 == 'retraso_significativo'"
+                       decoration-success ="estados11 == 'al_dia'"
+                       decoration-primary ="estados11 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo11" width="30"
+                       decoration-warning="estados11 == 'retraso_menor'"
+                       decoration-danger="estados11 == 'retraso_significativo'"
+                       decoration-success="estados11 == 'al_dia'"
+                       decoration-primary="estados11 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo11_html" width="30"
+                       decoration-warning="estados11 == 'retraso_menor'"
+                       decoration-danger="estados11 == 'retraso_significativo'"
+                       decoration-success="estados11 == 'al_dia'"
+                       decoration-primary="estados11 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p11" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados12" width="60"
+                       decoration-warning ="estados12 == 'retraso_menor'"
+                       decoration-danger ="estados12 == 'retraso_significativo'"
+                       decoration-success ="estados12 == 'al_dia'"
+                       decoration-primary ="estados12 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo12" width="30"
+                       decoration-warning="estados12 == 'retraso_menor'"
+                       decoration-danger="estados12 == 'retraso_significativo'"
+                       decoration-success="estados12 == 'al_dia'"
+                       decoration-primary="estados12 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo12_html" width="30"
+                       decoration-warning="estados12 == 'retraso_menor'"
+                       decoration-danger="estados12 == 'retraso_significativo'"
+                       decoration-success="estados12 == 'al_dia'"
+                       decoration-primary="estados12 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p12" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados13" width="60"
+                       decoration-warning ="estados13 == 'retraso_menor'"
+                       decoration-danger ="estados13 == 'retraso_significativo'"
+                       decoration-success ="estados13 == 'al_dia'"
+                       decoration-primary ="estados13 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo13" width="30"
+                       decoration-warning="estados13 == 'retraso_menor'"
+                       decoration-danger="estados13 == 'retraso_significativo'"
+                       decoration-success="estados13 == 'al_dia'"
+                       decoration-primary="estados13 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo13_html" width="30"
+                       decoration-warning="estados13 == 'retraso_menor'"
+                       decoration-danger="estados13 == 'retraso_significativo'"
+                       decoration-success="estados13 == 'al_dia'"
+                       decoration-primary="estados13 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p13" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados14" width="60"
+                       decoration-warning ="estados14 == 'retraso_menor'"
+                       decoration-danger ="estados14 == 'retraso_significativo'"
+                       decoration-success ="estados14 == 'al_dia'"
+                       decoration-primary ="estados14 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo14" width="30"
+                       decoration-warning="estados14 == 'retraso_menor'"
+                       decoration-danger="estados14 == 'retraso_significativo'"
+                       decoration-success="estados14 == 'al_dia'"
+                       decoration-primary="estados14 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo14_html" width="30"
+                       decoration-warning="estados14 == 'retraso_menor'"
+                       decoration-danger="estados14 == 'retraso_significativo'"
+                       decoration-success="estados14 == 'al_dia'"
+                       decoration-primary="estados14 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p14" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados15" width="60"
+                       decoration-warning ="estados15 == 'retraso_menor'"
+                       decoration-danger ="estados15 == 'retraso_significativo'"
+                       decoration-success ="estados15 == 'al_dia'"
+                       decoration-primary ="estados15 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo15" width="30"
+                       decoration-warning="estados15 == 'retraso_menor'"
+                       decoration-danger="estados15 == 'retraso_significativo'"
+                       decoration-success="estados15 == 'al_dia'"
+                       decoration-primary="estados15 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo15_html" width="30"
+                       decoration-warning="estados15 == 'retraso_menor'"
+                       decoration-danger="estados15 == 'retraso_significativo'"
+                       decoration-success="estados15 == 'al_dia'"
+                       decoration-primary="estados15 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p15" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados16" width="60"
+                       decoration-warning ="estados16 == 'retraso_menor'"
+                       decoration-danger ="estados16 == 'retraso_significativo'"
+                       decoration-success ="estados16 == 'al_dia'"
+                       decoration-primary ="estados16 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo16" width="30"
+                       decoration-warning="estados16 == 'retraso_menor'"
+                       decoration-danger="estados16 == 'retraso_significativo'"
+                       decoration-success="estados16 == 'al_dia'"
+                       decoration-primary="estados16 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo16_html" width="30"
+                       decoration-warning="estados16 == 'retraso_menor'"
+                       decoration-danger="estados16 == 'retraso_significativo'"
+                       decoration-success="estados16 == 'al_dia'"
+                       decoration-primary="estados16 == 'fecha_cercana_cierre'" optional="hide"/>
+                 <button name="open_popup_p16" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados17" width="60"
+                       decoration-warning ="estados17 == 'retraso_menor'"
+                       decoration-danger ="estados17 == 'retraso_significativo'"
+                       decoration-success ="estados17 == 'al_dia'"
+                       decoration-primary ="estados17 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo17" width="30"
+                       decoration-warning="estados17 == 'retraso_menor'"
+                       decoration-danger="estados17 == 'retraso_significativo'"
+                       decoration-success="estados17 == 'al_dia'"
+                       decoration-primary="estados17 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo17_html" width="30"
+                       decoration-warning="estados17 == 'retraso_menor'"
+                       decoration-danger="estados17 == 'retraso_significativo'"
+                       decoration-success="estados17 == 'al_dia'"
+                       decoration-primary="estados17 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p17" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados18" width="60"
+                       decoration-warning ="estados18 == 'retraso_menor'"
+                       decoration-danger ="estados18 == 'retraso_significativo'"
+                       decoration-success ="estados18 == 'al_dia'"
+                       decoration-primary ="estados18 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo18" width="30"
+                       decoration-warning="estados18 == 'retraso_menor'"
+                       decoration-danger="estados18 == 'retraso_significativo'"
+                       decoration-success="estados18 == 'al_dia'"
+                       decoration-primary="estados18 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo18_html" width="30"
+                       decoration-warning="estados18 == 'retraso_menor'"
+                       decoration-danger="estados18 == 'retraso_significativo'"
+                       decoration-success="estados18 == 'al_dia'"
+                       decoration-primary="estados18 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p18" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados19" width="60"
+                       decoration-warning ="estados19 == 'retraso_menor'"
+                       decoration-danger ="estados19 == 'retraso_significativo'"
+                       decoration-success ="estados19 == 'al_dia'"
+                       decoration-primary ="estados19 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo19" width="30"
+                       decoration-warning="estados19 == 'retraso_menor'"
+                       decoration-danger="estados19 == 'retraso_significativo'"
+                       decoration-success="estados19 == 'al_dia'"
+                       decoration-primary="estados19 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo19_html" width="30"
+                       decoration-warning="estados19 == 'retraso_menor'"
+                       decoration-danger="estados19 == 'retraso_significativo'"
+                       decoration-success="estados19 == 'al_dia'"
+                       decoration-primary="estados19 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p19" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados20" width="60"
+                       decoration-warning ="estados20 == 'retraso_menor'"
+                       decoration-danger ="estados20 == 'retraso_significativo'"
+                       decoration-success ="estados20 == 'al_dia'"
+                       decoration-primary ="estados20 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo20" width="30"
+                       decoration-warning="estados20 == 'retraso_menor'"
+                       decoration-danger="estados20 == 'retraso_significativo'"
+                       decoration-success="estados20 == 'al_dia'"
+                       decoration-primary="estados20 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo20_html" width="30"
+                       decoration-warning="estados20 == 'retraso_menor'"
+                       decoration-danger="estados20 == 'retraso_significativo'"
+                       decoration-success="estados20 == 'al_dia'"
+                       decoration-primary="estados20 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p20" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados21" width="60"
+                       decoration-warning ="estados21 == 'retraso_menor'"
+                       decoration-danger ="estados21 == 'retraso_significativo'"
+                       decoration-success ="estados21 == 'al_dia'"
+                       decoration-primary ="estados21 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo21" width="30"
+                       decoration-warning="estados21 == 'retraso_menor'"
+                       decoration-danger="estados21 == 'retraso_significativo'"
+                       decoration-success="estados21 == 'al_dia'"
+                       decoration-primary="estados21 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo21_html" width="30"
+                       decoration-warning="estados21 == 'retraso_menor'"
+                       decoration-danger="estados21 == 'retraso_significativo'"
+                       decoration-success="estados21 == 'al_dia'"
+                       decoration-primary="estados21 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p21" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados22" width="60"
+                       decoration-warning ="estados22 == 'retraso_menor'"
+                       decoration-danger ="estados22 == 'retraso_significativo'"
+                       decoration-success ="estados22 == 'al_dia'"
+                       decoration-primary ="estados22 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo22" width="30"
+                       decoration-warning="estados22 == 'retraso_menor'"
+                       decoration-danger="estados22 == 'retraso_significativo'"
+                       decoration-success="estados22 == 'al_dia'"
+                       decoration-primary="estados22 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo22_html" width="30"
+                       decoration-warning="estados22 == 'retraso_menor'"
+                       decoration-danger="estados22 == 'retraso_significativo'"
+                       decoration-success="estados22 == 'al_dia'"
+                       decoration-primary="estados22 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p22" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados23" width="60"
+                       decoration-warning ="estados23 == 'retraso_menor'"
+                       decoration-danger ="estados23 == 'retraso_significativo'"
+                       decoration-success ="estados23 == 'al_dia'"
+                       decoration-primary ="estados23 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo23" width="30"
+                       decoration-warning="estados23 == 'retraso_menor'"
+                       decoration-danger="estados23 == 'retraso_significativo'"
+                       decoration-success="estados23 == 'al_dia'"
+                       decoration-primary="estados23 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo23_html" width="30"
+                       decoration-warning="estados23 == 'retraso_menor'"
+                       decoration-danger="estados23 == 'retraso_significativo'"
+                       decoration-success="estados23 == 'al_dia'"
+                       decoration-primary="estados23 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p23" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados24" width="60"
+                       decoration-warning ="estados24 == 'retraso_menor'"
+                       decoration-danger ="estados24 == 'retraso_significativo'"
+                       decoration-success ="estados24 == 'al_dia'"
+                       decoration-primary ="estados24 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo24" width="30"
+                       decoration-warning="estados24 == 'retraso_menor'"
+                       decoration-danger="estados24 == 'retraso_significativo'"
+                       decoration-success="estados24 == 'al_dia'"
+                       decoration-primary="estados24 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo24_html" width="30"
+                       decoration-warning="estados24 == 'retraso_menor'"
+                       decoration-danger="estados24 == 'retraso_significativo'"
+                       decoration-success="estados24 == 'al_dia'"
+                       decoration-primary="estados24 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p24" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados25" width="60"
+                       decoration-warning ="estados25 == 'retraso_menor'"
+                       decoration-danger ="estados25 == 'retraso_significativo'"
+                       decoration-success ="estados25 == 'al_dia'"
+                       decoration-primary ="estados25 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo25" width="30"
+                       decoration-warning="estados25 == 'retraso_menor'"
+                       decoration-danger="estados25 == 'retraso_significativo'"
+                       decoration-success="estados25 == 'al_dia'"
+                       decoration-primary="estados25 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo25_html" width="30"
+                       decoration-warning="estados25 == 'retraso_menor'"
+                       decoration-danger="estados25 == 'retraso_significativo'"
+                       decoration-success="estados25 == 'al_dia'"
+                       decoration-primary="estados25 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p25" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados26" width="60"
+                       decoration-warning ="estados26 == 'retraso_menor'"
+                       decoration-danger ="estados26 == 'retraso_significativo'"
+                       decoration-success ="estados26 == 'al_dia'"
+                       decoration-primary ="estados26 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo26" width="30"
+                       decoration-warning="estados26 == 'retraso_menor'"
+                       decoration-danger="estados26 == 'retraso_significativo'"
+                       decoration-success="estados26 == 'al_dia'"
+                       decoration-primary="estados26 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo26_html" width="30"
+                       decoration-warning="estados26 == 'retraso_menor'"
+                       decoration-danger="estados26 == 'retraso_significativo'"
+                       decoration-success="estados26 == 'al_dia'"
+                       decoration-primary="estados26 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p26" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados27" width="60"
+                       decoration-warning ="estados27 == 'retraso_menor'"
+                       decoration-danger ="estados27 == 'retraso_significativo'"
+                       decoration-success ="estados27 == 'al_dia'"
+                       decoration-primary ="estados27 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo27" width="30"
+                       decoration-warning="estados27 == 'retraso_menor'"
+                       decoration-danger="estados27 == 'retraso_significativo'"
+                       decoration-success="estados27 == 'al_dia'"
+                       decoration-primary="estados27 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo27_html" width="30"
+                       decoration-warning="estados27 == 'retraso_menor'"
+                       decoration-danger="estados27 == 'retraso_significativo'"
+                       decoration-success="estados27 == 'al_dia'"
+                       decoration-primary="estados27 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p27" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados28" width="60"
+                       decoration-warning ="estados28 == 'retraso_menor'"
+                       decoration-danger ="estados28 == 'retraso_significativo'"
+                       decoration-success ="estados28 == 'al_dia'"
+                       decoration-primary ="estados28 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo28" width="30"
+                       decoration-warning="estados28 == 'retraso_menor'"
+                       decoration-danger="estados28 == 'retraso_significativo'"
+                       decoration-success="estados28 == 'al_dia'"
+                       decoration-primary="estados28 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo28_html" width="30"
+                       decoration-warning="estados28 == 'retraso_menor'"
+                       decoration-danger="estados28 == 'retraso_significativo'"
+                       decoration-success="estados28 == 'al_dia'"
+                       decoration-primary="estados28 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p28" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados29" width="60"
+                       decoration-warning ="estados29 == 'retraso_menor'"
+                       decoration-danger ="estados29 == 'retraso_significativo'"
+                       decoration-success ="estados29 == 'al_dia'"
+                       decoration-primary ="estados29 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo29" width="30"
+                       decoration-warning="estados29 == 'retraso_menor'"
+                       decoration-danger="estados29 == 'retraso_significativo'"
+                       decoration-success="estados29 == 'al_dia'"
+                       decoration-primary="estados29 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo29_html" width="30"
+                       decoration-warning="estados29 == 'retraso_menor'"
+                       decoration-danger="estados29 == 'retraso_significativo'"
+                       decoration-success="estados29 == 'al_dia'"
+                       decoration-primary="estados29 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p29" type="object" class="fa fa-pencil" invisible="1"/>
+                <field name="estados30" width="60"
+                       decoration-warning ="estados30 == 'retraso_menor'"
+                       decoration-danger ="estados30 == 'retraso_significativo'"
+                       decoration-success ="estados30 == 'al_dia'"
+                       decoration-primary ="estados30 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="Periodo30" width="30"
+                       decoration-warning="estados30 == 'retraso_menor'"
+                       decoration-danger="estados30 == 'retraso_significativo'"
+                       decoration-success="estados30 == 'al_dia'"
+                       decoration-primary="estados30 == 'fecha_cercana_cierre'" invisible="1"/>
+                <field name="periodo30_html" width="30"
+                       decoration-warning="estados30 == 'retraso_menor'"
+                       decoration-danger="estados30 == 'retraso_significativo'"
+                       decoration-success="estados30 == 'al_dia'"
+                       decoration-primary="estados30 == 'fecha_cercana_cierre'" optional="hide"/>
+                <button name="open_popup_p30" type="object" class="fa fa-pencil" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_matriz_entregables_kanban" model="ir.ui.view">
+        <field name="name">matriz.entregables.kanban</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <kanban create="1">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click oe_kanban_small oe_sortable" style="float: left; width: 250px; margin-right: px;">
+                            <div class="oe_kanban_details">
+                                <div class="oe_kanban_image">
+                                    <img src="https://i.postimg.cc/jdK6Ggwm/OIG4-1.jpg" alt="Descripción de la imagen" style="max-width: 50px; max-height: 50px;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+
+    <record id="view_matriz_entregables_graph" model="ir.ui.view">
+        <field name="name">matriz.entregables.graph</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <graph string="Matriz de Entregables" type="bar">
+                <field name="name"/>
+                <field name="otros_accion"/>
+                <field name="estado" />
+                <field name="verificador"/>
+                <field name="unidad_medida"/>
+                <field name="cantidad"/>
+                <field name="porcentaje"/>
+                <field name="duracion_periodos"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="Periodo1"/>
+                <field name="Periodo2"/>
+                <field name="Periodo3"/>
+                <field name="Periodo4"/>
+                <field name="Periodo5"/>
+                <field name="Periodo6"/>
+                <field name="Periodo7"/>
+                <field name="Periodo8"/>
+                <field name="Periodo9"/>
+                <field name="Periodo10"/>
+                <field name="Periodo11"/>
+                <field name="Periodo12"/>
+                <field name="Periodo13"/>
+                <field name="Periodo14"/>
+                <field name="Periodo15"/>
+                <field name="Periodo16"/>
+                <field name="Periodo17"/>
+                <field name="Periodo18"/>
+                <field name="Periodo19"/>
+                <field name="Periodo20"/>
+                <field name="Periodo21"/>
+                <field name="Periodo22"/>
+                <field name="Periodo23"/>
+                <field name="Periodo24"/>
+                <field name="Periodo25"/>
+                <field name="Periodo26"/>
+                <field name="Periodo27"/>
+                <field name="Periodo28"/>
+                <field name="Periodo29"/>
+                <field name="Periodo30"/>
+                <field name="total"/>
+                <field name="total_final"/>
+            </graph>
+        </field>
+    </record>
+
+
+
+    <record id="view_matriz_entregables_pivot" model="ir.ui.view">
+        <field name="name">matriz.entregables.pivot</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <pivot string="Matriz de Entregables">
+                <field name="name" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_matriz_entregables_calendar" model="ir.ui.view">
+        <field name="name">matriz.entregables.calendar</field>
+        <field name="model">entregables_2</field>
+        <field name="arch" type="xml">
+            <calendar string="Matriz de Entregables" date_start="fecha_inicio" date_stop="fecha_fin">
+                <field name="name"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="otros_accion" invisible="0"/>
+                <field name="verificador" invisible="0"/>
+                <field name="unidad_medida" invisible="0"/>
+                <field name="cantidad" invisible="0"/>
+                <field name="porcentaje" invisible="0"/>
+                <field name="duracion_periodos" invisible="0"/>
+                <field name="estado" invisible="0"/>
+                <field name="proyec_id" invisible="0"/>
+                <field name="total_porcentaje" invisible="0"/>
+                <field name="Periodo1"/>
+                <field name="Periodo2"/>
+                <field name="Periodo3"/>
+                <field name="Periodo4"/>
+                <field name="Periodo5"/>
+                <field name="Periodo6"/>
+                <field name="Periodo7"/>
+                <field name="Periodo8"/>
+                <field name="Periodo9"/>
+                <field name="Periodo10"/>
+                <field name="Periodo11"/>
+                <field name="Periodo12"/>
+                <field name="Periodo13"/>
+                <field name="Periodo14"/>
+                <field name="Periodo15"/>
+                <field name="Periodo16"/>
+                <field name="Periodo17"/>
+                <field name="Periodo18"/>
+                <field name="Periodo19"/>
+                <field name="Periodo20"/>
+                <field name="Periodo21"/>
+                <field name="Periodo22"/>
+                <field name="Periodo23"/>
+                <field name="Periodo24"/>
+                <field name="Periodo25"/>
+                <field name="Periodo26"/>
+                <field name="Periodo27"/>
+                <field name="Periodo28"/>
+                <field name="Periodo29"/>
+                <field name="Periodo30"/>
+            </calendar>
+        </field>
+    </record>
+
+        <record id="entregables_2_view_search" model="ir.ui.view">
+           <field name="name">entregables_2.view.search.module.name</field>
+           <field name="model">entregables_2</field>
+           <field name="arch" type="xml">
+               <search>
+                <field name="name"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="otros_accion" invisible="0"/>
+                <field name="verificador" invisible="0"/>
+                <field name="unidad_medida" invisible="0"/>
+                <field name="cantidad" invisible="0"/>
+                <field name="porcentaje" invisible="0"/>
+                <field name="duracion_periodos" invisible="0"/>
+                <field name="estado" invisible="0"/>
+                <field name="proyec_id" invisible="0"/>
+                <field name="total_porcentaje" invisible="0"/>
+                <field name="Periodo1"/>
+                <field name="Periodo2"/>
+                <field name="Periodo3"/>
+                <field name="Periodo4"/>
+                <field name="Periodo5"/>
+                <field name="Periodo6"/>
+                <field name="Periodo7"/>
+                <field name="Periodo8"/>
+                <field name="Periodo9"/>
+                <field name="Periodo10"/>
+                <field name="Periodo11"/>
+                <field name="Periodo12"/>
+                <field name="Periodo13"/>
+                <field name="Periodo14"/>
+                <field name="Periodo15"/>
+                <field name="Periodo16"/>
+                <field name="Periodo17"/>
+                <field name="Periodo18"/>
+                <field name="Periodo19"/>
+                <field name="Periodo20"/>
+                <field name="Periodo21"/>
+                <field name="Periodo22"/>
+                <field name="Periodo23"/>
+                <field name="Periodo24"/>
+                <field name="Periodo25"/>
+                <field name="Periodo26"/>
+                <field name="Periodo27"/>
+                <field name="Periodo28"/>
+                <field name="Periodo29"/>
+                <field name="Periodo30"/>
+               </search>
+           </field>
+        </record>
+
+
+        <record id="view_praneacion_form" model="ir.ui.view">
+            <field name="name">praneacion.form</field>
+            <field name="model">praneacion</field>
+            <field name="arch" type="xml">
+                <form string="Planificación Presupuestal">
+                    <field name="proyec2_id" invisible="1"/>
+                    <field name="ejecucion_en_id" invisible="1"/>
+                    <field name="suma_total" width="60" invisible="1"/>
+                    <div style="width: auto; border: 0.1px solid black; padding: 5px; background: #6ed84a;" invisible="1">
+                        <strong>Editar o no editar </strong>
+                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                    </div>
+                    <div class="oe_title">
+                        <style>
+                            .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1100px; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                        }
+                            .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                        </style>
+                        <h1>
+                            <field name="name" placeholder="Nombre" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                        </h1>
+                        <notebook>
+                            <page string="Planificación Presupuestal">
+                                <field name="praneacion_ids" widget="one2many" style="width: 2200px">
+                                    <tree editable="bottom" col="56" create="0">
+                                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                                        <field name="accion2" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="accion_descripcion" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="porcentaje" width="90" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="total_final" width="60" invisible="1"/>
+                                        <field name="total_multiplicacion" width="60" invisible="1"/>
+                                        <field name="suma_total" width="60" invisible="1"/>
+                                        <field name="valor_por_accion" width="90" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="valor_ejecutado" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo1" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo2" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo3" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo4" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo5" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo6" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo7" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo8" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo9" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo10" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo11" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo12" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo13" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo14" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo15" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo16" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo17" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo18" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo19" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo20" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo21" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo22" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo23" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo24" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo25" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo26" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo27" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo28" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo29" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo30" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Total">
+                                <field name="praneacion_total_ids" widget="one2many" style="width: 2200px" limit="1">
+                                    <tree editable="bottom" col="51" create="0">
+                                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                                        <field name="porcentaje_total" width="70" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo1_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo2_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo3_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo4_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo5_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo6_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo7_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo8_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo9_total" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo10_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo11_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo12_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo13_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo14_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo15_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo16_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo17_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo18_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo19_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo20_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo21_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo22_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo23_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo24_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo25_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo26_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo27_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo28_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo29_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                        <field name="Periodo30_total" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+                        </notebook>
+                        <div>
+                            <strong>Valor total del contrato: </strong><field name="valor_entregable"/>
+                            <button name="datos" type="object"  class="fa fa-search" title="Cargar o ver datos"/>
+                        </div>
+
+                    </div>
+                    <table style="width: 100%">
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_praneacion_tabla_tree">
+            <field name="name">praneacion_tabla.tree</field>
+            <field name="model">praneacion_tabla</field>
+            <field name="arch" type="xml">
+                <tree string="Planificación Presupuestal" editable="bottom">
+                    <field name="accion2" width="60"/>
+                    <field name="accion_descripcion" width="60" options="{'no_create': True}"/>
+                    <field name="porcentaje" width="90"/>
+                    <field name="total_final" width="60" invisible="1"/>
+                    <field name="total_multiplicacion" width="60" invisible="1"/>
+                    <field name="suma_total" width="60" invisible="1"/>
+                    <field name="valor_por_accion" width="90"/>
+                    <field name="valor_ejecutado" width="60"/>
+                    <field name="Periodo1" width="60" optional="show"/>
+                    <field name="Periodo2" width="30" optional="show"/>
+                    <field name="Periodo3" width="30" optional="show"/>
+                    <field name="Periodo4" width="30" optional="show"/>
+                    <field name="Periodo5" width="30" optional="show"/>
+                    <field name="Periodo6" width="30" optional="show"/>
+                    <field name="Periodo7" width="30" optional="show"/>
+                    <field name="Periodo8" width="30" optional="show"/>
+                    <field name="Periodo9" width="30" optional="show"/>
+                    <field name="Periodo10" width="30" optional="hide"/>
+                    <field name="Periodo11" width="30" optional="hide"/>
+                    <field name="Periodo12" width="30" optional="hide"/>
+                    <field name="Periodo13" width="30" optional="hide"/>
+                    <field name="Periodo14" width="30" optional="hide"/>
+                    <field name="Periodo15" width="30" optional="hide"/>
+                    <field name="Periodo16" width="30" optional="hide"/>
+                    <field name="Periodo17" width="30" optional="hide"/>
+                    <field name="Periodo18" width="30" optional="hide"/>
+                    <field name="Periodo19" width="30" optional="hide"/>
+                    <field name="Periodo20" width="30" optional="hide"/>
+                    <field name="Periodo21" width="30" optional="hide"/>
+                    <field name="Periodo22" width="30" optional="hide"/>
+                    <field name="Periodo23" width="30" optional="hide"/>
+                    <field name="Periodo24" width="30" optional="hide"/>
+                    <field name="Periodo25" width="30" optional="hide"/>
+                    <field name="Periodo26" width="30" optional="hide"/>
+                    <field name="Periodo27" width="30" optional="hide"/>
+                    <field name="Periodo28" width="30" optional="hide"/>
+                    <field name="Periodo29" width="30" optional="hide"/>
+                    <field name="Periodo30" width="30" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+        <record id="praneacion_tabla_view_search" model="ir.ui.view">
+               <field name="name">praneacion_tabla.view.search.module.name</field>
+               <field name="model">praneacion_tabla</field>
+               <field name="arch" type="xml">
+                   <search>
+                    <field name="accion2"/>
+                    <field name="accion_descripcion"/>
+                    <field name="porcentaje"/>
+                    <field name="total_final"  invisible="1"/>
+                    <field name="total_multiplicacion" invisible="1"/>
+                    <field name="suma_total" invisible="1"/>
+                    <field name="valor_por_accion"/>
+                    <field name="valor_ejecutado"/>
+                    <field name="Periodo1" />
+                    <field name="Periodo2"/>
+                    <field name="Periodo3"/>
+                    <field name="Periodo4"/>
+                    <field name="Periodo5"/>
+                    <field name="Periodo6"/>
+                    <field name="Periodo7"/>
+                    <field name="Periodo8"/>
+                    <field name="Periodo9"/>
+                    <field name="Periodo10"/>
+                    <field name="Periodo11"/>
+                    <field name="Periodo12"/>
+                    <field name="Periodo13"/>
+                    <field name="Periodo14"/>
+                    <field name="Periodo15"/>
+                    <field name="Periodo16"/>
+                    <field name="Periodo17"/>
+                    <field name="Periodo18"/>
+                    <field name="Periodo19"/>
+                    <field name="Periodo20"/>
+                    <field name="Periodo21"/>
+                    <field name="Periodo22"/>
+                    <field name="Periodo23"/>
+                    <field name="Periodo24"/>
+                    <field name="Periodo25"/>
+                    <field name="Periodo26"/>
+                    <field name="Periodo27"/>
+                    <field name="Periodo28"/>
+                    <field name="Periodo29"/>
+                    <field name="Periodo30"/>
+                   </search>
+               </field>
+            </record>
+
+            <!-- Security Access Rights -->
+        <record id="model_traceability_record2_access" model="ir.model.access">
+            <field name="name">traceability.record2.access</field>
+            <field name="model_id" ref="model_traceability_record"/>
+            <field name="group_id" ref="base.group_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_traceability_record2_form" model="ir.ui.view">
+            <field name="name">traceability.record2.form</field>
+            <field name="model">traceability.record2</field>
+            <field name="arch" type="xml">
+                <form string="Traceability Record" create="false">
+                    <sheet>
+                        <group>
+                            <field name="model_name" readonly="1"/>
+                            <field name="field_name" readonly="1"/>
+                            <field name="new_value" readonly="1"/>
+                            <field name="change_date" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" widget="many2many_tags" options="{'no_create': True}" readonly="1"/>
+                            <field name="activity_ids" readonly="1"/>
+                            <field name="message_ids" readonly="1"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="view_traceability_record2_tree" model="ir.ui.view">
+            <field name="name">traceability.record2.tree</field>
+            <field name="model">traceability.record2</field>
+            <field name="arch" type="xml">
+                <tree string="Traceability Records" create="false">
+                    <field name="model_name"/>
+                    <field name="field_name"/>
+                    <field name="new_value"/>
+                    <field name="change_date"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_traceability_record2" model="ir.actions.act_window">
+            <field name="name">Traceability Records</field>
+            <field name="res_model">traceability.record2</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a new Traceability Record.
+                </p>
+            </field>
+        </record>
+</odoo>
+

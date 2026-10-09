@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <t t-name="contrataciones.KanbanView.Buttons" t-inherit="web.KanbanView.Buttons">
+
+        <xpath expr="//div[contains(@class, 'o_cp_buttons')]" position="inside">
+            
+            <style>
+                .btn-naranja-custom {
+                    color: #e67e22;
+                    border: 1px solid #e67e22;
+                    background-color: transparent;
+                    transition: all 0.2s ease-in-out;
+                }
+                .btn-naranja-custom:hover {
+                    color: #ffffff !important;
+                    background-color: #e67e22 !important;
+                }
+                .o_cp_buttons:has(.contrataciones-kanban-action) {
+                    display: flex !important;
+                    flex-wrap: wrap !important;
+                    gap: 6px !important;
+                    align-items: center !important;
+                }
+                .contrataciones-kanban-action {
+                    margin-left: 0 !important;
+                    white-space: nowrap;
+                }
+                .contrataciones-kanban-separator {
+                    flex: 0 0 auto;
+                }
+                .contrataciones-kanban-links-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, minmax(145px, max-content));
+                    gap: 6px;
+                    align-items: stretch;
+                }
+                .contrataciones-kanban-links-grid .contrataciones-kanban-action {
+                    width: 100%;
+                    margin-left: 0 !important;
+                }
+                @media (max-width: 768px) {
+                    .contrataciones-kanban-action {
+                        flex: 1 1 150px;
+                        min-width: 0;
+                        padding-left: 8px;
+                        padding-right: 8px;
+                        font-size: 12px;
+                    }
+                    .contrataciones-kanban-separator {
+                        display: none !important;
+                    }
+                    .contrataciones-kanban-links-grid {
+                        width: 100%;
+                        grid-template-columns: repeat(2, minmax(140px, 1fr));
+                    }
+                }
+            </style>
+
+            <button type="button" class="btn btn-naranja-custom group_visible contrataciones-kanban-action" style="margin-left: 8px;" t-on-click="onNotificacionesClick" 
+                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador">
+                <i class="fa fa-bell" style="margin-right: 5px;"></i> ACTUALIZAR DOCUMENTOS
+            </button>
+        </xpath>
+
+        <xpath expr="//div[contains(@class, 'o_cp_buttons')]" position="after">
+
+            <span class="mx-3 text-muted contrataciones-kanban-separator" style="border-left: 2px solid #ddd; height: 32px; display: inline-block; vertical-align: middle;"></span>
+
+            <div class="contrataciones-kanban-links-grid">
+                <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="border: 1px solid #ced4da; color: #495057;" t-on-click="onOrdenBienesClick"
+                        groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera">
+                    <i class="fa fa-external-link" style="margin-right: 5px;"></i> ORDEN DE BIENES
+                </button>
+
+                <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="border: 1px solid #ced4da; color: #495057;" t-on-click="onOrdenServiciosClick"
+                        groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera">
+                    <i class="fa fa-external-link" style="margin-right: 5px;"></i> ORDEN DE SERVICIOS
+                </button>
+
+                <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="border: 1px solid #ced4da; color: #495057;" t-on-click="onOrdenesEspecialesClick">
+                    <i class="fa fa-external-link" style="margin-right: 5px;"></i> ÓRDENES ESPECIALES
+                </button>
+
+                <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="border: 1px solid #ced4da; color: #495057;" t-on-click="onViaticosClick">
+                    <i class="fa fa-external-link" style="margin-right: 5px;"></i> LEGALIZACIÓN
+                </button>
+
+                <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="border: 1px solid #ced4da; color: #495057;" t-on-click="onAnticiposClick">
+                    <i class="fa fa-external-link" style="margin-right: 5px;"></i> ANTICIPOS
+                </button>
+            </div>
+
+            <!--
+                BOTÓN HISTÓRICO "CIERRE CONTRATO" OCULTO
+                Acceso conservado como referencia histórica.
+                Este acceso pertenecía al cierre general del proyecto y llamaba
+                a contratacion.Cierre(), que abre o crea el modelo antiguo
+                "cierre" identificado en la interfaz como "4. Cierre".
+
+                Se conserva comentado para trazabilidad y por si en el futuro
+                fuera necesario reactivar ese tablero histórico.
+
+                Se oculta porque NO corresponde al flujo contractual actual de
+                cada registro de Contrataciones FUV. Los cierres de contrato y
+                la finalización normal deben iniciarse desde el contrato
+                individual mediante "Solicitar cierre / finalizar", evitando
+                que el usuario confunda dos procesos de cierre distintos.
+
+            <button type="button" class="btn btn-light group_visible contrataciones-kanban-action" style="margin-left: 5px; border: 1px solid #ced4da; color: #495057;" t-on-click="onCierreContratoClick"
+                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_fuv,Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico,Matriz.group_consulta_coordinacion_financiera">
+                <i class="fa fa-check-circle" style="margin-right: 5px;"></i> CIERRE CONTRATO
+            </button>
+            -->
+            
+        </xpath>
+
+    </t>
+</odoo>

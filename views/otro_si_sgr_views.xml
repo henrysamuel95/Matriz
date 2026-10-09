@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_otro_si_sgr_tree" model="ir.ui.view">
+        <field name="name">otro.si.sgr.tree</field>
+        <field name="model">otro_si_sgr</field>
+        <field name="arch" type="xml">
+            <tree string="Otrosíes SGR" create="false" delete="false">
+                <field name="name"/>
+                <field name="tipo"/>
+                <field name="select_fondos"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="valor_adicion"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="carpeta_pendiente"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_otro_si_sgr_documento_form" model="ir.ui.view">
+        <field name="name">otro.si.sgr.documento.form</field>
+        <field name="model">otro_si_sgr.documento</field>
+        <field name="arch" type="xml">
+            <form string="Documento del otrosí SGR">
+                <sheet>
+                    <group>
+                        <field name="otrosi_id" invisible="1"/>
+                        <field name="name" required="1"/>
+                        <field name="archivo_nombre" readonly="1"/>
+                        <field name="drive_id" invisible="1"/>
+                    </group>
+                    <button name="action_subir_documento" type="object" string="Suba su archivo"
+                            icon="fa-upload" class="btn-primary"
+                            attrs="{'invisible': [('drive_id', '!=', False)]}"/>
+                    <button name="action_ver_documento" type="object" string="Ver documento"
+                            icon="fa-file-text" class="btn-success"
+                            attrs="{'invisible': [('drive_id', '=', False)]}"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_otro_si_sgr_form" model="ir.ui.view">
+        <field name="name">otro.si.sgr.form</field>
+        <field name="model">otro_si_sgr</field>
+        <field name="arch" type="xml">
+            <form string="Otrosí SGR" class="sgr-contract-form">
+                <sheet>
+                    <div class="sgr-section">
+                        <div class="sgr-section__title">Otrosí de contratación SGR</div>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="contratacion_id" required="1" readonly="1"
+                                   options="{'no_create': True}"/>
+                            <field name="proyecto_relacionado" readonly="1"/>
+                            <field name="tipo" required="1"/>
+                            <field name="select_fondos" required="1"/>
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_fin"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="valor_adicion"/>
+                            <field name="justificacion"/>
+                        </group>
+                    </div>
+                    <div class="sgr-section" attrs="{'invisible': [('name', '=', False)]}">
+                        <div class="sgr-section__title">Documentos del otrosí</div>
+                        <field name="carpeta_drive_id" invisible="1"/>
+                        <field name="carpeta_pendiente" invisible="1"/>
+                        <button name="action_reintentar_carpeta" type="object"
+                                string="Crear carpeta en Drive" icon="fa-refresh" class="btn-primary"
+                                attrs="{'invisible': [('carpeta_pendiente', '=', False)]}"/>
+                        <field name="documento_ids" nolabel="1" context="{'default_otrosi_id': id}">
+                            <tree delete="false">
+                                <field name="name"/>
+                                <field name="archivo_nombre" readonly="1"/>
+                                <field name="drive_id" invisible="1"/>
+                                <button name="action_subir_documento" type="object" string="Suba su archivo"
+                                        icon="fa-upload" class="oe_highlight custom_drive_button sgr-document-upload"
+                                        attrs="{'invisible': [('drive_id', '!=', False)]}"/>
+                                <button name="action_ver_documento" type="object" string="Ver documento"
+                                        icon="fa-file-text" class="documento-button sgr-document-view"
+                                        attrs="{'invisible': [('drive_id', '=', False)]}"/>
+                            </tree>
+                        </field>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

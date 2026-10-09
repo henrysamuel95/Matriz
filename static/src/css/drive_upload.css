@@ -1,0 +1,277 @@
+/* drive_upload.css */
+
+/* Estilos para el área de carga/botón (o_upload_styled_area) */
+.o_upload_styled_area {
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    border-radius: 8px;
+}
+
+.o_upload_styled_area:hover {
+    background-color: #EDE8F7 !important;
+    border-color: #6A5ACD !important;
+    cursor: pointer;
+}
+
+.o_upload_content_text i {
+    color: #6A5ACD !important;
+}
+
+/* ================================================================
+   ACTA ENTREGA DOCUMENTOS - SOLO DISEÑO
+   No modifica fields, attrs, permisos, métodos ni lógica de carga.
+   ================================================================ */
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto {
+    width: 100% !important;
+    min-height: 58px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    margin: 0 !important;
+    padding: 8px 10px 8px 16px !important;
+    border: 2px dashed #79b8ff !important;
+    border-radius: 9px !important;
+    background: #fbfdff !important;
+    box-shadow: none !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone.sgo-drag-active {
+    border-color: #043484 !important;
+    background: #eef6ff !important;
+    box-shadow: 0 0 0 3px rgba(4, 52, 132, .10) !important;
+}
+
+/*
+ * En PN/PJ varios widgets Binary están anidados dentro del span del título.
+ * El fondo compuesto limita el azul a la franja superior y mantiene blanca
+ * la zona del cargador, como las tarjetas de Contabilidad.
+ */
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+td:not(:has(> table)) > span:first-of-type:has(.sgo-upload-dropzone) {
+    flex-wrap: wrap !important;
+    align-content: flex-start !important;
+    background:
+        linear-gradient(#9bdbea, #9bdbea) left top / 4px 42px no-repeat,
+        linear-gradient(#eef6ff, #eef6ff) left top / 100% 42px no-repeat,
+        #ffffff !important;
+    border-left: 0 !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+td:not(:has(> table)) > span:first-of-type:has(.sgo-upload-dropzone) > .sgo-upload-dropzone {
+    order: 100 !important;
+    flex: 1 0 100% !important;
+    margin-top: 10px !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint {
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: transparent !important;
+    font-size: 0 !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+}
+
+/* Misma nube sólida azul con flecha blanca para TODOS los selectores. */
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint::before {
+    content: "" !important;
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 30px !important;
+    display: inline-block !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='38' height='30' viewBox='0 0 38 30'%3E%3Cpath fill='%23043484' d='M29.7 12.1C28.9 6.7 24.2 2.5 18.6 2.5c-4.6 0-8.7 2.8-10.4 7-4.5.4-8 4.2-8 8.8 0 4.9 4 8.9 8.9 8.9h20.1c4.8 0 8.6-3.8 8.6-8.6 0-4.5-3.5-8.2-8.1-8.5z'/%3E%3Cpath fill='%23fff' d='M19 8.2l-6.1 6.1 2.2 2.2 2.4-2.4v8.4h3v-8.4l2.4 2.4 2.2-2.2z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: 38px 30px !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint::after {
+    content: "Selecciona el documento" !important;
+    color: #043484 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+}
+
+/* Ocultar el icono viejo para que no se duplique con la nube nueva. */
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint .fa-cloud-upload {
+    display: none !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint strong,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-hint span:not(.fa) {
+    font-size: 0 !important;
+    color: transparent !important;
+    text-decoration: none !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone .o_select_file_button,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto .o_select_file_button,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone label,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto label {
+    min-width: 150px !important;
+    min-height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 8px 16px !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #043484 !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 8px rgba(4, 52, 132, .16) !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+}
+
+/* Texto e icono iguales en todos los botones nativos de archivo. */
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone:not(.sgo-upload-loaded) .o_select_file_button,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto:not(.sgo-upload-loaded) .o_select_file_button {
+    font-size: 0 !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone:not(.sgo-upload-loaded) .o_select_file_button::before,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto:not(.sgo-upload-loaded) .o_select_file_button::before {
+    content: "\f093" !important;
+    display: inline-block !important;
+    margin-right: 8px !important;
+    font-family: "FontAwesome" !important;
+    font-size: 14px !important;
+    font-weight: normal !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone:not(.sgo-upload-loaded) .o_select_file_button::after,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto:not(.sgo-upload-loaded) .o_select_file_button::after {
+    content: "SUBA SU ARCHIVO" !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto.sgo-upload-loaded {
+    min-height: 38px !important;
+    padding: 4px 8px !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto.sgo-upload-loaded .sgo-upload-hint,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto.sgo-upload-loaded .sgo-upload-hint::before,
+.sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto.sgo-upload-loaded .sgo-upload-hint::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Archivo ya seleccionado: nombre y acciones compactas, sin conservar la
+   nube, el borde punteado ni el botón grande de la zona pendiente. */
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded {
+    min-height: 34px !important;
+    padding: 2px 4px !important;
+    border: 0 !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .sgo-upload-auto-fields,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .sgo-upload-field-auto,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_field_binary_file,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_field_binary {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    margin: 0 !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_field_binary_file input:not([type="file"]),
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_field_binary input:not([type="file"]) {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    height: 32px !important;
+    padding: 4px 8px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #334155 !important;
+    font-size: 12px !important;
+    text-overflow: ellipsis !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_select_file_button,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded button,
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded label {
+    flex: 0 0 32px !important;
+    min-width: 32px !important;
+    width: 32px !important;
+    max-width: 32px !important;
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 4px !important;
+    margin: 0 !important;
+    border: 1px solid #dbe4ee !important;
+    border-radius: 5px !important;
+    background: #ffffff !important;
+    color: #043484 !important;
+    box-shadow: none !important;
+    font-size: 0 !important;
+    overflow: hidden !important;
+}
+
+.sgo-acta-form-body.sgo-acta-form-body .sgo-docs-reference
+.sgo-upload-dropzone-auto.sgo-upload-loaded .o_select_file_button::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Contabilidad y Tesorería conservan su botón azul original. */
+.sgo-acta-form-body.sgo-acta-form-body #cc-documentos-contabilidad
+button[name^="action_upload_"],
+.sgo-acta-form-body.sgo-acta-form-body #cc-documentos-tesoreria
+button[name^="action_upload_"] {
+    background: #043484 !important;
+    border-color: #043484 !important;
+    color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+    .sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone,
+    .sgo-acta-form-body .sgo-docs-reference .sgo-upload-dropzone-auto {
+        flex-wrap: wrap !important;
+        padding: 10px !important;
+    }
+
+}

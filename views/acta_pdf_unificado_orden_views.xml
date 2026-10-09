@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_acta_pdf_unificado_orden_wizard_form" model="ir.ui.view">
+        <field name="name">acta.pdf.unificado.orden.wizard.form</field>
+        <field name="model">acta.pdf.unificado.orden.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Ordenar PDF unificado" create="0" delete="0">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Arrastre los documentos para definir el orden. También puede desmarcar un documento si no desea incluirlo en esta generación.
+                    </div>
+                    <field name="acta_id" invisible="1"/>
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom" create="0" delete="0">
+                            <field name="sequence" widget="handle"/>
+                            <field name="incluir"/>
+                            <field name="etiqueta"/>
+                            <field name="drive_id"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_aplicar_y_generar" type="object" string="Generar con este orden" class="btn-primary"/>
+                    <button name="action_usar_orden_base" type="object" string="Usar orden base" class="btn-secondary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_acta_entrega_documentos_pdf_orden_inherit" model="ir.ui.view">
+        <field name="name">acta.entrega.documentos.pdf.orden.inherit</field>
+        <field name="model">acta_entrega_documentos</field>
+        <field name="inherit_id" ref="Matriz.view_acta_entrega_documentos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_generar_pdf_unificado' and @string='UNIFICAR PDF']" position="after">
+                <button name="action_ordenar_pdf_unificado"
+                        type="object"
+                        string="ORDENAR PDF"
+                        icon="fa-sort"
+                        class="btn btn-secondary"
+                        attrs="{'invisible': [('pdf_unificado_estado', '=', 'procesando')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

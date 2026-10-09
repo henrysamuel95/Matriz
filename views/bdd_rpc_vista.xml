@@ -1,0 +1,75 @@
+<odoo>
+    <record id="view_bdd_rpc_form" model="ir.ui.view">
+        <field name="name">bdd_rpc.form</field>
+        <field name="model">bdd_rpc</field>
+        <field name="arch" type="xml">
+            <form string="BDD RPC">
+                <field name="related_model_ids">
+                    <tree editable="bottom" style="width: auto;">
+                        <field name="un" width="80"/>
+                        <field name="vigencia" width="100"/>
+                        <field name="pre_item" width="100"/>
+                        <field name="consecutivo" width="150"/>
+                        <field name="item" width="100"/>
+                        <field name="cpd" width="100"/>
+                        <field name="rpc" width="100"/>
+                        <field name="concepto_rte_fte" width="150"/>
+                        <field name="tipo_solicitud" width="150"/>
+                        <field name="centro_costo" width="150"/>
+                        <field name="fecha_solicitud" width="150"/>
+                        <field name="nombre_solicitante" width="150"/>
+                        <field name="proyecto" width="150"/>
+                        <field name="objeto_contrato" width="150"/>
+                        <field name="justificacion_solicitud" width="150"/>
+                        <field name="tipo_id" width="150"/>
+                        <field name="numero_identificacion" width="150"/>
+                        <field name="dv" width="150"/>
+                        <field name="nombre_contratista" width="150"/>
+                        <field name="direccion" width="150"/>
+                        <field name="telefono" width="150"/>
+                        <field name="correo_electronico" width="150"/>
+                        <field name="tipo_contrato" width="150"/>
+                        <field name="fecha_inicio" width="150"/>
+                        <field name="fecha_final" width="150"/>
+                        <field name="riesgo_arl" width="150"/>
+                        <field name="tarifa_arl" width="150"/>
+                        <field name="arl_asume" width="150"/>
+                        <field name="valor_mensual" width="150"/>
+                        <field name="total_prestacion_servicios" width="150"/>
+                        <field name="total_salarios" width="150"/>
+                        <field name="total_otros_ingresos" width="150"/>
+                        <field name="seguridad_social" width="150"/>
+                        <field name="prestaciones_sociales" width="150"/>
+                        <field name="valor_total_numeros" width="150"/>
+                        <field name="valor_total_letras" width="150"/>
+                        <field name="descripcion_forma_pago" width="150"/>
+                        <field name="actividades_especificas" width="150"/>
+                        <field name="ciiu" width="150"/>
+                        <field name="facturacion_electronica" width="150"/>
+                        <field name="responsable_iva" width="150"/>
+                        <field name="declara_renta" width="150"/>
+                        <field name="rst" width="140"/>
+                        <field name="rte" width="140"/>
+                        <field name="regimen_ordinario" width="150"/>
+                        <field name="municipios" width="150"/>
+                        <field name="nit_arl" width="150"/>
+                        <field name="razon_social_fondo_arl" width="150"/>
+                        <field name="valor_mensual_arl" width="150"/>
+                        <field name="valor_total_arl" width="150"/>
+                    </tree>
+                </field>
+            </form>
+        </field>
+    </record>
+        <!-- Acción para mostrar todas las vistas -->
+    <record id="action_bdd_rpc" model="ir.actions.act_window">
+        <field name="name">BDD RPC</field>
+        <field name="res_model">bdd_rpc</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_create">
+                Crear una nueva solicitud RPC.
+            </p>
+        </field>
+    </record>
+</odoo>

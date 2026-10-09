@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="view_action_ingresar_pagos_proyecto_form" model="ir.ui.view">
+            <field name="name">action_ingresar_pagos_proyecto.form</field>
+            <field name="model">action_ingresar_pagos_proyecto</field>
+            <field name="arch" type="xml">
+                <form string="Pagos del Proyecto" style="width: 100%;">
+                    <header>
+                        <div class="oe_inline" invisible="1">
+                            Selecione un proyecto: <field name="informacion_base_id" placeholder="Selecione Proyecto" style="width: 230px;"/>
+                            <field name="gestion_seleccionada" invisible="1"/>
+                            <field name="ejecucion2_id" invisible=""/>
+                            <field name="valor_cobrado" invisible=""/>
+                            <field name="name" invisible="1"/>
+                            <field name="new_name" invisible="1"/>
+                        </div>
+                        <div style="width: auto; border: 0.1px solid black; padding: 5px; background: #6ed84a;" invisible="1">
+                            <strong>Editar o no editar </strong>
+                            <field name="is_editable_pp" widget="boolean_toggle" invisible="0"/>
+                            <field name="informacion_base_id" invisible="0"/>
+                        </div>
+                    </header>
+                    <field name="show_editable_fields" invisible="1"/>
+                        <style>
+                            .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1100px; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                            .custom_button_style {
+                                border: none;
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                                transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Agregamos una transición suave */
+                            }
+
+                            .blue_button {
+                                background-color: #043484; /* Fondo azul */
+                                color: white; /* Texto blanco */
+                            }
+
+                            .blue_button:hover {
+                                background-color: white; /* Fondo blanco */
+                                color: #043484; /* Texto azul */
+                                border: 2px solid #043484; /* Borde azul */
+                            }
+
+                            .white_button {
+                                background-color: white; /* Fondo blanco */
+                                color: #043484; /* Texto azul */
+                                border: 2px solid #043484; /* Borde azul */
+                            }
+
+                            .white_button:hover {
+                                background-color: #043484; /* Fondo azul */
+                                color: white; /* Texto blanco */
+                            }
+                        </style>
+                        <table style="background-color: #ADD8E6;  width: 100%; color: black !important; border: 0,1px solid black;">
+                                <td colspan="4" style="background-color: #ADD8E6; text-align: left; font-weight: bold; font-size: 16px; border: 0,1px solid black; padding: 8px;">
+                                    ACUMULADO DE PROYECTO
+                                </td>
+                            <tr>
+                                <td style="vertical-align: top; padding: 5px; width: 50%; background-color: #ADD8E6;">
+                                    <group style="margin: 5px; padding: 5px; background-color: #ADD8E6;">
+                                        <field name="num_factura_cobro" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="fecha_inicio" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" readonly="1"/>
+                                        <field name="fecha_finalizacion" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" readonly="1"/>
+                                        <field name="cantidad_lineas_tabla_pagos" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="porcentaje_pagos" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="valor_pagado" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="0"/>
+                                        <field name="valor_por_facturar" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    </group>
+                                </td>
+                                <td style="vertical-align: top; padding: 5px; width: 50%; position: relative; background-color: #ADD8E6;">
+                                    <group style="margin: 5px; padding: 5px; background-color: #ADD8E6;">
+                                        <field name="total_proyecto" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="porcentaje_avance" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="por_avance" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="avance_real2" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="valor_cobrado" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="faltante_por_cobrar" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="pendiente_porcentaje_pago" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="pendiente_porcentaje_cobros" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="pendiente_porcentaje_avance" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="acomulado_cobro_sumado" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                        <field name="acomulado_valor_recibido" class="oe_form_field" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"/>
+                                    </group>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <table style="background-color: #FEFEFE;  width: 100%; color: black !important; border: 1px solid black;" attrs="{'invisible': [('show_editable_fields', '=', False)]}">
+                                <td colspan="4" style="background-color: #FEFEFE; text-align: left; font-weight: bold; font-size: 16px; border: 0,1px solid black; padding: 8px;">
+                                    INGRESAR DATOS DEL COBRO
+                                </td>
+                            <tr>
+                                <td style="vertical-align: top; padding: 5px; width: 50%; background-color: #FEFEFE;">
+                                    <group style="margin: 5px; padding: 5px; background-color: #FEFEFE;">
+                                        <field name="valor_pagado_editable"
+                                               string="Valor de cobro"
+                                               style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"
+                                               attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="num_factura_cobro_editable" string="Número de Factura" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="porcentaje_de_avance_en_ejecucion_editable" string="Porcentaje de avance en ejecución" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                    </group>
+                                </td>
+                                <td style="vertical-align: top; padding: 5px; width: 50%; position: relative; background-color: #FEFEFE;">
+                                    <group style="margin: 5px; padding: 5px; background-color: #FEFEFE;">
+                                        <field name="fecha_programada_pago_editable"
+                                               string="Fecha Programada de cobro"
+                                               style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"
+                                               attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="fecha_efectua_pago_editable" string="Fecha Efectuada de cobro" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="pendiente_porcentaje_avance_editable" string="% cobro" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="porcentaje_avance_editable" string="% Avance" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="por_avance_editable" string="% Avance" style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2" invisible="1"/>
+                                        <field name="descripción_entregable_editable"
+                                               string="Descripción Entregable"
+                                               style="background-color: #D6EBF2; border: 0,1px solid #D6EBF2"
+                                               attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                    </group>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <button name="agregar_nuevo" string="AGREGAR UN COBRO" type="object" class="oe_highlight" attrs="{'invisible': [('show_editable_fields', '=', True)]}"/>
+                        <button name="agregar_nuevo" string="AÑADIR" type="object" class="oe_highlight" attrs="{'invisible': [('show_editable_fields', '=', False)]}"/>
+                        <button name="datos" type="object" class="fa fa-search" title="Cargar o ver datos"/>
+                        <notebook col="10">
+                            <page string="COBROS PROYECTO">
+                                <field name="tabla_pagos" col="11" >
+                                    <tree editable="top" create="false" default_order="id desc">
+                                        <field name="sequence" string="#"/>
+                                        <field name="is_editable_pp" widget="boolean_toggle" invisible="1"/>
+                                        <field name="valor" width="40" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="fecha_programada_pago" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="descripcion" width="60" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="num_factura_cobro" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="fecha_efectua_pago" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="acomulado_cobro" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="valor_recibido" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="fecha_recibido" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="recibo_caja" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="deduciones" width="50" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="valor_neto_recibido" width="70" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="porcentaje_avance_real2" width="40" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="porcentaje_avance" width="50" invisible="1"/>
+                                        <field name="porcentaje_pago" width="40" invisible="0" attrs="{'readonly': [('is_editable_pp', '=', True)]}"/>
+                                        <field name="numpago" width="40" invisible="1"/>
+                                        <field name="por_avance" width="40" invisible="1"/>
+                                        <field name="porcentaje_de_avance_en_ejecucion" width="80" invisible="1"/>
+                                        <field name="total_proyecto2" width="80" invisible="1"/>
+                                        <field name="selecciones_mes_anio_lista2" invisible="1"/>
+                                        <field name="pie_chart_data3" widget="pie_chart_widget" invisible="1"/>
+                                    </tree>
+                                </field>
+                                <field name="cantidad_lineas_tabla_pagos" invisible="1"/>
+                            </page>
+                        </notebook>
+                        <br/>
+                    <separator colspan="4" style="border-top:2px solid #000000;"/>
+                    <table style="width: 100%">
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_pago_tree">
+            <field name="name">pago.tree</field>
+            <field name="model">pago</field>
+            <field name="arch" type="xml">
+                <tree string="Cobros" default_order="numpago asc" create="false" class="min-w-0">
+                    <field name="hiden" widget="handle"/>
+                    <field name="valor" width="40"/>
+                    <field name="fecha_programada_pago" width="50"/>
+                    <field name="descripcion" width="60"/>
+                    <field name="num_factura_cobro" width="50"/>
+                    <field name="fecha_efectua_pago" width="50"/>
+                    <field name="acomulado_cobro" width="50"/>
+                    <field name="fecha_recibido" width="50"/>
+                    <field name="valor_recibido" width="50"/>
+                    <field name="recibo_caja" width="50"/>
+                    <field name="deduciones" width="50"/>
+                    <field name="valor_neto_recibido" width="70"/>
+                    <field name="porcentaje_avance_real2" width="40"/>
+
+                    <field name="porcentaje_avance" width="50" invisible="1"/>
+                    <field name="porcentaje_pago" width="40" invisible="1"/>
+                    <field name="numpago" width="40" invisible="1"/>
+                    <field name="por_avance" width="40" invisible="1"/>
+                    <field name="porcentaje_de_avance_en_ejecucion" width="80" invisible="1"/>
+                    <field name="total_proyecto2" width="80" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="pago_view_search" model="ir.ui.view">
+           <field name="name">pago.view.search.module.name</field>
+           <field name="model">pago</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="valor"/>
+                    <field name="fecha_programada_pago"/>
+                    <field name="descripcion"/>
+                    <field name="num_factura_cobro" />
+                    <field name="fecha_efectua_pago"/>
+                    <field name="acomulado_cobro"/>
+                    <field name="fecha_recibido"/>
+                    <field name="valor_recibido"/>
+                    <field name="recibo_caja"/>
+                    <field name="deduciones"/>
+                    <field name="valor_neto_recibido"/>
+                    <field name="porcentaje_avance_real2"/>
+                    <field name="porcentaje_avance" invisible="1"/>
+                    <field name="porcentaje_pago" invisible="1"/>
+                    <field name="numpago" invisible="1"/>
+                    <field name="por_avance" invisible="1"/>
+                    <field name="porcentaje_de_avance_en_ejecucion" invisible="1"/>
+                    <field name="total_proyecto2" invisible="1"/>
+               </search>
+           </field>
+        </record>
+
+    </data>
+</odoo>
+
+
+

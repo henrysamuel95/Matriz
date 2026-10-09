@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="solicitud_polizas_portal" name="Carga pública de pólizas">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:900px">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header text-white p-4" style="background:#043484">
+                        <h2 class="mb-1">
+                            <t t-if="solicitud.origen in ('contrato', 'soporte')">Solicitud de pólizas</t>
+                            <t t-else="">Actualización de pólizas</t>
+                        </h2>
+                        <p class="mb-0">Carga segura de documentos.</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div t-if="carga_exitosa" class="alert alert-success">
+                            <t t-if="carga_exitosa == '1'">El documento fue recibido correctamente.</t>
+                            <t t-else="">Se recibieron correctamente <t t-esc="carga_exitosa"/> documentos.</t>
+                        </div>
+                        <div t-if="error_carga" class="alert alert-danger">
+                            <t t-esc="error_carga"/>
+                        </div>
+                        <p><strong>Contrato:</strong> <t t-esc="solicitud._contrato_poliza().display_name"/></p>
+                        <p class="text-muted">Formatos permitidos: PDF, PNG, JPG y JPEG. Máximo 20 MB (se recomienda el formato PDF).</p>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Seleccione los archivos que desea cargar.</strong>
+                            Puede elegir uno o varios; cada póliza conserva su propio archivo.
+                            Cuando termine, presione <strong>Cargar pólizas seleccionadas</strong>.
+                        </div>
+                        <form action="/solicitud-polizas/cargar-lote" method="post"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="solicitud_id" t-att-value="solicitud.id"/>
+                            <input type="hidden" name="token" t-att-value="token"/>
+                            <t t-foreach="solicitud.linea_ids" t-as="linea">
+                            <div class="border rounded p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <strong><span t-esc="linea.tipo_poliza_nombre"/></strong>
+                                    <span t-if="linea.estado_revision == 'devuelta'"
+                                          class="badge bg-danger">Corrección solicitada</span>
+                                    <span t-elif="linea.documento_id" class="badge bg-success">Documento cargado</span>
+                                    <span t-else="" class="badge bg-warning text-dark">Pendiente</span>
+                                </div>
+                                <div t-if="linea.estado_revision == 'devuelta'"
+                                     class="alert alert-warning mt-3 mb-2">
+                                    <strong>Observación jurídica:</strong>
+                                    <span t-esc="linea.observaciones_juridicas"/>
+                                </div>
+                                <div t-if="linea in lineas_cargables" class="mt-3">
+                                    <input class="form-control" type="file"
+                                           t-att-name="'archivo_%s' % linea.id"
+                                           accept=".pdf,.png,.jpg,.jpeg"/>
+                                </div>
+                                <p t-if="solicitud.estado == 'correccion' and not linea.documento_id and linea not in lineas_cargables"
+                                   class="text-muted mt-3 mb-0">
+                                    Este documento pendiente se solicitará con otro enlace después de la corrección.
+                                </p>
+                                <p t-if="linea.documento_id and linea.estado_revision != 'devuelta'"
+                                   class="text-success mt-3 mb-0">
+                                     Este documento ya fue recibido.
+                                </p>
+                            </div>
+                            </t>
+                            <div t-if="lineas_cargables" class="text-end mt-3">
+                                <button class="btn btn-primary px-4" type="submit">
+                                    <i class="fa fa-upload me-1"/>
+                                    Cargar pólizas seleccionadas
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="solicitud_polizas_portal_completada" name="Pólizas recibidas">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:760px">
+                <div class="alert alert-success shadow-sm">
+                    <h3>Documentos recibidos</h3>
+                    <p class="mb-0">
+                        Todas las pólizas fueron cargadas correctamente. Por seguridad,
+                        el enlace privado ya fue desactivado.
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="solicitud_polizas_portal_correccion_recibida"
+              name="Corrección de póliza recibida">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:760px">
+                <div class="alert alert-success shadow-sm">
+                    <h3>Corrección recibida</h3>
+                    <p class="mb-0">
+                        La póliza corregida fue recibida correctamente. Si todavía
+                        existen otros documentos pendientes, recibirá un enlace
+                        independiente para continuar con su carga.
+                    </p>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="solicitud_polizas_portal_error" name="Enlace de pólizas no válido">
+        <t t-call="website.layout">
+            <div class="container py-5" style="max-width:760px">
+                <div class="alert alert-warning shadow-sm">
+                    <h3>Enlace no disponible</h3>
+                    <p class="mb-0">El enlace no es válido o ya venció. Solicite uno nuevo.</p>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

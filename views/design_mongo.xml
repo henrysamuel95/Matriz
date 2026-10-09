@@ -1,0 +1,231 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_otrosi_form">
+            <field name="name">otrosi.form</field>
+            <field name="model">otrosi</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="detalles" invisible="1"/>
+                    <div class="flex-container">
+                        <!-- Barra lateral -->
+                        <aside class="sidebar">
+                            <div class="toggle-section">
+                                <div>
+                                <h3 class="toggle-title2" onclick="toggleSection('folders-section')">
+                                    <i class="fa fa-folder-o" style="margin-right: 10px; color: #d5006d;"></i>
+                                    Carpetas
+                                </h3>
+                                </div>
+                                <div id="folders-section" class="toggle-content collapsed">
+                                    <ul>
+                                        <a name="toggle_show_documents" type="object" class="o_link toggle-link" style="cursor: pointer;">Todos</a>
+                                        <br/>
+                                        <field name="workspace" widget="many2many_checkboxes"/>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="toggle-section">
+                                <h3 class="toggle-title3" onclick="toggleSection('accounts-section')">
+                                    <i class="fa fa-money" style="margin-right: 10px;"></i>
+                                    Cuentas de cobros
+                                </h3>
+                                <div id="accounts-section" class="toggle-content collapsed">
+                                    <field name="workspace_cuenta_de_cobros" widget="many2many_checkboxes"/>
+                                </div>
+                            </div>
+
+                            <div class="toggle-section">
+                                <h3 class="toggle-title" onclick="toggleSection('otrosi-section')">
+                                     <i class="fa fa-file-archive-o" style="margin-right: 10px;"></i>
+                                    Carpetas otrosí
+                                </h3>
+                                <div id="otrosi-section" class="toggle-content collapsed">
+                                    <field name="workspace_otrosi_drive" widget="many2many_checkboxes"/>
+                                </div>
+                            </div>
+
+                            <div class="toggle-section">
+                                <h3 class="toggle-title4" onclick="toggleSection('tags-section')">
+                                    <i class="fa fa-tag" style="margin-right: 10px;"></i>
+                                    Tags
+                                </h3>
+                                <div id="tags-section" class="toggle-content collapsed">
+                                    <field name="etiquetas" widget="many2many_checkboxes"/>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <script>
+                            function toggleSection(sectionId) {
+                                const section = document.getElementById(sectionId);
+                                if (!section) {
+                                    console.error('Elemento no encontrado:', sectionId);
+                                    return;
+                                }
+
+                                console.log("Sección a modificar:", section);
+
+                                section.classList.toggle('collapsed');
+
+                                if (section.classList.contains('collapsed')) {
+                                    section.style.maxHeight = '0';
+                                } else {
+                                    section.style.maxHeight = 'none';
+                                }
+                            }
+                        </script>
+
+                        <!-- Área principal -->
+                        <section class="main-area">
+                            <!-- Fila de botones -->
+                            <div class="button-row">
+
+                            </div>
+
+                            <!-- Fila de tarjetas -->
+
+                            <div class="card-container">
+                                                                    <!-- Filtro de búsqueda -->
+                                    <div class="search-filter-container">
+                                        <field name="search_filter" placeholder="Seleccionar Filtro" class="search-input"/>
+                                    </div>
+                                    <!-- Barra de búsqueda de documentos -->
+                                    <div class="search-bar-container">
+                                        <field name="search_keyword" placeholder="Buscar Documentos..." class="search-input"/>
+                                        <span class="search-icon">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                    <br/>
+                                <br/>
+                               <field name="documentos_filtrados" widget="kanban">
+                                    <kanban create="0">
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div class="kanban-card2">
+                                                    <button name="toggle_sidebar_information" type="object">
+                                                    <br/>
+                                                    <div class="kanban-icon-area">
+                                                        <!-- Lógica para mostrar la imagen del ícono -->
+                                                        <t t-set="name" t-value="record.name.raw_value || ''"/>
+                                                        <t t-set="extension" t-value="name.split('.').pop().toLowerCase()"/>
+                                                        <img t-if="extension === 'pdf'" class="kanban-file-icon" src="/Matriz/static/src/img/pdf_icon.png" alt="PDF Icon"/>
+                                                        <img t-elif="extension === 'doc' || extension === 'docx'" class="kanban-file-icon" src="/Matriz/static/src/img/word.png" alt="Word Icon"/>
+                                                        <img t-elif="extension === 'xls' || extension === 'xlsx'" class="kanban-file-icon" src="/Matriz/static/src/img/xls_icon.png" alt="Excel Icon"/>
+                                                        <img t-elif="extension === 'txt'" class="kanban-file-icon" src="/Matriz/static/src/img/txt_icon.png" alt="Text Icon"/>
+                                                        <img t-elif="extension === 'ppt' || extension === 'pptx'" class="kanban-file-icon" src="/Matriz/static/src/img/ppt_icon.png" alt="PowerPoint Icon"/>
+                                                        <img t-elif="extension === 'rar' || extension === 'zip'" class="kanban-file-icon" src="/Matriz/static/src/img/rar_icon.png" alt="WinRAR/ZIP Icon"/>
+                                                        <img t-elif="extension === 'jpg' || extension === 'jpeg' || extension === 'png'" class="kanban-file-icon" src="/Matriz/static/src/img/img_icon.png" alt="Image Icon"/>
+                                                        <img t-else="" class="kanban-file-icon" src="/Matriz/static/src/img/default_icon.png" alt="Default Icon"/>
+                                                    </div>
+                                                    <div class="kanban-details">
+                                                        <div>
+                                                            <div t-att-title="record.name.raw_value" class="kanban-record-title">
+                                                                <field name="name" class="o_text_overflow"/>
+                                                            </div>
+                                                            <br/>
+                                                            <div class="kanban-footer">
+                                                                <time class="kanban-footer-left">
+                                                                    <field name="fch_creacion" widget="date"/>
+                                                                </time>
+                                                                <div class="kanban-footer-right">
+                                                                     <field name="activity_ids" widget="kanban_activity" style="font-size: 16px;"/>
+                                                                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                                                                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                                                                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                                                                    <field name="user_id" widget="many2one_avatar_user"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <field name="tags_html" widget="html" invisible="1"/>
+                                                    </div>
+                                                    <field name="ejecutar_toggle" style="position: absolute; top: 10px; right: 10px;"/>
+                                                    </button>
+
+                                                </div>
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </div>
+                        </section>
+
+                        <!-- Barra lateral derecha -->
+                        <aside class="sidebar-right" attrs="{'invisible': [('detalles', '=', False)]}">
+                            <!-- Botones superiores con íconos -->
+                            <div class="sidebar-buttons">
+                            <button name="set_detalles_to_false" type="object"
+                             class="btn-action2">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <button name="cog" class="btn-action" title="Otras acciones">
+                                <i class="fa fa-cog"></i> <!-- Ícono de configuración u otro -->
+                            </button>
+                            </div>
+                             <br/>
+                            <!-- Información principal -->
+                            <div class="sidebar-info">
+                                <h3>Información del Documento</h3>
+                                <div class="info-item">
+                                    <strong>Nombre:</strong>
+                                    <field name="file_name" invisible="0" class="field-white-text"/>
+                                </div>
+                                <div class="info-item">
+                                    <strong>Creado por:</strong>
+                                    <field name="user_id" invisible="0" class="field-white-text"/>
+                                </div>
+                                <div class="info-item">
+                                     <i class="fa fa-folder-o" style="margin-right: 10px; color: #d5006d;"></i>
+                                    <strong>Carpeta:</strong>
+                                    <field name="carpeta_id" invisible="0" class="field-white-text"/>
+                                </div>
+                                <div class="info-item">
+                                    <strong class="toggle-title4">
+                                        <i class="fa fa-tag" style="margin-right: 10px;"></i>
+                                        Etiquetas:
+                                    </strong>
+                                    <field name="tags_html" invisible="0" class="field-white-text" widget="html"/>
+                                </div>
+                            </div>
+
+                            <!-- Sección de acciones adicionales -->
+                            <div class="sidebar-actions">
+                                <h3>Acciones</h3>
+                                <div class="sidebar-buttons">
+                                     <button name="Ver" type="object" class="action-button">
+                                         <i class="fa fa-arrow-right" style="margin-right: 10px;"></i>
+                                         Ver Documento
+                                     </button>
+                                </div>
+                                <button name="Enviar" class="action-button" invisible="1">Enviar a Legal</button>
+                                <button name="Eliminar" class="action-button" invisible="1">Eliminar</button>
+                            </div>
+                        </aside>
+
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_coinlore_api_form" model="ir.ui.view">
+            <field name="name">coinlore.api.form</field>
+            <field name="model">coinlore.api</field>
+            <field name="arch" type="xml">
+                <form string="Coinlore API">
+                    <sheet>
+                        <group>
+                            <field name="search_term" placeholder="Ej: PAGOSIMPLE, 330.600, CALI"/>
+                            <field name="document_ids" readonly="1"/>
+                            <field name="document_names" readonly="1"/>
+                        </group>
+                        <button name="search_documents" type="object" string="Buscar" class="btn-primary"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

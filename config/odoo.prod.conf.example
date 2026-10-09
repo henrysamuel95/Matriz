@@ -1,0 +1,23 @@
+[options]
+addons_path = /mnt/extra-addons
+data_dir = /var/lib/odoo
+
+; Contraseña maestra de /web/database/manager (crear/duplicar/respaldar/
+; restaurar/borrar bases de datos) — NO la contraseña de ningún usuario.
+;
+; Genera un valor propio y fuerte para cada servidor, y guarda el hash
+; (nunca el texto plano) aquí. Para generarlo dentro del contenedor:
+;
+;   docker exec gofuv python3 -c "
+;   import secrets, string
+;   from passlib.context import CryptContext
+;   alphabet = string.ascii_letters + string.digits + '!@#%^&*-_=+'
+;   pw = ''.join(secrets.choice(alphabet) for _ in range(28))
+;   print('Guarda esta contraseña en un gestor seguro:', pw)
+;   ctx = CryptContext(schemes=['pbkdf2_sha512'], pbkdf2_sha512__rounds=600000)
+;   print('admin_passwd =', ctx.hash(pw))
+;   "
+;
+; Copia este archivo a odoo.prod.conf (ya está en .gitignore) y pega ahí
+; el resultado de "admin_passwd = ...". NUNCA commitees el archivo real.
+admin_passwd = CAMBIAR_ESTE_VALOR

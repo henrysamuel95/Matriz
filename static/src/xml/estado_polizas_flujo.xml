@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="Matriz.EstadoPolizasFlujoField" owl="1">
+        <div t-att-class="ui.showFullFlow ? 'estado-polizas-flujo estado-polizas-flujo--pinned' : 'estado-polizas-flujo'"
+             t-att-style="currentStyle"
+             t-on-mouseleave="closeFullFlow">
+            <div class="estado-polizas-flujo__badge">
+                <span class="estado-polizas-flujo__dot"/>
+                <span class="estado-polizas-flujo__badge-label" t-esc="current.shortLabel"/>
+                <span t-if="progressText"
+                      class="estado-polizas-flujo__progress"
+                      t-esc="progressText"/>
+            </div>
+            <div class="estado-polizas-flujo__popover">
+                <div t-if="previous" class="estado-polizas-flujo__summary-row">
+                    <span>Anterior</span>
+                    <strong t-esc="previous.label"/>
+                </div>
+                <div class="estado-polizas-flujo__summary-row estado-polizas-flujo__summary-row--current">
+                    <span>Actual</span>
+                    <strong t-esc="current.label"/>
+                </div>
+                <div class="estado-polizas-flujo__summary-row">
+                    <span>Siguiente</span>
+                    <strong t-esc="next ? next.label : 'Fin del flujo'"/>
+                </div>
+                <button type="button"
+                        class="estado-polizas-flujo__toggle"
+                        t-on-click="toggleFullFlow"
+                        t-att-aria-expanded="ui.showFullFlow ? 'true' : 'false'">
+                    <i t-att-class="ui.showFullFlow ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                    <span t-esc="ui.showFullFlow ? 'Ocultar flujo' : 'Ver flujo completo'"/>
+                </button>
+                <div t-if="ui.showFullFlow" class="estado-polizas-flujo__steps">
+                    <div t-foreach="fullFlowSteps"
+                         t-as="step"
+                         t-key="step.value"
+                         t-att-class="step.isCurrent ? 'estado-polizas-flujo__step estado-polizas-flujo__step--current' : 'estado-polizas-flujo__step'">
+                        <span class="estado-polizas-flujo__step-number" t-esc="step.number"/>
+                        <span class="estado-polizas-flujo__step-label" t-esc="step.label"/>
+                        <span t-if="step.isCurrent" class="estado-polizas-flujo__step-current">Actual</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
+

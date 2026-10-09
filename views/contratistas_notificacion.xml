@@ -1,0 +1,80 @@
+<odoo>
+    <record id="view_contratistas_notificacion_wizard_form" model="ir.ui.view">
+        <field name="name">contratistas.notificacion.wizard.form</field>
+        <field name="model">contratistas.notificacion.wizard</field>
+
+        <field name="arch" type="xml">
+            <form string="Solicitud de actualización de documentos" class="oe_form_custom">
+                
+                <sheet>
+                    <!-- TÍTULO ESTÉTICO -->
+                    <h2 style="margin-bottom: 10px; color:#043484; font-weight:600;">
+                        Enviar solicitud al contratista
+                    </h2>
+
+                    <!-- DESCRIPCIÓN -->
+                    <p style="color: #555; margin-bottom: 20px;">
+                        Seleccione el contratista al que desea enviar la notificación de actualización
+                        de documentos. El sistema registrará esta acción automáticamente.
+                    </p>
+
+                    <!-- Campo CONTRATISTA por fuera, con estilo moderno -->
+                    <div class="o_form_row" style="margin-bottom: 18px;">
+                        <label for="contratista_proveedor_id"
+                            style="font-weight:600; color:#333; margin-right:12px;"/>
+
+                        <field name="contratista_proveedor_id"
+                            placeholder="Seleccione un contratista..."
+                            style="
+                                width: 60%;
+                                border: 1px solid #A9A9A9;
+                                border-radius: 6px;
+                                padding: 4px 6px;
+                            "/>
+                    </div>
+
+                    <div groups="Matriz.group_soporte">
+                            <field name="proyecto_relacionado"/>
+                            <td colspan="2" style="padding: 10px;">
+                                <label for="users_with_access">Usuarios con acceso:</label>
+                                <field name="asistentes_coordinador"
+                                    style="
+                                        width: 60%;
+                                        border: 1px solid #de2828;
+                                        border-radius: 6px;
+                                        padding: 4px 6px;
+                                    "/>
+                                <field name="users_with_access" widget="many2many_avatar_user"
+                                        options="{'no_create_edit': False}"
+                                        class="oe_kanban_content_oe_kanban_global_clickable"
+                                        style="background-color: #D6EBF2; border: 1px solid #CCCCCC; margin-top: 5px;"/>
+                            </td>
+                    </div>
+
+
+                    <!-- CARD para Observaciones -->
+                    <div class="card_seccion">
+                        <div class="titulo_seccion">Observaciones</div>
+                            <field name="observaciones" 
+                                widget="text" 
+                                class="textarea_moderno" 
+                                nolabel="1" 
+                                placeholder="Escriba aquí las observaciones..."/>
+                    </div>
+
+                </sheet>
+
+                <!-- BOTONES BONITOS -->
+                <footer>
+                    <button string="Enviar Notificación" name="action_confirm" type="object"
+                            class="btn-primary"
+                            style="padding: 8px 20px; font-size: 15px; border-radius: 6px;"/>
+
+                    <button string="Cancelar" special="cancel"
+                            style="padding: 8px 18px; font-size: 14px; border-radius: 6px;"/>
+                </footer>
+
+            </form>
+        </field>
+    </record>
+</odoo>

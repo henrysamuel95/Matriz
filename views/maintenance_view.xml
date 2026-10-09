@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_maintenance_control_form" model="ir.ui.view">
+        <field name="name">maintenance.control.wizard.form</field>
+        <field name="model">maintenance.control.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title text-center mb-4">
+                        <h1>🛠️ Panel de control de mantenimiento</h1>
+                    </div>
+                    
+                    <div class="alert alert-info text-center" role="alert" style="font-size: 14px; margin-bottom: 20px;">
+                        Siga los pasos a continuación para realizar un mantenimiento seguro.<br/>
+                        <strong>Paso 1:</strong> Notificar a los usuarios. <strong>Paso 2:</strong> Bloquear el sistema.
+                    </div>
+
+                    <group>
+                        <group string="1. Configuración del Aviso" colspan="2">
+                            <field name="subject" placeholder="Ej: Aviso de mantenimiento urgente"/>
+                            
+                            <label for="maintenance_date" string="Programar para el"/>
+                            <div class="o_row">
+                                <field name="maintenance_date" nolabel="1"/>
+                                <span style="font-weight: bold; margin: 0 10px; color: #666;"> a las </span>
+                                <field name="maintenance_time" nolabel="1" style="max-width: 80px;" placeholder="Ej: 6:00"/>
+                                <field name="maintenance_ampm" nolabel="1" style="max-width: 70px;"/>
+                            </div>
+                            
+                            <field name="message" widget="text" rows="3" placeholder="El mensaje se generará automáticamente aquí..."/>
+                        </group>
+                    </group>
+
+                    <div class="row mt-3 mb-4">
+                        <div class="col-12 text-center">
+                            <button name="action_send_warning" 
+                                    string="📧 PASO 1: Enviar correo de advertencia" 
+                                    type="object" 
+                                    class="btn-primary btn-lg w-100" 
+                                    style="padding: 10px; font-weight: bold; font-size: 14px;"/>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning text-center mt-3" role="alert" style="font-size: 13px; margin-bottom: 0px;">
+                        ⚠️ <strong>¡Atención!</strong> Al ejecutar el Paso 2, todos los usuarios (excepto el Admin) verán una pantalla de bloqueo y no podrán operar en Odoo.
+                    </div>
+
+                    <footer>
+                        <button name="action_activate_maintenance" 
+                                string="🚨 PASO 2: BLOQUEAR SISTEMA" 
+                                type="object" 
+                                class="btn-danger"/>
+                                
+                        <button name="action_schedule_maintenance" 
+                                string="⏰ PROGRAMAR AUTOMÁTICO" 
+                                type="object" 
+                                class="btn-info"
+                                style="margin-left: 10px;"/>
+                                
+                        <button name="action_deactivate_maintenance" 
+                                string="✅ RESTAURAR SISTEMA" 
+                                type="object" 
+                                class="btn-success" 
+                                style="margin-left: 10px;"/>
+                                
+                        <button string="Cerrar Panel" 
+                                class="btn-secondary" 
+                                special="cancel" 
+                                style="margin-left: auto;"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_maintenance_control" model="ir.actions.act_window">
+        <field name="name">Control de Mantenimiento</field>
+        <field name="res_model">maintenance.control.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_maintenance_control"
+              name="🛠️ Modo Mantenimiento"
+              parent="base.menu_users" 
+              action="action_maintenance_control"
+              sequence="100"/>
+              
+    <record id="ir_cron_check_maintenance" model="ir.cron">
+        <field name="name">Verificar Mantenimiento Programado</field>
+        <field name="model_id" ref="model_maintenance_control_wizard"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_check_scheduled_maintenance()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

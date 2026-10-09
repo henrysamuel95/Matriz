@@ -1,0 +1,12 @@
+<odoo>
+    <template id="thank_you_page" name="Thank You Page">
+        <t t-call="website.layout">
+            <div class="container text-center mt-5">
+                <h1 class="display-4">¡Gracias por tu colaboración!</h1>
+                <p class="lead">Hemos recibido tu información de manera exitosa.</p>
+                <p>Si necesitas corregir o completar algún dato, puedes regresar al formulario utilizando el enlace que te enviamos por correo.</p>
+                <p>Estamos aquí para ayudarte. ¡Gracias por tu tiempo!</p>
+            </div>
+        </t>
+    </template>
+</odoo>

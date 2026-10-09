@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="ProgressBarWidget" owl="1">
+        <div t-ref="ProgressBarWidget-root">
+            <div class="progress_bar">
+                <div class="pro-bar">
+                    <div class="progress-bar-inner"></div>
+                    <div class="progress_number"></div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="web.X2ManyField" t-inherit-mode="extension">
+        <xpath expr="//div" position="before">
+            <t t-if="props.name == 'linea_ids' and props.record and props.record.resModel == 'seguimiento_financiera'">
+                <div style="display: block; width: 100%; clear: both; padding-bottom: 1% !important;">
+                    <div class="o_custom_filter_bar d-flex gap-2 align-items-center" 
+                         style="background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #dee2e6; margin-bottom: 10px;">
+                        
+                        <div class="input-group flex-grow-1">
+                            <span class="input-group-text bg-white border-end-0"><i class="fa fa-search"/></span>
+                            <input type="text" class="form-control border-start-0" 
+                                   t-att-value="state.searchQuery"
+                                   placeholder="Buscar..." t-on-input="_onSearchInput"/>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <label class="mb-0 small fw-bold text-nowrap">Filtrar por (Responsable):</label>
+                            <select class="form-select form-select-sm" style="min-width: 200px;" 
+                                    t-on-change="_onResponsableChange">
+                                <option value="">-- Todos --</option>
+                                <t t-foreach="_getUniqueResponsables()" t-as="resp" t-key="resp">
+                                    <option t-att-value="resp" t-att-selected="state.selectedResponsable == resp">
+                                        <t t-esc="resp"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                                                <button class="btn btn-sm btn-light border text-success"
+                                title="Exportar lista filtrada a Excel"
+                                t-on-click="_onExportClick">
+                            <i class="fa fa-file-excel-o"/>
+                        </button>
+
+                        <button class="btn btn-sm btn-light border" t-on-click="_clearSearch" title="Limpiar filtros">
+                            <i class="fa fa-refresh text-danger"/>
+                        </button>
+
+                        <button class="btn btn-sm border o_sf_sticky_toggle"
+                                t-att-class="state.stickyHeader ? 'btn-primary' : 'btn-light'"
+                                t-att-title="state.stickyHeader ? 'Liberar encabezados' : 'Fijar encabezados'"
+                                t-on-click="_onToggleStickyHeader">
+                            <i class="fa fa-thumb-tack"/>
+                            <span class="d-none d-lg-inline ms-1"
+                                  t-esc="state.stickyHeader ? 'Encabezados fijos' : 'Fijar encabezados'"/>
+                        </button>
+
+                        <div class="o_sf_filter_stats text-nowrap small" aria-live="polite">
+                            <strong><t t-esc="state.filteredTotal"/></strong>
+                            <span> actividades · </span>
+                            <strong><t t-esc="state.filteredPercentage"/>%</strong>
+                        </div>
+                    </div>
+                    <div class="o_sf_top_scroll" t-on-scroll="_onTopScrollbarScroll">
+                        <div class="o_sf_top_scroll_content"/>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_ordenes_especiales_guia_usuario_form" model="ir.ui.view">
+        <field name="name">ordenes.especiales.guia.usuario.form</field>
+        <field name="model">ordenes_especiales.guia_usuario</field>
+        <field name="arch" type="xml">
+            <form string="Guía de usuario · Orden especial" class="oe-special-guide-form">
+                <div class="oe-special-guide">
+                    <div class="oe-special-guide__hero">
+                        <span class="oe-special-guide__eyebrow">ORDEN ESPECIAL · PERSONA JURÍDICA</span>
+                        <h2>Así avanza tu orden</h2>
+                        <p>Cada área revisa lo recibido, completa su parte y asigna al responsable de la siguiente etapa.</p>
+                    </div>
+                    <div class="oe-special-guide__steps">
+                        <div class="oe-special-guide__step">
+                            <span class="oe-special-guide__number">01</span>
+                            <div><h3>Coordinación</h3><p>El Coordinador crea la orden; el Asistente puede completarla. Cargan al menos una factura y, si se solicita, la Certificación conjunta. El Coordinador aprueba la certificación aportada antes de enviarla a Ventanilla.</p></div>
+                        </div>
+                        <div class="oe-special-guide__step">
+                            <span class="oe-special-guide__number">02</span>
+                            <div><h3>Ventanilla</h3><p>Revisa y aprueba la Certificación conjunta si fue aportada, selecciona a la persona de Contabilidad y envía la orden a esa área.</p></div>
+                        </div>
+                        <div class="oe-special-guide__step">
+                            <span class="oe-special-guide__number">03</span>
+                            <div><h3>Contabilidad</h3><p>Carga la causación. Si es Cruce, añade el documento y el consecutivo para finalizar; en otro caso envía al Auxiliar de Tesorería.</p></div>
+                        </div>
+                        <div class="oe-special-guide__step">
+                            <span class="oe-special-guide__number">04</span>
+                            <div><h3>Auxiliar de Tesorería</h3><p>Registra la fecha tentativa de pago, carga la orden de pago si aplica y envía a Tesorería.</p></div>
+                        </div>
+                        <div class="oe-special-guide__step">
+                            <span class="oe-special-guide__number">05</span>
+                            <div><h3>Tesorería</h3><p>Registra su consecutivo, aporta los comprobantes de pago y bancario y finaliza la orden.</p></div>
+                        </div>
+                    </div>
+                    <div class="oe-special-guide__notes">
+                        <div class="oe-special-guide__note"><i class="fa fa-undo"/><span><strong>Si hay una devolución:</strong> se indica el motivo, Coordinación corrige y devuelve la orden directamente al área que la regresó.</span></div>
+                        <div class="oe-special-guide__note"><i class="fa fa-file-text-o"/><span><strong>Certificación opcional:</strong> si se carga, Coordinación y Ventanilla deben aprobarla en su respectiva etapa. El RCF también es opcional.</span></div>
+                    </div>
+                </div>
+                <footer>
+                    <button string="Entendido" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ordenes_especiales_soporte_estado_wizard_form" model="ir.ui.view">
+        <field name="name">ordenes.especiales.soporte.estado.wizard.form</field>
+        <field name="model">ordenes_especiales.soporte.estado.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Soporte · Cambiar estado">
+                <group>
+                    <field name="orden_id" readonly="1"/>
+                    <field name="estado_nuevo" widget="radio"/>
+                </group>
+                <div class="alert alert-warning" role="alert" style="margin:10px 0 0;">
+                    Este cambio es administrativo y no ejecuta aprobaciones, correos ni validaciones del flujo normal.
+                    El movimiento quedará registrado en el chatter.
+                </div>
+                <footer>
+                    <button name="action_aplicar"
+                            type="object"
+                            string="Aplicar cambio"
+                            class="btn-danger"/>
+                    <button string="Cancelar"
+                            special="cancel"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ordenes_especiales_form" model="ir.ui.view">
+        <field name="name">ordenes_especiales.form</field>
+        <field name="model">ordenes_especiales</field>
+        <field name="arch" type="xml">
+            <form string="Orden especial" class="fc-ordenes-especiales-form" delete="0">
+                <header class="mi_header_fijo oe-special-flow-header">
+                    <field name="create_date" invisible="1"/>
+                    <field name="es_cruce" invisible="1"/>
+                    <field name="ultimo_estado_devolucion" invisible="1"/>
+                    <field name="ultimo_usuario_devolucion_id" invisible="1"/>
+                    <field name="estado_retorno_devolucion" invisible="1"/>
+                    <div class="oe-special-flow-header__inner">
+                        <div style="flex:1 1 auto; min-width:0;">
+                            <field name="estado_ordenes_especiales"
+                                   widget="statusbar"
+                                   statusbar_visible="coordinador,ventanilla,contabilidad,auxiliar_tesoreria,tesoreria,finalizado"/>
+                        </div>
+
+                        <button name="action_abrir_guia_usuario"
+                                type="object"
+                                string="Guía de usuario"
+                                icon="fa-question-circle"
+                                class="oe-special-guide-trigger"/>
+
+                        <div class="fc-contract-support-menu oe-special-support-menu"
+                             groups="Matriz.group_soporte">
+                            <details style="outline:none;">
+                                <summary class="oe-special-support-menu__summary">
+                                    <i class="fa fa-chevron-right" style="margin-right:10px; font-size:0.8em;"/>
+                                    Soporte
+                                </summary>
+
+                                <div class="fc-contract-support-grid oe-special-support-menu__grid">
+                                    <button name="action_soporte_crear_carpeta_drive"
+                                            type="object"
+                                            string="Crear carpeta en Drive"
+                                            class="btn-primary"
+                                            icon="fa-folder-open"
+                                            groups="Matriz.group_soporte"
+                                            attrs="{'invisible': [('create_date', '=', False)]}"
+                                            help="Crea o vincula la carpeta exclusiva de esta orden. También separa carpetas compartidas por error."
+                                            style="padding:4px 10px; font-size:12px;"/>
+                                    <button name="action_soporte_cambiar_estado"
+                                            type="object"
+                                            string="Cambiar estado"
+                                            class="btn-danger"
+                                            icon="fa-random"
+                                            groups="Matriz.group_soporte"
+                                            help="Permite a Soporte mover administrativamente la orden a cualquier estado del flujo. No ejecuta aprobaciones ni notificaciones del flujo normal."
+                                            style="padding:4px 10px; font-size:12px;"/>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </header>
+                <sheet style="background-color: #02225b;">
+                    <div class="">
+                        <div class="card_header_moderno">
+                            <div class="ch_left">
+                                <img src="/Matriz/static/src/img/LogoFUV.png" alt="Logo" />
+                            </div>
+                            <div class="ch_center">
+                                <h2>ORDEN ESPECIAL</h2>
+                                <span>PERSONA JURÍDICA</span>
+                            </div>
+                            <div class="ch_right">
+                                <div class="item">F. Emisión 2024-07-26</div>
+                                <div class="item">Versión: 1</div>
+                                <div class="item">FU-F-GCS-018</div>
+                            </div>
+                        </div>
+                        <field name="select_fondos" invisible="1" />
+                        <div class="card_seccion">
+                            <div class="titulo_seccion" style="border-left: 3px solid #043484; padding-left: 10px; margin-bottom: 15px;">
+                                GESTIÓN DE ORDEN Y CRONOGRAMA
+                            </div>
+
+                            <div style="display: flex; gap: 20px; width: 100%; align-items: stretch; padding: 5px; flex-wrap: wrap;">
+                                <div style="flex: 1 1 420px; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+                                    <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; margin-bottom: 8px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                                        Datos de la orden
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">PROYECTO:</div>
+                                        <div style="width: 60%;">
+                                            <field name="proyecto_relacionado_s" readonly="1" force_save="1"
+                                                   class="campo_hover campo_solo_lectura"
+                                                   options="{'no_create': True, 'no_edit': True, 'no_open': True}" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">SOLICITANTE:</div>
+                                        <div style="width: 60%;">
+                                            <field name="solicitante_usuario_id"
+                                                   placeholder="Seleccione un usuario..."
+                                                   domain="[('active', '=', True), ('share', '=', False)]"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"
+                                                   options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')], 'required': [('estado_ordenes_especiales', '=', 'coordinador')]}"/>
+                                            <field name="solicitante_usuario_id" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   options="{'no_create': True, 'no_open': True}"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">CENTRO COSTO:</div>
+                                        <div style="width: 60%;">
+                                            <field name="centro_costo" readonly="1" class="campo_hover campo_solo_lectura"
+                                                   options="{'no_create': True}" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">SELECCIONAR FONDOS:</div>
+                                        <div style="width: 60%; display: flex; align-items: center; gap: 5px;">
+                                            <field name="select_fondos" invisible="1"/>
+                                            <field name="select_fondos" nolabel="1" required="1"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="flex: 1;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="select_fondos" nolabel="1" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                            <span style="color: #00bcd4; font-weight: bold; cursor: help;">ⓘ</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="flex: 1 1 420px; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+                                    <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; margin-bottom: 8px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                                        Cronograma
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. SOLICITUD:</div>
+                                        <div style="width: 60%;">
+                                            <field name="fecha_solicitud"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura"
+                                                   style="width: 100%;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="fecha_solicitud" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. INICIO:</div>
+                                        <div style="width: 60%;">
+                                            <field name="fecha_inicio"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura"
+                                                   style="width: 100%;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="fecha_inicio" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. FINALIZACIÓN:</div>
+                                        <div style="width: 60%;">
+                                            <field name="fecha_fin"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura"
+                                                   style="width: 100%;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="fecha_fin" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="padding: 5px; margin-top: 8px;">
+                                <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; padding-bottom: 6px; margin-bottom: 10px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                                    Seguimiento por área
+                                </div>
+
+                                <div style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%;">
+                                    <div style="flex: 1 1 180px; border: 1px solid #d7dce2; border-radius: 8px; padding: 8px 10px; background-color: #ffffff; min-height: 58px;">
+                                        <div style="color: #4d5358; font-size: 11px; font-weight: 600; margin-bottom: 4px;">RCF · Coordinación</div>
+                                        <field name="rcf" nolabel="1" placeholder="Digite el RCF"
+                                               groups="Matriz.group_contratacion_coordinador"
+                                               class="campo_hover" style="width: 100%;"
+                                               attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                        <field name="rcf" nolabel="1" readonly="1"
+                                               groups="!Matriz.group_contratacion_coordinador"
+                                               class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                    </div>
+
+                                    <div style="flex: 1 1 150px; border: 1px solid #d7dce2; border-radius: 8px; padding: 8px 10px; background-color: #ffffff; min-height: 58px;">
+                                        <div style="color: #4d5358; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Cruce · Contabilidad</div>
+                                        <field name="es_cruce" nolabel="1" widget="boolean_toggle"
+                                               groups="Matriz.group_contabilidad"
+                                               attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'contabilidad')]}"/>
+                                        <field name="es_cruce" nolabel="1" widget="boolean_toggle" readonly="1"
+                                               groups="!Matriz.group_contabilidad"/>
+                                    </div>
+
+                                    <div style="flex: 1 1 190px; border: 1px solid #d7dce2; border-radius: 8px; padding: 8px 10px; background-color: #ffffff; min-height: 58px;"
+                                         attrs="{'invisible': [('es_cruce', '=', True)]}">
+                                        <div style="color: #4d5358; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Consecutivo · Contabilidad</div>
+                                        <field name="consecutivo_contabilidad" nolabel="1" placeholder="Digite el consecutivo"
+                                               groups="Matriz.group_contabilidad"
+                                               class="campo_hover" style="width: 100%;"
+                                               attrs="{
+    'readonly': [('estado_ordenes_especiales', '!=', 'contabilidad')]
+}"/>
+                                        <field name="consecutivo_contabilidad" nolabel="1" readonly="1"
+                                               groups="!Matriz.group_contabilidad"
+                                               class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                    </div>
+
+                                    <div style="flex: 1 1 190px; border: 2px solid #dc3545; border-radius: 8px; padding: 8px 10px; background-color: #fff5f5; min-height: 58px; box-shadow: 0 0 0 2px rgba(220,53,69,.08);"
+                                         attrs="{'invisible': [('es_cruce', '=', False)]}">
+                                        <div style="color: #b4232f; font-size: 11px; font-weight: 700; margin-bottom: 4px;">Consecutivo · Contabilidad</div>
+                                        <field name="consecutivo_contabilidad" nolabel="1" placeholder="Digite el consecutivo"
+                                               groups="Matriz.group_contabilidad"
+                                               class="campo_hover" style="width: 100%;"
+                                               attrs="{
+    'readonly': [('estado_ordenes_especiales', '!=', 'contabilidad')],
+    'required': [('estado_ordenes_especiales', '=', 'contabilidad'), ('es_cruce', '=', True)]
+}"/>
+                                        <field name="consecutivo_contabilidad" nolabel="1" readonly="1"
+                                               groups="!Matriz.group_contabilidad"
+                                               class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                    </div>
+
+                                    <div style="flex: 1 1 190px; border: 1px solid #d7dce2; border-radius: 8px; padding: 8px 10px; background-color: #ffffff; min-height: 58px;">
+                                        <div style="color: #4d5358; font-size: 11px; font-weight: 600; margin-bottom: 4px;">F. tentativa · Aux. Tesorería</div>
+                                        <field name="fecha_tentativa" nolabel="1"
+                                               groups="Matriz.group_tesoreria_auxiliar"
+                                               class="campo_hover" style="width: 100%;"
+                                               attrs="{
+                                                   'readonly': [('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria')],
+                                                   'required': [('estado_ordenes_especiales', '=', 'auxiliar_tesoreria')]
+                                               }"/>
+                                        <field name="fecha_tentativa" nolabel="1" readonly="1"
+                                               groups="!Matriz.group_tesoreria_auxiliar"
+                                               class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                    </div>
+
+                                    <div style="flex: 1 1 190px; border: 1px solid #d7dce2; border-radius: 8px; padding: 8px 10px; background-color: #ffffff; min-height: 58px;">
+                                        <div style="color: #4d5358; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Consecutivo · Tesorería</div>
+                                        <field name="consecutivo_tesoreria" nolabel="1" placeholder="Digite el consecutivo"
+                                               groups="Matriz.group_tesoreria"
+                                               class="campo_hover" style="width: 100%;"
+                                               attrs="{
+                                                   'readonly': [('estado_ordenes_especiales', '!=', 'tesoreria')],
+                                                   'required': [('estado_ordenes_especiales', '=', 'tesoreria')]
+                                               }"/>
+                                        <field name="consecutivo_tesoreria" nolabel="1" readonly="1"
+                                               groups="!Matriz.group_tesoreria"
+                                               class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">FORMULARIO DE ORDEN ESPECIAL</div>
+                            <div style="display: flex; gap: 20px; width: 100%; align-items: stretch;">
+                                <div style="width: 50%; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Tipo de persona</div>
+                                        <field name="seleccion_persona" placeholder="Seleccione..." class="campo_hover campo_solo_lectura" style="flex: 1;" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Seleccionar Proveedor</div>
+                                        <field name="proveedor_id" required="1" placeholder="Busque por nombre o NIT"
+                                               groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'readonly': ['|', ('create_date', '!=', False), ('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                        <field name="proveedor_id" readonly="1"
+                                               groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Proveedor</div>
+                                        <field name="proveedor" required="1" readonly="1" placeholder="Nombre del proveedor" class="campo_hover campo_solo_lectura" style="flex: 1;" />
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Dirección</div>
+                                        <field name="direccion" readonly="1"
+                                               placeholder="Dirección física"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Teléfono</div>
+                                        <field name="telefono" readonly="1"
+                                               placeholder="Número de contacto"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">E-mail</div>
+                                        <field name="email" readonly="1"
+                                               placeholder="correo@ejemplo.com"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                    </div>
+                                </div>
+                                <div style="width: 50%; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Ciudad</div>
+                                        <field name="ciudad" readonly="1"
+                                               placeholder="Ciudad registrada del proveedor"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"
+                                               options="{'no_create': True, 'no_open': True}"/>
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">NIT</div>
+                                        <field name="nit" placeholder="NIT con dígito" class="campo_hover campo_solo_lectura" style="flex: 1;" required="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Celular</div>
+                                        <field name="cel" readonly="1"
+                                               placeholder="Número móvil"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                    </div>
+                                    <div invisible="1" style="display: flex; align-items: center;">
+                                        <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Lugar de servicio</div>
+                                        <field name="lugar_prestacio_servicio" placeholder="Ciudad/Sede del servicio"
+                                               groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"
+                                               attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                        <field name="lugar_prestacio_servicio" readonly="1"
+                                               groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                               class="campo_hover campo_solo_lectura" style="flex: 1;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card_seccion">
+                            <div style="padding: 10px; margin-bottom: 10px;">
+                                <div class="titulo_seccion">Documentos de órdenes especiales</div>
+                                <div style="font-size:12px; font-weight:700; color:#043484; margin:12px 0 6px; text-transform:uppercase;">Coordinación</div>
+
+                                <field name="factura_documento_ids" invisible="1"/>
+                                <field name="otro_documento_ids" invisible="1"/>
+                                <field name="certificacion_conjunto_documento_ids" invisible="1"/>
+
+                                <div class="fc-cierre-documents">
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Facturas</strong>
+                                            <span>Responsable: Coordinación o Asistencia · Puede cargar uno o varios archivos</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('factura_documento_ids', '!=', [])]}">Pendiente</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('factura_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_facturas" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,!Matriz.group_soporte"
+                                                    attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <button name="action_cargar_facturas" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"/>
+                                            <button name="action_ver_facturas" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('factura_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Certificación conjunta (opcional)</strong>
+                                            <span>Responsable de carga: Coordinador · Un solo archivo · Si se aporta, requiere aprobación de Coordinación y Ventanilla</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('certificacion_conjunto_documento_ids', '!=', [])]}">No aportado</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('certificacion_conjunto_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_certificacion_conjunto" type="object"
+                                                    string="SUBIR ARCHIVO" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_contratacion_coordinador,!Matriz.group_soporte"
+                                                    attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'coordinador'), ('certificacion_conjunto_documento_ids', '!=', [])]}"/>
+                                            <button name="action_cargar_certificacion_conjunto" type="object"
+                                                    string="SUBIR ARCHIVO" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': [('certificacion_conjunto_documento_ids', '!=', [])]}"/>
+                                            <button name="action_ver_certificacion_conjunto" type="object"
+                                                    string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('certificacion_conjunto_documento_ids', '=', [])]}"/>
+                                            <button name="action_habilitar_carga_certificacion_conjunto" type="object"
+                                                    string="HABILITAR NUEVA CARGA" icon="fa-unlock" class="btn-warning"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': [('certificacion_conjunto_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display:flex; flex-wrap:wrap; gap:10px; padding:9px 12px; margin:-1px 0 8px; border:1px solid #dfe5ec; border-top:0; border-radius:0 0 8px 8px; background:#f8fafc;"
+                                         attrs="{'invisible': [('certificacion_conjunto_documento_ids', '=', [])]}">
+                                        <div style="flex:1 1 280px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 10px; border-right:1px solid #e3e8ef;">
+                                            <span style="font-size:12px; font-weight:600; color:#4d5358;">Aprobación de Coordinación</span>
+                                            <field name="certificacion_conjunto_aprobada_coordinador"
+                                                   nolabel="1" widget="boolean_toggle"
+                                                   groups="Matriz.group_contratacion_coordinador"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="certificacion_conjunto_aprobada_coordinador"
+                                                   nolabel="1" widget="boolean_toggle" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador"/>
+                                        </div>
+                                        <div style="flex:1 1 280px; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 10px;">
+                                            <span style="font-size:12px; font-weight:600; color:#4d5358;">Aprobación de Ventanilla</span>
+                                            <field name="certificacion_conjunto_aprobada_ventanilla"
+                                                   nolabel="1" widget="boolean_toggle"
+                                                   groups="Matriz.group_contratacion_ventanilla_unica"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'ventanilla')]}"/>
+                                            <field name="certificacion_conjunto_aprobada_ventanilla"
+                                                   nolabel="1" widget="boolean_toggle" readonly="1"
+                                                   groups="!Matriz.group_contratacion_ventanilla_unica"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Otros documentos</strong>
+                                            <span>Responsable: Coordinación o Asistencia · Opcional · Puede cargar uno o varios archivos</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('otro_documento_ids', '!=', [])]}">Opcional</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('otro_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_otros_documentos" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,!Matriz.group_soporte"
+                                                    attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <button name="action_cargar_otros_documentos" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"/>
+                                            <button name="action_ver_otros_documentos" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('otro_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="font-size:12px; font-weight:700; color:#043484; margin:16px 0 6px; text-transform:uppercase;">Contabilidad</div>
+
+                                <field name="acusacion_documento_ids" invisible="1"/>
+                                <field name="cruce_documento_ids" invisible="1"/>
+
+                                <div class="fc-cierre-documents">
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Causación</strong>
+                                            <span>Responsable: Contabilidad</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('acusacion_documento_ids', '!=', [])]}">Pendiente</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('acusacion_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_causacion" type="object"
+                                                    string="CARGAR" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_contabilidad,!Matriz.group_soporte"
+                                                    attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('acusacion_documento_ids', '!=', [])]}"/>
+                                            <button name="action_cargar_causacion" type="object"
+                                                    string="CARGAR" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': [('acusacion_documento_ids', '!=', [])]}"/>
+                                            <button name="action_ver_causacion" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('acusacion_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Documento Cruce</strong>
+                                            <span>Responsable: Contabilidad · Solo cuando la orden está marcada como cruce</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('cruce_documento_ids', '!=', [])]}">Pendiente si aplica</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('cruce_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_documento_cruce" type="object"
+                                                    string="CARGAR" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_contabilidad,!Matriz.group_soporte"
+                                                    attrs="{'invisible': ['|', '|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('es_cruce', '=', False), ('cruce_documento_ids', '!=', [])]}"/>
+                                            <button name="action_cargar_documento_cruce" type="object"
+                                                    string="CARGAR" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': ['|', ('es_cruce', '=', False), ('cruce_documento_ids', '!=', [])]}"/>
+                                            <button name="action_ver_documento_cruce" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('cruce_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="font-size:12px; font-weight:700; color:#043484; margin:16px 0 6px; text-transform:uppercase;">Auxiliar de Tesorería</div>
+
+                                <field name="orden_pago_documento_ids" invisible="1"/>
+
+                                <div class="fc-cierre-documents">
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Orden de pago</strong>
+                                            <span>Responsable: Auxiliar de Tesorería · Cuando aplique · Un solo archivo</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('orden_pago_documento_ids', '!=', [])]}">Cuando aplique</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('orden_pago_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_orden_pago" type="object"
+                                                    string="SUBIR ARCHIVO" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_tesoreria_auxiliar,!Matriz.group_soporte"
+                                                    attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria'), ('orden_pago_documento_ids', '!=', [])]}"/>
+                                            <button name="action_cargar_orden_pago" type="object"
+                                                    string="SUBIR ARCHIVO" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': [('orden_pago_documento_ids', '!=', [])]}"/>
+                                            <button name="action_ver_orden_pago" type="object"
+                                                    string="VER DOCUMENTO" icon="fa-file" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('orden_pago_documento_ids', '=', [])]}"/>
+                                            <button name="action_habilitar_carga_orden_pago" type="object"
+                                                    string="HABILITAR NUEVA CARGA" icon="fa-unlock" class="btn-warning"
+                                                    groups="Matriz.group_soporte"
+                                                    attrs="{'invisible': [('orden_pago_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="font-size:12px; font-weight:700; color:#043484; margin:16px 0 6px; text-transform:uppercase;">Tesorería</div>
+
+                                <field name="comprobante_pago_documento_ids" invisible="1"/>
+                                <field name="comprobante_bancario_documento_ids" invisible="1"/>
+
+                                <div class="fc-cierre-documents">
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Comprobante de pago</strong>
+                                            <span>Responsable: Tesorería</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('comprobante_pago_documento_ids', '!=', [])]}">Pendiente</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('comprobante_pago_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_comprobante_pago" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_tesoreria,!Matriz.group_soporte"
+                                                    attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'tesoreria')]}"/>
+                                            <button name="action_cargar_comprobante_pago" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"/>
+                                            <button name="action_ver_comprobante_pago" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('comprobante_pago_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="fc-cierre-document-row">
+                                        <div class="fc-cierre-document-info">
+                                            <strong>Comprobante bancario</strong>
+                                            <span>Responsable: Tesorería</span>
+                                        </div>
+
+                                        <span class="fc-cierre-document-pending"
+                                              attrs="{'invisible': [('comprobante_bancario_documento_ids', '!=', [])]}">Pendiente</span>
+                                        <span class="fc-cierre-document-ready"
+                                              attrs="{'invisible': [('comprobante_bancario_documento_ids', '=', [])]}">Cargado</span>
+
+                                        <div class="fc-cierre-document-actions">
+                                            <button name="action_cargar_comprobante_bancario" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_tesoreria,!Matriz.group_soporte"
+                                                    attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'tesoreria')]}"/>
+                                            <button name="action_cargar_comprobante_bancario" type="object"
+                                                    string="SUBIR ARCHIVOS" icon="fa-upload" class="btn-primary"
+                                                    groups="Matriz.group_soporte"/>
+                                            <button name="action_ver_comprobante_bancario" type="object"
+                                                    string="VER DOCUMENTOS" icon="fa-files-o" class="fc-cierre-document-view"
+                                                    attrs="{'invisible': [('comprobante_bancario_documento_ids', '=', [])]}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card_seccion" invisible="1">
+                            <div class="titulo_seccion">Objeto contractual</div>
+                            <field name="objeto_contractual" readonly="1"
+                                   placeholder="Objeto contractual del proveedor" />
+                        </div>
+                        <separator />
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Información Tributaria</div>
+                            <div style="display: flex; gap: 20px; width: 100%; align-items: stretch; padding: 10px;">
+                                <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+                                    <div>
+                                        <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">Código CIIU:</strong>
+                                        <field name="codigo_ciiu" readonly="1"
+                                               class="campo_hover campo_solo_lectura" />
+                                    </div>
+                                    <div invisible="1">
+                                        <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">RPC (Compromiso):</strong>
+                                        <field name="compromiso_presupuestal" class="campo_hover campo_solo_lectura" />
+                                    </div>
+                                    <div>
+                                        <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">Centro de costos:</strong>
+                                        <field name="centro_costo" class="campo_hover campo_solo_lectura" readonly="1" />
+                                    </div>
+                                </div>
+                                <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Facturación electrónica:</strong>
+                                        <field name="f_electronica" nolabel="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Responsable de IVA:</strong>
+                                        <field name="r_iva" nolabel="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">No responsable de IVA:</strong>
+                                        <field name="no_r_iva" nolabel="1" readonly="1" />
+                                    </div>
+                                </div>
+                                <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Declaración de Renta:</strong>
+                                        <field name="declaracion_renta" nolabel="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Régimen Simple:</strong>
+                                        <field name="regimen_simple_tributacion" nolabel="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Régimen Especial:</strong>
+                                        <field name="regimen_especial" nolabel="1" readonly="1" />
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                                        <strong style="color: #666; font-size: 11px;">Régimen Ordinario:</strong>
+                                        <field name="regimen_ordinario" nolabel="1" readonly="1" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Lugar de servicio</div>
+                            <table style="padding: 10px;">
+                                <field name="departamento_municipio_ids" class="js_block_click">
+                                    <tree editable="bottom" create="true" delete="true">
+                                        <field name="departamentos" options="{'no_create': True, 'no_open': True}" />
+                                        <field name="municipios2" options="{'no_create': True, 'no_open': True}" />
+                                    </tree>
+                                </field>
+                            </table>
+                        </div>
+                        <separator />
+                        <div class="card_seccion">
+                            <div style="padding: 10px; margin-bottom: 10px;">
+                                <div class="titulo_seccion">Detalles de órdenes especiales</div>
+                                <field name="lineas_ids" widget="one2many">
+                                    <tree editable="bottom" create="1" delete="1" style="width: 100%;">
+                                        <field name="descripcion" string="Descripción del servicio" width="70%" />
+                                        <field name="valor_unitario" string="Valor Total" width="30%" />
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Condiciones y resumen de la orden</div>
+                            <div style="display: flex; gap: 20px; width: 100%; align-items: stretch; padding: 10px; flex-wrap: wrap;">
+
+                                <div style="flex: 1 1 420px; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; background-color: #ffffff;">
+                                    <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; padding-bottom: 7px; margin-bottom: 12px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                                        Condiciones de la orden
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%; margin-bottom: 10px;">
+                                        <div style="color: #666; font-size: 12px; width: 38%; font-weight: 600;">FORMA DE PAGO:</div>
+                                        <div style="width: 62%;">
+                                            <field name="forma_pago1"
+                                                   placeholder="Ingrese la forma de pago"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                            <field name="forma_pago1" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; width: 100%;">
+                                        <div style="color: #666; font-size: 12px; width: 38%; font-weight: 600;">TIEMPO DE ENTREGA:</div>
+                                        <div style="width: 62%;">
+                                            <field name="tiempo_entrega"
+                                                   placeholder="Ingrese el tiempo de entrega"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                            <field name="tiempo_entrega" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="flex: 1 1 420px; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; background-color: #ffffff;">
+                                    <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; padding-bottom: 7px; margin-bottom: 12px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                                        Resumen económico
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f2f2f2;">
+                                        <span style="color: #666; font-size: 12px; font-weight: 600;">SUBTOTAL:</span>
+                                        <div style="width: 58%;">
+                                            <field name="subtotal" readonly="1" class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div attrs="{'invisible': [('select_fondos', '!=', 'es_poliza')]}"
+                                         style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f2f2f2;">
+                                        <span style="color: #666; font-size: 12px; font-weight: 600;">GASTOS EXPEDICIÓN:</span>
+                                        <div style="width: 58%;">
+                                            <field name="gastos_expedicion" placeholder="Ingrese el valor"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="gastos_expedicion" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f2f2f2;">
+                                        <span style="color: #666; font-size: 12px; font-weight: 600;">IVA:</span>
+                                        <div style="width: 58%;">
+                                            <field name="iva" placeholder="Ingrese el valor del IVA"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"
+                                                   attrs="{'readonly': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                            <field name="iva" readonly="1"
+                                                   groups="!Matriz.group_contratacion_coordinador,!Matriz.group_contratacion_asis_coordinador"
+                                                   class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+
+                                    <div attrs="{'invisible': [('select_fondos', '=', 'es_poliza')]}"
+                                         style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0 2px 0;">
+                                        <span style="color: #043484; font-size: 12px; font-weight: 700;">TOTAL PRODUCCIÓN:</span>
+                                        <div style="width: 58%;">
+                                            <field name="total" readonly="1" class="campo_hover campo_solo_lectura" style="width: 100%; font-weight: 700;"/>
+                                        </div>
+                                    </div>
+
+                                    <div attrs="{'invisible': [('select_fondos', '!=', 'es_poliza')]}"
+                                         style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0 2px 0;">
+                                        <span style="color: #043484; font-size: 12px; font-weight: 700;">TOTAL PÓLIZAS:</span>
+                                        <div style="width: 58%;">
+                                            <field name="total_poliza" readonly="1" class="campo_hover campo_solo_lectura" style="width: 100%; font-weight: 700;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card_seccion"
+                             groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_ventanilla_unica,Matriz.group_contabilidad,Matriz.group_tesoreria_auxiliar,Matriz.group_tesoreria"
+                             attrs="{'invisible': [('estado_ordenes_especiales', '=', 'finalizado')]}">
+                            <div style="padding: 14px;">
+                                <div class="titulo_seccion">Acciones del flujo</div>
+                                <div style="margin-top: 12px;">
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                                        Cuando corresponda, seleccione la persona que recibirá la orden. Después puede aprobar y enviar directamente; no necesita guardarla por separado.
+                                    </div>
+                                    <group col="2">
+                                        <field name="usuario_ventanilla_id"
+                                               placeholder="Seleccione un usuario de Ventanilla..."
+                                               groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'coordinador')]}"/>
+                                        <field name="usuario_contabilidad_id"
+                                               placeholder="Seleccione un usuario de Contabilidad..."
+                                               groups="Matriz.group_contratacion_ventanilla_unica"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'ventanilla')]}"/>
+                                        <field name="usuario_auxiliar_tesoreria_id"
+                                               placeholder="Seleccione un usuario de Auxiliar de Tesorería..."
+                                               groups="Matriz.group_contabilidad"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('es_cruce', '=', True)]}"/>
+                                        <field name="usuario_tesoreria_id"
+                                               placeholder="Seleccione un usuario de Tesorería..."
+                                               groups="Matriz.group_tesoreria_auxiliar"
+                                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                                               attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria')]}"/>
+                                    </group>
+                                </div>
+                                <div class="alert alert-warning"
+                                     style="margin-top:12px; margin-bottom:0;"
+                                     attrs="{'invisible': [('estado_retorno_devolucion', '=', False)]}">
+                                    <strong>Orden devuelta para ajustes.</strong>
+                                    Debe regresar a:
+                                    <field name="estado_retorno_devolucion" readonly="1" nolabel="1" class="oe_inline"/>
+                                    · Devuelta por:
+                                    <field name="ultimo_usuario_devolucion_id" readonly="1" nolabel="1" class="oe_inline"/>
+                                </div>
+                                <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 12px;">
+                                    <button name="action_enviar_ventanilla" type="object" string="Aprobar y enviar a Ventanilla" class="btn-primary"
+                                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                            attrs="{'invisible': ['|', '|', ('estado_ordenes_especiales', '!=', 'coordinador'), ('usuario_ventanilla_id', '=', False), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_coordinador_retornar_ajustes"
+                                            type="object"
+                                            string="Retornar ajustes al área que devolvió"
+                                            class="btn-primary"
+                                            icon="fa-reply"
+                                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'coordinador'), ('estado_retorno_devolucion', '=', False)]}"/>
+                                    <button name="action_enviar_contabilidad" type="object" string="Aprobar y enviar a Contabilidad" class="btn-primary"
+                                            groups="Matriz.group_contratacion_ventanilla_unica"
+                                            attrs="{'invisible': ['|', '|', ('estado_ordenes_especiales', '!=', 'ventanilla'), ('usuario_contabilidad_id', '=', False), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_retornar_ajustes" type="object" string="Retornar ajustes a Contabilidad" class="btn-primary" icon="fa-reply"
+                                            groups="Matriz.group_contratacion_ventanilla_unica"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'ventanilla'), ('estado_retorno_devolucion', '!=', 'contabilidad')]}"/>
+                                    <button name="action_devolver_ventanilla" type="object" string="Devolver a Coordinador" class="btn-danger"
+                                            groups="Matriz.group_contratacion_ventanilla_unica"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'ventanilla'), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_enviar_auxiliar_tesoreria" type="object" string="Aprobar y enviar a Auxiliar de Tesorería" class="btn-primary"
+                                            groups="Matriz.group_contabilidad"
+                                            attrs="{'invisible': ['|', '|', '|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('es_cruce', '=', True), ('usuario_auxiliar_tesoreria_id', '=', False), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_finalizar_cruce" type="object" string="Finalizar cruce" class="btn-primary"
+                                            groups="Matriz.group_contabilidad"
+                                            attrs="{'invisible': ['|', '|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('es_cruce', '=', False), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_retornar_ajustes" type="object" string="Retornar ajustes a Auxiliar de Tesorería" class="btn-primary" icon="fa-reply"
+                                            groups="Matriz.group_contabilidad"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('estado_retorno_devolucion', '!=', 'auxiliar_tesoreria')]}"/>
+                                    <button name="action_devolver_contabilidad_a_ventanilla" type="object" string="Devolver a Ventanilla" class="btn-danger"
+                                            groups="Matriz.group_contabilidad"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_devolver_contabilidad" type="object" string="Devolver a Coordinación" class="btn-danger"
+                                            groups="Matriz.group_contabilidad"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'contabilidad'), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_enviar_tesoreria" type="object" string="Aprobar y enviar a Tesorería" class="btn-primary"
+                                            groups="Matriz.group_tesoreria_auxiliar"
+                                            attrs="{'invisible': ['|', '|', ('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria'), ('usuario_tesoreria_id', '=', False), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_retornar_ajustes" type="object" string="Retornar ajustes a Tesorería" class="btn-primary" icon="fa-reply"
+                                            groups="Matriz.group_tesoreria_auxiliar"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria'), ('estado_retorno_devolucion', '!=', 'tesoreria')]}"/>
+                                    <button name="action_devolver_auxiliar_a_contabilidad" type="object" string="Devolver a Contabilidad" class="btn-danger"
+                                            groups="Matriz.group_tesoreria_auxiliar"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria'), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_devolver_auxiliar_tesoreria" type="object" string="Devolver a Coordinación" class="btn-danger"
+                                            groups="Matriz.group_tesoreria_auxiliar"
+                                            attrs="{'invisible': ['|', ('estado_ordenes_especiales', '!=', 'auxiliar_tesoreria'), ('estado_retorno_devolucion', '!=', False)]}"/>
+                                    <button name="action_finalizar_pago" type="object" string="Aprobar y finalizar" class="btn-primary"
+                                            groups="Matriz.group_tesoreria"
+                                            attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'tesoreria')]}"/>
+                                    <button name="action_devolver_tesoreria_a_auxiliar" type="object" string="Devolver a Auxiliar de Tesorería" class="btn-danger"
+                                            groups="Matriz.group_tesoreria"
+                                            attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'tesoreria')]}"/>
+                                    <button name="action_devolver_tesoreria" type="object" string="Devolver a Coordinación" class="btn-danger"
+                                            groups="Matriz.group_tesoreria"
+                                            attrs="{'invisible': [('estado_ordenes_especiales', '!=', 'tesoreria')]}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card_seccion"
+                             attrs="{'invisible': [('estado_ordenes_especiales', 'in', ['coordinador', 'finalizado'])]}">
+                            <div style="padding: 10px; margin-bottom: 10px;">
+                                <div class="titulo_seccion">Observaciones para devolución</div>
+                                <div style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                                    Este campo es obligatorio al devolver. La observación se envía por correo, queda registrada en el chatter y luego se limpia.
+                                </div>
+                                <field name="observacion_general"
+                                       placeholder="Escriba el motivo de la devolución..."
+                                       class="campo_hover campo_solo_lectura"/>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_ordenes_especiales_kanban" model="ir.ui.view">
+        <field name="name">Orden Especial Kanban</field>
+        <field name="model">ordenes_especiales</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_view">
+                <field name="name" />
+                <field name="proveedor" />
+                <field name="solicitante" />
+                <field name="fecha_solicitud" />
+                <field name="forma_pago1" />
+                <field name="subtotal" />
+                <field name="gastos_expedicion" />
+                <field name="iva" />
+                <field name="total" />
+                <field name="total_poliza" />
+                <field name="select_fondos" />
+                <field name="estado_ordenes_especiales" />
+                <field name="create_uid" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click d-flex flex-column p-0 o_kanban_view" style="margin: 0 -10px 0 -10px 0; position: relative; min-height: 350px; max-width: 280px; border-radius: 10px; overflow: hidden; background-color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <t t-if="record.select_fondos.raw_value == 'es_poliza'">
+                                <div style="position: absolute; top: 0; right: 0; background-color: #0288d1; color: white; padding: 3px 12px; font-weight: bold; font-size: 10px; border-radius: 0 8px 0 8px;  z-index: 10;">
+                                    <i class="fa fa-shield me-1" />Póliza
+                            </div>
+                            </t>
+                            <div class="p-3" style="background-color: white; border-bottom: 3px solid #004a99;">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-2 d-flex align-items-center justify-content-center" style="margin-bottom: 18px; width: 35px; height: 35px; background-color: #e3f2fd; border-radius: 50%; color: #004a99;">
+                                        <i class="fa fa-file-text-o" style="font-size: 16px;" />
+                                    </div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <h5 class="mb-0 fw-bold" style="color: #004a99; font-size: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                            <field name="name" />
+                                        </h5>
+                                        <small class="text-muted" style="font-size: 10px;">Orden Especial</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_body p-3 flex-grow-1">
+                                <div class="mb-3 p-2" style="background-color: #f8f9fa; border-radius: 6px;">
+                                    <div class="row g-0">
+                                        <div class="col-12 mb-2">
+                                            <small class="text-muted d-block" style="font-size: 9px;">
+                                                <i class="fa fa-user me-1" />Solicitante:</small>
+                                            <span class="text-dark fw-bold" style="font-size: 11px;">
+                                                <field name="solicitante" />
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block" style="font-size: 9px;">
+                                                <i class="fa fa-calendar me-1" />Fecha:</small>
+                                            <span class="text-dark fw-bold" style="font-size: 11px;">
+                                                <field name="fecha_solicitud" />
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block" style="font-size: 9px;">
+                                                <i class="fa fa-credit-card me-1" />Pago:</small>
+                                            <span class="text-dark fw-bold" style="font-size: 11px;">
+                                                <field name="forma_pago1" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-1">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="text-muted" style="font-size: 11px;">Subtotal:</span>
+                                        <span class="fw-bold" style="font-size: 11px;">$ <field name="subtotal" />
+                                        </span>
+                                    </div>
+                                    <t t-if="record.select_fondos.raw_value == 'es_poliza'">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-muted" style="font-size: 11px;">Gastos Exp.:</span>
+                                            <span class="fw-bold" style="font-size: 11px;">$ <field name="gastos_expedicion" />
+                                            </span>
+                                        </div>
+                                    </t>
+                                    <div class="d-flex justify-content-between mb-2 border-bottom pb-1">
+                                        <span class="text-muted" style="font-size: 11px;">IVA:</span>
+                                        <span class="fw-bold" style="font-size: 11px;">$ <field name="iva" />
+                                        </span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-uppercase fw-bold text-dark" style="font-size: 11px;">TOTAL A PAGAR</span>
+                                        <t t-if="record.select_fondos.raw_value == 'es_poliza'">
+                                            <span class="fw-bold text-success" style="font-size: 14px;">$ <field name="total_poliza" />
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="fw-bold text-success" style="font-size: 14px;">$ <field name="total" />
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="o_kanban_record_bottom p-3 border-top" style="background-color: #f8f9fa;">
+                                <div class="mb-2">
+                                    <small class="text-muted fw-bold d-block mb-1" style="font-size: 9px; letter-spacing: 0.5px;">ESTADO ACTUAL:</small>
+                                    <span class="estado_badge_ordenes fw-bold" t-att-data-estado="record.estado_ordenes_especiales.raw_value" style="padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; display: inline-block; border: none; color: white;  letter-spacing: 0.5px;">
+                                        <field name="estado_ordenes_especiales" />
+                                    </span>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <field name="create_uid" widget="many2one_avatar_user" />
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_ordenes_especiales_tree" model="ir.ui.view">
+        <field name="name">ordenes_especiales.tree</field>
+        <field name="model">ordenes_especiales</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fecha_solicitud" />
+                <field name="proveedor" />
+                <field name="direccion" />
+                <field name="nit" required="1" />
+                <field name="telefono" />
+                <field name="cel" />
+                <field name="email" />
+                <field name="lugar_prestacio_servicio" />
+                <field name="ciudad" />
+                <field name="solicitante" />
+                <field name="forma_pago1" />
+                <field name="tiempo_entrega" />
+                <field name="subtotal" />
+                <field name="iva" />
+                <field name="total" />
+            </tree>
+        </field>
+    </record>
+    <record id="action_ordenes_especiales" model="ir.actions.act_window">
+        <field name="name">Órdenes especiales</field>
+        <field name="res_model">ordenes_especiales</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'ocultar_polizas_ordenes_especiales': True}</field>
+    </record>
+    <menuitem id="menu_coordinacion_ordenes_especiales"
+              name="Órdenes especiales"
+              parent="menu_horizontaltres"
+              sequence="33"
+              action="action_ordenes_especiales"
+              groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"/>
+        <record id="view_ordenes_especiales_documento_carga_form" model="ir.ui.view">
+        <field name="name">ordenes.especiales.documento.carga.form</field>
+        <field name="model">ordenes_especiales.documento.carga</field>
+        <field name="arch" type="xml">
+            <form string="Subir documento">
+                <field name="orden_id" invisible="1"/>
+                <field name="clase_documento" invisible="1"/>
+                <field name="archivo_nombre" invisible="1"/>
+
+                <div style="padding: 18px 22px 8px;">
+                    <div style="font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 12px;">
+                        <field name="clase_documento" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <div id="o_ordenes_especiales_single_drop_zone"
+                         class="drv_drop_zone"
+                         style="min-height: 190px; border: 2px dashed #c7d2e6; border-radius: 12px;
+                                background: #f8fafc; padding: 28px 20px; text-align: center;">
+                        <i class="fa fa-cloud-upload drv_drop_icon"
+                           style="font-size: 40px; color: #9ca3af;"/>
+                        <p class="drv_drop_label"
+                           style="margin: 10px 0 6px; font-size: 14px; color: #6b7280;">
+                            Arrastra el archivo aquí
+                        </p>
+                        <div class="drv_drop_sep"
+                             style="font-size: 12px; color: #9ca3af; margin-bottom: 8px;">— o —</div>
+                        <field name="archivo"
+                               filename="archivo_nombre"
+                               string="SUBIR ARCHIVO"
+                               class="fc-ordenes-upload-single"/>
+                    </div>
+                </div>
+
+                <footer>
+                    <button name="action_cargar" type="object"
+                            string="Guardar archivo" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+        <record id="view_ordenes_especiales_documento_carga_multiple_form" model="ir.ui.view">
+        <field name="name">ordenes.especiales.documento.carga.multiple.form</field>
+        <field name="model">ordenes_especiales.documento.carga.multiple</field>
+        <field name="arch" type="xml">
+            <form string="Subir archivos">
+                <field name="orden_id" invisible="1"/>
+                <field name="clase_documento" invisible="1"/>
+
+                <div style="padding: 18px 22px 8px;">
+                    <div style="font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 12px;">
+                        <field name="clase_documento" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <div id="o_ordenes_especiales_drop_zone"
+                         class="drv_drop_zone fc-ordenes-upload-drop"
+                         style="min-height: 210px; border: 2px dashed #c7d2e6; border-radius: 12px;
+                                background: #f8fafc; padding: 28px 20px; text-align: center;">
+                        <i class="fa fa-cloud-upload drv_drop_icon"
+                           style="font-size: 40px; color: #9ca3af;"/>
+                        <p class="drv_drop_label"
+                           style="margin: 10px 0 6px; font-size: 14px; color: #6b7280;">
+                            Arrastra uno o varios archivos aquí
+                        </p>
+                        <div class="drv_drop_sep"
+                             style="font-size: 12px; color: #9ca3af; margin-bottom: 8px;">— o —</div>
+                        <field name="attachment_ids"
+                               widget="many2many_binary"
+                               string="SUBIR ARCHIVOS"
+                               class="fc-ordenes-upload-multiple"/>
+                    </div>
+                </div>
+
+                <footer>
+                    <button name="action_cargar" type="object"
+                            string="Guardar archivos" class="btn-primary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ordenes_especiales_documento_consulta_search" model="ir.ui.view">
+        <field name="name">ordenes.especiales.documento.consulta.search</field>
+        <field name="model">ordenes_especiales.documento</field>
+        <field name="arch" type="xml">
+            <search string="Buscar documentos">
+                <field name="archivo_nombre"
+                       string="Documento"
+                       filter_domain="[('archivo_nombre', 'ilike', self)]"/>
+                <field name="clase_documento" string="Tipo"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_ordenes_especiales_documento_consulta_tree" model="ir.ui.view">
+        <field name="name">ordenes.especiales.documento.consulta.tree</field>
+        <field name="model">ordenes_especiales.documento</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0" export_xlsx="0">
+                <field name="archivo_nombre" string="Documento"/>
+                <button name="action_ver_documento" type="object"
+                        string="VER DOCUMENTO" icon="fa-file"
+                        class="fc-cierre-document-view"/>
+                <button name="action_eliminar_documento" type="object"
+                        string="ELIMINAR" icon="fa-trash"
+                        class="btn-danger"
+                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contabilidad,Matriz.group_tesoreria_auxiliar,Matriz.group_tesoreria,Matriz.group_soporte"/>
+                <button name="action_habilitar_nueva_carga" type="object"
+                        string="HABILITAR NUEVA CARGA" icon="fa-unlock" class="btn-warning"
+                        groups="Matriz.group_soporte"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

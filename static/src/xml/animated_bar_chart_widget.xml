@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="AnimatedBarChartWidget" owl="1">
+        <div t-ref="AnimatedBarChartWidget-root" class="chart-container-animated">
+            <canvas class="chart-canvas-animated"></canvas>
+        </div>
+    </t>
+</templates>

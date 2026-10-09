@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_contrataciones_fuv_kanban_inherit" model="ir.ui.view">
+        <field name="name">Contrataciones FUV Kanban Inherit</field>
+        <field name="model">contrataciones_fuv</field>
+        <field name="inherit_id" ref="Matriz.view_contrataciones_fuv_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">contrataciones_kanban</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

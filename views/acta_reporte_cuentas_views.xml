@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_acta_reporte_cuentas_wizard_form" model="ir.ui.view">
+        <field name="name">acta.reporte.cuentas.wizard.form</field>
+        <field name="model">acta.reporte.cuentas.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Informes de cuentas de cobro" create="0" delete="0" class="sgo-informes-cuentas-form">
+                <header>
+                    <button name="action_descargar_excel" type="object" string="Excel" icon="fa-file-excel-o" class="btn-success"/>
+                    <button name="action_ver_analisis" type="object" string="Filtros" icon="fa-filter" class="btn-secondary"/>
+                    <button name="action_ver_todas" type="object" string="Ver todas" icon="fa-eye" class="btn-secondary"/>
+                    <button name="action_limpiar_filtros" type="object" string="Limpiar" icon="fa-eraser" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <style>
+                        .sgo-informes-cuentas-form .o_form_sheet_bg &gt; .o_form_sheet,
+                        .sgo-informes-cuentas-form .o_form_sheet {
+                            width: calc(100% - 32px) !important;
+                            max-width: none !important;
+                            min-height: calc(100vh - 135px) !important;
+                            margin: 16px auto !important;
+                            padding: 24px 28px !important;
+                        }
+                        .sgo-informes-cuentas-form .o_field_x2many .o_list_renderer {
+                            min-height: calc(100vh - 285px) !important;
+                            overflow-x: auto !important;
+                        }
+                        .sgo-informes-cuentas-form .o_field_x2many .o_list_table {
+                            min-width: 1650px !important;
+                        }
+                        .sgo-informes-cuentas-form .o_field_x2many .o_list_table thead th {
+                            padding: 13px 10px !important;
+                            vertical-align: middle !important;
+                        }
+                        .sgo-informes-cuentas-form .o_field_x2many .o_list_table tbody td {
+                            padding: 10px !important;
+                            vertical-align: middle !important;
+                        }
+                        .sgo-informes-cuentas-form .sgo-filter-active {
+                            position: absolute !important;
+                            width: 1px !important;
+                            height: 1px !important;
+                            opacity: 0 !important;
+                            pointer-events: none !important;
+                            overflow: hidden !important;
+                        }
+                        .sgo-informes-cuentas-form button.oe_stat_button:has(.sgo-filter-active input:checked) {
+                            background-color: #043484 !important;
+                            border-color: #043484 !important;
+                        }
+                        .sgo-informes-cuentas-form button.oe_stat_button:has(.sgo-filter-active input:checked) i,
+                        .sgo-informes-cuentas-form button.oe_stat_button:has(.sgo-filter-active input:checked) .o_stat_value,
+                        .sgo-informes-cuentas-form button.oe_stat_button:has(.sgo-filter-active input:checked) .o_stat_text {
+                            color: #ffffff !important;
+                        }
+                    </style>
+                    <field name="cantidad_resultados" invisible="1"/>
+                    <div class="oe_button_box" name="button_box" attrs="{'invisible': [('cantidad_resultados', '=', 0)]}">
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'todas'}" class="oe_stat_button" icon="fa-list-alt" help="Mostrar todas las cuentas de cobro">
+                            <field name="cantidad_resultados" widget="statinfo" string="Cuentas"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'en_proceso'}" class="oe_stat_button" icon="fa-spinner" help="Mostrar las cuentas que aún están en proceso">
+                            <field name="cantidad_en_proceso" widget="statinfo" string="En proceso"/>
+                            <field name="filtro_activo_en_proceso" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'finalizadas'}" class="oe_stat_button" icon="fa-check-circle" help="Mostrar únicamente las cuentas finalizadas">
+                            <field name="cantidad_finalizadas" widget="statinfo" string="Finalizadas"/>
+                            <field name="filtro_activo_finalizadas" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'rechazadas'}" class="oe_stat_button" icon="fa-times-circle" help="Mostrar únicamente las cuentas rechazadas">
+                            <field name="cantidad_rechazadas" widget="statinfo" string="Rechazadas"/>
+                            <field name="filtro_activo_rechazadas" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'correccion'}" class="oe_stat_button" icon="fa-exclamation-circle" help="Mostrar las cuentas que tienen una corrección activa">
+                            <field name="cantidad_con_correccion" widget="statinfo" string="Con corrección"/>
+                            <field name="filtro_activo_correccion" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'cesion'}" class="oe_stat_button" icon="fa-exchange" help="Mostrar las cuentas con cesión de derechos">
+                            <field name="cantidad_con_cesion" widget="statinfo" string="Con cesión"/>
+                            <field name="filtro_activo_cesion" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'radicadas'}" class="oe_stat_button" icon="fa-paper-plane" help="Mostrar las cuentas radicadas por el contratista">
+                            <field name="cantidad_radicadas" widget="statinfo" string="Radicadas contratista"/>
+                            <field name="filtro_activo_radicadas" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_asistente'}" class="oe_stat_button" icon="fa-user" help="Mostrar las cuentas enviadas a Asistente de coordinación">
+                            <field name="cantidad_envio_asistente" widget="statinfo" string="Enviadas a Asistente"/>
+                            <field name="filtro_activo_envio_asistente" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_coordinador'}" class="oe_stat_button" icon="fa-user-circle" help="Mostrar las cuentas enviadas al Coordinador">
+                            <field name="cantidad_envio_coordinador" widget="statinfo" string="Enviadas a Coordinador"/>
+                            <field name="filtro_activo_envio_coordinador" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_ventanilla'}" class="oe_stat_button" icon="fa-inbox" help="Mostrar las cuentas enviadas a Ventanilla">
+                            <field name="cantidad_envio_ventanilla" widget="statinfo" string="Enviadas a Ventanilla"/>
+                            <field name="filtro_activo_envio_ventanilla" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_director'}" class="oe_stat_button" icon="fa-pencil-square-o" help="Mostrar las cuentas enviadas al Director Financiero">
+                            <field name="cantidad_envio_director" widget="statinfo" string="Enviadas a Director"/>
+                            <field name="filtro_activo_envio_director" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_contabilidad'}" class="oe_stat_button" icon="fa-calculator" help="Mostrar las cuentas enviadas a Contabilidad">
+                            <field name="cantidad_envio_contabilidad" widget="statinfo" string="Enviadas a Contabilidad"/>
+                            <field name="filtro_activo_envio_contabilidad" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_auxiliar'}" class="oe_stat_button" icon="fa-credit-card" help="Mostrar las cuentas enviadas a Auxiliar de Tesorería">
+                            <field name="cantidad_envio_auxiliar" widget="statinfo" string="Enviadas a Auxiliar"/>
+                            <field name="filtro_activo_envio_auxiliar" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'envio_tesoreria'}" class="oe_stat_button" icon="fa-bank" help="Mostrar las cuentas enviadas a Tesorería">
+                            <field name="cantidad_envio_tesoreria" widget="statinfo" string="Enviadas a Tesorería"/>
+                            <field name="filtro_activo_envio_tesoreria" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'con_proyecto'}" class="oe_stat_button" icon="fa-folder-open">
+                            <field name="cantidad_con_proyecto" widget="statinfo" string="Con proyecto"/>
+                            <field name="filtro_activo_con_proyecto" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'sin_proyecto'}" class="oe_stat_button" icon="fa-folder-o">
+                            <field name="cantidad_sin_proyecto" widget="statinfo" string="Sin proyecto"/>
+                            <field name="filtro_activo_sin_proyecto" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'con_factura'}" class="oe_stat_button" icon="fa-file-text">
+                            <field name="cantidad_con_factura" widget="statinfo" string="Con factura"/>
+                            <field name="filtro_activo_con_factura" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'sin_factura'}" class="oe_stat_button" icon="fa-file-o">
+                            <field name="cantidad_sin_factura" widget="statinfo" string="Sin factura"/>
+                            <field name="filtro_activo_sin_factura" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_asistente'}" class="oe_stat_button" icon="fa-user">
+                            <field name="cantidad_estado_asistente" widget="statinfo" string="En Asistente"/>
+                            <field name="filtro_activo_estado_asistente" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_coordinador'}" class="oe_stat_button" icon="fa-user-circle">
+                            <field name="cantidad_estado_coordinador" widget="statinfo" string="En Coordinador"/>
+                            <field name="filtro_activo_estado_coordinador" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_ventanilla'}" class="oe_stat_button" icon="fa-inbox">
+                            <field name="cantidad_estado_ventanilla" widget="statinfo" string="En Ventanilla"/>
+                            <field name="filtro_activo_estado_ventanilla" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_director'}" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="cantidad_estado_director" widget="statinfo" string="En Director"/>
+                            <field name="filtro_activo_estado_director" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_contabilidad'}" class="oe_stat_button" icon="fa-calculator">
+                            <field name="cantidad_estado_contabilidad" widget="statinfo" string="En Contabilidad"/>
+                            <field name="filtro_activo_estado_contabilidad" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_auxiliar'}" class="oe_stat_button" icon="fa-credit-card">
+                            <field name="cantidad_estado_auxiliar" widget="statinfo" string="En Auxiliar"/>
+                            <field name="filtro_activo_estado_auxiliar" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'estado_tesoreria'}" class="oe_stat_button" icon="fa-bank">
+                            <field name="cantidad_estado_tesoreria" widget="statinfo" string="En Tesorería"/>
+                            <field name="filtro_activo_estado_tesoreria" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'mis_pendientes'}" class="oe_stat_button" icon="fa-pencil">
+                            <field name="cantidad_mis_pendientes" widget="statinfo" string="Mis pendientes firma"/>
+                            <field name="filtro_activo_mis_pendientes" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'pendiente_director'}" class="oe_stat_button" icon="fa-pencil-square">
+                            <field name="cantidad_pendiente_director" widget="statinfo" string="Firma Director pendiente"/>
+                            <field name="filtro_activo_pendiente_director" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'cesion_juridica'}" class="oe_stat_button" icon="fa-gavel">
+                            <field name="cantidad_cesion_juridica" widget="statinfo" string="Cesión en Jurídica"/>
+                            <field name="filtro_activo_cesion_juridica" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'cesion_coordinador'}" class="oe_stat_button" icon="fa-exchange">
+                            <field name="cantidad_cesion_coordinador" widget="statinfo" string="Cesión en Coordinador"/>
+                            <field name="filtro_activo_cesion_coordinador" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'con_orden'}" class="oe_stat_button" icon="fa-check-square-o">
+                            <field name="cantidad_con_orden" widget="statinfo" string="Con orden de pago"/>
+                            <field name="filtro_activo_con_orden" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'sin_orden'}" class="oe_stat_button" icon="fa-square-o">
+                            <field name="cantidad_sin_orden" widget="statinfo" string="Sin orden de pago"/>
+                            <field name="filtro_activo_sin_orden" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_filtrar_resumen" type="object" context="{'filtro_resumen_objetivo': 'orden_sin_fecha'}" class="oe_stat_button" icon="fa-calendar-times-o">
+                            <field name="cantidad_orden_sin_fecha" widget="statinfo" string="Orden sin fecha"/>
+                            <field name="filtro_activo_orden_sin_fecha" widget="boolean_toggle" class="sgo-filter-active"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-calendar">
+                            <field name="promedio_dias_proceso" widget="statinfo" string="Promedio días"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-hourglass-start">
+                            <field name="promedio_dias_elaboracion" widget="statinfo" string="Días elaboración"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-user-plus">
+                            <field name="promedio_horas_asis_coordinador" widget="statinfo" string="H Asistente-Coordinador"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-share-alt">
+                            <field name="promedio_horas_coordinador_ventanilla" widget="statinfo" string="H Coordinador-Ventanilla"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-briefcase">
+                            <field name="promedio_horas_ventanilla_director" widget="statinfo" string="H Ventanilla-Director"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="promedio_horas_director_contabilidad" widget="statinfo" string="H Director-Contabilidad"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-calculator">
+                            <field name="promedio_horas_contabilidad_auxiliar" widget="statinfo" string="H Contabilidad-Auxiliar"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-credit-card">
+                            <field name="promedio_horas_auxiliar_tesoreria" widget="statinfo" string="H Auxiliar-Tesorería"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-flag-checkered">
+                            <field name="promedio_horas_tesoreria_final" widget="statinfo" string="H Tesorería-Final"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-money">
+                            <field name="valor_total_resultados" widget="statinfo" string="Valor total"/>
+                        </button>
+                        <button name="action_resumen_sin_navegacion" type="object" class="oe_stat_button" icon="fa-calculator">
+                            <field name="valor_promedio_resultados" widget="statinfo" string="Valor promedio"/>
+                        </button>
+                    </div>
+                    <div class="alert alert-info py-2" attrs="{'invisible': [('filtros_resumen_descripcion', '=', False)]}">
+                        <strong>Filtros activos:</strong>
+                        <field name="filtros_resumen_descripcion" nolabel="1" readonly="1"/>
+                    </div>
+                    <field name="line_ids_mostradas" nolabel="1" readonly="1">
+                                <tree string="Cuentas encontradas" create="0" edit="0" delete="0">
+                                    <field name="nombre_contratista"/>
+                                    <field name="documento_de_identificacion"/>
+                                    <field name="clase_persona" optional="show"/>
+                                    <field name="proyecto" optional="show"/>
+                                    <field name="origen_cuenta" optional="show"/>
+                                    <field name="tipo_cuenta" optional="show"/>
+                                    <field name="valor_cuenta" optional="show" sum="Total"/>
+                                    <field name="estado" optional="show"/>
+                                    <field name="create_date_origen" optional="show"/>
+                                    <field name="fecha_solicitud" optional="show"/>
+                                    <field name="fecha_estado_actual" optional="show"/>
+                                    <field name="fecha_envio_asis_coordinador" optional="hide"/>
+                                    <field name="fecha_envio_coordinador" optional="hide"/>
+                                    <field name="fecha_envio_ventanilla" optional="hide"/>
+                                    <field name="fecha_envio_director_financiero" optional="hide"/>
+                                    <field name="fecha_firma_director_financiero" optional="hide"/>
+                                    <field name="fecha_envio_contabilidad" optional="hide"/>
+                                    <field name="fecha_envio_auxiliar_tesoreria" optional="hide"/>
+                                    <field name="fecha_envio_tesoreria" optional="hide"/>
+                                    <field name="fecha_finalizacion" optional="show"/>
+                                    <field name="fecha_rechazo" optional="hide"/>
+                                    <field name="dias_duracion_seleccionada" optional="show" avg="Promedio"/>
+                                    <field name="horas_duracion_seleccionada" optional="hide" avg="Promedio"/>
+                                    <field name="dias_total_proceso" optional="show" avg="Promedio"/>
+                                    <field name="horas_total_proceso" optional="hide" avg="Promedio"/>
+                                    <field name="horas_estado_actual" optional="hide" avg="Promedio"/>
+                                    <field name="horas_asis_a_coordinador" optional="hide" avg="Promedio"/>
+                                    <field name="horas_coordinador_a_ventanilla" optional="hide" avg="Promedio"/>
+                                    <field name="horas_ventanilla_a_director" optional="hide" avg="Promedio"/>
+                                    <field name="horas_director_a_contabilidad" optional="hide" avg="Promedio"/>
+                                    <field name="horas_contabilidad_a_auxiliar" optional="hide" avg="Promedio"/>
+                                    <field name="horas_auxiliar_a_tesoreria" optional="hide" avg="Promedio"/>
+                                    <field name="horas_tesoreria_a_final" optional="hide" avg="Promedio"/>
+                                    <field name="motivo_rechazo" optional="hide"/>
+                                    <field name="correccion_portal_activa" optional="hide"/>
+                                    <field name="correccion_reporte_activa" optional="hide"/>
+                                    <field name="correccion_origen" optional="hide"/>
+                                    <field name="correccion_fecha_solicitud" optional="hide"/>
+                                    <field name="correccion_fecha_cierre" optional="hide"/>
+                                    <field name="horas_correccion" optional="hide" avg="Promedio"/>
+                                    <field name="cesion_derechos" optional="hide"/>
+                                    <field name="estado_cesion" optional="hide"/>
+                                    <field name="fecha_solicitud_cesion" optional="hide"/>
+                                    <field name="asignado_coordinador" optional="hide"/>
+                                    <field name="asignado_ventanilla" optional="hide"/>
+                                    <field name="asignado_contabilidad" optional="hide"/>
+                                    <field name="asignado_auxiliar_tesoreria" optional="hide"/>
+                                    <field name="asignado_tesoreria" optional="hide"/>
+                                </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_acta_reporte_cuentas_line_tree" model="ir.ui.view">
+        <field name="name">acta.reporte.cuentas.line.tree</field>
+        <field name="model">acta.reporte.cuentas.line</field>
+        <field name="arch" type="xml">
+            <tree string="Reporte de cuentas de cobro" create="0" edit="0" delete="0">
+                <field name="nombre_contratista"/>
+                <field name="documento_de_identificacion"/>
+                <field name="clase_persona" optional="show"/>
+                <field name="proyecto" optional="show"/>
+                <field name="tipo_cuenta" optional="show"/>
+                <field name="origen_cuenta" optional="hide"/>
+                <field name="pago" optional="hide"/>
+                <field name="numero_factura" optional="hide"/>
+                <field name="valor_cuenta" optional="show" sum="Total"/>
+                <field name="estado" optional="show"/>
+                <field name="estado_visible" optional="hide"/>
+
+                <field name="create_date_origen" optional="show"/>
+                <field name="fecha_solicitud" optional="show"/>
+                <field name="fecha_estado_actual" optional="show"/>
+                <field name="fecha_envio_asis_coordinador" optional="hide"/>
+                <field name="fecha_envio_coordinador" optional="hide"/>
+                <field name="fecha_envio_ventanilla" optional="hide"/>
+                <field name="fecha_envio_director_financiero" optional="hide"/>
+                <field name="fecha_firma_director_financiero" optional="hide"/>
+                <field name="fecha_envio_contabilidad" optional="hide"/>
+                <field name="fecha_envio_auxiliar_tesoreria" optional="hide"/>
+                <field name="fecha_envio_tesoreria" optional="hide"/>
+                <field name="fecha_finalizacion" optional="show"/>
+                <field name="fecha_rechazo" optional="hide"/>
+                <field name="motivo_rechazo" optional="hide"/>
+
+                <field name="horas_duracion_seleccionada" optional="show" avg="Promedio"/>
+                <field name="dias_duracion_seleccionada" optional="show" avg="Promedio"/>
+                <field name="horas_total_proceso" optional="show" avg="Promedio"/>
+                <field name="dias_total_proceso" optional="show" avg="Promedio"/>
+                <field name="horas_estado_actual" optional="show" avg="Promedio"/>
+                <field name="horas_asis_a_coordinador" optional="hide" avg="Promedio"/>
+                <field name="horas_coordinador_a_ventanilla" optional="hide" avg="Promedio"/>
+                <field name="horas_ventanilla_a_director" optional="hide" avg="Promedio"/>
+                <field name="horas_director_a_contabilidad" optional="hide" avg="Promedio"/>
+                <field name="horas_contabilidad_a_auxiliar" optional="hide" avg="Promedio"/>
+                <field name="horas_auxiliar_a_tesoreria" optional="hide" avg="Promedio"/>
+                <field name="horas_tesoreria_a_final" optional="hide" avg="Promedio"/>
+
+                <field name="correccion_portal_activa" optional="hide"/>
+                <field name="correccion_reporte_activa" optional="hide"/>
+                <field name="seguimiento_correccion_reporte" optional="hide"/>
+                <field name="correccion_reporte_en_manos_de" optional="hide"/>
+                <field name="correccion_origen" optional="hide"/>
+                <field name="correccion_fecha_solicitud" optional="hide"/>
+                <field name="correccion_fecha_cierre" optional="hide"/>
+                <field name="horas_correccion" optional="hide" avg="Promedio"/>
+
+                <field name="cesion_derechos" optional="hide"/>
+                <field name="estado_cesion" optional="hide"/>
+                <field name="fecha_solicitud_cesion" optional="hide"/>
+                <field name="pendiente_firma_coordinador" optional="hide"/>
+                <field name="pendiente_firma_director_financiero" optional="hide"/>
+                <field name="orden_de_pago" optional="hide"/>
+                <field name="estado_programacion_pago" optional="hide"/>
+
+                <field name="asignado_coordinador" optional="hide"/>
+                <field name="asignado_ventanilla" optional="hide"/>
+                <field name="asignado_contabilidad" optional="hide"/>
+                <field name="asignado_auxiliar_tesoreria" optional="hide"/>
+                <field name="asignado_tesoreria" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_acta_reporte_cuentas_line_search" model="ir.ui.view">
+        <field name="name">acta.reporte.cuentas.line.search</field>
+        <field name="model">acta.reporte.cuentas.line</field>
+        <field name="arch" type="xml">
+            <search string="Analizar reporte">
+                <field name="nombre_contratista"/>
+                <field name="documento_de_identificacion"/>
+                <field name="proyecto"/>
+                <field name="estado"/>
+                <field name="clase_persona"/>
+                <field name="tipo_cuenta"/>
+                <field name="origen_cuenta"/>
+                <field name="pago"/>
+                <field name="numero_factura"/>
+                <field name="seguimiento_correccion_reporte"/>
+                <field name="correccion_reporte_en_manos_de"/>
+                <field name="estado_cesion"/>
+                <field name="orden_de_pago"/>
+                <field name="estado_programacion_pago"/>
+                <field name="create_date_origen"/>
+                <field name="fecha_solicitud"/>
+                <field name="fecha_estado_actual"/>
+                <field name="fecha_envio_asis_coordinador"/>
+                <field name="fecha_envio_coordinador"/>
+                <field name="fecha_envio_ventanilla"/>
+                <field name="fecha_envio_director_financiero"/>
+                <field name="fecha_firma_director_financiero"/>
+                <field name="fecha_envio_contabilidad"/>
+                <field name="fecha_envio_auxiliar_tesoreria"/>
+                <field name="fecha_envio_tesoreria"/>
+                <field name="fecha_finalizacion"/>
+                <field name="fecha_rechazo"/>
+
+                <separator/>
+                <filter string="Mes/Año de creación" name="reporte_fecha_creacion" date="create_date_origen"/>
+                <filter string="Mes/Año de radicación" name="reporte_fecha_radicacion" date="fecha_solicitud"/>
+                <filter string="Fecha Asistente coordinación" name="reporte_fecha_asistente" date="fecha_envio_asis_coordinador"/>
+                <filter string="Fecha envío Coordinador" name="reporte_fecha_coordinador" date="fecha_envio_coordinador"/>
+                <filter string="Fecha envío Ventanilla" name="reporte_fecha_ventanilla" date="fecha_envio_ventanilla"/>
+                <filter string="Fecha envío Director Financiero" name="reporte_fecha_director" date="fecha_envio_director_financiero"/>
+                <filter string="Fecha firma Director Financiero" name="reporte_fecha_firma_director" date="fecha_firma_director_financiero"/>
+                <filter string="Fecha envío Contabilidad" name="reporte_fecha_contabilidad" date="fecha_envio_contabilidad"/>
+                <filter string="Fecha envío Auxiliar tesorería" name="reporte_fecha_auxiliar" date="fecha_envio_auxiliar_tesoreria"/>
+                <filter string="Fecha envío Tesorería" name="reporte_fecha_tesoreria" date="fecha_envio_tesoreria"/>
+                <filter string="Fecha finalización" name="reporte_fecha_finalizacion" date="fecha_finalizacion"/>
+                <filter string="Fecha rechazo" name="reporte_fecha_rechazo" date="fecha_rechazo"/>
+                <separator/>
+                <filter string="Con proyecto" name="reporte_con_proyecto" domain="[('tiene_proyecto', '=', True)]"/>
+                <filter string="Sin proyecto" name="reporte_sin_proyecto" domain="[('tiene_proyecto', '=', False)]"/>
+                <filter string="Con factura" name="reporte_con_factura" domain="[('tiene_factura', '=', True)]"/>
+                <filter string="Sin factura" name="reporte_sin_factura" domain="[('tiene_factura', '=', False)]"/>
+                <separator/>
+                <filter string="Asistente de coordinación" name="reporte_estado_asistente" domain="[('estado', '=', 'Asistente de coordinación')]"/>
+                <filter string="Coordinador" name="reporte_estado_coordinador" domain="[('estado', '=', 'Coordinador')]"/>
+                <filter string="Mis pendientes de firma" name="reporte_mis_pendientes" domain="[('mis_pendientes_firma', '=', True)]"/>
+                <filter string="Ventanilla" name="reporte_estado_ventanilla" domain="[('estado', '=', 'Ventanilla')]"/>
+                <filter string="Director Financiero" name="reporte_estado_director" domain="[('estado', '=', 'Director Financiero')]"/>
+                <filter string="Pendientes de firma Director Financiero" name="reporte_pendiente_director" domain="[('pendiente_firma_director_financiero', '=', True)]"/>
+                <filter string="Director Financiero - reciente" name="reporte_director_reciente" domain="[('estado', '=', 'Director Financiero')]" context="{'order': 'fecha_envio_director_financiero desc'}"/>
+                <filter string="Director Financiero - antiguo" name="reporte_director_antiguo" domain="[('estado', '=', 'Director Financiero')]" context="{'order': 'fecha_envio_director_financiero asc'}"/>
+                <filter string="Contabilidad" name="reporte_estado_contabilidad" domain="[('estado', '=', 'Contabilidad')]"/>
+                <filter string="Auxiliar de tesorería" name="reporte_estado_auxiliar" domain="[('estado', '=', 'Auxiliar de tesorería')]"/>
+                <filter string="Tesorería" name="reporte_estado_tesoreria" domain="[('estado', '=', 'Tesorería')]"/>
+                <filter string="Finalizado" name="reporte_finalizadas" domain="[('estado', '=', 'Finalizado')]"/>
+                <filter string="Rechazado" name="reporte_rechazadas" domain="[('estado', '=', 'Rechazado')]"/>
+                <filter string="Corrección en proceso" name="reporte_correccion" domain="['|', ('correccion_portal_activa', '=', True), ('correccion_reporte_activa', '=', True)]"/>
+                <filter string="Con cesión de derechos" name="reporte_cesion" domain="[('cesion_derechos', '=', True)]"/>
+                <filter string="Cesión pendiente Jurídica" name="reporte_cesion_juridica" domain="[('estado_cesion', '=', 'Pendiente Jurídica')]"/>
+                <filter string="Cesión pendiente Coordinador" name="reporte_cesion_coordinador" domain="[('estado_cesion', '=', 'Pendiente Coordinador')]"/>
+                <filter string="Con orden de pago" name="reporte_con_orden" domain="[('orden_de_pago', '!=', '')]"/>
+                <filter string="Sin orden de pago" name="reporte_sin_orden" domain="[('orden_de_pago', '=', '')]"/>
+                <filter string="Orden cargada sin fecha tentativa" name="reporte_orden_sin_fecha" domain="[('estado_programacion_pago', '=', 'Orden de pago cargada - pendiente fecha tentativa de pago')]"/>
+
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                    <filter string="Proyecto" name="group_proyecto" context="{'group_by': 'proyecto'}"/>
+                    <filter string="Contratista" name="group_contratista" context="{'group_by': 'nombre_contratista'}"/>
+                    <filter string="Tipo de persona" name="group_clase_persona" context="{'group_by': 'clase_persona'}"/>
+                    <filter string="Tipo de cuenta" name="group_tipo_cuenta" context="{'group_by': 'tipo_cuenta'}"/>
+                    <filter string="Mes de creación" name="group_mes_creacion" context="{'group_by': 'create_date_origen:month'}"/>
+                    <filter string="Mes de radicación" name="group_mes_radicacion" context="{'group_by': 'fecha_solicitud:month'}"/>
+                    <filter string="Mes de finalización" name="group_mes_finalizacion" context="{'group_by': 'fecha_finalizacion:month'}"/>
+                    <filter string="Origen" name="group_origen" context="{'group_by': 'origen_cuenta'}"/>
+                    <filter string="Estado cesión" name="group_estado_cesion" context="{'group_by': 'estado_cesion'}"/>
+                    <filter string="Estado programación pago" name="group_programacion_pago" context="{'group_by': 'estado_programacion_pago'}"/>
+                    <filter string="Coordinador asignado" name="group_asignado_coordinador" context="{'group_by': 'asignado_coordinador'}"/>
+                    <filter string="Ventanilla asignada" name="group_asignado_ventanilla" context="{'group_by': 'asignado_ventanilla'}"/>
+                    <filter string="Contabilidad asignada" name="group_asignado_contabilidad" context="{'group_by': 'asignado_contabilidad'}"/>
+                    <filter string="Auxiliar tesorería asignado" name="group_asignado_auxiliar" context="{'group_by': 'asignado_auxiliar_tesoreria'}"/>
+                    <filter string="Tesorería asignada" name="group_asignado_tesoreria" context="{'group_by': 'asignado_tesoreria'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_acta_reporte_cuentas_line_pivot" model="ir.ui.view">
+        <field name="name">acta.reporte.cuentas.line.pivot</field>
+        <field name="model">acta.reporte.cuentas.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Análisis de cuentas de cobro">
+                <field name="estado" type="row"/>
+                <field name="proyecto" type="col"/>
+                <field name="cantidad" type="measure"/>
+                <field name="valor_cuenta" type="measure"/>
+                <field name="horas_duracion_seleccionada" type="measure"/>
+                <field name="horas_total_proceso" type="measure"/>
+                <field name="horas_estado_actual" type="measure"/>
+                <field name="horas_correccion" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_acta_reporte_cuentas_line_graph" model="ir.ui.view">
+        <field name="name">acta.reporte_cuentas_line.graph</field>
+        <field name="model">acta.reporte.cuentas.line</field>
+        <field name="arch" type="xml">
+            <graph string="Cuentas por estado" type="bar">
+                <field name="estado"/>
+                <field name="cantidad" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_acta_reporte_cuentas_resultado" model="ir.actions.act_window">
+        <field name="name">Resultado del reporte</field>
+        <field name="res_model">acta.reporte.cuentas.line</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_acta_reporte_cuentas_line_tree"/>
+        <field name="search_view_id" ref="view_acta_reporte_cuentas_line_search"/>
+        <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+    </record>
+
+    <record id="action_acta_reporte_cuentas_wizard" model="ir.actions.act_window">
+        <field name="name">Informes de cuentas de cobro</field>
+        <field name="res_model">acta.reporte.cuentas.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_acta_reporte_cuentas_wizard_form"/>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="action_server_acta_reporte_cuentas_todas" model="ir.actions.server">
+        <field name="name">Informes de cuentas</field>
+        <field name="model_id" ref="model_acta_reporte_cuentas_wizard"/>
+        <field name="state">code</field>
+        <field name="code">wizard = env['acta.reporte.cuentas.wizard'].search([('create_uid', '=', env.user.id)], order='id desc', limit=1)
+if not wizard:
+    wizard = env['acta.reporte.cuentas.wizard'].create({'name': 'Informes de cuentas de cobro', 'alcance': 'todas', 'etapa_desde': 'fecha_solicitud', 'etapa_hasta': 'fecha_finalizacion', 'orden': 'ultimo_movimiento'})
+wizard.write({'name': 'Informes de cuentas de cobro', 'etapa_desde': 'fecha_solicitud', 'etapa_hasta': 'fecha_finalizacion', 'orden': 'ultimo_movimiento', 'filtro_resumen': 'todas', 'filtros_resumen_activos': ''})
+wizard.action_ver_todas()
+action = env.ref('Matriz.action_acta_reporte_cuentas_wizard').read()[0]
+action.update({'res_id': wizard.id, 'target': 'current', 'name': 'Informes de cuentas de cobro'})</field>
+    </record>
+
+    <menuitem id="menu_acta_reporte_cuentas"
+              name="Informes de cuentas"
+              parent="Matriz.menu_actas"
+              action="action_server_acta_reporte_cuentas_todas"
+              sequence="95"
+              groups="Matriz.group_reportes_cuentas_cobro"/>
+
+    <record id="view_acta_pdf_unificado_orden_wizard_form" model="ir.ui.view">
+        <field name="name">acta.pdf.unificado.orden.wizard.form</field>
+        <field name="model">acta.pdf.unificado.orden.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Ordenar PDF unificado" create="0" delete="0">
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        Arrastre los documentos para definir el orden. También puede desmarcar un documento si no desea incluirlo en esta generación.
+                    </div>
+                    <field name="acta_id" invisible="1"/>
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom" create="0" delete="0">
+                            <field name="sequence" widget="handle"/>
+                            <field name="incluir"/>
+                            <field name="etiqueta"/>
+                            <field name="drive_id"/>
+                        </tree>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_aplicar_y_generar" type="object" string="Generar con este orden" class="btn-primary"/>
+                    <button name="action_usar_orden_base" type="object" string="Usar orden base" class="btn-secondary"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_acta_entrega_documentos_pdf_orden_inherit" model="ir.ui.view">
+        <field name="name">acta.entrega.documentos.pdf.orden.inherit</field>
+        <field name="model">acta_entrega_documentos</field>
+        <field name="inherit_id" ref="Matriz.view_acta_entrega_documentos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="(//button[@name='action_generar_pdf_unificado'])[1]" position="after">
+                <button name="action_ordenar_pdf_unificado"
+                        type="object"
+                        string="ORDENAR PDF"
+                        icon="fa-sort"
+                        class="btn btn-secondary"
+                        attrs="{'invisible': [('pdf_unificado_estado', '=', 'procesando')]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

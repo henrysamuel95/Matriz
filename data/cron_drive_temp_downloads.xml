@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Se mantiene actualizable para que active=False también se aplique en
+         bases donde este cron ya había sido instalado. -->
+    <data noupdate="0">
+        <record id="ir_cron_cleanup_drive_temp_downloads" model="ir.cron">
+            <field name="name">Limpiar documentos antiguos y descargas de Drive</field>
+            <field name="model_id" ref="base.model_ir_attachment"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_cleanup_drive_temp_downloads()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">False</field>
+        </record>
+
+        <record id="ir_cron_cleanup_drive_progress_form" model="ir.ui.view">
+            <field name="name">ir.cron.cleanup.drive.progress.form</field>
+            <field name="model">ir.cron</field>
+            <field name="inherit_id" ref="base.ir_cron_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <field name="is_document_cleanup_cron" invisible="1"/>
+                    <div class="o_document_cleanup_card"
+                         attrs="{'invisible': [('is_document_cleanup_cron', '=', False)]}">
+                        <div class="o_document_cleanup_header">
+                            <div>
+                                <h3><i class="fa fa-file-text-o"/> Limpieza documental</h3>
+                                <field name="cleanup_state_display" nolabel="1" class="o_document_cleanup_state"/>
+                            </div>
+                            <button name="action_refresh_cleanup_progress" type="object"
+                                    string="Actualizar" class="btn btn-outline-primary btn-sm"
+                                    icon="fa-refresh"/>
+                        </div>
+                        <div class="o_document_cleanup_progress"
+                             attrs="{'invisible': [('cleanup_running', '=', False)]}">
+                            <field name="cleanup_progress_display" widget="progressbar" nolabel="1"/>
+                        </div>
+                        <div class="o_document_cleanup_stats">
+                            <div class="o_document_cleanup_stat">
+                                <span>Encontrados</span>
+                                <field name="cleanup_total" nolabel="1"/>
+                            </div>
+                            <div class="o_document_cleanup_stat">
+                                <span>Eliminados</span>
+                                <field name="cleanup_done" nolabel="1"/>
+                            </div>
+                            <div class="o_document_cleanup_stat o_document_cleanup_running">
+                                <span>En ejecución</span>
+                                <field name="cleanup_running" nolabel="1"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+Le dejo este link para que mires si necesita instalar las librerías.
+
+https://es.stackoverflow.com/questions/386021/c%C3%B3mo-puedo-crear-requirements-txt-para-mi-proyecto

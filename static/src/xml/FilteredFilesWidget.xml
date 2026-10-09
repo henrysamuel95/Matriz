@@ -1,0 +1,5 @@
+<t t-name="FilteredFilesWidget">
+    <div>
+        <t t-esc="value"/>
+    </div>
+</t>

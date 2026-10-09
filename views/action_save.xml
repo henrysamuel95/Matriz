@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_formulariodeaprobaciones" model="ir.ui.view">
+            <field name="name">formulariodeaprobaciones.form</field>
+            <field name="model">action_save</field>
+            <field name="arch" type="xml">
+                <form string="Formulario de Aprobaciones" style="width: 440px; height: 300px;">
+                    <header>
+                        <root>
+                            <Titulo1_proyecto style="font-weight:bold;">APROBACIONES</Titulo1_proyecto>
+                            <span style="display: inline-block; width: 15px;"></span>
+                            <field name="ficharesumen_id" attrs="{'invisible': [('gestion_seleccionada', '=', True)]}" placeholder="Selecione Proyecto"/>
+                            <field name="gestion_seleccionada" invisible="0"/>
+                        </root>
+                        <!-- Campos del encabezado del formulario -->
+                    </header>
+                    <style>
+                            .modal-dialog {
+                            width: 30%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 600px; /* Establece un ancho máximo si lo deseas */
+                            margin: 45px auto; /* Controla el margen al centro */
+                        }
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <sheet>
+                        <group>
+                                <field name="revision_tecnico_administrativa" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="revision_juridica" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="revision_financiera" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="aprueba" class="oe_form_boolean" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <span style="display: inline-block; width: 5px;"></span>
+                        <button name="action_guardar" string="Guardar Cambios" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 150px;"></span>
+                        <button name="action_salir" string="Salir" type="object" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+

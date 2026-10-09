@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Los registros técnicos de correo solo se consultan desde Soporte. -->
+    <record id="access_fn_aviso_soporte" model="ir.model.access">
+        <field name="name">Finalización normal: avisos Soporte</field>
+        <field name="model_id" ref="model_fuv_finalizacion_aviso"/>
+        <field name="group_id" ref="group_soporte"/>
+        <field name="perm_read" eval="True"/>
+    </record>
+    <record id="access_fn_autorizacion_soporte" model="ir.model.access">
+        <field name="name">Finalización normal: autorización Soporte</field>
+        <field name="model_id" ref="model_fuv_finalizacion_autorizacion"/>
+        <field name="group_id" ref="group_soporte"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
+    </record>
+    <record id="access_fn_autorizacion_director" model="ir.model.access">
+        <field name="name">Finalización normal: Dirección FUV</field>
+        <field name="model_id" ref="model_fuv_finalizacion_autorizacion"/>
+        <field name="group_id" ref="group_contratacion_director_fuv"/>
+        <field name="perm_read" eval="True"/>
+    </record>
+    <record id="rule_fn_autorizacion_director" model="ir.rule">
+        <field name="name">Dirección FUV atiende sus autorizaciones</field>
+        <field name="model_id" ref="model_fuv_finalizacion_autorizacion"/>
+        <field name="groups" eval="[(4, ref('group_contratacion_director_fuv'))]"/>
+        <field name="domain_force">[('director_id', '=', user.id)]</field>
+    </record>
+    <record id="rule_fn_autorizacion_soporte" model="ir.rule">
+        <field name="name">Soporte consulta las autorizaciones</field>
+        <field name="model_id" ref="model_fuv_finalizacion_autorizacion"/>
+        <field name="groups" eval="[(4, ref('group_soporte'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

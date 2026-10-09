@@ -1,0 +1,4 @@
+// Colores institucionales del backend de Matriz.
+// Este archivo se carga antes de las variables primarias de Odoo para que sus
+// asignaciones con !default respeten esta personalización.
+$o-community-color: #043484 !default;

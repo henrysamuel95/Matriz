@@ -1,0 +1,30 @@
+<odoo>
+    <record id="view_tercero_detalle_sql_temp_tree" model="ir.ui.view">
+        <field name="name">tercero.detalle.sql.temp.tree</field>
+        <field name="model">tercero_detalle_sql_temp</field>
+        <field name="arch" type="xml">
+            <tree string="Detalle del Tercero">
+                <field name="tercero"/>
+                <field name="nombre_auxiliar"/>
+                <field name="id_co_docto"/>
+                <field name="id_tipo_docto"/>
+                <field name="nro_docto"/>
+                <field name="fecha_docto"/>
+                <field name="debitos"/>
+                <field name="creditos"/>
+                <field name="notas"/>
+                <field name="id_un"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_tercero_detalle_sql_temp_search" model="ir.ui.view">
+        <field name="name">tercero.detalle.sql.temp.search</field>
+        <field name="model">tercero_detalle_sql_temp</field>
+        <field name="arch" type="xml">
+            <search string="Buscar detalles de tercero">
+                <field name="tercero"/>
+                <field name="id_tipo_docto"/>
+            </search>
+        </field>
+    </record>
+</odoo>

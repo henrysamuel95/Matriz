@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="experiencia_fuv_consulta_singleton" model="experiencia.fuv.consulta">
+        <field name="name">Panel de consultas</field>
+    </record>
+
+    <record id="view_experiencia_fuv_consulta_panel_form" model="ir.ui.view">
+        <field name="name">experiencia.fuv.consulta.panel.form</field>
+        <field name="model">experiencia.fuv.consulta</field>
+        <field name="arch" type="xml">
+            <form string="Consultas Experiencia FUV" create="false" delete="false" class="o_entes_control_panel">
+                <sheet>
+                    <div class="o_entes_panel_header">
+                        <div class="o_entes_panel_logo">
+                            <img src="/Matriz/static/src/img/LogoFUV.png" alt="FUV"/>
+                        </div>
+                        <div class="o_entes_panel_heading">
+                            <h1>Experiencia FUV</h1>
+                            <p>Consulta la base historica por codigo, contrato, ubicacion o fechas registradas.</p>
+                        </div>
+                    </div>
+
+                    <div class="o_entes_search_panel">
+                        <div>
+                            <h2>Consulta puntual</h2>
+                            <p>La busqueda acepta coincidencias parciales para ubicar contratos de experiencia rapidamente.</p>
+                        </div>
+                        <div class="o_entes_search_fields">
+                            <field name="busqueda_codificacion" nolabel="1" placeholder="Codigo o codificacion"/>
+                            <field name="busqueda_numero_contrato" nolabel="1" placeholder="Numero de contrato"/>
+                            <field name="busqueda_localizacion" nolabel="1" placeholder="Localizacion"/>
+                            <field name="busqueda_fecha" nolabel="1" placeholder="Fecha, vigencia o anio"/>
+                            <button name="action_buscar" type="object" string="Buscar" class="btn-primary" icon="fa-search"/>
+                        </div>
+                    </div>
+
+                    <div class="o_entes_panel_actions">
+                        <button name="action_ver_todos" type="object" string="Ver todos" class="btn-secondary" icon="fa-list"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_experiencia_fuv_tree" model="ir.ui.view">
+        <field name="name">experiencia_fuv.tree</field>
+        <field name="model">experiencia_fuv</field>
+        <field name="arch" type="xml">
+            <tree string="DB Experiencia FUV" create="1" edit="1" delete="1" editable="top" class="o_entes_control_editable_tree">
+                <field name="codificacion" class="o_entes_limit_15"/>
+                <field name="cert_rup" class="o_entes_limit_15"/>
+                <field name="vigencia"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_finalizacion"/>
+                <field name="anio_terminacion"/>
+                <field name="numero_contrato" class="o_entes_limit_15"/>
+                <field name="nombre_entidad_contratante" class="o_entes_limit_15"/>
+                <field name="objeto_contrato" class="o_entes_limit_15"/>
+                <field name="localizacion" class="o_entes_limit_15"/>
+                <field name="valor_contrato_inicial"/>
+                <field name="aportes_fuv_convenios"/>
+                <field name="valor_total_contrato"/>
+                <field name="valor_registrado_rup"/>
+                <field name="conversion_smlv"/>
+                <field name="observaciones" class="o_entes_limit_15"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_experiencia_fuv_consulta_tree" model="ir.ui.view">
+        <field name="name">experiencia_fuv.consulta.tree</field>
+        <field name="model">experiencia_fuv</field>
+        <field name="arch" type="xml">
+            <tree string="Consulta Experiencia FUV" create="1" edit="1" delete="1" editable="top" class="o_entes_control_editable_tree">
+                <field name="codificacion"/>
+                <field name="vigencia"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_finalizacion"/>
+                <field name="anio_terminacion"/>
+                <field name="numero_contrato"/>
+                <field name="nombre_entidad_contratante"/>
+                <field name="objeto_contrato"/>
+                <field name="localizacion"/>
+                <field name="valor_total_contrato"/>
+                <field name="valor_registrado_rup"/>
+                <field name="observaciones"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_experiencia_fuv_form" model="ir.ui.view">
+        <field name="name">experiencia_fuv.form</field>
+        <field name="model">experiencia_fuv</field>
+        <field name="arch" type="xml">
+            <form string="Experiencia FUV">
+                <sheet>
+                    <group>
+                        <group string="Identificacion">
+                            <field name="codificacion"/>
+                            <field name="cert_rup"/>
+                            <field name="vigencia"/>
+                            <field name="anio_terminacion"/>
+                            <field name="numero_contrato"/>
+                        </group>
+                        <group string="Fechas y ubicacion">
+                            <field name="fecha_inicio"/>
+                            <field name="fecha_finalizacion"/>
+                            <field name="localizacion"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Entidad y objeto">
+                            <field name="nombre_entidad_contratante"/>
+                            <field name="objeto_contrato"/>
+                            <field name="observaciones"/>
+                        </group>
+                        <group string="Valores">
+                            <field name="valor_contrato_inicial"/>
+                            <field name="aportes_fuv_convenios"/>
+                            <field name="valor_total_contrato"/>
+                            <field name="valor_registrado_rup"/>
+                            <field name="conversion_smlv"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_experiencia_fuv_consulta_form" model="ir.ui.view">
+        <field name="name">experiencia_fuv.consulta.form</field>
+        <field name="model">experiencia_fuv</field>
+        <field name="arch" type="xml">
+            <form string="Consulta Experiencia FUV" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group string="Identificacion">
+                            <field name="codificacion" readonly="1"/>
+                            <field name="cert_rup" readonly="1"/>
+                            <field name="vigencia" readonly="1"/>
+                            <field name="anio_terminacion" readonly="1"/>
+                            <field name="numero_contrato" readonly="1"/>
+                        </group>
+                        <group string="Fechas y ubicacion">
+                            <field name="fecha_inicio" readonly="1"/>
+                            <field name="fecha_finalizacion" readonly="1"/>
+                            <field name="localizacion" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Entidad y objeto">
+                            <field name="nombre_entidad_contratante" readonly="1"/>
+                            <field name="objeto_contrato" readonly="1"/>
+                            <field name="observaciones" readonly="1"/>
+                        </group>
+                        <group string="Valores">
+                            <field name="valor_contrato_inicial" readonly="1"/>
+                            <field name="aportes_fuv_convenios" readonly="1"/>
+                            <field name="valor_total_contrato" readonly="1"/>
+                            <field name="valor_registrado_rup" readonly="1"/>
+                            <field name="conversion_smlv" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_search_experiencia_fuv" model="ir.ui.view">
+        <field name="name">experiencia_fuv.search</field>
+        <field name="model">experiencia_fuv</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Experiencia FUV">
+                <field name="codificacion" string="Codificacion" filter_domain="[['codificacion', 'ilike', self]]"/>
+                <field name="numero_contrato" string="Numero de contrato" filter_domain="[['numero_contrato', 'ilike', self]]"/>
+                <field name="localizacion" string="Localizacion" filter_domain="[['localizacion', 'ilike', self]]"/>
+                <field name="nombre_entidad_contratante"/>
+                <field name="objeto_contrato"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_vigencia" string="Vigencia" context="{'group_by': 'vigencia'}"/>
+                    <filter name="group_localizacion" string="Localizacion" context="{'group_by': 'localizacion'}"/>
+                    <filter name="group_anio" string="Anio terminacion" context="{'group_by': 'anio_terminacion'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

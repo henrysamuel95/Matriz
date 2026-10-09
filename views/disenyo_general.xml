@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista para la generación de archivos -->
+        <record id="view_generar_archivo_form" model="ir.ui.view">
+            <field name="name">generar_archivo.form</field>
+            <field name="model">generar_archivo</field>
+            <field name="arch" type="xml">
+                <form string="Generar Archivo">
+                    <style>
+                            .custom_button_style {
+                                background-color: #485B75;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                            }
+                        </style>
+                    <label for="actividad_id" string="Selecione un Contrato de Persona Juridica"/>
+                    <field name="actividad_id"/>
+                    <span style="display: inline-block; width: 33px;"></span>
+                    <label for="actividad2_id" string="Selecione un Contrato de Persona Natural"/>
+                    <field name="actividad2_id"/>
+
+                    <footer>
+                        <button string="Generar" type="object" name="generar" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

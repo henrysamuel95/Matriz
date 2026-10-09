@@ -1,0 +1,111 @@
+<odoo>
+    <data>
+        <!-- Vista del formulario -->
+        <record id="view_contrato_form" model="ir.ui.view">
+            <field name="name">contrato.form</field>
+            <field name="model">nueva_actividad</field>
+            <field name="arch" type="xml">
+                <form string="Contrato">
+                    <sheet>
+                        <style>
+                            .custom_button_style {
+                                background-color: #485B75;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                            }
+                        </style>
+
+                           <table>
+                            <tr>
+                                <td>
+                                    <label for="buscar_info" string="Buscar Inf contratista por cedula o NIT (Numeros sin DV)"/>
+                                </td>
+                                <td>
+                                     <field name="buscar_info" widget="many2one" options="{'no_open': True}" style="background-color: #FFFFE0; border: 1px solid #CCCCCC; margin-right: 10px;" required="1"/>
+                                </td>
+                                <span style="display: inline-block; width: 33px;"></span>
+                                <td>
+                                    <label for="buscar_contrato" string="Buscar contrato Numero / ID Contrato"/>
+                                </td>
+                                <td>
+                                    <field name="buscar_contrato" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="many2one" options="{'no_open': False}"/>
+                                </td>
+                            </tr>
+                               <br style="margin-top: 5mm;"/>
+                            <tr>
+                                <td>
+                                    <label for="numero_contrato" string="Numero / ID"/>
+                                    <field name="numero_contrato" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="char"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br style="margin-top: 5mm;"/>
+
+                        <group>
+                            <group>
+                                <!-- Campos de la columna 1 -->
+                                <field name="tipo_solicitud" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="tipo_contrato" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_solicitud" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="Date"/>
+                                <field name="cdp" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_cdp" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="Date"/>
+                                <field name="nombre_solicitante" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_contrato" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <separator string="" colspan="4" style="height: 10px; background-color: white;"/>
+                                <!-- Campos de la columna 3 -->
+                                <field name="actividades_especificas" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_inicio" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="Date"/>
+                                <field name="fecha_finalizacion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="Date"/>
+                            </group>
+                            <group>
+                                <!-- Campos de la columna 2 -->
+                                <field name="nombre" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="cedula_nit" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="direccion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="telefono" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="correo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <separator string="" colspan="4" style="height: 10px; background-color: white;"/>
+                                <!-- Campos debajo de las tres columnas -->
+                                <field name="valor_contrato_letras" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="descripcion_forma_pago" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="objeto_de_contrato" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <separator string="" colspan="4" style="height: 10px; background-color: white;"/>
+                                <field name="productos_entregar" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="justificacion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            </group>
+                        </group>
+                        <group>
+                            <!-- Parte inferior -->
+                            <field name="titulo_estudios" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            <field name="profesion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                            <field name="cargo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            <field name="perfil_requerido" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                        </group>
+
+                        <group>
+                            <field name="observaciones" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="html"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <!-- Botones en la parte inferior -->
+                        <button string="Agregar Nuevo" type="object" name="action_agregar_nuevo" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 33px;"></span>
+                        <button string="Limpiar Formulario" type="object" name="action_limpiar_formulario" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 33px;"></span>
+                        <button string="Modificar" type="object" name="action_modificar" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 33px;"></span>
+                        <button string="Eliminar" type="object" name="action_eliminar" class="oe_link"/>
+                        <span style="display: inline-block; width: 33px;"></span>
+                        <button string="Programación de Pagos" type="object" name="action_programacion_pagos" class="oe_link"/>
+                        <span style="display: inline-block; width: 33px;"></span>
+                        <button string="Cerrar" type="object" name="action_cerrar" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

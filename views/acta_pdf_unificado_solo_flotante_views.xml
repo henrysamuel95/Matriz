@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_acta_entrega_documentos_pdf_solo_flotante" model="ir.ui.view">
+        <field name="name">acta.entrega.documentos.pdf.solo.flotante</field>
+        <field name="model">acta_entrega_documentos</field>
+        <field name="inherit_id" ref="Matriz.view_acta_entrega_documentos_form"/>
+        <field name="arch" type="xml">
+            <!-- El progreso se muestra únicamente en la ventana flotante JS. -->
+            <xpath expr="(//field[@name='pdf_unificado_progreso'])[1]/.." position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- No ocultar todos los botones mientras el proceso está ejecutándose.
+                 El backend ya impide iniciar dos generaciones simultáneas. -->
+            <xpath expr="(//button[@name='action_generar_pdf_unificado'])[1]" position="attributes">
+                <attribute name="attrs">{'invisible': [('documento_unificado_id', '!=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_open_documento_unificado_drive']" position="attributes">
+                <attribute name="attrs">{'invisible': [('documento_unificado_id', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_download_documento_unificado']" position="attributes">
+                <attribute name="attrs">{'invisible': [('documento_unificado_id', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="(//button[@name='action_generar_pdf_unificado'])[2]" position="attributes">
+                <attribute name="attrs">{'invisible': [('documento_unificado_id', '=', False)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ORDENAR PDF se añade desde otra vista heredada. Se hereda esa vista para
+         que el botón también permanezca visible mientras trabaja el proceso. -->
+    <record id="view_acta_entrega_documentos_pdf_orden_siempre_visible" model="ir.ui.view">
+        <field name="name">acta.entrega.documentos.pdf.orden.siempre.visible</field>
+        <field name="model">acta_entrega_documentos</field>
+        <field name="inherit_id" ref="Matriz.view_acta_entrega_documentos_pdf_orden_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_ordenar_pdf_unificado']" position="attributes">
+                <attribute name="attrs">{}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

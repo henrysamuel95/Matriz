@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista previa · Guía de usuario de órdenes especiales</title>
+  <link rel="stylesheet" href="../src/css/ordenes_especiales_guia.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #edf2fa; color: #20334f; font-family: Arial, sans-serif; }
+    .mock-app { min-height: 100vh; background: #f9fbff; }
+    .mock-breadcrumb { padding: 20px 24px; border-top: 7px solid #002b72; border-bottom: 1px solid #d8e2ef; background: white; font-size: 14px; }
+    .mock-header { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #d8e2ef; background: white; }
+    .mock-flow { flex: 1; font-size: 12px; font-weight: bold; color: #6b7586; letter-spacing: .02em; }
+    .mock-flow strong { margin-right: 12px; padding: 12px 15px; background: #07357e; color: white; border-radius: 4px; }
+    .mock-form { width: min(1080px, calc(100% - 48px)); height: 500px; margin: 28px auto; border: 1px solid #e3eaf3; border-radius: 12px; background: white; }
+    .mock-form::before { display: block; padding: 22px; color: #043484; font-weight: bold; content: 'ORDEN ESPECIAL · PERSONA JURÍDICA'; }
+    .mock-overlay { position: fixed; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(5, 23, 55, .48); }
+    .mock-overlay[hidden] { display: none; }
+    .mock-modal { width: min(860px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; border-radius: 13px; background: #fff; box-shadow: 0 20px 70px rgba(0, 25, 70, .28); }
+    .mock-modal-title { display: flex; align-items: center; justify-content: space-between; padding: 12px 19px; border-bottom: 1px solid #dfe7f1; font-size: 14px; font-weight: 700; }
+    .mock-close { border: 0; background: none; color: #59687d; cursor: pointer; font-size: 23px; }
+    .mock-modal .oe-special-guide__step { min-height: 0; }
+    .mock-modal .oe-special-guide-form footer button { padding: 8px 16px; border: 0; color: white; cursor: pointer; }
+    @media (max-width: 650px) { .mock-breadcrumb { font-size: 12px; } .mock-flow { line-height: 2.8; } }
+  </style>
+</head>
+<body>
+  <div class="mock-app">
+    <div class="mock-breadcrumb">PRINCIPAL / 2. Contratación / Órdenes especiales / EMCALI EICE ESP</div>
+    <div class="mock-header">
+      <div class="mock-flow"><strong>COORDINADOR</strong> VENTANILLA → CONTABILIDAD → AUXILIAR DE TESORERÍA → TESORERÍA → FINALIZADO</div>
+      <button class="oe-special-guide-trigger" id="open-guide" type="button">ⓘ &nbsp;Guía de usuario</button>
+    </div>
+    <div class="mock-form"></div>
+  </div>
+
+  <div class="mock-overlay" id="guide-overlay" role="dialog" aria-modal="true" aria-label="Guía de usuario de orden especial">
+    <div class="mock-modal">
+      <div class="mock-modal-title">Guía de usuario · Orden especial <button class="mock-close" id="close-guide" type="button" aria-label="Cerrar">×</button></div>
+      <div class="oe-special-guide-form">
+        <div class="oe-special-guide">
+          <div class="oe-special-guide__hero">
+            <span class="oe-special-guide__eyebrow">ORDEN ESPECIAL · PERSONA JURÍDICA</span>
+            <h2>Así avanza tu orden</h2>
+            <p>Cada área revisa lo recibido, completa su parte y asigna al responsable de la siguiente etapa.</p>
+          </div>
+          <div class="oe-special-guide__steps">
+            <div class="oe-special-guide__step"><span class="oe-special-guide__number">01</span><div><h3>Coordinación</h3><p>El Coordinador crea la orden; el Asistente puede completarla. Cargan al menos una factura y, si se solicita, la Certificación conjunta. El Coordinador aprueba la certificación aportada antes de enviarla a Ventanilla.</p></div></div>
+            <div class="oe-special-guide__step"><span class="oe-special-guide__number">02</span><div><h3>Ventanilla</h3><p>Revisa y aprueba la Certificación conjunta si fue aportada, selecciona a la persona de Contabilidad y envía la orden a esa área.</p></div></div>
+            <div class="oe-special-guide__step"><span class="oe-special-guide__number">03</span><div><h3>Contabilidad</h3><p>Carga la causación. Si es Cruce, añade el documento y el consecutivo para finalizar; en otro caso envía al Auxiliar de Tesorería.</p></div></div>
+            <div class="oe-special-guide__step"><span class="oe-special-guide__number">04</span><div><h3>Auxiliar de Tesorería</h3><p>Registra la fecha tentativa de pago, carga la orden de pago si aplica y envía a Tesorería.</p></div></div>
+            <div class="oe-special-guide__step"><span class="oe-special-guide__number">05</span><div><h3>Tesorería</h3><p>Registra su consecutivo, aporta los comprobantes de pago y bancario y finaliza la orden.</p></div></div>
+          </div>
+          <div class="oe-special-guide__notes">
+            <div class="oe-special-guide__note"><span>↩</span><span><strong>Si hay una devolución:</strong> se indica el motivo, Coordinación corrige y devuelve la orden directamente al área que la regresó.</span></div>
+            <div class="oe-special-guide__note"><span>ⓘ</span><span><strong>Certificación opcional:</strong> si se carga, Coordinación y Ventanilla deben aprobarla en su respectiva etapa. El RCF también es opcional.</span></div>
+          </div>
+        </div>
+        <footer><button class="btn-primary" id="understood" type="button">Entendido</button></footer>
+      </div>
+    </div>
+  </div>
+  <script>
+    const overlay = document.getElementById('guide-overlay');
+    document.getElementById('open-guide').addEventListener('click', () => { overlay.hidden = false; });
+    document.getElementById('close-guide').addEventListener('click', () => { overlay.hidden = true; });
+    document.getElementById('understood').addEventListener('click', () => { overlay.hidden = true; });
+    overlay.addEventListener('click', (event) => { if (event.target === overlay) overlay.hidden = true; });
+  </script>
+</body>
+</html>

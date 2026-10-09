@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista para el modelo SQLIntegration -->
+    <record id="view_sql_form" model="ir.ui.view">
+        <field name="name">sql.form</field>
+        <field name="model">sql</field>
+        <field name="arch" type="xml">
+            <form string="Integración SQL">
+                <sheet>
+                    <div style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100px;
+                        background: #f8f9fa;
+                    ">
+                    <button name="sync_tabla_prueba" string="Sincronizar" type="object" class="miboton"/>
+                    </div>
+                    <div style="text-align:center; margin-top:12px;">
+                        <field name="selected_table"
+                            placeholder="Nombre de tabla"
+                            invisible="1"
+                            style="width:160px; text-align:center; border:1px solid #ccc; border-radius:6px;"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Vista tree para el modelo SQLIntegration -->
+    <record id="view_sql_tree" model="ir.ui.view">
+        <field name="name">sql.tree</field>
+        <field name="model">sql</field>
+        <field name="arch" type="xml">
+            <tree string="Integraciones SQL" decoration-info="available_tables">
+                <field name="id"/>
+                <field name="selected_table" string="Tabla Seleccionada"/>
+                <field name="available_tables" string="Tablas Disponibles" optional="hide"/>
+                <field name="table_fields" string="Campos de la Tabla" optional="hide"/>
+                <field name="primary_keys" string="Claves Primarias" optional="hide"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción para el modelo SQLIntegration -->
+    <record id="action_sql" model="ir.actions.act_window">
+        <field name="name">Integración SQL</field>
+        <field name="res_model">sql</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_sql_form"/>
+    </record>
+
+    <!-- Menú para acceder a la vista -->
+    <menuitem id="menu_sql" name="Integración SQL" action="action_sql"/>
+
+    <!-- Vista tree para TablaPrueba -->
+    <record id="view_tabla_prueba_tree" model="ir.ui.view">
+        <field name="name">tabla.prueba.tree</field>
+        <field name="model">tabla.prueba</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="categoria" string="Categoría"/>
+                <field name="tercero" string="Cédula o Nit"/>
+                <field name="razon_social" string="Razón Social"/>
+                <field name="id_tipo_docto" string="Tipo documento"/>
+                <button name="abrir_detalle_documento" string="🔍 Detalle" type="object"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_tabla_prueba_form" model="ir.ui.view">
+        <field name="name">tabla.prueba.form</field>
+        <field name="model">tabla.prueba</field>
+        <field name="arch" type="xml">
+            <form string="Detalle del Documento">
+                <sheet>
+                    <div class="oe_title">
+                        <h4>Información del tercero</h4>
+                    </div>
+                    <table groups="Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_coordinador"
+                        style="text-align: left; font-size: 16px; padding: 5px; border: 1px solid #6C757D; border-bottom: none; border-radius: 10px 10px 0 0; width: 100%;">
+                        <tr>
+                            <!-- Columna 1 -->
+                            <td style="vertical-align: top; padding: 21px; width: 50%;">
+                                <label for="tercero" style="color: black !important;">Cédula o Nit</label>
+                                <field name="tercero" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="razon_social" style="color: black !important;">Razón Social</label>
+                                <field name="razon_social" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="id_tipo_docto" style="color: black !important;">ID-Documento</label>
+                                <field name="id_tipo_docto" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="nro_docto" style="color: black !important;"># Documento</label>
+                                <field name="nro_docto" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="movimiento" style="color: black !important;">Movimiento</label>
+                                <field name="movimiento" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="debitos" style="color: black !important;">Débito</label>
+                                <field name="debitos" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+                            </td>
+
+                            <!-- Columna 2 -->
+                            <td style="vertical-align: top; padding: 21px; width: 50%;">
+                                <label for="vendedor" style="color: black !important;">Vendedor</label>
+                                <field name="vendedor" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="fecha_docto" style="color: black !important;">Fecha documento</label>
+                                <field name="fecha_docto" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="id_un" style="color: black !important;">Centro de costo</label>
+                                <field name="id_un" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="nombre_auxiliar" style="color: black !important;">Nombre auxiliar</label>
+                                <field name="nombre_auxiliar" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+
+                                <label for="notas" style="color: black !important;">Notas</label>
+                                <field name="notas" style="border-radius: 3px; color: black !important; border: 1px solid #6C757D; background-color: #EFF1F7; width: 95%; margin: 1px;" />
+                            </td>
+                        </tr>
+                    </table>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Acción para la vista tree de TablaPrueba -->
+    <record id="action_tabla_prueba" model="ir.actions.act_window">
+        <field name="name">Registros</field>
+        <field name="res_model">tabla.prueba</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_tabla_prueba_tree"/>
+    </record>
+    <record id="action_tabla_prueba_view_search" model="ir.ui.view">
+       <field name="name">tabla.prueba.view.search</field>
+       <field name="model">tabla.prueba</field>  <!-- ✅ Ahora apunta al modelo correcto -->
+       <field name="arch" type="xml">
+           <search>
+               <field name="id_un"/>
+               <field name="id_tipo_docto"/>
+               <field name="tercero"/>
+                <field name="categoria"/>
+           </search>
+       </field>
+    </record>
+    <!-- Menú para acceder a los registros de TablaPrueba -->
+    <menuitem id="menu_tabla_prueba" name="Registros tabla" action="action_tabla_prueba" parent="menu_sql"/>
+</odoo>

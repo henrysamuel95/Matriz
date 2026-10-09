@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="HorizontalBarChartWidget" owl="1">
+        <div t-ref="HorizontalBarChartWidget-root" class="chart-container-horizontal">
+            <canvas class="chart-canvas-horizontal"></canvas>
+        </div>
+    </t>
+</templates>

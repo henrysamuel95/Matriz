@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="GaugeChartWidget" owl="1">
+        <div t-ref="GaugeChartWidget-root" class="chart-container" style="position: relative; width: 100%; height: 100%;">
+            <canvas class="gauge-chart-canvas"></canvas>
+            <div class="gauge-text-overlay" style="position: absolute; width: 100%; text-align: center; bottom: 12%; left: 0; pointer-events: none;">
+                <span class="gauge-value" style="font-size: 26px; font-weight: 700; color: #0f172a; display: block; line-height: 1.1;">0.00</span>
+                <span class="gauge-label" style="font-size: 10px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-top: 2px;">EVM</span>
+                <span class="gauge-status-pill" style="display: none; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; margin-top: 6px;"></span>
+            </div>
+        </div>
+    </t>
+</templates>

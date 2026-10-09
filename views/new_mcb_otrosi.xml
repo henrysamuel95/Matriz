@@ -1,0 +1,491 @@
+<odoo>
+    <data>
+        <record id="view_form_new_mcb_otrosi" model="ir.ui.view">
+            <field name="name">new_mcb_otrosi.form</field>
+            <field name="model">new_mcb_otrosi</field>
+            <field name="arch" type="xml">
+                <form string="OtroSí MCB">
+                    <sheet>
+                        <style>
+                            .dropdown {
+                                position: relative;
+                                display: inline-block;
+                            }
+
+                            .dropdown-content {
+                                display: none;
+                                position: absolute;
+                                background-color: #EFF1F7;
+                                min-width: 180px;
+                                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                padding: 10px 16px;
+                                z-index: 1;
+                            }
+
+                            .table-container {
+                                margin: 10px; /* Ajusta el valor según lo que desees */
+                            }
+
+
+                            .dropdown:hover .dropdown-content {
+                                display: block;
+                            }
+
+                            .custom_button_style {
+                                text-transform: uppercase;
+
+                                color: black; /* Color de la letra (blanco) */
+                                border: none;
+                                padding: 6px 20px;
+                                font-size: 16px;
+                                border-radius: 5px;
+                            }
+                            .responsive-container {
+                                max-width: 100%;
+                                box-sizing: border-box;
+                                margin: 0 auto;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                            }
+
+                            .o_notebook {
+                                max-width: 100%;
+                            }
+                        </style>
+                        <group>
+                            <field name="mcb2_id" groups="Matriz.group_soporte" invisible="1"/>
+                            <field name="new_mcb_id" groups="Matriz.group_soporte" invisible="1"/>
+                        </group>
+
+
+
+                        <div invisible="" class="card_seccion2" style="width: 100%; background-color: white; padding-bottom: 10px;">
+                            <div class="titulo_seccion" style="grid-column: 1 / -1; margin-bottom: 15px;">Seleccionar para continuar</div>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; width: 100%;">
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-pencil-square-o" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="aclaraciones_otrosi" style="margin: 0;" attrs="{'readonly': [('suspension', '=', True)]}"/>
+                                    <label for="aclaraciones_otrosi" style="color: #333 !important; margin: 0; font-weight: normal; cursor: pointer;">
+                                        Aclaración <sup style="color: #1f78d1; font-weight: bold;">?</sup>
+                                    </label>
+                                </div>
+
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-plus-circle" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="adiciones_otrosi" style="margin: 0;" attrs="{'readonly': [('suspension', '=', True)]}"/>
+                                    <label for="adiciones_otrosi" style="color: #333 !important; margin: 0; font-weight: normal; cursor: pointer;">
+                                        Adición <sup style="color: #1f78d1; font-weight: bold;">?</sup>
+                                    </label>
+                                </div>
+
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-calendar-plus-o" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="prorroga_otrosi" style="margin: 0;" attrs="{'readonly': [('suspension', '=', True)]}"/>
+                                    <label for="prorroga_otrosi" style="color: #333 !important; margin: 0; font-weight: normal; cursor: pointer;">
+                                        Prórroga <sup style="color: #1f78d1; font-weight: bold;">?</sup>
+                                    </label>
+                                </div>
+
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-play-circle" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="modificaciones_otrosi" style="margin: 0;" attrs="{'readonly': [('suspension', '=', True)]}"/>
+                                    <label for="modificaciones_otrosi" style="color: #333 !important; margin: 0; font-weight: normal; cursor: pointer;">
+                                        Modificaciones <sup style="color: #1f78d1; font-weight: bold;">?</sup>
+                                    </label>
+                                </div> 
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-pause-circle" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="suspension" style="margin: 0;"/>
+                                    <label for="suspension" string="Suspensión" style="color: #333; margin: 0; font-weight: normal; cursor: pointer;"/>
+                                </div>
+                                <div style="background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-play-circle" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="reinicio" style="margin: 0;"/>
+                                    <label for="reinicio" string="Reinicio" style="color: #333; margin: 0; font-weight: normal; cursor: pointer;"/>
+                                </div>
+                                <div style="grid-column: span 2; background-color: #f9f9fb; border-radius: 4px; border-left: 4px solid #00a09d; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa fa-calendar-plus-o" style="color: #00a09d; font-size: 16px;"></i>
+                                    <field name="acta_de_prorroga_de_la_suspension" style="margin: 0;" attrs="{'readonly': [('suspension', '=', True)]}"/>
+                                    <label for="acta_de_prorroga_de_la_suspension" string="Acta de prórroga de la suspensión" style="color: #333; margin: 0; font-weight: normal; cursor: pointer;"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card_seccion2" >
+                            <div class="titulo_seccion2">Observaciones del otrosí</div>
+                            <div>
+                                    <field name="obervaciones_otrosi" class="campo_hover campo_solo_lectura"   placeholder="Por favor, agregue observaciones"/>
+                            </div>
+                        </div>   
+
+
+
+
+
+                        <!-- CARD SECCIÓN 1: FECHAS -->
+                        <div class="card_seccion2" style="margin-bottom: 20px;" attrs="{'invisible': [('prorroga_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                            <div class="titulo_seccion" style="margin-bottom: 15px;">Fechas</div>
+                            <div style="width: 100%; display: flex; justify-content: space-between; gap: 15px;">
+                                <!-- Columna 1: Fecha de finalización inicial -->
+                                <div style="width: 48%;" attrs="{'invisible': [('prorroga_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Fecha de finalización inicial:</strong>
+                                    <field name="fecha_finalizacion_inicial" class="campo_hover campo_solo_lectura" style="width: 100%; display: block;"/>
+                                </div>
+
+                                <!-- Columna 2: Fecha de finalización -->
+                                <div style="width: 48%;" attrs="{'invisible': [('prorroga_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Fecha de finalización (Otrosí):</strong>
+                                    <field name="fecha_finalizacion" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CARD SECCIÓN 2: ADICIONES Y CONTRAPARTIDAS (2 Columnas) -->
+                        <div class="card_seccion2" attrs="{'invisible': [('adiciones_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                            <div class="titulo_seccion" style="margin-bottom: 15px;">Adiciones y contrapartidas</div>
+                            <!-- FILA 1 -->
+                            <div style="width: 100%; display: flex; justify-content: space-between; gap: 15px; margin-bottom: 14px;">
+                                <!-- Columna 1: Adición -->
+                                <div style="width: 48%;" attrs="{'invisible': [('adiciones_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Adición:</strong>
+                                    <field name="valor_proyecto_convenio3" 
+                                        placeholder="Agregar el valor al proyecto"
+                                        class="input_moderno campo_hover_mcb" style="width: 100%;"/>
+                                </div>
+
+                                <!-- Columna 2: Contrapartida -->
+                                <div style="width: 48%;" attrs="{'invisible': [('adiciones_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Contrapartida:</strong>
+                                    <field name="contrapartida4" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                </div>
+                            </div> 
+
+                            <!-- FILA 2 -->
+                            <div style="width: 100%; display: flex; justify-content: space-between; gap: 15px; margin-bottom: 20px;">
+                                <!-- Columna 1: Contrapartida (Otros) -->
+                                <div style="width: 48%;" attrs="{'invisible': [('adiciones_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Contrapartida (Otros):</strong>
+                                    <field name="contrapartida_otros" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                </div>
+                                
+                                <!-- Columna 2: Vacía para mantener la simetría de 2 columnas -->
+                                <div style="width: 48%;"></div>
+                            </div> 
+                        </div>
+
+
+
+                        <div class="card_seccion2" attrs="{'invisible': [('adiciones_otrosi', '=', False), ('modificaciones_otrosi', '=', False)]}">
+                            <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end;">
+
+                                <div style="width: 30%; gap: 5px">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Seleccionar tipo de costo:</strong>
+                                    <field name="alias_costo"
+                                        string="Seleccionar"
+                                        placeholder="Seleccionar"
+                                        class="input_moderno campo_hover_mcb"
+                                        style="width: 100%; display: block;"/>
+                                </div>
+                                
+                                <div style="width: 6%; margin-right: 2%; margin-left: 2%; gap: 5px">
+                                    <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;"></strong>
+                                    <div style="display: flex; align-items: center; gap: 5px;">
+                                        <span style="font-weight: bold;">%</span>
+                                        <field name="costo_operativo_porc" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                    </div>
+                                </div>
+
+                                <div style="width: 25%; gap: 5px;">
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                            attrs="{'invisible': [('alias_costo', '!=', 'gastos_admin')]}">
+                                        Valor costo administrativo:
+                                    </strong>
+
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                            attrs="{'invisible': [('alias_costo', '!=', 'costo_operativo')]}">
+                                        Valor costo operativo:
+                                    </strong>
+
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                            attrs="{'invisible': [('alias_costo', '!=', 'amd_fuv')]}">
+                                        Valor administración FUV:
+                                    </strong>
+
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                            attrs="{'invisible': [('alias_costo', '!=', False)]}">
+                                        Valor:
+                                    </strong>
+
+                                    <field name="costo_operativo1" 
+                                        placeholder="Agregar el valor"
+                                        style="width: 100%;"
+                                        class="input_moderno campo_hover_mcb"/>
+                                </div>
+                                <div style="width: 25%; gap: 5px">
+                                    <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">
+                                        Contratos VCO:
+                                    </strong>
+                                    <field name="contratos_vco_otrosi" 
+                                        placeholder="Agregar el valor"
+                                        style="width: 100%;"
+                                        class="input_moderno campo_hover_mcb"/>
+                                </div>
+                            </div>
+                            <hr style="border-color: #D3D3D3; margin: 15px 0;" />
+                            <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Costos tributarios</h2>
+                            <div style="display: flex; justify-content: space-between; width: 100%;">
+
+                                <div style="width: 48%; padding-right: 10px;">
+
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Iva:</span>
+                                            <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                %<field name="porc_iva" placeholder='%'
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                            </div>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="IVA_ADMON_vaor"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Reteica:</span>
+                                            <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                %<field name="porc_reteica" placeholder='%'
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                            </div>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="reteica_result"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                readonly="0" />
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Estampillas:</span>
+                                            <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                %<field name="porc_estampillas" placeholder='%'
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                            </div>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="estampillas_result"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                readonly="0" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="width: 48%; padding-left: 10px;">
+                                    
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">ICA, avisos y tableros:</span>
+                                            <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                %<field name="porc_avisos_tableros" placeholder='%'
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                            </div>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="resul_avisos_tableros"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                readonly="0"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Gastos bancarios:</span>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="gastos_bancarios"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                readonly="0"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 5px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                            <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Retefuente:</span>
+                                            <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                %<field name="porc_retefuente" placeholder='%'
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                            </div>
+                                        </div>
+                                        <div style="width: 60%; padding-left: 5px;">
+                                            <field name="reteica_retefuente"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; padding: 5px 0;">
+                                <div style="width: 40%; display: flex; align-items: center;">
+                                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Total tributarios:</span>
+                                </div>
+                                <div style="width: 60%; padding-left: 5px;">
+                                    <field name="costos_total_valor2"
+                                        class="input_moderno campo_hover_mcb"
+                                        style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                                </div>
+                            </div>
+                        <hr style="border-color: #D3D3D3; margin: 15px 0;" />
+
+                            <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Póliza</h2>
+                            <div style="width: 100%;">
+                                
+                                <div style="display: flex; padding: 5px 0;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Póliza de cumplimiento:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="poliza_cumplim"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; padding: 5px 0;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Póliza de responsabilidad:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="poliza_respon"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                </div>
+                                <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Total pólizas:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="poliza_total_r_otrosi"
+                                            class="input_moderno campo_hover_mcb"
+                                            style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                                    </div>
+                                </div>
+                        <hr style="border-color: #D3D3D3; margin: 15px 0;" />
+                            <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">FUV</h2>
+                            
+                            <div style="width: 100%; display: flex; align-items: center;">
+
+                                <div style="width: 40%; display: flex; justify-content: flex-end; align-items: center; padding-right: 10px;">
+                                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Costos FUV:</span>
+                                </div>
+
+                                <div style="width: 60%; padding-left: 5px;">
+                                    <field name="costos_fuv"
+                                        style="width: 100%;"
+                                        class="input_moderno campo_hover_mcb"/>
+                                </div>
+                            </div>
+
+                        <hr style="border-color: #D3D3D3; margin: 15px 0;" />
+
+                            <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Participación</h2>
+                            <div style="width: 100%;">
+                                
+                                <div style="display: flex; padding: 5px 0;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Participación UV/FAC, ESC:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="new_Participación_UV"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; padding: 5px 0;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">FUV - Programas sociales:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="new_fuv_programas"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="border-color: #D3D3D3; margin: 15px 0;"/>
+                            
+                            <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Costo de producción</h2>
+                            <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+                                <field name="new_total_costos_produccion_N" class="input_moderno campo_hover_mcb" style="font-weight: bold; font-size: 14px; border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="card_seccion2" style="margin-bottom: 20px;">
+                            <div class="titulo_seccion2">Documentos de soporte del Otrosí</div>
+                            <p style="color: #64748b;">Cargue los archivos relacionados con este Otrosí. Destino: 1. CARPETA PRINCIPAL del proyecto.</p>
+                            <div class="mb-3" style="display: flex; gap: 10px;">
+                                <button name="action_cargar_documentos_soporte" type="object"
+                                        string="Cargar archivos" icon="fa-upload" class="btn btn-primary"
+                                        groups="!Matriz.group_consulta_coordinacion_financiera"/>
+                                <button name="action_ver_documentos_soporte" type="object"
+                                        string="Ver documentos" icon="fa-folder-open-o" class="btn btn-secondary"/>
+                            </div>
+                            <field name="documentos_soporte_ids" readonly="1" nolabel="1">
+                                <tree create="false" edit="false" delete="false">
+                                    <field name="file_name" string="Archivo"/>
+                                    <field name="create_date" string="Fecha de carga"/>
+                                    <button name="action_open_drive" type="object" string="Abrir" icon="fa-external-link"/>
+                                </tree>
+                            </field>
+                        </div>
+                        </div>
+                        <table invisible="1" style="width: 100%; border-collapse: collapse; margin-top: 10px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); border-radius: 8px; overflow: hidden;">
+                            <tr>
+                                <td style="padding: 15px;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <!-- Elaborado por -->
+                                        <td style="width: 50%; padding: 10px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+                                            <div style="color: #1e1c1b; font-weight: 600; font-size: 14px; margin-bottom: 20px;">Aprobado por</div>
+                                            <div style="height: 40px; border-bottom: 1px solid #ccc; margin-bottom: 8px;"></div>
+                                            <div style="color: #6c757d; font-size: 12px; text-align: right;"><field name="realizado_por_check"/></div>
+                                        </td>
+
+                                        <!-- Aprobado por -->
+                                        <td style="width: 50%; padding: 10px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-left: 10px;">
+                                            <div style="color: #1e1c1b; font-weight: 600; font-size: 14px; margin-bottom: 20px;">Elaborado por</div>
+                                            <div style="height: 40px; border-bottom: 1px solid #ccc; margin-bottom: 8px;"></div>
+                                            <div style="color: #6c757d; font-size: 12px; text-align: right;"><field name="aprobado_por_check"/></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </sheet>
+                    <!-- <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div> -->
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

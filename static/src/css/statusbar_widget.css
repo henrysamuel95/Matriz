@@ -1,0 +1,44 @@
+/* Estilos generales para la barra de estado */
+.o_kanban_view .o_kanban_record .o_status_bar {
+    display: flex;
+    width: 300px; /* Ancho completo de la barra */
+    border-radius: 5px; /* Bordes redondeados */
+    overflow: hidden; /* Para asegurar que no sobresalga el contenido */
+}
+
+/* Estilo para cada estado */
+.o_kanban_view .o_kanban_record .o_status_bar_item {
+    flex-grow: 1; /* Cada estado ocupa un tercio del espacio disponible */
+    text-align: center; /* Centrar texto */
+    padding: 8px 0; /* Espacio interno */
+    color: black; /* Color de texto */
+    cursor: pointer; /* Cambiar cursor a mano para indicar que es clickeable */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el cambio de color de fondo y texto */
+    background-color: white; /* Fondo blanco por defecto */
+    position: relative; /* Para añadir el triángulo */
+    border-right: 1px solid #ccc; /* Borde derecho para separación visual */
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%); /* Forma de flecha alargada */
+}
+
+/* Remover borde derecho del último elemento */
+.o_kanban_view .o_kanban_record .o_status_bar_item_last {
+    border-right: none;
+}
+
+/* Estilo para el estado activo */
+.o_kanban_view .o_kanban_record .o_status_bar_item.o_status_bar_item_active {
+    color: white; /* Color de texto cuando está activo */
+}
+
+/* Colores específicos para cada estado */
+.o_kanban_view .o_kanban_record .o_status_bar_item[data-status="red"].o_status_bar_item_active {
+    background-color: #0D399E; /* Rojo para No iniciado */
+}
+
+.o_kanban_view .o_kanban_record .o_status_bar_item[data-status="yellow"].o_status_bar_item_active {
+    background-color: #430E91; /* Amarillo para En progreso */
+}
+
+.o_kanban_view .o_kanban_record .o_status_bar_item[data-status="green"].o_status_bar_item_active {
+    background-color: #1AA729; /* Verde para Completado */
+}

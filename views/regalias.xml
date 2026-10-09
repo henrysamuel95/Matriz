@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Define the tree view for Regalias model -->
+        <record id="view_regalias_tree" model="ir.ui.view">
+            <field name="name">regalias.tree</field>
+            <field name="model">regalias</field>
+            <field name="arch" type="xml">
+                <tree editable="top" limit="20" default_order="id desc">
+                    <field name="activity_ids" width="40" string="ASIGNAR TAREA" widget="kanban_activity"/>
+                    <field name="name" width="60" optional="show"/>
+                    <field name="NOMBRE_DEL_PROCESO" width="60" optional="show" widget="text_preview"/>
+                    <field name="TIPO2" width="60" optional="show"/>
+                    <field name="MODALIDAD_DE_SELECCION2" width="60" optional="show"/>
+                    <field name="CODIGO_SECOP_II" width="60" optional="show"/>
+                    <field name="NOMBRE_OBJETO_CONTRATO" width="60" optional="show"/>
+                    <field name="CODIGO_UNSPSC" width="60" optional="show"/>
+                    <field name="user_id" width="60" optional="show" string="USUARIO ENCARGADO" options="{'no_create': True}"/>
+                    <field name="NOMBRE_DEL_CONTRATISTA2" width="60" optional="show"/>
+                    <field name="NOMBRE_SUPERVISOR_INICIAL" width="60" optional="show"/>
+                    <field name="FECHA_FIRMA_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="FECHA_DE_PUBLICACION_EN_EL_SECOP_II" width="60" optional="hide"/>
+                    <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO" width="60" optional="hide"/>
+                    <field name="VALOR_TOTAL_INCLUYE_ADICIONES_HTML" widget="html" options="{'sanitize': false}" optional="hide" width="60" />
+                    <field name="CODIGO_CDP" width="60" optional="show" invisible="1"/>
+                    <field name="VALOR_CDP_INICIAL" width="60" optional="hide" invisible="1"/>
+                    <field name="CODIGO_RPC" width="60" optional="show" invisible="1"/>
+                    <field name="VALOR_RPC_INICIAL" width="60" optional="hide" invisible="1"/>
+                    <field name="PLAZO_DE_EJECUCION" width="60" optional="hide"/>
+                    <field name="FECHA_INICIO_DEL_CONTRATO" width="60" optional="show" widget="date"/>
+                    <field name="FECHA_DE_SUSPENSION" width="60"/>
+                    <field name="FECHA_DE_REINICIO" width="60"/>
+                    <button name="fecha_popup" type="object" class="fa fa-calendar"/>
+                    <field name="FECHA_INICIAL_DE_TERMINACION_DEL_CTTO" width="60" optional="hide"/>
+                    <field name="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="cron_job_id" width="60" optional="show" invisible="1"/>
+                    <field name="DIFERENCIA_FECHAS" width="60" optional="show"/>
+                    <field name="semaforo_1_color" width="60" widget="color" optional="show"  class="fa-2x"/>
+                    <field name="SEMAFORO_1" width="60" optional="show" invisible="1"/>
+                    <field name="alert_amarillo_sent" width="60" optional="show" invisible="1"/>
+                    <field name="alert_rojo_sent" width="60" optional="show" invisible="1"/>
+                    <field name="alert_azul_sent" width="60" optional="show" invisible="1"/>
+                    <field name="FECHA_ACTA_DE_TERMINACION_Y_LIQUIDACION3" width="60" optional="hide"/>
+                    <field name="FECHA_ACTO_DE_CIERRE_DEL_PROYECTO2" width="60" optional="hide" invisible="1"/>
+                    <field name="DECRETO_248_21" width="60" optional="hide" invisible="1"/>
+                    <field name="ACUERDO_DE_PAZ" width="60" optional="hide" invisible="1"/>
+                    <field name="MATRIZ_DE_AVANCE_PUBLICADA" width="60" optional="hide" invisible="1"/>
+                    <field name="MATRIZ_DE_AVANCE_DEL_50" width="60" optional="hide" invisible="1"/>
+                    <field name="LINK_SECOP_II" width="60" optional="hide" widget="url"/>
+                    <field name="OTROSI_NO_1_PRORROGA_ADICION_MODIFICACION2_HTML" width="60" widget="html" options="{'sanitize': false}" optional="hide" />
+                    <field name="FECHA_OTROSI_NO_1" width="60" optional="hide" invisible="1"/>
+                    <field name="OTROSI_NO_2_PRORROGA_ADICION_MODIFICACION2" width="60" optional="hide" invisible="1"/>
+                    <field name="FECHA_OTROSI_NO_2" width="60" optional="hide" invisible="1"/>
+                    <field name="OTROSI_NO_3_PRORROGA_ADICION_MODIFICACION" width="60" optional="hide" invisible="1"/>
+                    <field name="FECHA_OTROSI_NO_3" width="60" optional="hide" invisible="1"/>
+                    <field name="ESTADO" width="60" optional="show" readonly="1"/>
+                    <field name="OBSERVACIONES" width="60" optional="hide"/>
+                    <field name="PERSONA_ENCARGADA_FUV" width="60" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+
+                <!-- Define the graph view for Regalias model -->
+        <record id="view_regalias_graph" model="ir.ui.view">
+            <field name="name">regalias.graph</field>
+            <field name="model">regalias</field>
+            <field name="arch" type="xml">
+                <graph string="Regalias por tipo" type="bar">
+                    <field name="name" type="row"/>
+                    <field name="NOMBRE_DEL_PROCESO" type="row"/>
+                    <field name="TIPO2" type="row"/>
+                    <field name="MODALIDAD_DE_SELECCION2" type="row"/>
+                    <field name="CODIGO_SECOP_II" type="row"/>
+                    <field name="NOMBRE_OBJETO_CONTRATO" type="row"/>
+                    <field name="CODIGO_UNSPSC" type="row"/>
+                    <field name="NOMBRE_DEL_CONTRATISTA2" type="row"/>
+                    <field name="NOMBRE_SUPERVISOR_INICIAL" type="row"/>
+                    <field name="FECHA_FIRMA_DEL_CONTRATO" type="row"/>
+                    <field name="FECHA_DE_PUBLICACION_EN_EL_SECOP_II" type="row"/>
+                    <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO" type="row"/>
+                    <field name="VALOR_TOTAL_INCLUYE_ADICIONES" type="row"/>
+                    <field name="PLAZO_DE_EJECUCION" type="row"/>
+                    <field name="FECHA_INICIO_DEL_CONTRATO" type="row" widget="date"/>
+                    <field name="FECHA_DE_SUSPENSION" type="row"/>
+                    <field name="FECHA_DE_REINICIO" type="row"/>
+                    <field name="FECHA_INICIAL_DE_TERMINACION_DEL_CTTO" type="row"/>
+                    <field name="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO" type="row"/>
+                    <field name="DIFERENCIA_FECHAS" type="row"/>
+                    <field name="SEMAFORO_1" type="row"/>
+                    <field name="FECHA_ACTA_DE_TERMINACION_Y_LIQUIDACION3" type="row"/>
+                    <field name="DECRETO_248_21" type="row"/>
+                    <field name="ACUERDO_DE_PAZ" type="row"/>
+                    <field name="MATRIZ_DE_AVANCE_PUBLICADA" type="row"/>
+                    <field name="MATRIZ_DE_AVANCE_DEL_50" type="row"/>
+                    <field name="LINK_SECOP_II" type="row" widget="url"/>
+                    <field name="OTROSI_NO_1_PRORROGA_ADICION_MODIFICACION2" type="row"/>
+                    <field name="ESTADO" type="row"/>
+                    <field name="OBSERVACIONES" type="row"/>
+                    <field name="PERSONA_ENCARGADA_FUV" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+                <!-- Define the pivot view for Regalias model -->
+        <record id="view_regalias_pivot" model="ir.ui.view">
+            <field name="name">regalias.pivot</field>
+            <field name="model">regalias</field>
+            <field name="arch" type="xml">
+                <pivot string="Regalias Pivot View">
+
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_proyectos_regalias_tree" model="ir.ui.view">
+            <field name="name">proyectos.regalias.tree</field>
+            <field name="model">proyectos_regalias</field>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Proyectos Regalias"  default_order="id desc">
+                    <field name="activity_ids" width="40" string="ASIGNAR TAREA" widget="kanban_activity"/>
+                    <field name="name"/>
+                    <field name="Proyecto"/>
+                    <field name="fecha_inicio_proyecto"/>
+                    <field name="fecha_terminacion_proyecto"/>
+                    <field name="plazo"/>
+                    <field name="nombre"/>
+                    <field name="cedula"/>
+                    <field name="cargo"/>
+                    <field name="porcentaje_dedicacion"/>
+                    <field name="profesional_regalias" options="{'no_create': True}"/>
+                    <field name="observaciones"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_proyectos_regalias_graph" model="ir.ui.view">
+            <field name="name">proyectos.regalias.graph</field>
+            <field name="model">proyectos_regalias</field>
+            <field name="arch" type="xml">
+                <graph string="Proyectos Regalias" type="bar">
+                    <field name="name"/>
+                    <field name="Proyecto"/>
+                    <field name="fecha_inicio_proyecto"/>
+                    <field name="fecha_terminacion_proyecto"/>
+                    <field name="plazo"/>
+                    <field name="nombre"/>
+                    <field name="cedula"/>
+                    <field name="cargo"/>
+                    <field name="porcentaje_dedicacion"/>
+                    <field name="profesional_regalias"/>
+                    <field name="observaciones"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_proyectos_regalias_calendar" model="ir.ui.view">
+            <field name="name">proyectos_regalias.calendar</field>
+            <field name="model">proyectos_regalias</field>
+            <field name="arch" type="xml">
+                <calendar date_start="fecha_inicio_proyecto" date_stop="fecha_terminacion_proyecto">
+                    <field name="activity_ids" width="40" string="ASIGNAR TAREA" widget="kanban_activity"/>
+                    <field name="name"/>
+                    <field name="Proyecto"/>
+                    <field name="fecha_inicio_proyecto"/>
+                    <field name="fecha_terminacion_proyecto"/>
+                    <field name="plazo"/>
+                    <field name="nombre"/>
+                    <field name="cedula"/>
+                    <field name="cargo"/>
+                    <field name="porcentaje_dedicacion"/>
+                    <field name="profesional_regalias" options="{'no_create': True}"/>
+                    <field name="observaciones"/>
+                </calendar>
+            </field>
+        </record>
+        <record id="view_option_kanban" model="ir.ui.view">
+            <field name="name">GO-SGR</field>
+            <field name="model">option</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- Aquí defines el contenido de la plantilla kanban-box -->
+                            <!-- Por ejemplo, puedes incluir etiquetas HTML para mostrar información relevante -->
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="view_regalias_kanban" model="ir.ui.view">
+            <field name="name">regalias.kanban.view</field>
+            <field name="model">regalias</field>
+            <field name="arch" type="xml">
+                <kanban create="false" editable="false">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card o_kanban_card_with_semaforo">
+                                <div class="o_kanban_color_badge" t-att-style="'background-color: ' + record.semaforo_1_color.raw_value" t-if="record.semaforo_1_color.raw_value"></div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <strong>BPIN: </strong>
+                                        <field name="name"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal --><div>
+                                        <strong>Nombre del Contratista: </strong>
+                                        <field name="NOMBRE_DEL_CONTRATISTA2"/>
+                                    </div>
+                                    <div>
+                                        <strong>Nombre del Contrato: </strong>
+                                        <field name="NOMBRE_DEL_PROCESO"/>
+                                    </div>
+                                    <div>
+                                        <strong>Código SECOP II: </strong>
+                                        <field name="CODIGO_SECOP_II"/>
+                                    </div>
+                                    <div>
+                                        <strong>Nombre / Objeto Contrato: </strong>
+                                        <field name="NOMBRE_OBJETO_CONTRATO"/>
+                                    </div>
+                                    <div>
+                                        <strong>Valor del Contrato / Proceso: </strong>
+                                        <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO"/>
+                                    </div>
+                                    <div>
+                                        <strong>Plazo de Ejecución: </strong>
+                                        <field name="PLAZO_DE_EJECUCION"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+                                    <div>
+                                        <strong>Fecha de Finalización /<br/> Plazo Ejecución del Contrato: </strong>
+                                        <field name="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+                                    <div>
+                                        <strong>Link SECOP II: </strong>
+                                        <span class="o_kanban_link custom-link">
+                                            <field name="LINK_SECOP_II" widget="url"/>
+                                        </span>
+                                    </div>
+
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                    <div>
+                                        <strong>Estado </strong>
+                                        <field name="ESTADO"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                    <strong>Semaforo </strong>
+                                    <field name="semaforo_1_color" invisible="0" widget="color"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+
+
+
+
+        <record id="proyectos_regalias_view_search" model="ir.ui.view">
+           <field name="name">proyectos.regalias.view.search.module.name</field>
+           <field name="model">proyectos_regalias</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="name"/>
+                    <field name="Proyecto"/>
+                    <field name="fecha_inicio_proyecto"/>
+                    <field name="fecha_terminacion_proyecto"/>
+                    <field name="plazo"/>
+                    <field name="nombre"/>
+                    <field name="cedula"/>
+                    <field name="cargo"/>
+                    <field name="porcentaje_dedicacion"/>
+                    <field name="profesional_regalias"/>
+                    <field name="observaciones"/>
+               </search>
+           </field>
+        </record>
+        <record id="view_proyectos_regalias_pivot" model="ir.ui.view">
+            <field name="name">proyectos.regalias.pivot</field>
+            <field name="model">proyectos_regalias</field>
+            <field name="arch" type="xml">
+                <pivot string="Proyectos Regalias">
+
+                </pivot>
+            </field>
+        </record>
+        <record id="regalias_view_search" model="ir.ui.view">
+           <field name="name">regalias.view.search.module.name</field>
+           <field name="model">regalias</field>
+           <field name="arch" type="xml">
+               <search>
+                   <field name="activity_ids" width="40" string="ASIGNAR TAREA" widget="kanban_activity"/>
+                    <field name="name" width="60" optional="show"/>
+                    <field name="NOMBRE_DEL_PROCESO" width="60" optional="show"/>
+                    <field name="TIPO2" width="60" optional="show"/>
+                    <field name="MODALIDAD_DE_SELECCION2" width="60" optional="show"/>
+                    <field name="CODIGO_SECOP_II" width="60" optional="show"/>
+                    <field name="NOMBRE_OBJETO_CONTRATO" width="60" optional="show"/>
+                    <field name="CODIGO_UNSPSC" width="60" optional="show"/>
+                    <field name="user_id" width="60" optional="show"/>
+                    <field name="NOMBRE_DEL_CONTRATISTA2" width="60" optional="show"/>
+                    <field name="NOMBRE_SUPERVISOR_INICIAL" width="60" optional="show"/>
+                    <field name="FECHA_FIRMA_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="FECHA_DE_PUBLICACION_EN_EL_SECOP_II" width="60" optional="show"/>
+                    <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO" width="60" optional="show"/>
+                    <field name="VALOR_TOTAL_INCLUYE_ADICIONES" width="60" optional="show"/>
+                    <field name="PLAZO_DE_EJECUCION" width="60" optional="show"/>
+                    <field name="FECHA_INICIO_DEL_CONTRATO" width="60" optional="show" widget="date"/>
+                    <field name="FECHA_DE_SUSPENSION" width="60" optional="hide"/>
+                    <field name="FECHA_DE_REINICIO" width="60" optional="hide"/>
+                    <field name="FECHA_INICIAL_DE_TERMINACION_DEL_CTTO" width="60" optional="hide"/>
+                    <field name="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="cron_job_id" width="60" optional="show"/>
+                    <field name="DIFERENCIA_FECHAS" width="60" optional="show" invisible="1"/>
+                    <field name="SEMAFORO_1" width="60" decoration-success ="SEMAFORO_1 == 'verde'" optional="show"/>
+                    <field name="FECHA_ACTA_DE_TERMINACION_Y_LIQUIDACION3" width="60" optional="hide"/>
+                    <field name="DECRETO_248_21" width="60" optional="hide"/>
+                    <field name="ACUERDO_DE_PAZ" width="60" optional="hide"/>
+                    <field name="MATRIZ_DE_AVANCE_PUBLICADA" width="60" optional="hide"/>
+                    <field name="MATRIZ_DE_AVANCE_DEL_50" width="60" optional="hide"/>
+                    <field name="LINK_SECOP_II" width="60" optional="hide" widget="url"/>
+                    <field name="OTROSI_NO_1_PRORROGA_ADICION_MODIFICACION2" width="60" optional="hide"/>
+                    <field name="ESTADO" width="60" optional="hide"/>
+                    <field name="OBSERVACIONES" width="60" optional="hide"/>
+                    <field name="PERSONA_ENCARGADA_FUV" width="60" optional="hide"/>
+               </search>
+           </field>
+        </record>
+
+        <record id="view_regalias_calendar" model="ir.ui.view">
+            <field name="name">regalias.calendar</field>
+            <field name="model">regalias</field>
+            <field name="arch" type="xml">
+                <calendar date_start="FECHA_INICIAL_DE_TERMINACION_DEL_CTTO" date_stop="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO">
+                    <field name="activity_ids" width="40" string="ASIGNAR TAREA" widget="kanban_activity"/>
+                    <field name="name" width="60" optional="show"/>
+                    <field name="NOMBRE_DEL_PROCESO" width="60" optional="show"/>
+                    <field name="TIPO2" width="60" optional="show"/>
+                    <field name="MODALIDAD_DE_SELECCION2" width="60" optional="show"/>
+                    <field name="CODIGO_SECOP_II" width="60" optional="show"/>
+                    <field name="NOMBRE_OBJETO_CONTRATO" width="60" optional="show"/>
+                    <field name="CODIGO_UNSPSC" width="60" optional="show"/>
+                    <field name="user_id" width="60" optional="show" string="USUARIO ENCARGADO" options="{'no_create': True}"/>
+                    <field name="NOMBRE_DEL_CONTRATISTA2" width="60" optional="show"/>
+                    <field name="NOMBRE_SUPERVISOR_INICIAL" width="60" optional="show"/>
+                    <field name="FECHA_FIRMA_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="FECHA_DE_PUBLICACION_EN_EL_SECOP_II" width="60" optional="show"/>
+                    <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO" width="60" optional="show"/>
+                    <field name="VALOR_TOTAL_INCLUYE_ADICIONES" width="60" optional="show"/>
+                    <field name="PLAZO_DE_EJECUCION" width="60" optional="show"/>
+                    <field name="FECHA_INICIO_DEL_CONTRATO" width="60" optional="show" widget="date"/>
+                    <field name="FECHA_DE_SUSPENSION" width="60" optional="hide"/>
+                    <field name="FECHA_DE_REINICIO" width="60" optional="hide"/>
+                    <field name="FECHA_INICIAL_DE_TERMINACION_DEL_CTTO" width="60" optional="hide"/>
+                    <field name="FECHA_DE_FINALIZACION_PLAZO_EJECUCION_DEL_CONTRATO" width="60" optional="show"/>
+                    <field name="cron_job_id" width="60" optional="show" invisible="1"/>
+                    <field name="DIFERENCIA_FECHAS" width="60" optional="show"/>
+                    <field name="SEMAFORO_1" width="60" decoration-success ="SEMAFORO_1 == 'verde'" optional="show"/>
+                    <field name="FECHA_ACTA_DE_TERMINACION_Y_LIQUIDACION3" width="60" optional="hide"/>
+                    <field name="DECRETO_248_21" width="60" optional="hide"/>
+                    <field name="ACUERDO_DE_PAZ" width="60" optional="hide"/>
+                    <field name="MATRIZ_DE_AVANCE_PUBLICADA" width="60" optional="hide"/>
+                    <field name="MATRIZ_DE_AVANCE_DEL_50" width="60" optional="hide"/>
+                    <field name="LINK_SECOP_II" width="60" optional="hide"/>
+                    <field name="OTROSI_NO_1_PRORROGA_ADICION_MODIFICACION2" width="60" optional="hide"/>
+                    <field name="ESTADO" width="60" optional="hide"/>
+                    <field name="OBSERVACIONES" width="60" optional="hide"/>
+                    <field name="PERSONA_ENCARGADA_FUV" width="60" optional="hide"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_form_valor_total_incluye_adiciones" model="ir.ui.view">
+            <field name="name">valor.total.incluye.adiciones.form</field>
+            <field name="model">valor_total_incluye_adiciones</field>
+            <field name="arch" type="xml">
+                <form string="Valor Total Incluye Adiciones">
+                    <sheet>
+                        <notebook>
+                            <page string="Valores">
+                                <field name="valor_ids">
+                                    <tree editable="bottom" decoration-bf="VALOR_TOTAL_INCLUYE_ADICIONES > 0">
+                                        <field name="VALOR_TOTAL_INCLUYE_ADICIONES" width="60" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <group string="Detalles" col="4">
+                                <field name="valor_id" invisible="1"/>
+                                <field name="VALOR_DEL_CONTRATO_VALOR_DEL_PROCESO" readonly="1" invisible="0"/>
+                                <field name="TOTAL" invisible="0"/>
+                                <field name="total_tabla" readonly="1" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="action_save_and_reload" type="object" string="Guardar" class="btn-primary"/>
+                        <button string="Descartar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_form_fecha_de_reinicio_y_suspension" model="ir.ui.view">
+            <field name="name">fecha.de.reinicio.y.suspension.form</field>
+            <field name="model">fecha_de_reinicio_y_suspension</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="fechas_id" invisible="1"/>
+                            <field name="fecha_de_suspension" invisible="1"/>
+                            <field name="fecha_de_reinicio" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Fechas">
+                                <field name="fecha_tabla_ids">
+                                    <tree editable="bottom">
+                                        <field name="fecha_de_suspension"/>
+                                        <field name="fecha_de_reinicio"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_form_otrosi_no" model="ir.ui.view">
+            <field name="name">otrosi.no.form</field>
+            <field name="model">otrosi_no</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="otrosi2_id" invisible="1"/>
+                            <field name="contador" invisible="1"/>
+                        </group>
+                        <notebook>
+                            <page string="OTROSI">
+                                <field name="otrosi_tabla_ids">
+                                    <tree editable="bottom" col="3">
+                                        <field name="contador" width="20"/>
+                                        <field name="tipos_combinaciones" width="60"/>
+                                        <field name="fecha" width="20"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button name="action_save_and_reload" type="object" string="Guardar" class="btn-primary"/>
+                        <button string="Descartar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tipo_combinacion_form" model="ir.ui.view">
+            <field name="name">tipo.combinacion.form</field>
+            <field name="model">tipo_combinaciones</field>
+            <field name="arch" type="xml">
+                <form string="Tipo Combinacion">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tipo_form" model="ir.ui.view">
+            <field name="name">tipo.form</field>
+            <field name="model">tipo</field>
+            <field name="arch" type="xml">
+                <form string="TIPO2">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_modalidad_form" model="ir.ui.view">
+            <field name="name">modalidad.form</field>
+            <field name="model">modalidad</field>
+            <field name="arch" type="xml">
+                <form string="Modalidad Selección">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_contratista_form" model="ir.ui.view">
+            <field name="name">contratista.form</field>
+            <field name="model">contratistas</field>
+            <field name="arch" type="xml">
+                <form string="Contratista">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

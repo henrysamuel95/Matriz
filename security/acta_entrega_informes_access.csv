@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_acta_entrega_informe_wizard,acta entrega informe wizard,model_acta_entrega_informe_wizard,group_informes_cuentas_cobro,1,1,1,1
+access_acta_entrega_informe_linea,acta entrega informe linea,model_acta_entrega_informe_linea,group_informes_cuentas_cobro,1,0,0,0
+access_acta_entrega_informe_wizard_soporte,acta entrega informe wizard soporte,model_acta_entrega_informe_wizard,group_soporte,1,1,1,1
+access_acta_entrega_informe_linea_soporte,acta entrega informe linea soporte,model_acta_entrega_informe_linea,group_soporte,1,0,0,0

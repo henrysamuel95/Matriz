@@ -1,0 +1,2512 @@
+<odoo>
+    <data>
+        <!-- Vista de formulario para el modelo Drive -->
+        <record id="view_drive_form" model="ir.ui.view">
+            <field name="name">drive.form</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <form string="Drive">
+                    <style>
+                        /* --- ESTILOS QUE SE MANTIENEN IGUAL (Cabecera y Selector) --- */
+                        .drive-container {
+                            padding: 15px;
+                            background-color: #f9f9f9;
+                            border-radius: 8px;
+                        }
+                        .drive-header-card {
+                            background-color: #ffffff;
+                            border-left: 6px solid #003a70;
+                            padding: 20px;
+                            border-radius: 6px;
+                            margin-bottom: 25px;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                        }
+                        .drive-label-title {
+                            font-size: 0.75rem;
+                            color: #888;
+                            text-transform: uppercase;
+                            letter-spacing: 1.5px;
+                            font-weight: 600;
+                            margin-bottom: 8px;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                        }
+                        .drive-file-name-input input {
+                            font-size: 1.5rem !important;
+                            font-weight: 500;
+                            color: #2c3e50;
+                            background-color: transparent !important;
+                            border: none !important;
+                            border-bottom: 2px solid transparent !important;
+                            width: 100%;
+                            padding: 5px 0;
+                            transition: border-color 0.3s;
+                        }
+                        .drive-file-name-input input:focus {
+                            border-bottom: 2px solid #003a70 !important;
+                        }
+                        .selector-card {
+                            background: #ffffff;
+                            border: 1px solid #e0e0e0;
+                            border-radius: 8px;
+                            padding: 15px 20px;
+                            margin-top: 20px;
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                        }
+                        .selector-label {
+                            font-weight: bold;
+                            color: #003a70;
+                            font-size: 1rem;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            min-width: 150px;
+                        }
+                        .custom-selection-field {
+                            width: 100%;
+                            max-width: 300px;
+                            font-size: 1rem;
+                        }
+                        .preview-area {
+                            margin-top: 25px;
+                            background: #fff;
+                            padding: 20px;
+                            border-radius: 8px;
+                            border: 1px solid #e0e0e0;
+                            min-height: 200px;
+                        }
+
+                        /* --- NUEVOS ESTILOS PARA LOS BOTONES (ANIMADOS) --- */
+                        
+                        /* 1. Botón Primario (Guardar, Enviar) */
+                        .footer-btn-primary {
+                            background: linear-gradient(135deg, #003a70 0%, #00264d 100%); /* Gradiente Azul */
+                            color: white !important;
+                            border: none;
+                            border-radius: 30px; /* Bordes redondos estilo píldora */
+                            padding: 10px 25px;
+                            text-transform: uppercase;
+                            font-weight: 700;
+                            font-size: 0.85rem;
+                            letter-spacing: 0.5px;
+                            margin-right: 8px;
+                            box-shadow: 0 4px 6px rgba(0, 58, 112, 0.3);
+                            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Animación suave */
+                            cursor: pointer;
+                        }
+                        .footer-btn-primary:hover {
+                            transform: translateY(-2px); /* Se eleva */
+                            box-shadow: 0 7px 14px rgba(0, 58, 112, 0.4); /* Sombra más grande */
+                            background: linear-gradient(135deg, #004a8f 0%, #003366 100%);
+                        }
+                        .footer-btn-primary:active {
+                            transform: scale(0.97); /* Efecto de click (se encoge) */
+                            box-shadow: 0 2px 4px rgba(0, 58, 112, 0.3);
+                        }
+
+                        /* 2. Botón Secundario (Descartar, Descargar, Cambiar Nombre) */
+                        .footer-btn-secondary {
+                            background-color: #fff;
+                            color: #555 !important;
+                            border: 1px solid #ddd;
+                            border-radius: 30px;
+                            padding: 10px 25px;
+                            text-transform: uppercase;
+                            font-size: 0.85rem;
+                            font-weight: 600;
+                            margin-right: 8px;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                        }
+                        .footer-btn-secondary:hover {
+                            background-color: #f8f9fa;
+                            color: #003a70 !important;
+                            border-color: #003a70;
+                            transform: translateY(-2px);
+                            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+                        }
+                        .footer-btn-secondary:active {
+                            transform: scale(0.97);
+                        }
+
+                        /* PDF */
+                        .footer-btn-pdf:hover {
+                            background-color: #d32f2f !important;
+                            color: white !important;
+                            border-color: #d32f2f !important;
+                            box-shadow: 0 5px 12px rgba(211, 47, 47, 0.35) !important;
+                        }
+
+                        /* Word */
+                        .footer-btn-word:hover {
+                            background-color: #1565c0 !important;
+                            color: white !important;
+                            border-color: #1565c0 !important;
+                            box-shadow: 0 5px 12px rgba(21, 101, 192, 0.35) !important;
+                        }
+
+                        /* 3. Botón de Peligro (Papelera) */
+                        .footer-btn-danger {
+                            background-color: #fff;
+                            color: #dc3545 !important;
+                            border: 1px solid #dc3545;
+                            border-radius: 30px;
+                            padding: 10px 25px;
+                            text-transform: uppercase;
+                            font-size: 0.85rem;
+                            font-weight: 700;
+                            float: right;
+                            transition: all 0.3s ease;
+                        }
+                        .footer-btn-danger:hover {
+                            background-color: #dc3545;
+                            color: white !important;
+                            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+                            transform: translateY(-2px) rotate(1deg); /* Pequeña rotación de alerta */
+                        }
+                        .footer-btn-danger:active {
+                            transform: scale(0.97);
+                        }
+
+                        .drive-viewer-footer {
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                        .drive-viewer-footer .drive-footer-group {
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            gap: 8px;
+                        }
+                        .drive-viewer-footer .footer-btn-primary,
+                        .drive-viewer-footer .footer-btn-secondary,
+                        .drive-viewer-footer .footer-btn-danger {
+                            float: none;
+                            margin: 0;
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            font-size: 11px;
+                            letter-spacing: 0;
+                            white-space: nowrap;
+                        }
+                        .drive-viewer-footer .footer-btn-danger {
+                            margin-left: auto;
+                        }
+                        .drive-viewer-footer .footer-btn-primary:hover,
+                        .drive-viewer-footer .footer-btn-secondary:hover,
+                        .drive-viewer-footer .footer-btn-danger:hover {
+                            transform: none;
+                        }
+                    </style>
+                    <sheet>
+
+                        <!-- ========================= -->
+                        <!-- TÍTULO PRINCIPAL -->
+                        <!-- ========================= -->
+                        <h2 style="margin-bottom: 12px; color:#043484; font-weight:600;" attrs="{'invisible': [('invisible_todo', '=', False)]}">
+                            Documento en Drive
+                        </h2>
+
+                        <!-- ========================= -->
+                        <!-- CARD: DETALLES DEL DOCUMENTO -->
+                        <!-- ========================= -->
+                        <div attrs="{'invisible': [('invisible_todo', '=', False)]}"
+                            style="
+                                border: 1px solid #ddd;
+                                padding: 20px;
+                                border-radius: 10px;
+                                background-color:#fff;
+                                margin-bottom: 20px;
+                            ">
+
+                            <div style="
+                                font-weight:600;
+                                color:#043484;
+                                border-left: 3px solid #043484;
+                                padding-left:8px;
+                                margin-bottom:10px;
+                            ">
+                                Detalles del documento
+                            </div>
+
+                            <!-- FECHA -->
+                            <div style="margin-bottom: 14px;">
+                                <div style="font-weight:600; color:#043484; margin-bottom:4px;">
+                                    Fecha
+                                </div>
+                                <field name="fecha"
+                                    widget="date"
+                                    style="
+                                        width: 40%;
+                                        border: 1px solid #A9A9A9;
+                                        border-radius: 6px;
+                                        padding: 6px 8px;
+                                        display:block;
+                                    "/>
+                            </div>
+
+                            <!-- RANGO DE PÁGINAS -->
+                            <div style="margin-bottom: 14px;">
+                                <div style="font-weight:600; color:#043484; margin-bottom:4px;">
+                                    Rango de páginas
+                                </div>
+                                <field name="page_range"
+                                    style="
+                                        width: 40%;
+                                        border: 1px solid #A9A9A9;
+                                        border-radius: 6px;
+                                        padding: 6px 8px;
+                                        display:block;
+                                    "/>
+                               <field name="informes_id" invisible="0"/>     
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div>
+                                <div style="font-weight:600; color:#043484; margin-bottom:4px;">
+                                    Descripción
+                                </div>
+                                <field name="descrpcion_info"
+                                    placeholder="Ingrese una descripción…"
+                                    class="textarea_moderno campo_hover"/>
+                            </div>
+                        </div>
+
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 18px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                            "
+                            attrs="{'invisible': ['|', ('file_data_visible', '=', False), ('invisible_todo', '=', False)]}">
+
+                            <div attrs="{'invisible': ['|', ('file_data_visible', '=', False), ('invisible_todo', '=', False)]}"  style="
+                                font-weight:600;
+                                color:#043484;
+                                border-left: 3px solid #043484;
+                                padding-left:8px;
+                                margin-bottom:10px;
+                            ">
+                                Archivo
+                            </div>
+
+                            <field name="file_data"
+                                filename="file_name"
+                                attrs="{'invisible': [('file_data_visible', '=', False)]}"/>
+
+
+                        </div>
+                        <!-- ========================= -->
+                        <!-- PREVIEW / EDICIÓN -->
+                        <!-- ========================= -->
+                        <h2 attrs="{'invisible': [('invisible_todo', '=', False)]}" style="margin-bottom: 12px; color:#043484; font-weight:600;
+                                font-weight:600;
+                                color:#043484;
+                                border-left: 3px solid #043484;
+                                padding-left:8px;
+                                margin-bottom:10px;">
+                            Documento
+                        </h2>
+                        <div style="margin-bottom: 20px;" attrs="{'invisible': [('invisible_todo', '=', False)]}">
+                            <div attrs="{'invisible': [('view_mode', '!=', 'preview')]}">
+                                <field name="preview_html" widget="html"/>
+                            </div>
+
+                            <div attrs="{'invisible': [('view_mode', '!=', 'edit')]}">
+                                <field name="edit_html" widget="html"/>
+                            </div>
+                        </div>
+
+                        <!-- ========================= -->
+                        <!-- CAMPOS INVISIBLES BRAYAN -->
+                        <!-- ========================= -->
+                        <div class="drive-container" attrs="{'invisible': [('invisible_todo', '=', True)]}">
+                            <div class="drive-header-card">
+                                <span class="drive-label-title"><i class="fa fa-file-text-o"></i> Nombre del Documento</span>
+                                <field name="file_name" class="drive-file-name-input" nolabel="1" readonly="1" placeholder="Escriba el nombre del archivo aquí..."/>
+                                <field name="file_name" class="drive-file-name-input" nolabel="1" readonly="0" invisible="1" placeholder="Escriba el nombre del archivo aquí..."/>
+                            </div>
+                            <div class="drive-header-card" attrs="{'invisible': [('actualizar_visible', '=', False)]}">
+                            <span class="drive-label-title"><i class="fa fa-file-text-o"></i>Observaciones</span>
+                            <field name="observaion_coodinador"
+                                placeholder="Escriba su observación"/>
+                            </div>
+                            <group>
+                                <field name="token" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="name" invisible="1" attrs="{'invisible': [('file_data_visible', '=', True)]}"/>
+                                <field name="file_data_visible" invisible="1"/>
+                                <field name="actualizar_visible" invisible="1"/>
+                                <field name="actualizar_visible2" invisible="1"/>
+                                <field name="file_data" filename="file_name" attrs="{'invisible': [('file_data_visible', '=', False)]}"/>
+                            </group>
+                            
+                            <button name="upload_to_drive" string="Subir a Drive" type="object" class="oe_highlight" invisible="1" groups="Matriz.group_soporte"/>
+                            <button name="buscar_carpeta_en_segundo_plano" string="Actualizar Nombre" type="object" class="oe_highlight" invisible="1" groups="Matriz.group_soporte"/>
+                            
+                            <group>
+                                <field name="permission_email" invisible="1"/>
+                                <field name="permission_role" invisible="1"/>
+                                <button name="set_drive_permission" type="object" string="Establecer Permiso" class="oe_highlight" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="permissions_info" invisible="1"/>
+                            </group>
+
+                            <group>
+                                <field name="tag_ids" widget="many2many_tags" class="custom-tag-field" invisible="1"/>
+                                <field name="folder_id" invisible="1"/>
+                                <field name="tags_html" widget="html" options="{'no_open': True}" invisible="1"/>
+                                <field name="all_folders_url" invisible="1"/>
+                                <field name="ejecutar_toggle" invisible="1"/>
+                                <field name="drive_file_id" invisible="1"/>
+                                <field name="file_id" invisible="1"/>
+                                <field name="buscador" invisible="1"/>
+                                <field name="stage2_id" invisible="1"/>
+                                <field name="proyecto_relacionado" invisible="1"/>
+                                <field name="stage3_id" invisible="1"/>
+                                <field name="stage4_id" invisible="1"/>
+                                <field name="stage5_id" invisible="1"/>
+                                <field name="acta_contabilidad_adicional_id" invisible="1"/>
+                                <field name="stage6_id" invisible="1"/>
+                                <field name="correo_electrinico" invisible="1"/>
+                                <field name="original_file_id" invisible="1"/>
+                                <field name="contratacion_fuv_documentos_id" invisible="1"/>
+                                <field name="firma_publica_disponible" invisible="1"/>
+                                <field name="firma_solicitud_pendiente_id" invisible="1"/>
+                                <field name="firma_solicitud_firmada_id" invisible="1"/>
+                                <field name="firma_grupo_visible" invisible="1"/>
+                                <field name="otrosi_documentos_id" invisible="1"/>
+                                <field name="invisible_todo" invisible="1"/>
+                                <field name="solo_lectura_cuenta_finalizada" invisible="1"/>
+                                <field name="es_certificacion_conjunta_generada" invisible="1"/>
+                            </group>
+                            
+                            <group>
+                                <field name="edit_url" readonly="0" invisible="1"/>
+                                <field name="file_id" readonly="0" invisible="1"/>
+                                <field name="all_folders_url" invisible="1"/>
+                            </group>
+
+                            <div class="selector-card" attrs="{'invisible': ['|', ('invisible_todo', '=', True), ('solo_lectura_cuenta_finalizada', '=', True)]}">
+                                <div class="selector-label">
+                                    <i class="fa fa-eye"></i> Modo de Vista
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <field name="view_mode" widget="selection" class="custom-selection-field" nolabel="1"/>
+                                </div>
+                            </div>
+                            <div attrs="{'invisible': ['|', ('invisible_todo', '=', True), ('solo_lectura_cuenta_finalizada', '=', True)]}" style="margin: 4px 0 10px 0; padding: 6px 10px; background: #f0f4ff; border-left: 3px solid #4a6cf7; border-radius: 4px; font-size: 12px; color: #555;">
+                                <i class="fa fa-info-circle" style="color:#4a6cf7; margin-right:5px;"/>
+                                <strong>Visualizar:</strong> muestra una vista previa del documento (PDF).
+                                <strong style="margin-left:8px;">Editar:</strong> abre el documento Word en Google Drive para modificarlo.
+                            </div>
+
+                            <div class="preview-area" attrs="{'invisible': [('invisible_todo', '=', True)]}">
+                                <div attrs="{'invisible': ['|', ('solo_lectura_cuenta_finalizada', '=', True), '|', ('view_mode', '!=', 'preview'), ('preview_html', '=', False)]}">
+                                    <field name="preview_html" widget="html" nolabel="1"/>
+                                </div>
+                                <div attrs="{'invisible': ['|', ('solo_lectura_cuenta_finalizada', '=', False), ('preview_html', '=', False)]}">
+                                    <field name="preview_html" widget="html" nolabel="1"/>
+                                </div>
+                                <div attrs="{'invisible': ['|', ('solo_lectura_cuenta_finalizada', '=', True), '|', ('view_mode', '!=', 'edit'), ('edit_html', '=', False)]}">
+                                    <field name="edit_html" widget="html" nolabel="1"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </sheet>
+
+                    <!-- ========================= -->
+                    <!-- FOOTER -->
+                    <!-- ========================= -->
+                    <footer class="drive-viewer-footer">
+                        <button name="toggle_sidebar_info" 
+                                string="Guardar" 
+                                type="object" 
+                                class="footer-btn-primary"
+                                attrs="{'invisible': [('solo_lectura_cuenta_finalizada', '=', True)]}"/>
+
+                        <button name="cancel" type="object" class="footer-btn-secondary" special="cancel">
+                            <i class="fa fa-times"></i> Descartar
+                        </button>
+
+                        <div class="drive-footer-group">
+                            <button name="download_from_drive" type="object" class="footer-btn-secondary footer-btn-pdf">
+                                <i class="fa fa-file-pdf-o"></i> Descargar PDF
+                            </button>
+                            <button name="download_from_drive_as_word" type="object" class="footer-btn-secondary footer-btn-word">
+                                <i class="fa fa-file-word-o"></i> Descargar Word
+                            </button>
+                            <button name="download_from_drive_original" type="object" class="footer-btn-secondary">
+                                <i class="fa fa-download"></i> Descargar original
+                            </button>
+                        </div>
+
+                        <div class="drive-footer-group"
+                             groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_soporte"
+                             attrs="{'invisible': [('firma_grupo_visible', '=', False)]}">
+                            <span class="text-success" attrs="{'invisible': [('firma_solicitud_firmada_id', '=', False)]}">
+                                Documento firmado
+                            </span>
+                            <button name="action_enviar_para_firmar" type="object" string="Enviar para firmar"
+                                    attrs="{'invisible': ['|', '|', '|', ('firma_solicitud_firmada_id', '!=', False), ('firma_publica_disponible', '=', False), ('firma_solicitud_pendiente_id', '!=', False), ('solo_lectura_cuenta_finalizada', '=', True)]}"
+                                    class="footer-btn-secondary">
+                                <i class="fa fa-pencil-square-o"></i> Enviar para firmar
+                            </button>
+                            <button name="action_reenviar_solicitud_firma" type="object" string="Reenviar solicitud de firma"
+                                    confirm="¿Deseas reenviar el correo de la solicitud de firma? Se usará el mismo enlace ya enviado."
+                                    attrs="{'invisible': ['|', '|', ('firma_solicitud_firmada_id', '!=', False), ('firma_solicitud_pendiente_id', '=', False), ('solo_lectura_cuenta_finalizada', '=', True)]}"
+                                    class="footer-btn-secondary">
+                                <i class="fa fa-refresh"></i> Reenviar firma
+                            </button>
+                            <button name="action_revocar_solicitud_firma" type="object" string="Revocar solicitud de firma"
+                                    confirm="¿Deseas revocar la solicitud de firma activa? El enlace que ya recibió el contratista dejará de funcionar."
+                                    attrs="{'invisible': ['|', '|', ('firma_solicitud_firmada_id', '!=', False), ('firma_solicitud_pendiente_id', '=', False), ('solo_lectura_cuenta_finalizada', '=', True)]}"
+                                    class="footer-btn-secondary text-danger">
+                                <i class="fa fa-ban"></i> Revocar firma
+                            </button>
+                            <button name="action_verificar_integridad_firma" type="object" string="Verificar integridad"
+                                    attrs="{'invisible': [('firma_solicitud_firmada_id', '=', False)]}"
+                                    class="footer-btn-secondary">
+                                <i class="fa fa-shield"></i> Verificar firma
+                            </button>
+                        </div>
+
+                        <div class="drive-footer-group"
+                             attrs="{'invisible': [('solo_lectura_cuenta_finalizada', '=', True)]}">
+                            <button name="open_change_name_popup" type="object" string="Cambiar nombre" class="footer-btn-secondary">
+                                <i class="fa fa-pencil"></i> Cambiar nombre
+                            </button>
+                            <button name="send_update_email" type="object" string="Enviar Solicitud"
+                                    attrs="{'invisible': [('actualizar_visible', '=', False)]}"
+                                    class="footer-btn-secondary">
+                                <i class="fa fa-envelope"></i> Enviar solicitud
+                            </button>
+                        </div>
+
+                       <button name="unlink" type="object" string="Mover a papelera" class="footer-btn-danger"
+                               attrs="{'invisible': ['|', ('solo_lectura_cuenta_finalizada', '=', True), ('es_certificacion_conjunta_generada', '=', True)]}">
+                            <i class="fa fa-trash"></i> Mover a papelera
+                        </button>
+
+                        <!-- Soporte -->
+                        <button name="drive_share" type="object" string="Compartir" invisible="1" groups="Matriz.group_soporte">
+                            <i class="fa fa-arrow-right"></i> Compartir
+                        </button>
+
+                        <button name="buscar_carpeta_en_segundo_plano" type="object" string="Actualizar Nombre" invisible="1" groups="Matriz.group_soporte">
+                            <i class="fa fa-pencil-square-o"></i> Actualizar Nombre
+                        </button>
+
+                        <button name="upload_to_drive" type="object" string="Actualizar documento" invisible="1" groups="Matriz.group_soporte">
+                            <i class="fa fa-upload"></i> Actualizar documento
+                        </button>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+                <!-- Kanban View for Document Viewer -->
+        <record id="drive_kanban_view" model="ir.ui.view">
+            <field name="name">drive.kanban</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <kanban class="drv_kanban_view" quick_create_view="Matriz.view_drive_form">
+                    <field name="is_folder"/>
+                    <field name="name"/>
+                    <field name="fch_creacion"/>
+                    <field name="user_id"/>
+                    <field name="file_name" readonly="0" invisible="1"/>
+                    <field name="hiden" widget="handle" invisible="1"/>
+                    <field name="stage2_id" invisible="1"/>
+
+                    <templates>
+                        <t t-name="kanban-box">
+                            <t t-set="fname" t-value="record.name.raw_value || ''"/>
+                            <t t-set="ext" t-value="fname.split('.').pop().toLowerCase()"/>
+
+                            <div class="drv_card">
+                                <!-- Área del icono -->
+                                <div t-attf-class="drv_card_preview {{ record.is_folder.raw_value ? '' : 'oe_kanban_global_click' }}">
+                                    <t t-if="record.is_folder.raw_value">
+                                        <button type="object" name="action_open_drive" class="btn p-0 border-0 bg-transparent w-100">
+                                            <img src="/Matriz/static/src/img/folder.png" class="drv_icon" alt="Carpeta"/>
+                                        </button>
+                                    </t>
+                                    <t t-else="">
+                                        <img t-if="ext === 'pdf'"              src="/Matriz/static/src/img/pdf_icon.png" class="drv_icon" alt="PDF"/>
+                                        <img t-elif="ext === 'doc' || ext === 'docx'" src="/Matriz/static/src/img/word.png"     class="drv_icon" alt="Word"/>
+                                        <img t-elif="ext === 'xls' || ext === 'xlsx'" src="/Matriz/static/src/img/xls_icon.png" class="drv_icon" alt="Excel"/>
+                                        <img t-elif="ext === 'ppt' || ext === 'pptx'" src="/Matriz/static/src/img/ppt_icon.png" class="drv_icon" alt="PPT"/>
+                                        <img t-elif="ext === 'txt'"              src="/Matriz/static/src/img/txt_icon.png"     class="drv_icon" alt="Texto"/>
+                                        <img t-elif="ext === 'rar' || ext === 'zip'" src="/Matriz/static/src/img/rar_icon.png"  class="drv_icon" alt="ZIP"/>
+                                        <img t-elif="ext === 'jpg' || ext === 'jpeg' || ext === 'png'" src="/Matriz/static/src/img/img_icon.png" class="drv_icon" alt="Imagen"/>
+                                        <img t-else=""                           src="/Matriz/static/src/img/default_icon.png" class="drv_icon" alt="Archivo"/>
+                                    </t>
+                                </div>
+
+                                <!-- Cuerpo: nombre + footer -->
+                                <div class="drv_card_body">
+                                    <div t-attf-class="drv_card_name {{ record.is_folder.raw_value ? '' : 'oe_kanban_global_click' }}">
+                                        <t t-if="record.is_folder.raw_value">
+                                            <button type="object" name="action_open_drive" class="btn p-0 border-0 bg-transparent text-start w-100">
+                                                <field name="name"/>
+                                            </button>
+                                        </t>
+                                        <t t-else="">
+                                            <field name="name"/>
+                                        </t>
+                                    </div>
+                                    <div class="drv_card_footer">
+                                        <time class="drv_card_date">
+                                            <field name="fch_creacion" widget="date"/>
+                                        </time>
+                                        <span class="drv_card_avatar">
+                                            <field name="user_id" widget="many2one_avatar_user"/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Menú tres puntos -->
+                                <div class="o_dropdown_kanban drv_card_menu dropdown" tabindex="-1">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_from_drive_original" attrs="{'invisible': [('is_folder', '=', True)]}">
+                                            <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder" attrs="{'invisible': [('is_folder', '=', False)]}">
+                                            <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="open_change_name_popup">
+                                            <i class="fa fa-pencil"></i> Cambiar nombre
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="create_copy">
+                                            <i class="fa fa-files-o"></i> Crear una copia
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="drive_share">
+                                            <i class="fa fa-share-alt"></i> Compartir
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                            <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_drive_upload_popup_carpeta_principal_form" model="ir.ui.view">
+            <field name="name">drive.upload.popup.carpeta.principal.form</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <form string="Cargar Documento a Drive" style="width: 650px;"> 
+                    <style>
+                        /* Estilo de la modal solicitado */
+                        .modal-dialog {
+                            /* Aumento el ancho máximo de la modal para dar más espacio a los campos */
+                            width: 80% !important; 
+                            max-width: 700px !important;
+                        }
+                        /* CSS para que el campo binario cubra el área */
+                        .o_upload_styled_area .o_form_field_binary input[type="file"] {
+                            opacity: 0 !important; 
+                            z-index: 1000 !important;
+                            cursor: pointer !important;
+                            height: 100% !important;
+                            width: 100% !important;
+                            position: absolute !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                        }
+                        /* Oculta el texto nativo del botón binario de Odoo */
+                        .o_upload_styled_area .o_form_binary_file_upload {
+                            display: none !important;
+                        }
+                        /* AÑADIDO: Asegura que el campo de nombre ocupe el 100% del espacio disponible */
+                        .oe_title h1 .o_field_char {
+                            width: 100% !important;
+                        }
+                    </style>
+                    
+                    <sheet>
+                        <div class="oe_title mb-6">
+                            <label for="file_name" class="oe_edit_only" string="Nombre del documento"/>
+                            <h1>
+                                <field name="file_name" readonly="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+                                <field name="file_name" readonly="0" invisible="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+                            </h1>
+                            <field name="otrosi_bolean" invisible="1"/>
+
+                            <div class="text-muted">
+                                <i class="fa fa-folder-open o_mr4"/>
+                                Destino de Google Drive:
+                                <strong>
+                                    <field name="stage3_id" readonly="1" options="{'no_open': True}" force_save="1"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div id="o_drive_drop_zone" class="text-center p-5 mb-3 o_upload_styled_area o_shadow_sm o_rounded"
+                            style="position: relative; border: 2px dashed #9370DB; background-color: #F8F4FF; transition: background-color 0.3s ease;">
+                            
+                            <div class="o_upload_content_text" style="pointer-events: none; color: #6A5ACD;">
+                                <i class="fa fa-cloud-upload fa-4x d-block mb-3"/>
+                                <p class="mb-0">
+                                    Haz clic en "Suba su archivo" o <b>arrastra y suelta tu documento aquí</b>.
+                                </p>
+                            </div>
+                            
+                            <field name="file_data"
+                                widget="binary"
+                                filename="file_name"
+                                nolabel="1"
+                                class="o_upload_input_overlay"/>
+                        </div>
+                        
+                        <p class="text-muted text-center small mt-0 mb-4">
+                            <i class="fa fa-lightbulb-o text-warning me-2"/> 
+                            El sistema asignará automáticamente un ID único al nombre del archivo.
+                        </p>
+                        
+                        <group invisible="1">
+                            <field name="contratacion_fuv_id"/>
+                            <field name="folder_id"/> 
+                        </group>
+                    </sheet>
+
+                    <footer>
+                        <button string="Guardar y Subir a Drive"
+                            name="action_save_and_close"
+                            type="object"
+                            class="btn btn-primary"/>
+                        <button string="Cancelar"
+                            class="btn btn-secondary"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_drive_upload_popup_form" model="ir.ui.view">
+            <field name="name">drive.upload.popup.form</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <form string="Cargar Documento a Drive" style="width: 650px;"> 
+                    <style>
+                        /* Estilo de la modal solicitado */
+                        .modal-dialog {
+                            /* Aumento el ancho máximo de la modal para dar más espacio a los campos */
+                            width: 80% !important; 
+                            max-width: 700px !important;
+                        }
+                        /* CSS para que el campo binario cubra el área */
+                        .o_upload_styled_area .o_form_field_binary input[type="file"] {
+                            opacity: 0 !important; 
+                            z-index: 1000 !important;
+                            cursor: pointer !important;
+                            height: 100% !important;
+                            width: 100% !important;
+                            position: absolute !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                        }
+                        /* Oculta el texto nativo del botón binario de Odoo */
+                        .o_upload_styled_area .o_form_binary_file_upload {
+                            display: none !important;
+                        }
+                        /* AÑADIDO: Asegura que el campo de nombre ocupe el 100% del espacio disponible */
+                        .oe_title h1 .o_field_char {
+                            width: 100% !important;
+                        }
+                    </style>
+                    
+                    <sheet>
+                        <div class="oe_title mb-6">
+                            <label for="file_name" class="oe_edit_only" string="Nombre del documento"/>
+                            <h1>
+                                <field name="file_name" readonly="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+                                <field name="file_name" readonly="0" invisible="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+
+                            </h1>
+                            <field name="otrosi_bolean" invisible="1"/>
+
+                            <div class="text-muted" attrs="{'invisible': ['|', ('otrosi_bolean', '=', True), ('stage4_id', '!=', False)]}">
+                                <i class="fa fa-folder-open o_mr4"/>
+                                Destino de Google Drive:
+                                <strong>
+                                    <field name="stage2_id" readonly="1" options="{'no_open': True}" force_save="1"/>
+                                </strong>
+                            </div>
+
+                            <div class="text-muted" attrs="{'invisible': ['|', ('otrosi_bolean', '=', False), ('stage4_id', '!=', False)]}">
+                                <i class="fa fa-folder-open o_mr4"/>
+                                Destino de Google Drive:
+                                <strong>
+                                    <field name="stage5_id" readonly="1" options="{'no_open': True}" force_save="1"/>
+                                </strong>
+                            </div>
+
+                            <div class="text-muted" attrs="{'invisible': [('stage4_id', '=', False)]}">
+                                <i class="fa fa-folder-open o_mr4"/>
+                                Destino de Google Drive:
+                                <strong>
+                                    <field name="stage4_id" readonly="1" options="{'no_open': True}" force_save="1"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div id="o_drive_drop_zone" class="text-center p-5 mb-3 o_upload_styled_area o_shadow_sm o_rounded"
+                            style="position: relative; border: 2px dashed #9370DB; background-color: #F8F4FF; transition: background-color 0.3s ease;">
+                            
+                            <div class="o_upload_content_text" style="pointer-events: none; color: #6A5ACD;">
+                                <i class="fa fa-cloud-upload fa-4x d-block mb-3"/>
+                                <p class="mb-0">
+                                    Haz clic en "Suba su archivo" o <b>arrastra y suelta tu documento aquí</b>.
+                                </p>
+                            </div>
+                            
+                            <field name="file_data"
+                                widget="binary"
+                                filename="file_name"
+                                string="SUBA SU ARCHIVO"
+                                nolabel="1"
+                                class="o_upload_input_overlay"/>
+                        </div>
+                        
+                        <p class="text-muted text-center small mt-0 mb-4">
+                            <i class="fa fa-lightbulb-o text-warning me-2"/> 
+                            El sistema asignará automáticamente un ID único al nombre del archivo.
+                        </p>
+                        
+                        <group invisible="1">
+                            <field name="contratacion_fuv_id"/>
+                            <field name="contratistas_provedores"/>
+                            <field name="stage4_id"/>
+                            <field name="folder_id"/> 
+                        </group>
+                    </sheet>
+
+                    <footer>
+                        <button string="Guardar y Subir a Drive"
+                            name="action_save_and_close"
+                            type="object"
+                            class="btn btn-primary"/>
+                        <button string="Cancelar"
+                            class="btn btn-secondary"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_drive_upload_popup_cuentas_de_cobros_form" model="ir.ui.view">
+            <field name="name">drive.upload.popup.cuentas.de.cobros.form</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <form string="Cargar Documento a Drive" style="width: 650px;"> 
+                    <style>
+                        /* Estilo de la modal solicitado */
+                        .modal-dialog {
+                            /* Aumento el ancho máximo de la modal para dar más espacio a los campos */
+                            width: 80% !important; 
+                            max-width: 700px !important;
+                        }
+                        /* CSS para que el campo binario cubra el área */
+                        .o_upload_styled_area .o_form_field_binary input[type="file"] {
+                            opacity: 0 !important; 
+                            z-index: 1000 !important;
+                            cursor: pointer !important;
+                            height: 100% !important;
+                            width: 100% !important;
+                            position: absolute !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                        }
+                        /* Oculta el texto nativo del botón binario de Odoo */
+                        .o_upload_styled_area .o_form_binary_file_upload {
+                            display: none !important;
+                        }
+                        /* AÑADIDO: Asegura que el campo de nombre ocupe el 100% del espacio disponible */
+                        .oe_title h1 .o_field_char {
+                            width: 100% !important;
+                        }
+                    </style>
+                    
+                    <sheet>
+                        <div class="oe_title mb-6">
+                            <label for="file_name" class="oe_edit_only" string="Nombre del documento"/>
+                            <h1>
+                                <field name="file_name" readonly="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+                                <field name="file_name" readonly="0" invisible="1" placeholder="Nombre asignado" class="readonly-field truncate-text"/>
+                            </h1>
+                            <field name="otrosi_bolean" invisible="1"/>
+
+                            <div class="text-muted">
+                                <i class="fa fa-folder-open o_mr4"/>
+                                Destino de Google Drive:
+                                <strong>
+                                    <field name="stage3_id" readonly="1" options="{'no_open': True}" force_save="1"/>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div id="o_drive_drop_zone" class="text-center p-5 mb-3 o_upload_styled_area o_shadow_sm o_rounded"
+                            style="position: relative; border: 2px dashed #9370DB; background-color: #F8F4FF; transition: background-color 0.3s ease;">
+                            
+                            <div class="o_upload_content_text" style="pointer-events: none; color: #6A5ACD;">
+                                <i class="fa fa-cloud-upload fa-4x d-block mb-3"/>
+                                <p class="mb-0">
+                                    Haz clic en "Suba su archivo" o <b>arrastra y suelta tu documento aquí</b>.
+                                </p>
+                            </div>
+                            
+                            <field name="file_data"
+                                widget="binary"
+                                filename="file_name"
+                                nolabel="1"
+                                class="o_upload_input_overlay"/>
+                        </div>
+                        
+                        <p class="text-muted text-center small mt-0 mb-4">
+                            <i class="fa fa-lightbulb-o text-warning me-2"/> 
+                            El sistema asignará automáticamente un ID único al nombre del archivo.
+                        </p>
+                        
+                        <group invisible="1">
+                            <field name="contratacion_fuv_id"/>
+                            <field name="folder_id"/> 
+                        </group>
+                    </sheet>
+
+                    <footer>
+                        <button string="Guardar y Subir a Drive"
+                            name="action_save_and_close"
+                            type="object"
+                            class="btn btn-primary"/>
+                        <button string="Cancelar"
+                            class="btn btn-secondary"
+                            special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_drive_trace_tree" model="ir.ui.view">
+            <field name="name">drive.trace.tree</field>
+            <field name="model">drive.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Documentos">
+                    <field name="drive_id"/>
+                    <field name="action_type"/>
+                    <field name="action_date"/>
+                    <field name="user_id"/>
+                    <field name="notes"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Formulario para drive.document -->
+        <record id="view_drive_document_form" model="ir.ui.view">
+            <field name="name">drive.document.form</field>
+            <field name="model">drive.document</field>
+            <field name="arch" type="xml">
+                <form string="Compartir">
+                    <style>
+                        .modal-dialog { max-width: 560px; margin: 60px auto; }
+                        .gd_share_title { font-size: 18px; font-weight: 500; color: #202124; margin-bottom: 20px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                        .gd_share_input_wrap { display: flex; align-items: center; border: 1px solid #1a73e8; border-radius: 4px; padding: 4px 10px; margin-bottom: 20px; gap: 8px; }
+                        .gd_share_input_wrap .o_field_widget { flex: 1; border: none !important; box-shadow: none !important; outline: none !important; font-size: 14px; }
+                        .gd_share_section_title { font-size: 13px; font-weight: 500; color: #3c4043; margin: 16px 0 8px; }
+                        .gd_share_permissions { background: #f8f9fa; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #3c4043; white-space: pre-wrap; min-height: 60px; border: 1px solid #e8eaed; }
+                        .gd_share_role_wrap { display: flex; align-items: center; gap: 10px; border: 1px solid #dadce0; border-radius: 24px; padding: 6px 16px; width: fit-content; cursor: pointer; font-size: 14px; }
+                        .gd_share_role_wrap i { color: #5f6368; }
+                        .gd_share_role_wrap .o_field_widget { border: none !important; box-shadow: none !important; }
+                        .gd_share_footer_wrap { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 0; border-top: 1px solid #e8eaed; margin-top: 16px; }
+                    </style>
+                    <sheet>
+                        <field name="drive_file_id" invisible="1"/>
+                        <field name="drive_id"      invisible="1"/>
+
+                        <div class="gd_share_title">
+                            <i class="fa fa-share-alt" style="color:#1a73e8; margin-right:8px;"/>Compartir documento
+                        </div>
+
+                        <!-- Input agregar persona -->
+                        <div class="gd_share_section_title">Usuarios permitidos del proyecto</div>
+                        <field name="project_user_ids" widget="many2many_tags" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                        <div class="gd_share_input_wrap">
+                            <i class="fa fa-search" style="color:#5f6368;"/>
+                            <field name="user_id" placeholder="Buscar usuario del proyecto..." nolabel="1" options="{'no_create': True, 'no_open': True}" domain="[('id', 'in', context.get('allowed_user_ids', []))]"/>
+                        </div>
+
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+                            <div style="flex:1; height:1px; background:#e8eaed;"/>
+                            <span style="font-size:11px; color:#9ca3af;">o escribe un correo</span>
+                            <div style="flex:1; height:1px; background:#e8eaed;"/>
+                        </div>
+                        <div class="gd_share_input_wrap" style="border-color:#dadce0;">
+                            <i class="fa fa-envelope-o" style="color:#5f6368;"/>
+                            <field name="permission_email" placeholder="Otro correo electrónico..." nolabel="1"/>
+                        </div>
+
+                        <!-- Personas con acceso -->
+                        <div class="gd_share_section_title">Personas con acceso</div>
+                        <div class="gd_share_permissions">
+                            <field name="permissions_info" nolabel="1" readonly="1"/>
+                        </div>
+
+                        <!-- Acceso general -->
+                        <div class="gd_share_section_title">
+                            <i class="fa fa-lock" style="color:#5f6368; margin-right:6px;"/>Acceso general
+                        </div>
+                        <div class="gd_share_role_wrap">
+                            <i class="fa fa-chevron-down"/>
+                            <field name="permission_role" nolabel="1"/>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="set_drive" string="Listo" type="object" class="btn-primary" style="border-radius:20px; padding: 6px 24px;"/>
+                        <button string="Cancelar" special="cancel" class="btn-secondary" style="border-radius:20px; padding: 6px 24px;"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    <record id="view_drive_move_to_folder_wizard_form" model="ir.ui.view">
+        <field name="name">drive.move.to.folder.wizard.form</field>
+        <field name="model">drive.move.to.folder.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Mover">
+                <group>
+                    <field name="folder_id"/>
+                </group>
+                <footer>
+                    <button name="move_to_folder" string="Move" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+        <record id="drive_stage_kanban_view" model="ir.ui.view">
+            <field name="name">drive_stage.kanban</field>
+            <field name="model">drive_stage</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_drive_stage" action="action_open_drive" type="object" create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <field name="folder_id" invisible="1"/>
+                                <field name="folder_guardar_id" invisible="1"/>
+                                <field name="hiden" widget="handle" invisible="1"/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_view_history" invisible="1">
+                                           <i class="fa fa-history"></i> Trazabilidad
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+        <record id="drive_stage_provedor_kanban_view" model="ir.ui.view">
+            <field name="name">drive_stage_provedor.kanban</field>
+            <field name="model">drive_stage_provedor</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_drive_stage_provedor" action="action_open_drive" type="object" create="1">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <field name="folder_id" invisible="1"/>
+                                <field name="contratistas_provedores" invisible="1"/>
+                                <field name="folder_guardar_id" invisible="1"/>
+                                <field name="hiden" widget="handle" invisible="1"/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_drive_stage_trace_tree" model="ir.ui.view">
+            <field name="name">drive.stage.trace.tree</field>
+            <field name="model">drive_stage.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Carpetas">
+                    <field name="drive_stage_id"/>
+                    <field name="action_type"/>
+                    <field name="user_id"/>
+                    <field name="action_date"/>
+                    <field name="notes"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+
+        <record id="drive_file_kanban_view" model="ir.ui.view">
+            <field name="name">drive.file.kanban</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_drive_file" action="action_open_drive" type="object" create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <field name="folder_id2" invisible="1"/>
+                                <field name="drive_id" invisible="1"/>
+                                <field name="select_persona" invisible="1"/>
+                                <field name="hiden" widget="handle" invisible="1"/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                         <a class="dropdown-item" role="menuitem" type="object" name="otrosi_drive" attrs="{'invisible': [('select_persona', 'not in', ['persona_natural', 'persona_juridica', 'contrato_laboral'])]}">
+                                           <i class="fa fa-file-archive-o"></i> Documentos del Otrosí
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_view_history" invisible="1">
+                                           <i class="fa fa-history"></i> Trazabilidad
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="list_files_in_folder">
+                                           <i class="fa fa-wrench"></i>  Actualizar Carpetas
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_actualizar_select_persona" invisible="1">
+                                           <i class="fa fa-wrench"></i>  Actualizar Persona
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="cuenta_de_cobros" invisible="1">
+                                           <i class="fa fa-money"></i>  Cuentas de cobros
+                                        </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="drive_file_view_search" model="ir.ui.view">
+            <field name="name">drive.file.view.search.module.name</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" string="Nombre"/>
+                    <filter name="select_persona" string="Tipo de Persona" context="{'group_by':'select_persona'}"/>
+                    <field name="user_id" string="Creador"/>
+                    <field name="fch_creacion" string="Fecha de creación"/>
+                    <field name="drive_id" string="Ubicación"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_open_drive_file" model="ir.actions.act_window">
+            <field name="name">Visor</field>
+            <field name="res_model">drive.file</field>
+            <field name="view_mode">kanban,tree</field>
+            <field name="domain">[('parent_folder_id', '=', False)]</field>
+            <field name="context">{'search_default_select_persona': 1}</field>
+            <field name="search_view_id" ref="drive_file_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No tasks found. Let's create one!
+                </p>
+                <p>
+                    Keep track of the progress of your tasks from creation to completion.<br/>
+                    Collaborate efficiently by chatting in real-time or via email.
+                </p>
+            </field>
+        </record>
+
+
+
+                <!-- Vista de árbol personalizada para el modelo Drive -->
+        <record id="view_drive_tree" model="ir.ui.view">
+            <field name="name">drive.tree</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree">
+                    <field name="name"/>
+                    <field name="create_date"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="permission_role"/>
+                    <field name="folder_id" string="Ubicación" invisible="1"/>
+                    <button name="drive_share" type="object" class="fa fa-share-alt"/>
+                    <button name="download_from_drive" type="object" class="fa fa-download"/>
+                    <button name="open_change_name_popup" type="object" class="fa fa-pencil"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="drive_stage_form" model="ir.ui.view">
+            <field name="name">Sub carpetas.form</field>
+            <field name="model">drive_stage</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="sequence" invisible="1"/>
+                        <group>
+                            <field name="folder_id" invisible="1"/>
+                            <field name="folder_guardar_id" invisible="1"/>
+                            <field name="drive_id" invisible="1"/>
+                            <field name="contrataciones_carpeta_id" invisible="1"/>
+                            <field name="proyecto_relacionado" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_drive_folder" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="drive_stage_provedor_form" model="ir.ui.view">
+            <field name="name">Sub carpetas.form</field>
+            <field name="model">drive_stage_provedor</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="sequence" invisible="1"/>
+                        <group>
+                            <field name="folder_id" invisible="1"/>
+                            <field name="folder_guardar_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_drive_folder" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="cuenta_de_cobros_form" model="ir.ui.view">
+            <field name="name">Sub carpetas.form</field>
+            <field name="model">cuenta_de_cobros</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <group>
+                            <field name="folder_id" invisible="1"/>
+                            <field name="folder_guardar_id" invisible="1"/>
+                            <field name="drive_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_drive_folder" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="otrosi_drive_form" model="ir.ui.view">
+            <field name="name">Sub carpetas.form</field>
+            <field name="model">otrosi_drive</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <group>
+                            <field name="folder_id" invisible="1"/>
+                            <field name="folder_guardar_id" invisible="1"/>
+                            <field name="drive_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <group groups="Matriz.group_soporte">
+                        <field name="is_plantilla" string="Ocultar en Drive Browser (es plantilla)"/>
+                    </group>
+                    <footer>
+                        <button name="create_drive_folder" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="cuenta_de_cobros_kanban_view" model="ir.ui.view">
+            <field name="name">Carpetas.kanban</field>
+            <field name="model">cuenta_de_cobros</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_cuenta_de_cobros" action="action_open_drive" type="object">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <field name="folder_id" invisible="1"/>
+                                <field name="folder_guardar_id" invisible="1"/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_view_history" invisible="1">
+                                           <i class="fa fa-history"></i> Trazabilidad
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="list_files_in_folder_impl">
+                                            <i class="fa fa-wrench"></i> Actualizar Carpetas
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="otrosi_drive_kanban_view" model="ir.ui.view">
+            <field name="name">Carpetas.kanban</field>
+            <field name="model">otrosi_drive</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_otrosi_drive" action="action_open_drive" type="object">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <field name="folder_id" invisible="1"/>
+                                <field name="folder_pending_creation" invisible="1"/>
+                                <field name="folder_guardar_id" invisible="1"/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_view_history" invisible="1">
+                                           <i class="fa fa-history"></i> Trazabilidad
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="list_files_in_folder_impl">
+                                           <i class="fa fa-wrench"></i> Actualizar Carpetas
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+    <record id="drive_file_form" model="ir.ui.view">
+            <field name="name">Sub carpetas.form</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="sequence" invisible="1"/>
+                        <group>
+                            <field name="folder_id2" invisible="1"/>
+                            <field name="folder_guardar_id" invisible="1"/>
+                            <field name="drive_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_drive_folder" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="drive_folder_form" model="ir.ui.view">
+            <field name="name">Carpetas.form</field>
+            <field name="model">drive_folder</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                         <field name="folder_name"/>
+                    </group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="sequence" invisible="1"/>
+                        <group>
+                            <field name="folder_guardar_id" invisible="1"/>
+                            <field name="proyecto_relacionado" invisible="1"/>
+
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="create_drive_carpeta" string="Create Folder" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="drive_folder_kanban_view" model="ir.ui.view">
+            <field name="name">Carpetas.kanban</field>
+            <field name="model">drive_folder</field>
+            <field name="arch" type="xml">
+                <kanban on_create="Matriz.open_create_drive_folder" action="action_open_carpetas" type="object">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <img src="/Matriz/static/src/img/folder.png" alt="Descripción de la imagen" style="width: 50px; height: 50px;" />
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="download_drive_folder">
+                                           <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_view_history" invisible="1">
+                                           <i class="fa fa-history"></i> Trazabilidad
+                                        </a>
+                                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">
+                                           <i class="fa fa-trash"></i> Mover a papelera
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="create_subcarpetas" groups="Matriz.group_soporte">
+                                           <i class="fa fa-plus"></i>  Crear Estructura
+                                        </a>
+                                        <a class="dropdown-item" role="menuitem" type="object" name="list_folders_in_selected_drive_impl">
+                                           <i class="fa fa-wrench"></i> Actualizar Carpetas
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_drive_folder_tree" model="ir.ui.view">
+            <field name="name">drive.folder.tree</field>
+            <field name="model">drive_folder</field>
+            <field name="arch" type="xml">
+                <tree string="Carpetas de Drive">
+                    <field name="folder_name"/>
+                    <field name="user_id"/>
+                    <field name="fch_creacion"/>
+                    <field name="google_drive_id"/>
+                    <field name="sequence"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_folder_trace_tree" model="ir.ui.view">
+            <field name="name">drive_folder.trace.tree</field>
+            <field name="model">drive_folder.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Carpetas">
+                    <field name="drive_folder_id"/>
+                    <field name="action"/>
+                    <field name="user_id"/>
+                    <field name="date"/>
+                    <field name="details"/>
+                </tree>
+            </field>
+        </record>
+
+      <record id="view_cuenta_de_cobros_trace_tree" model="ir.ui.view">
+            <field name="name">cuenta_de_cobros.trace.tree</field>
+            <field name="model">cuenta_de_cobros.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Carpetas">
+                    <field name="cuenta_de_cobros_id"/>
+                    <field name="action"/>
+                    <field name="user_id"/>
+                    <field name="timestamp"/>
+                    <field name="details"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_otrosi_drive_trace_tree" model="ir.ui.view">
+            <field name="name">cuenta_de_cobros.trace.tree</field>
+            <field name="model">otrosi_drive.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Carpetas">
+                    <field name="otrosi_id"/>
+                    <field name="action"/>
+                    <field name="user_id"/>
+                    <field name="timestamp"/>
+                    <field name="details"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_file_trace_tree" model="ir.ui.view">
+            <field name="name">drive.file.trace.tree</field>
+            <field name="model">drive.file.trace</field>
+            <field name="arch" type="xml">
+                <tree string="Trazabilidad de Carpetas">
+                    <field name="drive_file_id"/>
+                    <field name="action_type"/>
+                    <field name="user_id"/>
+                    <field name="notes"/>
+                </tree>
+            </field>
+        </record>
+
+                        <!-- Vista de árbol personalizada para el modelo Drive -->
+
+        <record id="view_cuenta_de_cobros_tree" model="ir.ui.view">
+            <field name="name">Sub carpetas.tree</field>
+            <field name="model">cuenta_de_cobros</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" action="action_open_drive" type="object" create="0">
+                    <field name="name"/>
+                    <field name="creator_user_id" widget="many2one_avatar_user" string="Creador"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <field name="drive_id" string="Ubicación"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button name="action_view_history" type="object" class="fa fa-history"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_otrosi_drive_tree" model="ir.ui.view">
+            <field name="name">Sub carpetas.tree</field>
+            <field name="model">otrosi_drive</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" action="action_open_drive" type="object" create="0">
+                    <field name="name"/>
+                    <field name="real_creator_id" widget="many2one_avatar_user" string="Creador"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <field name="drive_id" string="Ubicación"/>
+                    <field name="is_plantilla" string="Es plantilla" groups="Matriz.group_soporte"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button name="action_view_history" type="object" class="fa fa-history"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_stage_tree" model="ir.ui.view">
+            <field name="name">Sub carpetas.tree</field>
+            <field name="model">drive_stage</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" create="0" action="action_open_drive" type="object">
+                    <field name="name"/>
+                    <field name="real_creator_id" widget="many2one_avatar_user" string="Creador"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <field name="drive_id" string="Ubicación"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button name="action_view_history" type="object" class="fa fa-history"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_stage_provedor_tree" model="ir.ui.view">
+            <field name="name">Sub carpetas.tree</field>
+            <field name="model">drive_stage_provedor</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" create="0" action="action_open_drive" type="object">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_file_tree" model="ir.ui.view">
+            <field name="name">Sub carpetas.tree</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" action="action_open_drive" type="object" create="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <field name="drive_id" string="Ubicación"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button name="action_view_history" type="object" class="fa fa-history"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_drive_folder_tree" model="ir.ui.view">
+            <field name="name">carpetas.tree</field>
+            <field name="model">drive_folder</field>
+            <field name="arch" type="xml">
+                <tree string="Drive Tree" action="action_open_carpetas" type="object">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="fch_creacion" widget="date"/>
+                    <button name="download_drive_folder" type="object" class="fa fa-download"/>
+                    <button name="action_view_history" type="object" class="fa fa-history"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                    <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                    <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="open_create_drive_stage" model="ir.actions.act_window">
+            <field name="name">DRIVE</field>
+            <field name="res_model">drive_stage</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="drive_stage_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+        <record id="open_create_drive_stage_provedor" model="ir.actions.act_window">
+            <field name="name">DRIVE</field>
+            <field name="res_model">drive_stage_provedor</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="drive_stage_provedor_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+
+        <record id="open_create_drive_file" model="ir.actions.act_window">
+            <field name="name">DRIVE</field>
+            <field name="res_model">drive.file</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="drive_file_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+
+        <record id="open_create_drive_folder" model="ir.actions.act_window">
+            <field name="name">Carpeta</field>
+            <field name="res_model">drive_folder</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="drive_folder_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+        <record id="open_create_cuenta_de_cobros" model="ir.actions.act_window">
+            <field name="name">Carpeta</field>
+            <field name="res_model">cuenta_de_cobros</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cuenta_de_cobros_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+        <record id="open_create_otrosi_drive" model="ir.actions.act_window">
+            <field name="name">Carpeta</field>
+            <field name="res_model">otrosi_drive</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="otrosi_drive_form"/>
+            <field name="target">new</field>
+            <field name="context">{"default_allow_billable": 0}</field>
+        </record>
+
+
+
+        <!-- Vista del wizard de formato de descarga -->
+        <record id="view_drive_download_format_wizard_form" model="ir.ui.view">
+            <field name="name">drive.download.format.wizard.form</field>
+            <field name="model">drive.download.format.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Descargar documento">
+                    <sheet>
+                        <style>
+                            .drv-dl-wrap {
+                                padding: 32px 24px 24px;
+                                text-align: center;
+                            }
+                            .drv-dl-subtitle {
+                                font-size: 13px;
+                                color: #888;
+                                margin-bottom: 28px;
+                                letter-spacing: 0.3px;
+                            }
+                            .drv-dl-options {
+                                display: flex;
+                                justify-content: center;
+                                gap: 20px;
+                                flex-wrap: wrap;
+                            }
+                            .drv-dl-btn {
+                                width: 160px;
+                                padding: 20px 12px 16px;
+                                border-radius: 14px;
+                                border: none;
+                                cursor: pointer;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 12px;
+                                font-size: 14px;
+                                font-weight: 700;
+                                letter-spacing: 0.4px;
+                                transition: transform 0.15s, box-shadow 0.15s;
+                                box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+                            }
+                            .drv-dl-btn:hover {
+                                transform: translateY(-3px);
+                                box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+                            }
+                            .drv-dl-btn .drv-dl-icon {
+                                font-size: 48px;
+                                line-height: 1;
+                            }
+                            .drv-dl-btn-pdf {
+                                background: linear-gradient(135deg, #e53935, #c62828);
+                                color: #fff;
+                            }
+                            .drv-dl-btn-word {
+                                background: linear-gradient(135deg, #1565c0, #0d47a1);
+                                color: #fff;
+                            }
+                            .drv-dl-btn-original {
+                                background: linear-gradient(135deg, #1a73e8, #0b57d0);
+                                color: #fff;
+                            }
+                            .drv-dl-label {
+                                font-size: 13px;
+                                opacity: 0.9;
+                                font-weight: 500;
+                            }
+                        </style>
+                        <div class="drv-dl-wrap">
+                            <p class="drv-dl-subtitle">Elige el formato en el que deseas descargar el archivo</p>
+                            <div class="drv-dl-options">
+                                <button name="action_download_pdf" type="object" class="drv-dl-btn drv-dl-btn-pdf">
+                                    <i class="fa fa-file-pdf-o drv-dl-icon"/>
+                                    <span>PDF</span>
+                                    <span class="drv-dl-label">.pdf</span>
+                                </button>
+                                <button name="action_download_word" type="object" class="drv-dl-btn drv-dl-btn-word">
+                                    <i class="fa fa-file-word-o drv-dl-icon"/>
+                                    <span>Word</span>
+                                    <span class="drv-dl-label">.docx</span>
+                                </button>
+                                <button name="action_download_original" type="object" class="drv-dl-btn drv-dl-btn-original">
+                                    <i class="fa fa-download drv-dl-icon"/>
+                                    <span>Original</span>
+                                    <span class="drv-dl-label">sin convertir</span>
+                                </button>
+                            </div>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Cancelar" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_change_name_wizard" model="ir.actions.act_window">
+            <field name="name">Cambiar Nombre de Archivo</field>
+            <field name="res_model">change_name_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_drive_id': active_id}</field>
+        </record>
+
+        <!-- Vista del wizard -->
+       <record id="view_change_name_wizard_form" model="ir.ui.view">
+            <field name="name">change.name.wizard.form</field>
+            <field name="model">change_name_wizard</field>
+            <field name="arch" type="xml">
+                <form string="Cambiar Nombre de Archivo">
+                    <style>
+                        /* Animación de entrada */
+                        .wizard-fade-in { animation: fadeInUp 0.4s ease-out; }
+                        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+                        /* Cabecera */
+                        .wizard-header {
+                            text-align: center;
+                            margin-bottom: 25px;
+                            margin-top: 15px;
+                            color: #003a70;
+                        }
+                        .wizard-title {
+                            font-size: 1.4rem;
+                            font-weight: 800;
+                            text-transform: uppercase;
+                            margin-top: 10px;
+                            color: #2c3e50;
+                        }
+
+                        /* --- ESTILO DEL CAMPO DE TEXTO LARGO --- */
+                        /* Forzar ancho 100% en el input */
+                        .field-highlight {
+                            width: 100% !important;
+                            display: block;
+                        }
+                        
+                        .field-highlight input, .field-highlight .o_input {
+                            font-size: 1.2rem !important;
+                            background-color: #ffffff !important;
+                            border: 2px solid #003a70 !important;
+                            border-radius: 8px !important;
+                            color: #000000 !important;
+                            padding: 8px 15px !important;
+                            height: 45px !important;
+                            width: 100% !important; /* IMPORTANTE: CAMPO LARGO */
+                            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+                            transition: all 0.2s ease;
+                        }
+                        
+                        .field-highlight input:focus {
+                            box-shadow: 0 0 0 4px rgba(0, 58, 112, 0.2) !important;
+                            outline: none;
+                        }
+
+                        /* Asegurar que la celda de la tabla de Odoo permita el ancho completo */
+                        .o_group .o_td_label + td {
+                            width: 100% !important;
+                            padding-right: 20px; 
+                        }
+
+                        /* BOTONES ANIMADOS */
+                        .btn-animate-primary {
+                            background: linear-gradient(135deg, #003a70 0%, #00264d 100%);
+                            color: white !important;
+                            border-radius: 30px;
+                            padding: 8px 25px;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            border: none;
+                            transition: all 0.3s;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+                        }
+                        .btn-animate-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 12px rgba(0,0,0,0.3); }
+
+                        .btn-animate-secondary {
+                            background: white;
+                            color: #555 !important;
+                            border: 1px solid #ccc;
+                            border-radius: 30px;
+                            padding: 8px 25px;
+                            text-transform: uppercase;
+                            font-weight: bold;
+                            transition: all 0.3s ease;
+                        }
+                        .btn-animate-secondary:hover { background: #f5f5f5; transform: translateY(-2px); }
+                    </style>
+
+                    <div class="wizard-fade-in" style="padding: 0 20px;">
+                        <div class="wizard-header">
+                            <i class="fa fa-pencil-square-o fa-3x"></i>
+                            <div class="wizard-title">Renombrar Archivo</div>
+                        </div>
+
+                        <group>
+                            <field name="new_name" class="field-highlight" placeholder="Ej: Documento_Final.pdf"/>
+                        </group>
+                        <group invisible="1">
+                            <field name="drive_id" class="field-highlight" placeholder="Relacion"/>
+                            <field name="contratacion_fuv_documentos_id" class="field-highlight" placeholder="Relacion"/>
+                        </group>
+                        <div style="height: 15px;"></div>
+                    </div>
+
+                    <footer style="background-color: #f9f9f9; padding: 15px; border-top: 1px solid #eee; text-align: right;">
+                        <button string="Cancelar" class="btn-animate-secondary" special="cancel" style="margin-right: 10px;"/>
+                        <button string="Guardar Cambios" type="object" name="change_file_name" class="btn-animate-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_papelera_tree" model="ir.ui.view">
+            <field name="name">papelera.tree</field>
+            <field name="model">papelera</field>
+            <field name="arch" type="xml">
+                <tree string="Papelera">
+                    <field name="name"/>
+                    <field name="drive_file_id"/>
+                    <field name="mime_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_papelera_kanban" model="ir.ui.view">
+            <field name="name">papelera.kanban</field>
+            <field name="model">papelera</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_area oe_kanban_global_click o_kanban_attachment">
+                                <br/>
+                                <div class="o_kanban_image">
+                                    <!-- Lógica para mostrar la imagen del ícono -->
+                                    <t t-set="name" t-value="record.name.raw_value || ''"/>
+                                    <t t-set="extension" t-value="name.split('.').pop().toLowerCase()"/>
+                                    <img t-if="extension === 'pdf'" class="o_document_icon" src="/Matriz/static/src/img/pdf_icon.png" alt="PDF Icon"/>
+                                    <img t-elif="extension === 'doc' || extension === 'docx'" class="o_document_icon" src="/Matriz/static/src/img/word.png" alt="Word Icon"/>
+                                    <img t-elif="extension === 'xls' || extension === 'xlsx'" class="o_document_icon" src="/Matriz/static/src/img/xls_icon.png" alt="Excel Icon"/>
+                                    <img t-elif="extension === 'txt'" class="o_document_icon" src="/Matriz/static/src/img/txt_icon.png" alt="Text Icon"/>
+                                    <img t-elif="extension === 'ppt' || extension === 'pptx'" class="o_document_icon" src="/Matriz/static/src/img/ppt_icon.png" alt="PowerPoint Icon"/>
+                                    <img t-elif="extension === 'rar' || extension === 'zip'" class="o_document_icon" src="/Matriz/static/src/img/rar_icon.png" alt="WinRAR/ZIP Icon"/>
+                                    <img t-elif="extension === 'jpg' || extension === 'jpeg' || extension === 'png'" class="o_document_icon" src="/Matriz/static/src/img/img_icon.png" alt="Image Icon"/>
+                                    <img t-else="" class="o_document_icon" src="/Matriz/static/src/img/default_icon.png" alt="Default Icon"/>
+                                </div>
+                                <div class="o_kanban_details">
+                                    <div>
+                                        <div t-att-title="record.name.raw_value" class="o_kanban_record_title">
+                                            <field name="name" class="o_text_overflow"/>
+                                        </div>
+                                        <br/>
+                                        <div class="o_kanban_record_bottom">
+                                            <time class="oe_kanban_bottom_left">
+                                                <field name="fch_creacion" widget="date"/>
+                                            </time>
+                                            <div class="oe_kanban_bottom_right">
+                                                <field name="user_id" widget="many2one_avatar_user"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="view_papelera_form" model="ir.ui.view">
+            <field name="name">papelera.form</field>
+            <field name="model">papelera</field>
+            <field name="arch" type="xml">
+                <form string="Papelera">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="drive_file_id"/>
+                            <field name="mime_type"/>
+                            <field name="user_id"/>
+                            <field name="fch_creacion"/>
+                            <field name="stage2_id"/>
+                            <field name="folder_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de formulario para el modelo Drive Teylor -->
+
+        <record id="drive_file_form_alternative" model="ir.ui.view">
+            <field name="name">sub.carpetas.form.alternative</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <form string="a" create="0">
+                    <sheet>
+
+                        <!-- TÍTULO PRINCIPAL -->
+                        <h2 style="margin-bottom: 10px; color:#043484; font-weight:600;">
+                            Crear Carpeta
+                        </h2>
+                        <!-- CARD: NOMBRE DE CARPETA -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 18px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        ">
+                            <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                    ">Nombre de la carpeta</div>
+                            <field name="folder_name"
+                                placeholder="Ingrese nombre…"
+                                required="1"
+                                style="
+                                    width: 60%;
+                                    border: 1px solid #A9A9A9;
+                                    border-radius: 6px;
+                                    padding: 6px 8px;
+                                    margin-top: 8px;
+                                    display:block;
+                                "/>
+                        </div>
+
+                        <!-- SUBTÍTULO -->
+                        <h3 style="color:#043484; font-weight:600; margin-bottom: 10px;">
+                            Detalles de la carpeta
+                        </h3>
+
+                        <!-- CARD: DETALLES -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 20px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        ">
+
+                            <!-- FECHA -->
+                            <div style="margin-bottom: 18px;">
+                                <div style="
+                                        font-weight:600;
+                                        color:#043484;
+                                        border-left: 3px solid #043484;
+                                        padding-left:8px;
+                                        margin-bottom:6px;
+                                        ">Fecha</div>
+                                <field name="fecha" widget="date"
+                                    required="1"
+                                    placeholder="Seleccione una fecha..."
+                                    style="
+                                        width: 40%;
+                                        border: 1px solid #A9A9A9;
+                                        border-radius: 6px;
+                                        padding: 6px 8px;
+                                        margin-top: 5px;
+                                        display:block;
+                                    "
+                                />
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div>
+                                <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                ">Descripción</div>
+                                <field name="descrpcion_info"
+                                    placeholder="Ingrese una descripción…"
+                                    class="textarea_moderno campo_hover"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- CAMPOS INVISIBLES -->
+                        <div style="display:none;">
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="folder_id2"/>
+                            <field name="folder_guardar_id"/>
+                            <field name="drive_id"/>
+                            <field name="proyecto_relacionado"/>
+                            <field name="informes_id"/>
+                            <field name="invisible_todo"/>
+                        </div>
+
+                        <!-- FOOTER -->
+                        <footer>
+                            <button name="create_drive_folder" type="object" class="btn-primary2">
+                                <i class="fa fa-save"></i> Crear carpeta
+                            </button>
+                            <button name="cancel" type="object" class="btn-secondary2" special="cancel">
+                                <i class="fa fa-times"></i> Descartar
+                            </button>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="drive_file_form_alternative" model="ir.ui.view">
+            <field name="name">sub.carpetas.form.alternative</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <form string="a" create="0">
+                    <sheet>
+
+                        <!-- TÍTULO PRINCIPAL -->
+                        <h2 style="margin-bottom: 10px; color:#043484; font-weight:600;">
+                            Crear Carpeta
+                        </h2>
+                        <!-- CARD: NOMBRE DE CARPETA -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 18px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        ">
+                            <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                    ">Nombre de la carpeta</div>
+                            <field name="folder_name"
+                                placeholder="Ingrese nombre…"
+                                required="1"
+                                style="
+                                    width: 60%;
+                                    border: 1px solid #A9A9A9;
+                                    border-radius: 6px;
+                                    padding: 6px 8px;
+                                    margin-top: 8px;
+                                    display:block;
+                                "/>
+                        </div>
+
+                        <!-- SUBTÍTULO -->
+                        <h3 style="color:#043484; font-weight:600; margin-bottom: 10px;">
+                            Detalles de la carpeta
+                        </h3>
+
+                        <!-- CARD: DETALLES -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 20px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        ">
+
+                            <!-- FECHA -->
+                            <div style="margin-bottom: 18px;">
+                                <div style="
+                                        font-weight:600;
+                                        color:#043484;
+                                        border-left: 3px solid #043484;
+                                        padding-left:8px;
+                                        margin-bottom:6px;
+                                        ">Fecha</div>
+                                <field name="fecha" widget="date"
+                                    required="1"
+                                    placeholder="Seleccione una fecha..."
+                                    style="
+                                        width: 40%;
+                                        border: 1px solid #A9A9A9;
+                                        border-radius: 6px;
+                                        padding: 6px 8px;
+                                        margin-top: 5px;
+                                        display:block;
+                                    "
+                                />
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div>
+                                <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                ">Descripción</div>
+                                <field name="descrpcion_info"
+                                    placeholder="Ingrese una descripción…"
+                                    class="textarea_moderno campo_hover"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- CAMPOS INVISIBLES -->
+                        <div style="display:none;">
+                            <field name="name"/>
+                            <field name="sequence"/>
+                            <field name="folder_id2"/>
+                            <field name="folder_guardar_id"/>
+                            <field name="drive_id"/>
+                            <field name="proyecto_relacionado"/>
+                            <field name="informes_id"/>
+                            <field name="invisible_todo"/>
+                        </div>
+
+                        <!-- FOOTER -->
+                        <footer>
+                            <button name="create_drive_folder" type="object" class="btn-primary2">
+                                <i class="fa fa-save"></i> Crear carpeta
+                            </button>
+                            <button name="cancel" type="object" class="btn-secondary2" special="cancel">
+                                <i class="fa fa-times"></i> Descartar
+                            </button>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_drive_form_alternative" model="ir.ui.view">
+            <field name="name">drive.form.alternative</field>
+            <field name="model">drive</field>
+            <field name="arch" type="xml">
+                <form string="Drive">
+                    <sheet>
+
+                        <!-- TÍTULO PRINCIPAL -->
+                        <h2 style="margin-bottom: 10px; color:#043484; font-weight:600;">
+                            Subir Documento
+                        </h2>
+
+                        <!-- CARD: SUBIR ARCHIVO -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 18px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        ">
+                            <div style="
+                                font-weight:600;
+                                color:#043484;
+                                border-left: 3px solid #043484;
+                                padding-left:8px;
+                                margin-bottom:6px;
+                            ">
+                                Archivo
+                            </div>
+
+                            <field name="file_data"
+                                filename="file_name"
+                                attrs="{'invisible': [('file_data_visible', '=', False)]}"/>
+
+                            <field name="file_name" invisible="1"/>
+                        </div>
+
+                        <!-- SUBTÍTULO -->
+                        <h3 style="color:#043484; font-weight:600; margin-bottom: 10px;">
+                            Detalles del documento
+                        </h3>
+
+                        <!-- CARD: DETALLES -->
+                        <div style="
+                            border: 1px solid #ddd;
+                            padding: 20px;
+                            border-radius: 10px;
+                            background-color:#fff;
+                            margin-bottom: 20px;
+                        "
+                        attrs="{'invisible': [('invisible_todo', '=', False)]}">
+
+                            <!-- FECHA -->
+                            <div style="margin-bottom: 18px;">
+                                <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                ">
+                                    Fecha
+                                </div>
+
+                                <field name="fecha"
+                                    widget="date"
+                                    style="
+                                        width: 40%;
+                                        border: 1px solid #A9A9A9;
+                                        border-radius: 6px;
+                                        padding: 6px 8px;
+                                        margin-top: 5px;
+                                        display:block;
+                                    "/>
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div>
+                                <div style="
+                                    font-weight:600;
+                                    color:#043484;
+                                    border-left: 3px solid #043484;
+                                    padding-left:8px;
+                                    margin-bottom:6px;
+                                ">
+                                    Descripción
+                                </div>
+
+                                <field name="descrpcion_info"
+                                    placeholder="Ingrese una descripción…"
+                                    class="textarea_moderno campo_hover"/>
+                            </div>
+                        </div>
+
+                        <!-- CAMPOS INVISIBLES -->
+                        <div style="display:none;">
+                            <field name="tag_ids"/>
+                            <field name="folder_id"/>
+                            <field name="tags_html"/>
+                            <field name="all_folders_url"/>
+                            <field name="ejecutar_toggle"/>
+                            <field name="file_id"/>
+                            <field name="buscador"/>
+                            <field name="stage2_id"/>
+                            <field name="preview_url"/>
+                            <field name="ejecutar_inf"/>
+                            <field name="informes_id"/>
+                            <field name="proyecto_relacionado"/>
+                            <field name="stage3_id"/>
+                            <field name="stage4_id"/>
+                            <field name="stage5_id"/>
+                            <field name="stage6_id"/>
+                            <field name="correo_electrinico"/>
+                            <field name="permission_email"/>
+                            <field name="permission_role"/>
+                            <field name="file_data_visible"/>
+                            <field name="name"
+                                attrs="{'invisible': [('file_data_visible', '=', True)]}"/>
+                            <field name="invisible_todo"/>
+                        </div>
+
+                        <!-- FOOTER -->
+                        <footer>
+                            <button name="action_save_and_process" type="object" class="btn-primary2" context="{'from_process_button': True}">
+                                <i class="fa fa-save"></i> Guardar
+                            </button>
+                            <button name="cancel" type="object" class="btn-secondary2" special="cancel">
+                                <i class="fa fa-times"></i> Descartar
+                            </button>
+                        </footer>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="drive_file_form_edit" model="ir.ui.view">
+            <field name="name">sub.carpetas.form.edit</field>
+            <field name="model">drive.file</field>
+            <field name="arch" type="xml">
+                <form string="Editar Carpeta">
+                    <sheet>
+                        <h2 style="margin-bottom: 10px; color:#043484; font-weight:600;">
+                            Editar Información
+                        </h2>
+                        
+                        <div style="border: 1px solid #ddd; padding: 18px; border-radius: 10px; background-color:#fff; margin-bottom: 20px;">
+                            <div style="font-weight:600; color:#043484; border-left: 3px solid #043484; padding-left:8px; margin-bottom:6px;">
+                                Nombre de la carpeta
+                            </div>
+                            <field name="folder_name" placeholder="Ingrese nombre…" required="1"
+                                style="width: 60%; border: 1px solid #A9A9A9; border-radius: 6px; padding: 6px 8px; margin-top: 8px; display:block;"/>
+                        </div>
+
+                        <h3 style="color:#043484; font-weight:600; margin-bottom: 10px;">
+                            Detalles de la carpeta
+                        </h3>
+
+                        <div style="border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color:#fff; margin-bottom: 20px;">
+                            <div style="margin-bottom: 18px;">
+                                <div style="font-weight:600; color:#043484; border-left: 3px solid #043484; padding-left:8px; margin-bottom:6px;">
+                                    Fecha
+                                </div>
+                                <field name="fecha" widget="date" required="1"
+                                    style="width: 40%; border: 1px solid #A9A9A9; border-radius: 6px; padding: 6px 8px; margin-top: 5px; display:block;"/>
+                            </div>
+
+                            <div>
+                                <div style="font-weight:600; color:#043484; border-left: 3px solid #043484; padding-left:8px; margin-bottom:6px;">
+                                    Descripción
+                                </div>
+                                <field name="descrpcion_info" placeholder="Ingrese una descripción…" class="textarea_moderno campo_hover"/>
+                            </div>
+                        </div>
+
+                        <div style="display:none;">
+                            <field name="invisible_todo"/>
+                            <field name="can_delete_from_form"/>
+                        </div>
+
+                        <footer>
+                            <button name="action_update_folder_info" type="object" class="btn-primary2">
+                                <i class="fa fa-save"></i> Guardar
+                            </button>
+                            <button name="cancel" type="object" class="btn-secondary2" special="cancel">
+                                <i class="fa fa-times"></i> Descartar
+                            </button>
+                            <button name="action_delete_from_form" type="object" class="btn-danger" style="float: left;"
+                                    attrs="{'invisible': [('can_delete_from_form', '=', False)]}"
+                                    confirm="ADVERTENCIA: ¿Estás seguro de eliminar esta carpeta permanentemente? Se borrará de Google Drive y del sistema.">
+                                <i class="fa fa-times"></i> Mover a papelera
+                            </button>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

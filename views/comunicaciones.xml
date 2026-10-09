@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_comunicaciones_drive_form" model="ir.ui.view">
+            <field name="name">comunicaciones.form</field>
+            <field name="model">comunicaciones_drive</field>
+            <field name="arch" type="xml">
+                <form string="Comunicaciones" create="false" delete="false" duplicate="false">
+                    <div class="layout-container infcom-layout-container">
+                    <div class="sidebar-left infcom-sidebar-left">
+                            <aside>
+                                <div class="toggle-section">
+                                    <div>
+                                        <div class="drv_search_box drv_search_box_sidebar">
+                                            <i class="fa fa-search drv_search_icon_box"/>
+                                            <field name="workspace_search" placeholder="Buscar carpeta..." class="drv_search_field"/>
+                                        </div>
+                                        <div class="folders-title-row">
+                                            <h3 class="toggle-title2"> <i class="fa fa-folder-o"></i>
+                                                Carpetas
+                                            </h3>
+                                            <a name="action_create_folder"
+                                            type="object"
+                                            class="o_link toggle-link folders-add-btn o_priority_click"
+                                            title="Crear carpeta">
+                                                +
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div id="folders-section" class="toggle-content">
+                                        <ul>
+                                            <div class="workspace gd_workspace_tree drv_workspace_tree infcom_workspace_tree">
+                                                <field name="workspace_view_ids"
+                                                    class="js_block_click" 
+                                                    nolabel="1"
+                                                    mode="tree"
+                                                    context="{'drv_sidebar': 1}"
+                                                    options="{
+                                                        'no_open': True,
+                                                        'no_create': True,
+                                                        'no_delete': True
+                                                    }">
+                                                    
+                                                    <tree create="0" 
+                                                        edit="0" 
+                                                        delete="0" 
+                                                        limit="2000"
+                                                        decoration-bf="is_selected" 
+                                                        decoration-info="is_selected">
+                                                        
+                                                        <field name="is_selected" invisible="1"/>
+                                                        <field name="parent_id" invisible="1"/>
+                                                        <field name="depth" string=" "/>
+
+                                                        <button name="action_select_workspace"
+                                                                type="object"
+                                                                icon="fa-folder"
+                                                                class="workspace-folder-btn gd_ws_open_btn"
+                                                                title="Abrir carpeta"
+                                                                attrs="{'invisible': [('is_selected', '=', True)]}"/>
+
+                                                        <button name="action_select_workspace"
+                                                                type="object"
+                                                                icon="fa-folder-open"
+                                                                class="workspace-folder-btn gd_ws_open_btn is_current"
+                                                                title="Carpeta actual"
+                                                                attrs="{'invisible': [('is_selected', '=', False)]}"/>
+
+                                                        <field name="name" readonly="1" force_save="1"/>
+
+                                                        <button name="action_create_subfolder_inline"
+                                                                type="object"
+                                                                icon="fa-plus"
+                                                                class="workspace-add-btn o_priority_click gd_ws_add_btn"
+                                                                title="Crear subcarpeta"/>
+                                                    </tree>
+                                                </field>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+
+                        <script>
+                            function toggleSection(sectionId) {
+                                const section = document.getElementById(sectionId);
+                                if (!section) {
+                                    console.error('Elemento no encontrado:', sectionId);
+                                    return;
+                                }
+                                section.classList.toggle('collapsed');
+                                if (section.classList.contains('collapsed')) {
+                                    section.style.maxHeight = '0';
+                                } else {
+                                    section.style.maxHeight = 'none';
+                                }
+                            }
+                        </script>
+                        <div class="section-center infcom-section-center">
+                            <sheet>
+                                <header>
+                                    <div class="search-bar-container">
+                                        <span style="display: inline-block; width: 600px;"></span>
+                                        <field name="search_query" placeholder="Buscar Documentos..." class="search-input"/>
+                                        <span class="search-icon">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </header>
+                                <section>
+                                    <group>
+                                        <field name="name" invisible="1"/>
+                                        <field name="detalles" invisible="1"/>
+                                        <field name="detalles_carpetas" invisible="1" readonly="0"/>
+                                        <field name="proyecto_relacionado" invisible="1"/>
+                                        <field name="workspace_selected" invisible="1"/>
+                                        <field name="selected_workspace_id" invisible="1"/>
+                                        <field name="detail_workspace_id" invisible="1"/>
+                                        <field name="selected_drive_id" invisible="1"/>
+                                        <field name="selected_drive_activity_html" invisible="1"/>
+                                        <field name="selected_folder_activity_html" invisible="1"/>
+                                    </group>
+                                    <div class="infcom-section-actions">
+                                        <span>CARPETAS</span>
+                                        <button name="action_create_subfolder" type="object"
+                                                string="+ Nueva Carpeta"
+                                                class="btn btn-sm drv_sec_btn drv_sec_btn_blue"
+                                                attrs="{'invisible': [('selected_workspace_id', '=', False)]}"/>
+                                        <button name="action_upload_folder" type="object"
+                                                string="↑ Subir Carpeta"
+                                                class="btn btn-sm drv_sec_btn drv_sec_btn_orange"
+                                                attrs="{'invisible': [('selected_workspace_id', '=', False)]}"/>
+                                    </div>
+                                    <div class="card-container infcom-card-container infcom-folder-cards">
+                                        <field name="comunicaciones_subcarpeta_ids" widget="kanban">
+                                            <kanban create="0">
+                                                <field name="fecha"/>
+                                                <field name="create_date"/>
+                                                <field name="user_id"/>
+                                                <field name="parent_display_name"/>
+                                                <templates>
+                                                    <t t-name="kanban-box">
+                                                        <div class="kanban-card">
+                                                            <button type="object" name="action_select_workspace"
+                                                                    class="infcom-folder-open-action"
+                                                                    title="Abrir carpeta">
+                                                                <div class="kanban-icon-area">
+                                                                    <i class="fa fa-folder" style="font-size:42px; color:#9aa7b8;"/>
+                                                                </div>
+                                                                <div class="kanban-details">
+                                                                    <div>
+                                                                        <div t-att-title="record.name.raw_value" class="kanban-record-title">
+                                                                            <field name="name" class="o_text_overflow"/>
+                                                                        </div>
+                                                                        <div class="infcom-folder-subtitle">
+                                                                            En <field name="parent_display_name"/>
+                                                                        </div>
+                                                                        <div class="kanban-footer">
+                                                                            <time class="kanban-footer-left">
+                                                                                <field name="create_date" widget="date"/>
+                                                                            </time>
+                                                                            <div class="kanban-footer-right">
+                                                                                <field name="user_id" widget="many2one_avatar_user"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </button>
+                                                            <div class="o_dropdown_kanban dropdown gd_folder_menu" tabindex="-1"
+                                                                 style="position:absolute; top:6px; right:6px; z-index:20; opacity:.7; pointer-events:auto;">
+                                                                <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Menú de carpeta" title="Menú de carpeta">
+                                                                    <span class="fa fa-ellipsis-v"/>
+                                                                </a>
+                                                                <div role="menu" class="dropdown-menu dropdown-menu-end">
+                                                                    <a class="dropdown-item" role="menuitem" type="object" name="toggle_sidebar_info">
+                                                                        <i class="fa fa-info-circle"></i> Ver Detalles
+                                                                    </a>
+                                                                    <a class="dropdown-item" role="menuitem" type="object" name="action_open_folder">
+                                                                        <i class="fa fa-folder-open-o"></i> Abrir Carpeta
+                                                                    </a>
+                                                                    <div role="separator" class="dropdown-divider"/>
+                                                                    <a class="dropdown-item" role="menuitem" type="object" name="action_download_folder">
+                                                                        <i class="fa fa-download" style="color:#1a73e8;"/> Descargar Carpeta
+                                                                    </a>
+                                                                    <div role="separator" class="dropdown-divider"/>
+                                                                    <a class="dropdown-item text-danger" role="menuitem" type="object" name="action_delete_folder"
+                                                                       confirm="¿Está seguro de eliminar esta carpeta?">
+                                                                        <i class="fa fa-trash"/> Eliminar Carpeta
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </templates>
+                                            </kanban>
+                                        </field>
+                                    </div>
+                                    <div class="infcom-section-actions infcom-section-actions-files">
+                                        <span>ARCHIVOS</span>
+                                        <button name="action_upload_file" type="object"
+                                                string="↑ Subir Documento"
+                                                class="btn btn-sm drv_sec_btn drv_sec_btn_green"
+                                                attrs="{'invisible': [('selected_workspace_id', '=', False)]}"/>
+                                    </div>
+                                    <div class="card-container infcom-card-container infcom-file-cards">
+                                        <field name="comunicaciones_archivo_ids" widget="kanban">
+                                            <kanban create="0" action="action_open_drive_if" type="object">
+                                                <templates>
+                                                    <t t-name="kanban-box">
+                                                        <div class="kanban-card">
+                                                            <br/>
+                                                            <div class="kanban-icon-area">
+                                                                <t t-set="name" t-value="(record.name.raw_value || '').toLowerCase()"/>
+                                                                <t t-set="extension" t-value="name.indexOf('.') >= 0 ? name.split('.').pop() : ''"/>
+                                                                <img t-if="extension === 'pdf' || name.indexOf('.pdf') >= 0" class="kanban-file-icon" src="/Matriz/static/src/img/pdf_icon.png" alt="PDF Icon"/>
+                                                                <img t-elif="extension === 'ppt' || extension === 'pptx' || extension === 'pps' || extension === 'ppsx' || name.indexOf('.ppt') >= 0 || name.indexOf('presentacion') >= 0 || name.indexOf('presentación') >= 0" class="kanban-file-icon" src="/Matriz/static/src/img/ppt_icon.png" alt="PowerPoint Icon"/>
+                                                                <img t-elif="extension === 'doc' || extension === 'docx' || name.indexOf('.doc') >= 0" class="kanban-file-icon" src="/Matriz/static/src/img/word.png" alt="Word Icon"/>
+                                                                <img t-elif="extension === 'xls' || extension === 'xlsx' || name.indexOf('.xls') >= 0" class="kanban-file-icon" src="/Matriz/static/src/img/xls_icon.png" alt="Excel Icon"/>
+                                                                <img t-elif="extension === 'txt'" class="kanban-file-icon" src="/Matriz/static/src/img/txt_icon.png" alt="Text Icon"/>
+                                                                <img t-elif="extension === 'rar' || extension === 'zip'" class="kanban-file-icon" src="/Matriz/static/src/img/rar_icon.png" alt="WinRAR/ZIP Icon"/>
+                                                                <img t-elif="extension === 'jpg' || extension === 'jpeg' || extension === 'png'" class="kanban-file-icon" src="/Matriz/static/src/img/img_icon.png" alt="Image Icon"/>
+                                                                <img t-else="" class="kanban-file-icon" src="/Matriz/static/src/img/default_icon.png" alt="Default Icon"/>
+                                                            </div>
+                                                            <div class="kanban-details">
+                                                                <div>
+                                                                    <div t-att-title="record.name.raw_value" class="kanban-record-title">
+                                                                        <field name="name" class="o_text_overflow"/>
+                                                                    </div>
+                                                                    <br/>
+                                                                    <div class="kanban-footer">
+                                                                        <time class="kanban-footer-left">
+                                                                            <field name="fch_creacion" widget="date"/>
+                                                                        </time>
+                                                                        <div class="kanban-footer-right">
+                                                                            <field name="activity_ids" widget="kanban_activity" style="font-size: 16px;"/>
+                                                                            <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star" attrs="{'invisible': [('show_on_dashboard', '=', False)]}" title="Marcar como favorito"/>
+                                                                            <button type="object" name="toggle_favorite" class="oe_stat_button" icon="fa-star-o" attrs="{'invisible': [('show_on_dashboard', '=', True)]}" title="Quitar de favoritos"/>
+                                                                            <field name="show_on_dashboard" string="Favorito" widget="boolean_favorite" options="{'clickable': True}" invisible="1"/>
+                                                                            <field name="user_id" widget="many2one_avatar_user"/>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <field name="ejecutar_inf" style="position: absolute; top: 10px; left: 10px;"/>
+                                                            </div>
+                                                            <div class="o_dropdown_kanban dropdown gd_file_menu" tabindex="-1"
+                                                                 style="position:absolute; top:6px; right:6px; z-index:20; opacity:.7; pointer-events:auto;">
+                                                                <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                                                    <span class="fa fa-ellipsis-v"/>
+                                                                </a>
+                                                            <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="toggle_sidebar_info">
+                                                                    <i class="fa fa-info"></i> Detalles
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_share_entry">
+                                                                    <i class="fa fa-share-alt" style="color:#16a34a;"/> Compartir
+                                                                </a>
+                                                                <div role="separator" class="dropdown-divider"/>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_pdf_entry">
+                                                                    <i class="fa fa-file-pdf-o" style="color:#ef4444;"/> Descargar PDF
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_word_entry">
+                                                                    <i class="fa fa-file-word-o" style="color:#2563eb;"/> Descargar Word
+                                                                </a>
+                                                                <a class="dropdown-item" role="menuitem" type="object" name="action_download_original_entry">
+                                                                    <i class="fa fa-download" style="color:#1a73e8;"/> Descargar Original
+                                                                </a>
+                                                                <div role="separator" class="dropdown-divider"/>
+                                                                <a class="dropdown-item text-danger" role="menuitem" type="object" name="action_delete_entry"
+                                                                   confirm="¿Está seguro de eliminar este archivo?">
+                                                                    <i class="fa fa-trash"/> Eliminar
+                                                                </a>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </t>
+                                                </templates>
+                                            </kanban>
+                                        </field>
+                                    </div>
+                                </section>
+                            </sheet>
+                        </div>
+
+                        <div class="sidebar-documents infcom-sidebar-documents" attrs="{'invisible': [('detalles', '=', False)]}">
+                            <aside>
+                                <div class="infcom-details-topbar infcom-document-topbar">
+                                    <span/>
+                                    <button name="set_detalles_to_false" type="object" class="btn-action2 infcom-close-btn" title="Cerrar">
+                                        <i class="fa fa-times"/>
+                                    </button>
+                                </div>
+                                <notebook class="infcom-details-notebook">
+                                    <page string="Detalles">
+                                        <div class="preview-container">
+                                            <field name="preview_html" widget="html"/>
+                                        </div>
+
+                                        <div class="infcom-details-section">
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-file-pdf-o" style="color:#ef4444;"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Nombre</div>
+                                                    <div class="infcom-details-value infcom-file-name">
+                                                        <field name="file_name" invisible="0" readonly="1" nolabel="1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="infcom-details-section">
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-map-marker"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Ubicación</div>
+                                                    <div class="infcom-details-value">
+                                                        <span class="infcom-location-chip">
+                                                            <i class="fa fa-folder" style="color:#4d8fcc;font-size:12px;"/>
+                                                            <field name="stage2_id" invisible="0" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-file-text-o"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Páginas</div>
+                                                    <div class="infcom-details-value">
+                                                        <field name="page_range_panel" invisible="0" readonly="1" nolabel="1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="infcom-details-section">
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-user-o"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Creado por</div>
+                                                    <div class="infcom-details-value">
+                                                        <field name="user_id" invisible="0" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-calendar-o"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Fecha de creación</div>
+                                                    <div class="infcom-details-value">
+                                                        <field name="fecha" invisible="0" readonly="1" nolabel="1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="infcom-details-section" attrs="{'invisible': [('descrpcion_info', '=', False)]}">
+                                            <div class="infcom-details-row">
+                                                <span class="infcom-details-icon"><i class="fa fa-align-left"/></span>
+                                                <div class="infcom-details-body">
+                                                    <div class="infcom-details-label">Descripción</div>
+                                                    <div class="infcom-details-value">
+                                                        <field name="descrpcion_info" invisible="0" readonly="1" nolabel="1"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </page>
+                                    <page string="Actividad">
+                                        <field name="selected_drive_activity_html" widget="html" readonly="1" nolabel="1"/>
+                                    </page>
+                                </notebook>
+                            </aside>
+                        </div>
+
+                        <div class="sidebar-right infcom-sidebar-right" attrs="{'invisible': [('detalles_carpetas', '=', False)]}">
+                            <aside>
+                                <div class="infcom-details-topbar">
+                                    <span/>
+                                    <div class="infcom-folder-actions">
+                                        <button name="set_detalles_carpetas" type="object" class="btn-action2 infcom-close-btn" title="Cerrar">
+                                            <i class="fa fa-times"/>
+                                        </button>
+                                        <button name="action_edit_folder" class="btn-action infcom-edit-btn" type="object" title="Editar Información">
+                                            <i class="fa fa-pencil"/>
+                                        </button>
+                                    </div>
+                                </div>
+                                <notebook class="infcom-details-notebook">
+                                    <page string="Detalles">
+
+                                        <div class="infcom-folder-hero">
+                                            <i class="fa fa-folder"/>
+                                            <div class="infcom-folder-name">
+                                                <field name="folder_name" invisible="0" readonly="1" nolabel="1"/>
+                                            </div>
+                                        </div>
+
+                                <div class="infcom-details-section">
+                                    <div class="infcom-details-row">
+                                        <span class="infcom-details-icon"><i class="fa fa-map-marker"/></span>
+                                        <div class="infcom-details-body">
+                                            <div class="infcom-details-label">Ubicación</div>
+                                            <div class="infcom-details-value">
+                                                <span class="infcom-location-chip">
+                                                    <i class="fa fa-folder" style="color:#4d8fcc;font-size:12px;"/>
+                                                    <field name="folder_parent_name" invisible="0" readonly="1" nolabel="1"/>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infcom-details-row">
+                                        <span class="infcom-details-icon"><i class="fa fa-tag"/></span>
+                                        <div class="infcom-details-body">
+                                            <div class="infcom-details-label">Tipo</div>
+                                            <div class="infcom-details-value">Carpeta</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infcom-details-section">
+                                    <div class="infcom-details-row">
+                                        <span class="infcom-details-icon"><i class="fa fa-user-o"/></span>
+                                        <div class="infcom-details-body">
+                                            <div class="infcom-details-label">Propietario</div>
+                                            <div class="infcom-details-value">
+                                                <field name="user_1_id" invisible="0" readonly="1" nolabel="1" options="{'no_open': True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="infcom-details-row">
+                                        <span class="infcom-details-icon"><i class="fa fa-calendar-o"/></span>
+                                        <div class="infcom-details-body">
+                                            <div class="infcom-details-label">Creado</div>
+                                            <div class="infcom-details-value">
+                                                <field name="fecha1" invisible="0" readonly="1" nolabel="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="infcom-folder-stats">
+                                    <div class="infcom-stat-box">
+                                        <div class="infcom-stat-number"><field name="folder_child_count" readonly="1" nolabel="1"/></div>
+                                        <div class="infcom-stat-label">Subcarpetas</div>
+                                    </div>
+                                    <div class="infcom-stat-box">
+                                        <div class="infcom-stat-number"><field name="folder_file_count" readonly="1" nolabel="1"/></div>
+                                        <div class="infcom-stat-label">Archivos</div>
+                                    </div>
+                                </div>
+
+                                <div class="infcom-details-section">
+                                    <div class="infcom-details-row">
+                                        <span class="infcom-details-icon"><i class="fa fa-align-left"/></span>
+                                        <div class="infcom-details-body">
+                                            <div class="infcom-details-label">Descripción</div>
+                                            <div class="infcom-details-value">
+                                                <field name="descrpcion_info1" invisible="0" readonly="0" nolabel="1" placeholder="Añadir descripción..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="sidebar-actions infcom-folder-control">
+                                    <button name="action_open_inventario" type="object" class="action-button">
+                                        <i class="fa fa-arrow-right" style="margin-right: 10px;"></i>
+                                        Hoja de control
+                                    </button>
+                                        </div>
+                                    </page>
+                                    <page string="Actividad">
+                                        <field name="selected_folder_activity_html" widget="html" readonly="1" nolabel="1"/>
+                                    </page>
+                                </notebook>
+                            </aside>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_documento_archivo_comunicaciones_form" model="ir.ui.view">
+            <field name="name">documento_archivo_comunicaciones.form</field>
+            <field name="model">documento_archivo_comunicaciones</field>
+            <field name="arch" type="xml">
+                <form string="Hoja de Control de Comunicaciones" create="false" delete="false" duplicate="false">
+                    <header>
+                        <button name="action_descargar_excel" 
+                                string="Descargar Excel" 
+                                type="object" 
+                                class="oe_highlight" 
+                                icon="fa-file-excel-o"/>
+                    </header>
+                    <sheet>
+                        <div style="border: 1px solid black; padding: 30px; background-color: white; color: black; font-family: 'Arial', sans-serif;">
+                            
+                            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-bottom: 20px;">
+                                <tr>
+                                    <td style="width: 20%; border-right: 1px solid black; padding: 10px; text-align: center; vertical-align: middle;">
+                                        <img src="/Matriz/static/src/img/LogoFUV.png" style="max-height: 60px; max-width: 100%;"/>
+                                    </td>
+                                    <td style="width: 55%; border-right: 1px solid black; text-align: center; vertical-align: middle;">
+                                        <h2 style="margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase;">
+                                            Hoja de Control de Documentos para Archivo
+                                        </h2>
+                                    </td>
+                                    <td style="width: 25%; padding: 5px; font-size: 11px; vertical-align: middle;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                            <strong>F.EMISIÓN:</strong> <span>2020-02-10</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                            <strong>Versión:</strong> <span>1</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <strong>Código:</strong> <span>FU-F-SGD-008</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div style="margin-bottom: 20px;">
+                                <div style="display: inline-block; border: 1px solid black; width: 200px; text-align: center;">
+                                    <div style="display: flex; border-bottom: 1px solid black; background-color: #f0f0f0;">
+                                        <div style="flex: 1; border-right: 1px solid black; font-size: 11px; font-weight: bold; padding: 2px;">Día</div>
+                                        <div style="flex: 1; border-right: 1px solid black; font-size: 11px; font-weight: bold; padding: 2px;">Mes</div>
+                                        <div style="flex: 1; font-size: 11px; font-weight: bold; padding: 2px;">Año</div>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <div style="flex: 1; border-right: 1px solid black; padding: 5px;">
+                                            <field name="dia_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="DD"/>
+                                        </div>
+                                        <div style="flex: 1; border-right: 1px solid black; padding: 5px;">
+                                            <field name="mes_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="MM"/>
+                                        </div>
+                                        <div style="flex: 1; padding: 5px;">
+                                            <field name="anio_header" nolabel="1" style="width: 100%; text-align: center; border: none; font-weight: bold;" placeholder="AAAA"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+                                <tr>
+                                    <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                        Sección/ Subsección:
+                                    </td>
+                                    <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                        <field name="seccion_subseccion" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                        Serie/Subserie:
+                                    </td>
+                                    <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                        <field name="serie_subserie" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom;">
+                                        Asunto/ Expediente:
+                                    </td>
+                                    <td style="border-bottom: 1px solid black; vertical-align: bottom;">
+                                        <field name="asunto_expediente" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                    </td>
+                                </tr>
+                                <tr invisible="1">
+                                    <td style="width: 160px; font-weight: bold; font-size: 13px; vertical-align: bottom; color: #666;">
+                                        Comunicación Relacionada:
+                                    </td>
+                                    <td style="border-bottom: 1px dotted #666; vertical-align: bottom;">
+                                        <field name="comunicaciones" nolabel="1" style="width: 100%; border: none; background: transparent; font-size: 13px;"/>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <field name="fecha" invisible="1"/>
+                            <field name="inventario" invisible="1"/>
+                            
+                            <br/>
+
+                            <div style="border: 1px solid black;">
+                                <field name="linea_ids" widget="one2many">
+                                    <tree editable="bottom" create="1" delete="1" style="width: 100%; border: none;">
+                                        <field name="dia" string="Día" width="50px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                        <field name="mes" string="Mes" width="50px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                        <field name="anio" string="Año" width="60px" style="text-align: center; border-right: 1px solid #ddd;"/>
+                                        <field name="tipo_documental" string="Tipos Documentales" style="border-right: 1px solid #ddd; font-weight: bold;"/>
+                                        <field name="numero_consecutivo" string="Numero Consecutivo" style="border-right: 1px solid #ddd;"/>
+                                        <field name="folios" string="N° paginas" style="text-align: center;"/>
+                                        <field name="folios_conteo" string="Folios" style="text-align: center;"/>
+                                    </tree>
+                                </field>
+                            </div>
+
+                            <br/>
+
+                            <group>
+                                <field name="firma_elaboracion" string="Firma y Fecha de Elaboración" style="border-bottom: 1px solid black;"/>
+                            </group>
+
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

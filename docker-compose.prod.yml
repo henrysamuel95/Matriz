@@ -1,0 +1,72 @@
+version: '3.8'
+
+# Variante de docker-compose.yml sin el contenedor de SQL Server (siesadb),
+# que solo existe para simular SIESA en desarrollo local. Se usa para
+# levantar un stack "tipo producción" (por ejemplo al restaurar un backup
+# con scripts/restore_odoo.sh).
+
+services:
+  gofuv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gofuv
+    restart: unless-stopped
+    depends_on:
+      - fuvdb
+    ports:
+      - "8080:8069"
+    volumes:
+      - fuv-data:/var/lib/odoo
+      - .:/mnt/extra-addons/Matriz
+      # Sobreescribe el odoo.conf horneado en la imagen (que trae
+      # admin_passwd por defecto "admin", sin usar) con uno propio del
+      # servidor, incluyendo un admin_passwd real. Ver
+      # config/odoo.prod.conf.example para generarlo — config/odoo.prod.conf
+      # está en .gitignore, nunca se commitea.
+      - ./config/odoo.prod.conf:/etc/odoo/odoo.conf:ro
+    environment:
+      - HOST=fuvdb
+      - USER=odoo
+      # ATENCIÓN: contraseña de ejemplo para desarrollo. En el servidor de
+      # producción, reemplázala por una contraseña fuerte (y usa la misma
+      # en POSTGRES_PASSWORD del servicio fuvdb) — idealmente vía un
+      # archivo .env fuera de git, no hardcodeada aquí.
+      - PASSWORD=odoo
+    # --workers: modo prefork multi-proceso (recomendado en producción; el
+    # modo threaded de un solo proceso usado en dev hace que CUALQUIER
+    # request/cron lento reinicie TODO el servidor para TODOS los usuarios).
+    # Ajusta según el hardware real del servidor con la fórmula de Odoo:
+    # workers = (núcleos de CPU * 2) + 1. El valor de abajo (2) es un mínimo
+    # conservador para probar el modo prefork, no un dimensionamiento real.
+    command: -- --limit-time-real=1800 --workers=2 --max-cron-threads=1
+    # Límites de recursos: evitan que este contenedor agote la memoria/CPU
+    # del host (por ejemplo, si el filestore vuelve a crecer sin control).
+    # Ajusta estos valores al hardware real del servidor; deben guardar
+    # relación con --workers de arriba (más workers = más memoria/CPU).
+    mem_limit: 4g
+    mem_reservation: 1g
+    cpus: 2
+
+  fuvdb:
+    image: postgres:16
+    container_name: fuvdb
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=postgres
+      # ATENCIÓN: contraseña de ejemplo para desarrollo. En el servidor de
+      # producción, reemplázala por una contraseña fuerte (debe coincidir
+      # con PASSWORD del servicio gofuv) — idealmente vía un archivo .env
+      # fuera de git, no hardcodeada aquí.
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    volumes:
+      - fuv-db:/var/lib/postgresql/data
+    # Límites de recursos: ajusta al hardware real del servidor.
+    mem_limit: 2g
+    mem_reservation: 512m
+    cpus: 1
+
+volumes:
+  fuv-data:
+  fuv-db:

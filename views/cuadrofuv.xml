@@ -1,0 +1,301 @@
+<odoo>
+    <data>
+        <!-- Vista de la forma de tu modelo -->
+        <record model="ir.ui.view" id="view_cuadrofuv_form">
+            <field name="name">cuadrofuv.form</field>
+            <field name="model">cuadrofuv</field>
+            <field name="arch" type="xml">
+                <form string="CUADRO FUV Admon">
+                    <table style="border-collapse: collapse; width: 100%; margin: auto; background-color: #485B75;">
+                        <tr>
+                            <img src="https://i.ibb.co/nkbts0Z/imagen1-removebg-preview.png" alt="Descripción de la imagen" style=" height: auto; max-width: 300px; max-height: 100px; padding-bottom: 2px;" />
+                            <th colspan="16" style= "width: 100%; text-align: right; padding: 8px; font-size: 16px; font-style: italic; font-weight: bold; color: white;">CUADRO FUV-ADMON</th>
+                        </tr>
+                    </table>
+                    <hr style="border: 1px solid #fff;"/>
+                    <div style="display: flex; justify-content: flex-start; align-items: center;">
+                        <button name="Guardar" class="custom_button_style" style="width: 50px;" type="object">Guardar</button>
+                        <span style="display: inline-block; width: 30px;"></span>
+                        <label for="new_name" style="margin-left: 10px;">Nombre:</label>
+                        <field name="new_name" required="1" class="oe_avatar" style="width: 270px;"/>
+                    </div>
+                    <style>
+                        .custom_button_style {
+                        background-color: #485B75;
+                        color: white;
+                        border: none;
+                        padding: 6px 20px;
+                        font-size: 16px;
+                        border-radius: 5px;
+                    }
+                    </style>
+                    <notebook class="oe_background_primary">
+                        <page string="Información General" >
+                            <group class="oe_subtotal_footer_separator">
+                                <tr style="border: 0.3px solid black;">
+                                    <tr>
+                                    <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">Cedula</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black; ">
+                                       <field name="cedula"  style=" width: 675px;"/>
+                                    </td>
+                                    </tr>
+
+                                    <tr>
+                                    <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">Nombre</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black;">
+                                        <field name="nombre" style="width: 675px;"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">RPC</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black;">
+                                        <field name="rpc" style=" width: 675px;"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">Operacional</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black;">
+                                        <field name="operacional" style=" width: 675px;"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                    <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">Area</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black;">
+                                        <field name="area" style=" width: 675px;"/>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                     <td style="border: 0.3px solid black; background-color: #485B75;">
+                                        <h4 style="color: white;">Año</h4>
+                                    </td>
+                                    <td style="border: 0.3px solid black;">
+                                        <field name="ano" style=" width: 675px;"/>
+                                    </td>
+                                    </tr>
+                                </tr>
+
+                                <tr style="border: 0.3px solid black;">
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <div style="width: 125px;">
+                                                <h4 style="color: white;">Tipo de Contrato</h4>
+                                            </div>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="tipo_contrato" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Fecha de Inicio</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="fec_ini" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Fecha de Fin</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="fec_fin" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Condicional</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="condicional" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Contrapartida</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="contrapartida" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Pendiente</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="pendiente" style="width: 660px;"/>
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </group>
+                        </page>
+                        <page string="Meses">
+                            <group class="oe_subtotal_footer_separator">
+                                <tr style="border: 0.3px solid black;">
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <div style="width: 125px;">
+                                                <h4 style="color: white;">Enero</h4>
+                                            </div>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="ene" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Febrero</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="feb" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Marzo</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="mar" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Abril</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="abr" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Mayo</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="may" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Junio</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="jun" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                </tr>
+
+                                <tr style="border: 0.5px solid black;">
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <div style="width: 125px;">
+                                                <h4 style="color: white;">Julio</h4>
+                                            </div>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="jul" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Agosto</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="ago" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Septiembre</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="sep" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Octubre</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="oct" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Noviembre</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="nov" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Diciembre</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="dic" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 0.3px solid black; background-color: #485B75;">
+                                            <h4 style="color: white;">Total</h4>
+                                        </td>
+                                        <td style="border: 0.3px solid black;">
+                                            <field name="total" style="width: 675px;"/>
+                                        </td>
+                                    </tr>
+                                </tr>
+                            </group>
+                        </page>
+                        <page string="Gráficas">
+                            <field name="grafica" widget="image"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de la lista con filtro -->
+        <record model="ir.ui.view" id="view_cuadrofuv_tree">
+            <field name="name">cuadrofuv.tree</field>
+            <field name="model">cuadrofuv</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="cedula"/>
+                    <field name="nombre"/>
+                    <field name="rpc"/>
+                    <field name="operacional"/>
+                    <field name="area"/>
+                    <field name="ano"/>
+                    <field name="tipo_contrato"/>
+                    <field name="fec_ini"/>
+                    <field name="fec_fin"/>
+                    <field name="condicional"/>
+                    <field name="contrapartida"/>
+                    <field name="pendiente"/>
+                    <field name="ene"/>
+                    <field name="feb"/>
+                    <field name="mar"/>
+                    <field name="abr"/>
+                    <field name="may"/>
+                    <field name="jun"/>
+                    <field name="jul"/>
+                    <field name="ago"/>
+                    <field name="sep"/>
+                    <field name="oct"/>
+                    <field name="nov"/>
+                    <field name="dic"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

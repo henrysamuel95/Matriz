@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista del formulario de persona_juridica -->
+        <record id="view_persona_juridica_form" model="ir.ui.view">
+            <field name="name">persona_juridica.form</field>
+            <field name="model">persona_juridica</field>
+            <field name="arch" type="xml">
+                <form string="Persona Jurídica">
+                    <sheet>
+                        <header>
+                             <field name="new_name" placeholder="Escribe tu Nombre" required="1" default_focus="1" class="oe_avatar" style="width: 200px;"></field>
+                            <root>
+                              <Titulo_proyecto style="font-weight:bold; text-align:center; display:block; margin:auto; font-size:24px;">PERSONA JURIDICA</Titulo_proyecto>
+                            </root>
+                            <span style="display: inline-block; width: 20px;"></span>
+                            <tr>
+                                <td>
+                                    <label for="nit" string="Buscar NIT(solo numero sin DV ni guiones o espacios)" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" invisible="1"/>
+                                </td>
+                                <td class="oe_inline" style="text-align: center;">
+                                    <field name="nit" class="oe_inline" style="background-color: #FFFFFF; border: 1px solid #CCCCCC; white-space: nowrap; padding-left: 10px;" invisible="1"/>
+                                </td>
+                                <td class="oe_inline">
+                                    <span style="display: inline-block; width: 15px;"></span>
+                                    <button name="nit" string="Buscar" type="object" class="custom_button_style" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" invisible="1"/>
+                                </td>
+                            </tr>
+                        </header>
+                            <br/>
+                                <style>
+                                    .dropdown {
+                                        position: relative;
+                                        display: inline-block;
+                                    }
+
+                                    .dropdown-content {
+                                        display: none;
+                                        position: absolute;
+                                        background-color: #EFF1F7;
+                                        min-width: 160px;
+                                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+                                        padding: 17px 18px;
+                                        z-index: 1;
+                                    }
+
+                                    .dropdown:hover .dropdown-content {
+                                        display: block;
+                                    }
+                                    .custom_button_style {
+                                        background-color: #485B75;
+                                        color: white;
+                                        border: none;
+                                        padding: 10px 20px;
+                                        font-size: 16px;
+                                        border-radius: 5px;
+                                    }
+                                </style>
+                          <div>
+                            <group>
+                                <group>
+
+
+                                    <field name="razon_social" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="documentos_id" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="correo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="direccion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="telefono" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <!-- Pestaña Documentos del Representante Legal -->
+                                <page string="Documentos del Representante Legal">
+                                    <group>
+                                        <field name="cedula_representante" string="Cédula Rep"/>
+                                        <field name="rut" string="RUT"/>
+                                        <field name="c_procuraduria" string="C. Procuraduría"/>
+                                        <field name="c_contraloria" string="C. Contraloría"/>
+                                        <field name="c_antecedentes_judiciales" string="C. Antecedentes Judiciales"/>
+                                        <field name="c_medidas_correctivas" string="C. Medidas Correctivas"/>
+                                        <field name="c_no_inhabilidades" string="C. No inhabilidades"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Persona Jurídica -->
+                                <page string="Documentos Persona Jurídica">
+                                    <group>
+                                        <field name="c_pagos_parafiscales" string="C. Pagos Parafiscales"/>
+                                        <field name="c_contador_revisor" string="C. Contador / Revisor"/>
+                                        <field name="c_camara_comercio" string="C. Cámara de Comercio"/>
+                                        <field name="rut_empresa" string="RUT Empresa"/>
+                                        <field name="hdv_juridica" string="HDV / Jurídica"/>
+                                        <field name="c_rup" string="C. RUP"/>
+
+                                        <field name="propuesta_economica" string="Propuesta Económica"/>
+                                        <field name="experiencia_contractual" string="Experiencia Contractual"/>
+                                        <field name="c_procuraduria_entidad" string="C. Procuraduría Entidad"/>
+                                        <field name="c_contraloria_entidad" string="C. Contraloría Entidad"/>
+                                        <field name="c_resolucion_facturacion" string="C. Resolución Facturación"/>
+                                        <field name="c_bancaria" string="C. Bancaria"/>
+                                        <field name="polizas" string="Pólizas (Si Aplica)"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Fundación Universidad del Valle -->
+                                <page string="Documentos Fundación Universidad del Valle">
+                                    <group>
+                                        <field name="formulario_contratacion" string="Formulario de Contratación"/>
+                                        <field name="cdp" string="CDP"/>
+                                        <field name="formulario_arl" string="Formulario ARL"/>
+                                        <field name="acta_aprobacion_polizas" string="Acta de Aprobación de Pólizas (Si Aplica)"/>
+                                        <field name="acta_inicio" string="Acta de Inicio (Si Aplica)"/>
+                                        <field name="acta_terminacion" string="Acta de Terminación Anticipada (Si Aplica)"/>
+                                        <field name="acta_liquidacion" string="Acta de Liquidación (Si Aplica)"/>
+                                    </group>
+                                </page>
+                            </notebook>
+                                    <group>
+                                        <field name="observaciones" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="html" class="oe_inline_full"/>
+                                    </group>
+                            <span style="display: inline-block; width: 110px;"></span>
+                                    <span>
+                                        Documentos anexos que no se encuentren en este formulario. Si no aplica uno de los documentos especificar cual y por qué.
+                                    </span>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button string="Agregar" type="object" class="oe_highlight" icon="fa-plus"
+                             name="action_agregar" context="{'active_id': active_id}" />
+                        <span style="display: inline-block; width: 30px;"></span>
+                        <button name="action_cerrar" string="Cerrar" type="object" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

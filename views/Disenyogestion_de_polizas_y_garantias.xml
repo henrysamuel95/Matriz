@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario -->
+        <record id="view_gestion_de_polizas_y_garantias_form" model="ir.ui.view">
+            <field name="name">gestion_de_polizas_y_garantias.form</field>
+            <field name="model">gestion_de_polizas_y_garantias</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <div class="oe_inline">
+                           <button name="buscar_polizas" string="Buscar por póliza" type="object" class="custom_button_style" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            <span style="display: inline-block; width: 15px;"></span>
+                            <field name="Buscar" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" default="context.get('default_Buscar')" widget="many2one" options="{'no_open': True}"/>
+                        </div>
+                    </header>
+                    <style>
+                        .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1100px; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                        }
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="numero_poliza" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="anexo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="tipo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="descripcion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            </group>
+                            <group>
+                                <field name="entidad_aseguradora" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_inicio" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="AMPAROS" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_fin" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            </group>
+                        </group>
+                        <span style="display: inline-block; width: 100%; height: 10px; background-color: #FFFFFF;"></span>
+                        <group attrs="{'invisible': [('show_editable_fields', '=', False)]}" style="border: 1px solid #CCCCCC; padding: 10px;">
+                            <group>
+                                <field name="show_editable_fields" invisible="1"/>
+                                <field name="numero_poliza_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="anexo_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="tipo_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="descripcion_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                            </group>
+                            <group>
+                                <field name="entidad_aseguradora_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_inicio_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="AMPAROS_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_fin_editable" style="background-color: #FFFFFF; border: 1px solid #CCCCCC;"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Tabla de Polizas" editable="bottom">
+                                <field name="tabla_polizas" widget="one2many_list" domain="[('gestion_id', '=', active_id)]">
+                                    <tree editable="bottom" create="false" delete="false">
+                                        <field name="numero"/>
+                                        <field name="tipo2"/>
+                                        <field name="entidad"/>
+                                        <field name="amparo"/>
+                                        <field name="valor2"/>
+                                        <field name="descripcion1"/>
+                                        <field name="inicio"/>
+                                        <field name="fin"/>
+                                        <field name="anexo2"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <span style="display: inline-block; width: 15px;"></span>
+                        <button name="agregar_nuevo" string="Agregar Nuevo" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 40px;"></span>
+                        <button name="modificar" string="Modificar" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 40px;"></span>
+                        <button name="Eliminar" string="Eliminar" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 300px;"></span>
+                        <button name="limpiar" string="Limpiar" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 20px;"></span>
+                        <button name="cerrar" string="Cerrar" type="object" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="view_tablero_avances_form" model="ir.ui.view">
+            <field name="name">tablero_avances.form</field>
+            <field name="model">tablero_avances</field>
+            <field name="arch" type="xml">
+                <form>
+                    <button name="ir_a_tablero_ejecucion" string="Ir a ejecución" type="object"
+                            class="oe_highlight" icon="fa-arrow-right" invisible="1"/>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 50%; background-color: #fff; padding: 15px; border: 1px solid #e6e6e6; border-radius: 3px; box-shadow: 1px 0 8px rgba(0, 0, 0, 0.2),
+                                        0 1px 8px rgba(0, 0, 0, 0.2), 0 1px 8px rgba(0, 0, 0, 0.2);">
+                                <br/>
+                                <br/>
+                                <h2 style="text-align: center;">Comparación de valores del proyecto</h2>
+                                <br/>
+                                <div style="width: 100%;">
+                                    <field name="animated_bar_chart_data" widget="animated_bar_chart_widget"/>
+                                </div>
+                            <br/>
+                            </td>
+                            <td style="width: 100%; background-color: #fff; padding: 15px; border: 1px solid #e6e6e6; border-radius: 0,1px; box-shadow: 1px 0 8px rgba(0, 0, 0, 0.2), 0 1px 8px rgba(0, 0, 0, 0.2), 0 1px 8px rgba(0, 0, 0, 0.2);">
+                                <h2 style="text-align: center;">Detalles del proyecto</h2>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div class="engranajes-container">
+                                    <div class="engranaje engranaje1">
+                                        <div class="valor-container">
+                                            <div class="label">Valor total</div>
+                                            <div class="value">
+                                                <field name="valor_por_proyecto_mcb"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje2">
+                                        <div class="valor-container">
+                                            <div class="label">Valor cobrado</div>
+                                            <div class="value">
+                                                <field name="valor_cobrado" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje3">
+                                        <div class="valor-container">
+                                            <div class="label">Faltante por recibir</div>
+                                            <div class="value">
+                                                <field name="faltante_por_cobrar" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje4">
+                                        <div class="valor-container">
+                                            <div class="label">Cantidad de cobros</div>
+                                            <div class="engranaje4">
+                                                <field name="cantidad_lineas_tabla_pagos" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje5">
+                                        <div class="valor-container">
+                                            <div class="label">Valor producción</div>
+                                            <div class="value">
+                                                <field name="valor_proyecto_convenio2"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje6">
+                                        <div class="valor-container">
+                                            <div class="label">Valor contratado</div>
+                                            <div class="value">
+                                                <field name="suma_valor_total_contrato" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="engranaje engranaje7">
+                                        <div class="valor-container">
+                                            <div class="label">Saldo disponible</div>
+                                            <div class="value">
+                                                <field name="saldo_disponible" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="engranaje engranaje8">
+                                         <div class="valor-container">
+                                             <div class="label">Valor pagado</div>
+                                             <div class="value">
+                                                 <field name="valor_pagado_dashboard" />
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </td>
+                         </tr>
+                     </table>
+                     <notebook>
+                         <page string="Actividades">
+                             <table>
+                                 <td style="width: 100%; background-color: #fff; padding: 15px; border: 1px solid #e6e6e6; border-radius: 0,1px; box-shadow: 1px 0 8px rgba(0, 0, 0, 0.2), 0 1px 8px rgba(0, 0, 0, 0.2), 0 1px 8px rgba(0, 0, 0, 0.2);">
+                                 <h2 style="padding-left: 1px; text-align:center;">Actividades</h2>
+                                     <br/>
+                                     <field name="avances_id_entregable" widget="kanban">
+                                         <kanban action="action_view_Matriz_de_entregables" type="object"  create="0">
+                                             <templates>
+                                                 <t t-name="kanban-box">
+                                                     <div class="oe_kanban_global_click">
+                                                         <div style="padding: 10px;">
+                                                             <field name="hiden" widget="handle" invisible="1"/>
+                                                             <strong><field name="name" style="font-size: 17px;"/></strong>
+                                                             <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                                             <strong style="font-size: 17px;">Avance: </strong><field name="total_final" style="font-size: 17px;"/> %
+                                                             <br/>
+                                                             <strong style="font-size: 17px;">Actividades no iniciadas: </strong><field name="actividades_pendiente_count" style="font-size: 17px;"/>
+                                                             <br/>
+                                                             <strong style="font-size: 17px;">Actividades finalizadas: </strong><field name="actividades_completas_count" style="font-size: 17px;"/>
+                                                             <br/>
+                                                             <strong style="font-size: 17px;">Actividades ejecutadas: </strong><field name="actividades_en_progreso_count" style="font-size: 17px;"/>
+                                                             <br/>
+                                                             <strong style="font-size: 17px;">Actividades retrasadas: </strong><field name="actividades_retrasadas_count" style="font-size: 17px;"/>
+                                                         </div>
+                                                         <strong style="font-size: 17px;">Asignar tarea:</strong> <field name="activity_ids" widget="kanban_activity" style="font-size: 17px;"/>
+                                                         <span style="display: inline-block; width: 59px;"></span>
+                                                         <strong style="font-size: 17px;">Creado por: </strong><field name="user_id" options="{'no_open': True}"
+                                                                 widget="many2one_avatar_user"
+                                                                 class="oe_kanban_content_oe_kanban_global_clickable"
+                                                                 domain="[('share', '=', False)]" style="font-size: 17px;"/>
+                                                     </div>
+                                                 </t>
+                                             </templates>
+                                         </kanban>
+                                     </field>
+                                 </td>
+                             </table>
+                         </page>
+                         <page string="Conciliación ERP (Odoo vs. Siesa)">
+                             <group string="Configuración del Origen de Costos">
+                                 <group>
+                                     <field name="fuente_datos_costo" widget="radio" class="oe_edit_only"/>
+                                     <field name="mcb_centro_costo" readonly="1"/>
+                                 </group>
+                                 <group>
+                                     <field name="pago_efectuado2_sumado" string="Pagos Registrados (Odoo)" readonly="1"/>
+                                     <field name="costo_real_siesa" string="Pagos Contabilizados (Siesa)" readonly="1"/>
+                                 </group>
+                             </group>
+                             <group string="Indicadores EVM (Earned Value Management)">
+                                 <group>
+                                     <field name="cpi_proyecto" readonly="1" decoration-danger="cpi_proyecto &lt; 1.0" decoration-success="cpi_proyecto &gt;= 1.0"/>
+                                     <field name="spi_proyecto" readonly="1" decoration-danger="spi_proyecto &lt; 1.0" decoration-success="spi_proyecto &gt;= 1.0"/>
+                                 </group>
+                                 <group>
+                                     <field name="semaforo_financiero" widget="badge" decoration-danger="semaforo_financiero == 'rojo'" decoration-success="semaforo_financiero == 'verde'"/>
+                                 </group>
+                             </group>
+                             <separator string="Detalle de Conciliación por Contratista (Odoo vs Siesa)"/>
+                             <field name="conciliacion_line_ids" readonly="1">
+                                 <tree decoration-danger="alerta_sobrecosto == True">
+                                     <field name="nit"/>
+                                     <field name="contratista"/>
+                                     <field name="monto_contratado_odoo" sum="Total Contratado Odoo"/>
+                                     <field name="monto_pagado_siesa" sum="Total Pagado Siesa"/>
+                                     <field name="desviacion" sum="Total Desviación"/>
+                                     <field name="alerta_sobrecosto" invisible="1"/>
+                                 </tree>
+                             </field>
+                         </page>
+                     </notebook>
+                     <field name="ejecucion_J_id" invisible="1" />
+                     <field name="name" invisible="1"/>
+                     <div>
+                         <label for="ejecucion_id" string="Relacionado mcb" invisible="1"/>
+                         <field name="ejecucion_id" invisible="1"/>
+                     </div>
+                     <div>
+                         <label for="ejecucion_J_id" string="Relacionado ejecucion" invisible="1"/>
+                         <field name="ejecucion_J_id"  invisible="1"/>
+                     </div>
+                     <div>
+                         <label for="ejecucion_O_id" string="Relacionado ejecucion" invisible="1"/>
+                         <field name="ejecucion_O_id"  invisible="1"/>
+                     </div>
+                     <div>
+                         <label for="vistas_director_id" string="Relacionado tablero director" invisible="1"/>
+                         <field name="vistas_director_id"  invisible="1"/>
+                     </div>
+                     <div>
+                         <field name="valor_por_proyecto_mcb" string="Relacion valor desde mcb" invisible="1"/>
+                     </div>
+                 </form>
+             </field>
+         </record>
+        <!-- Vista Kanban -->
+        <record id="view_tablero_avances_kanban" model="ir.ui.view">
+            <field name="name">tablero_avances.kanban</field>
+            <field name="model">tablero_avances</field>
+            <field name="arch" type="xml">
+                <kanban action="actualizar_grafica_barras" type="object" create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_box">
+                            <div style="position: absolute; top: 0; right: 0; overflow: hidden; width: 150px; height: 150px; z-index: 100;" attrs="{'invisible': [('is_editable_avs', '=', False)]}">
+                                <div style="position: absolute; top: 40px; right: -45px; transform: rotate(45deg); width: 200px; background-color: #22981b; color: white; padding: 5px 0; font-weight: bold; text-align: center; font-size: 14px; text-transform: uppercase;">
+                                    FINALIZADO
+                                </div>
+                            </div>
+                                <div class="oe_kanban_global_click" style="width: 120px; text-align: left; display: flex; flex-direction: column;">
+                                </div>
+                                <div class="o_kanban_details">
+                                    <h2 class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" t-att-title="record.nombre_proyecto_relacionado.value">
+                                        <field name="nombre_proyecto_relacionado" options="{'limit': 1000}" style="font-weight: bold;"/>
+                                    </h2>
+                                </div>
+                                <field name="hiden" widget="handle" invisible="1"/>
+                                <div class="o_kanban_body o_kanban_bold">
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+                                    <div invisible="1">
+                                        <span style="font-weight: bold;">new_ejecucion_id</span>
+                                        <field name="new_ejecucion_id"/>
+                                    </div>
+                                    <div>
+                                        <span style="font-weight: bold;">Valor de contrato/Convenio: $</span>
+                                        <field name="valor_proyecto_convenio3"/>
+                                    </div>
+                                    <div>
+                                        <span style="font-weight: bold;">Adiciones (OTROSÍ): $</span>
+                                        <field name="adicion_otrosi" />
+                                    </div>
+                                    <div>
+                                        <span style="font-weight: bold;">Valor total: $</span>
+                                        <field name="valor_por_proyecto_mcb"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+                                    <div>
+                                        <span style="font-weight: bold;">Contrapartida: $</span>
+                                        <field name="contrapartida_avances" />
+                                    </div>
+
+
+                                    <div>
+                                        <span style="font-weight: bold;">Valor total aportes: $</span>
+                                        <field name="valor_aportes"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+
+
+
+
+                                    <div>
+                                        <span style="font-weight: bold;">Valor producción: $</span>
+                                        <field name="valor_proyecto_convenio2" />
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+
+
+
+                                    <div attrs="{'invisible': [('valor_sobre_costo', '=', 0)]}">
+                                        <span style="font-weight: bold;">Valor sobrecosto: $</span>
+                                        <field name="valor_sobre_costo" style="color: #EB1743"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+
+
+
+
+                                    <div>
+                                       <!-- <span style="font-weight: bold;" invisible="1">Total a facturar: $</span>
+                                        <field name="suma_total_a_facturar" invisible="1"/>-->
+                                        <span style="font-weight: bold;">Valor cobrado: $</span>
+                                        <field name="valor_cobrado" />
+                                    </div>
+                                    <div>
+                                        <field name="resultado_vp_vc_barra" widget="progressbar"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+
+
+
+
+
+                                    <div>
+                                        <span style="font-weight: bold;">Valor contratado: $</span>
+                                        <field name="suma_valor_total_contrato" />
+                                    </div>
+                                    <div>
+                                        <field name="resultado_suma_vp_barra" widget="progressbar"/>
+                                    </div>
+                                    <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+
+
+
+
+                                     <div>
+                                         <span style="font-weight: bold;">Valor pagado: $</span>
+                                         <field name="valor_pagado_dashboard" />
+                                     </div>
+                                     <div>
+                                         <field name="resultado_vpagado_barra" widget="progressbar"/>
+                                     </div>
+                                     <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+
+
+                                     <!-- Activar cuando se realize el modelo ejecución -->
+                                     <div>
+                                         <span style="font-weight: bold;">Porcentaje ejecutado: </span>
+                                         <field name="suma_total" widget="progressbar"/>
+                                     </div>
+                                     <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+
+
+
+                                     <div>
+                                         <span style="font-weight: bold;">Contribución del avance técnico general: % </span>
+                                         <field name="suma_total_porcentaje_ejecutado"/>
+                                     </div>
+                                     <hr style="margin-top: 10px; margin-bottom: 10px;"/>  <!-- Línea horizontal -->
+
+
+
+                                     <div>
+                                         <span style="font-weight: bold;">Contribución del proyecto individual al valor total de todos los proyectos: % </span>
+                                         <field name="resultado_peso_proyectos"/>
+                                     </div>
+                                     <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                     <div>
+                                         <span style="font-weight: bold;">Fecha inicio: </span>
+                                         <field name="fecha_inicio2"/>
+                                         <br/>
+                                         <span style="font-weight: bold;">Fecha de finalización: </span>
+                                         <field name="fecha_finalizacion2"/>
+                                         <br/>
+                                         <span style="font-weight: bold;" attrs="{'invisible': [('is_editable_avs', '!=', False)]}">Tiempo restante al proyecto: </span>
+                                          <span t-attf-style="color: #{record.semaforo_tiempo_color.raw_value or '#000000'}; font-weight: bold;" attrs="{'invisible': [('is_editable_avs', '!=', False)]}">
+                                              <field name="tiempo_restante"/>
+                                          </span>
+                                         <br/>
+                                         <field name="semaforo_1_color" widget="color" style="width: 2px; height: 2px;"/>
+                                         <field name="SEMAFORO_1" invisible="1"/>
+                                         <field name="semaforo_tiempo_color" invisible="1"/>
+                                         <field name="is_editable_avs" widget="boolean_toggle" invisible="1"/>
+                                         <field name="coordinador_asignado" invisible="1"/>
+                                     </div>
+                                 </div>
+                             </div>
+                         </t>
+                     </templates>
+                 </kanban>
+             </field>
+         </record>
+         <record id="view_tablero_avances_tree" model="ir.ui.view">
+             <field name="name">tablero.avances.tree</field>
+             <field name="model">tablero_avances</field>
+             <field name="arch" type="xml">
+                 <tree create="0" decoration-danger="semaforo_financiero == 'rojo'">
+                     <field name="prioridad" widget="priority"/>
+                     <field name="nombre_proyecto_relacionado"/>
+                     <field name="coordinador_asignado" widget="many2one_avatar_user"/>
+                     <field name="mcb_centro_costo"/>
+                     <field name="SEMAFORO_1" invisible="1"/>
+                     <field name="dias_restantes" string="Días faltantes" decoration-success="SEMAFORO_1 == 'verde'" decoration-warning="SEMAFORO_1 == 'amarillo'" decoration-danger="SEMAFORO_1 == 'rojo' or SEMAFORO_1 == 'naranja'"/>
+                     <field name="fuente_datos_costo"/>
+                     <field name="valor_por_proyecto_mcb"/>
+                     <field name="valor_proyecto_convenio2" string="Valor producción"/>
+                     <field name="valor_pagado_dashboard" string="Valor pagado"/>
+                     <field name="cpi_proyecto" string="CPI"/>
+                     <field name="spi_proyecto" string="SPI"/>
+                     <field name="semaforo_financiero" widget="badge" decoration-danger="semaforo_financiero == 'rojo'" decoration-success="semaforo_financiero == 'verde'"/>
+                 </tree>
+             </field>
+         </record>
+         <record id="view_tablero_avances_search" model="ir.ui.view">
+             <field name="name">tablero_avances.search</field>
+             <field name="model">tablero_avances</field>
+             <field name="arch" type="xml">
+                 <search>
+                     <field name="name" string="Proyecto"/>
+                     <field name="coordinador_asignado" string="Coordinador"/>
+                     <field name="mcb_centro_costo" string="Centro de Costo"/>
+                     <filter string="Salud Financiera Crítica (Rojo)" name="financiero_rojo" domain="[('semaforo_financiero', '=', 'rojo')]"/>
+                     <filter string="Salud Financiera Óptima (Verde)" name="financiero_verde" domain="[('semaforo_financiero', '=', 'verde')]"/>
+                     <separator/>
+                     <filter string="Prioridad Crítica" name="prioridad_critica" domain="[('prioridad', '=', '3')]"/>
+                     <filter string="Prioridad Alta" name="prioridad_alta" domain="[('prioridad', '=', '2')]"/>
+                     <group expand="0" string="Agrupar por">
+                         <filter string="Coordinador" name="group_coordinador" context="{'group_by': 'coordinador_asignado'}"/>
+                         <filter string="Prioridad" name="group_prioridad" context="{'group_by': 'prioridad'}"/>
+                         <filter string="Salud Financiera" name="group_salud" context="{'group_by': 'semaforo_financiero'}"/>
+                     </group>
+                 </search>
+             </field>
+         </record>
+     </data>
+ </odoo>

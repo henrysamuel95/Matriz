@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Define the view -->
+        <record model="ir.ui.view" id="view_rubros_form">
+            <field name="name">rubros.form</field>
+            <field name="model">rubros</field>
+            <field name="arch" type="xml">
+                <form string="Tareas" create="0">
+                    <div style="width: auto; border: 0.1px solid black; padding: 5px; background: #6ed84a;" invisible="1">
+                        <strong>Editar o no editar </strong>
+                        <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                    </div>
+                    <field name="entregable_id" invisible="1"/>
+                    <style>
+                            .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1100px; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                        }
+                            .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                        </style>
+                    <div>
+                         <strong>ACCION </strong><field name="name" style="display: inline-block; width: 500px;" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                        <button name="datos" type="object"  class="fa fa-search" title="Cargar o ver datos"  />
+                    </div>
+                    <notebook>
+                        <page string="Tareas">
+                            <field name="tareas_ids" widget="one2many" style="width: 2200px">
+                                <tree editable="bottom" col="39">
+                                    <field name="is_editable" widget="boolean_toggle" invisible="1"/>
+                                    <field name="hiden" widget="handle" width="45"/>
+                                    <field name="n_tareas" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="otros_tareas2" width="60" string="CONTRATISTAS" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="proyecto_relacionado" invisible="1"/>
+                                    <button name="action_ingresar_tareas" type="object" class="fa fa-arrow-right" invisible="1"/>
+                                    <field name="estado" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="verificador" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="unidad_medida" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="cantidad" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="porcentaje" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="duracion_periodos" width="70" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="fecha_inicio" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="fecha_fin" width="60" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo1" width="60" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo2" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo3" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo4" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo5" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo6" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo7" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo8" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo9" width="30" optional="show" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo10" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo11" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo12" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo13" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo14" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo15" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo16" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo17" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo18" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo19" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo20" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo21" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo22" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo23" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo24" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo25" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo26" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo27" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo28" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo29" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                    <field name="Periodo30" width="30" optional="hide" attrs="{'readonly': [('is_editable', '=', True)]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <table style="width: 100%">
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_rubros_tree">
+            <field name="name">rubros.tree</field>
+            <field name="model">rubros</field>
+            <field name="arch" type="xml">
+                <tree string="Tareas">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_subtareas_form">
+            <field name="name">subtareas.form</field>
+            <field name="model">subtareas</field>
+            <field name="arch" type="xml">
+                <form string="Subtareas" create="0">
+                    <field name="subtareas_id" invisible="1"/>
+                    <style>
+                            .modal-dialog {
+                            width: 100%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 1100px; /* Establece un ancho máximo si lo deseas */
+                            margin: 60px auto; /* Controla el margen al centro */
+                        }
+                            .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                        </style>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <button name="datos" type="object"  class="fa fa-search" title="Cargar o ver datos"/>
+                    <notebook>
+                        <page string="Subtareas">
+                            <field name="tareas3_ids" widget="one2many" style="width: 2200px">
+                                <tree editable="bottom" col="39">
+                                    <field name="hiden" widget="handle" width="45"/>
+                                    <field name="n_tareas" width="60"/>
+                                    <field name="otros_Subtareas" width="60"/>
+                                    <button name="action_ingresar_Subtareas" type="object" class="fa fa-arrow-right"/>
+                                    <field name="estado" width="60"/>
+                                    <field name="verificador" width="70"/>
+                                    <field name="unidad_medida" width="70"/>
+                                    <field name="cantidad" width="60"/>
+                                    <field name="porcentaje" width="70"/>
+                                    <field name="duracion_periodos" width="70"/>
+                                    <field name="fecha_inicio" width="60"/>
+                                    <field name="fecha_fin" width="60"/>
+                                    <field name="Periodo1" width="60" optional="show"/>
+                                    <field name="Periodo2" width="30" optional="show"/>
+                                    <field name="Periodo3" width="30" optional="show"/>
+                                    <field name="Periodo4" width="30" optional="show"/>
+                                    <field name="Periodo5" width="30" optional="show"/>
+                                    <field name="Periodo6" width="30" optional="show"/>
+                                    <field name="Periodo7" width="30" optional="show"/>
+                                    <field name="Periodo8" width="30" optional="show"/>
+                                    <field name="Periodo9" width="30" optional="show"/>
+                                    <field name="Periodo10" width="30" optional="hide"/>
+                                    <field name="Periodo11" width="30" optional="hide"/>
+                                    <field name="Periodo12" width="30" optional="hide"/>
+                                    <field name="Periodo13" width="30" optional="hide"/>
+                                    <field name="Periodo14" width="30" optional="hide"/>
+                                    <field name="Periodo15" width="30" optional="hide"/>
+                                    <field name="Periodo16" width="30" optional="hide"/>
+                                    <field name="Periodo17" width="30" optional="hide"/>
+                                    <field name="Periodo18" width="30" optional="hide"/>
+                                    <field name="Periodo19" width="30" optional="hide"/>
+                                    <field name="Periodo20" width="30" optional="hide"/>
+                                    <field name="Periodo21" width="30" optional="hide"/>
+                                    <field name="Periodo22" width="30" optional="hide"/>
+                                    <field name="Periodo23" width="30" optional="hide"/>
+                                    <field name="Periodo24" width="30" optional="hide"/>
+                                    <field name="Periodo25" width="30" optional="hide"/>
+                                    <field name="Periodo26" width="30" optional="hide"/>
+                                    <field name="Periodo27" width="30" optional="hide"/>
+                                    <field name="Periodo28" width="30" optional="hide"/>
+                                    <field name="Periodo29" width="30" optional="hide"/>
+                                    <field name="Periodo30" width="30" optional="hide"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <table style="width: 100%">
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </table>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_subtareas2_form">
+            <field name="name">subtareas2.form</field>
+            <field name="model">subtareas2</field>
+            <field name="arch" type="xml">
+                <tree string="Sub tareas">
+                    <field name="n_tareas" width="60"/>
+                    <field name="otros_Subtareas" width="60"/>
+                    <button name="action_ingresar_Subtareas" type="object" class="fa fa-arrow-right"/>
+                    <field name="estado" width="60"/>
+                    <field name="verificador" width="70"/>
+                    <field name="unidad_medida" width="70"/>
+                    <field name="cantidad" width="60"/>
+                    <field name="porcentaje" width="70"/>
+                    <field name="duracion_periodos" width="70"/>
+                    <field name="fecha_inicio" width="60"/>
+                    <field name="fecha_fin" width="60"/>
+                    <field name="Periodo1" width="60" optional="show"/>
+                    <field name="Periodo2" width="30" optional="show"/>
+                    <field name="Periodo3" width="30" optional="show"/>
+                    <field name="Periodo4" width="30" optional="show"/>
+                    <field name="Periodo5" width="30" optional="show"/>
+                    <field name="Periodo6" width="30" optional="show"/>
+                    <field name="Periodo7" width="30" optional="show"/>
+                    <field name="Periodo8" width="30" optional="show"/>
+                    <field name="Periodo9" width="30" optional="show"/>
+                    <field name="Periodo10" width="30" optional="hide"/>
+                    <field name="Periodo11" width="30" optional="hide"/>
+                    <field name="Periodo12" width="30" optional="hide"/>
+                    <field name="Periodo13" width="30" optional="hide"/>
+                    <field name="Periodo14" width="30" optional="hide"/>
+                    <field name="Periodo15" width="30" optional="hide"/>
+                    <field name="Periodo16" width="30" optional="hide"/>
+                    <field name="Periodo17" width="30" optional="hide"/>
+                    <field name="Periodo18" width="30" optional="hide"/>
+                    <field name="Periodo19" width="30" optional="hide"/>
+                    <field name="Periodo20" width="30" optional="hide"/>
+                    <field name="Periodo21" width="30" optional="hide"/>
+                    <field name="Periodo22" width="30" optional="hide"/>
+                    <field name="Periodo23" width="30" optional="hide"/>
+                    <field name="Periodo24" width="30" optional="hide"/>
+                    <field name="Periodo25" width="30" optional="hide"/>
+                    <field name="Periodo26" width="30" optional="hide"/>
+                    <field name="Periodo27" width="30" optional="hide"/>
+                    <field name="Periodo28" width="30" optional="hide"/>
+                    <field name="Periodo29" width="30" optional="hide"/>
+                    <field name="Periodo30" width="30" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+
+        <record model="ir.ui.view" id="view_subtareas3_form">
+            <field name="name">subtareas3.form</field>
+            <field name="model">subtareas3</field>
+            <field name="arch" type="xml">
+                <form string="Subtareas">
+                    <field name="subtareas3_id" invisible="1"/>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_subtareas2_graph" model="ir.ui.view">
+            <field name="name">subtareas2.graph</field>
+            <field name="model">subtareas2</field>
+            <field name="arch" type="xml">
+                <graph string="Sub tareas" type="bar">
+                    <field name="n_tareas"/>
+                    <field name="otros_Subtareas"/>
+                    <field name="estado"/>
+                    <field name="verificador"/>
+                    <field name="unidad_medida"/>
+                    <field name="cantidad"/>
+                    <field name="porcentaje"/>
+                    <field name="duracion_periodos"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <field name="Periodo1"/>
+                    <field name="Periodo2"/>
+                    <field name="Periodo3"/>
+                    <field name="Periodo4"/>
+                    <field name="Periodo5"/>
+                    <field name="Periodo6"/>
+                    <field name="Periodo7"/>
+                    <field name="Periodo8"/>
+                    <field name="Periodo9"/>
+                    <field name="Periodo10"/>
+                    <field name="Periodo11"/>
+                    <field name="Periodo12"/>
+                    <field name="Periodo13"/>
+                    <field name="Periodo14"/>
+                    <field name="Periodo15"/>
+                    <field name="Periodo16"/>
+                    <field name="Periodo17"/>
+                    <field name="Periodo18"/>
+                    <field name="Periodo19"/>
+                    <field name="Periodo20"/>
+                    <field name="Periodo21"/>
+                    <field name="Periodo22"/>
+                    <field name="Periodo23"/>
+                    <field name="Periodo24"/>
+                    <field name="Periodo25"/>
+                    <field name="Periodo26"/>
+                    <field name="Periodo27"/>
+                    <field name="Periodo28"/>
+                    <field name="Periodo29"/>
+                    <field name="Periodo30"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_tareas_form">
+            <field name="name">tareas.form</field>
+            <field name="model">tareas</field>
+            <field name="arch" type="xml">
+                <tree string="tareas">
+                    <field name="n_tareas" width="60"/>
+                    <field name="otros_tareas2" width="60" string="CONTRATISTAS"/>
+                    <button name="action_ingresar_tareas" type="object" class="fa fa-arrow-right"/>
+                    <field name="estado" width="60"/>
+                    <field name="verificador" width="70"/>
+                    <field name="unidad_medida" width="70"/>
+                    <field name="cantidad" width="60"/>
+                    <field name="porcentaje" width="70"/>
+                    <field name="duracion_periodos" width="70"/>
+                    <field name="fecha_inicio" width="60"/>
+                    <field name="fecha_fin" width="60"/>
+                    <field name="Periodo1" width="60" optional="show"/>
+                    <field name="Periodo2" width="30" optional="show"/>
+                    <field name="Periodo3" width="30" optional="show"/>
+                    <field name="Periodo4" width="30" optional="show"/>
+                    <field name="Periodo5" width="30" optional="show"/>
+                    <field name="Periodo6" width="30" optional="show"/>
+                    <field name="Periodo7" width="30" optional="show"/>
+                    <field name="Periodo8" width="30" optional="show"/>
+                    <field name="Periodo9" width="30" optional="show"/>
+                    <field name="Periodo10" width="30" optional="hide"/>
+                    <field name="Periodo11" width="30" optional="hide"/>
+                    <field name="Periodo12" width="30" optional="hide"/>
+                    <field name="Periodo13" width="30" optional="hide"/>
+                    <field name="Periodo14" width="30" optional="hide"/>
+                    <field name="Periodo15" width="30" optional="hide"/>
+                    <field name="Periodo16" width="30" optional="hide"/>
+                    <field name="Periodo17" width="30" optional="hide"/>
+                    <field name="Periodo18" width="30" optional="hide"/>
+                    <field name="Periodo19" width="30" optional="hide"/>
+                    <field name="Periodo20" width="30" optional="hide"/>
+                    <field name="Periodo21" width="30" optional="hide"/>
+                    <field name="Periodo22" width="30" optional="hide"/>
+                    <field name="Periodo23" width="30" optional="hide"/>
+                    <field name="Periodo24" width="30" optional="hide"/>
+                    <field name="Periodo25" width="30" optional="hide"/>
+                    <field name="Periodo26" width="30" optional="hide"/>
+                    <field name="Periodo27" width="30" optional="hide"/>
+                    <field name="Periodo28" width="30" optional="hide"/>
+                    <field name="Periodo29" width="30" optional="hide"/>
+                    <field name="Periodo30" width="30" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="tareas_view_search" model="ir.ui.view">
+           <field name="name">tareas.view.search.module.name</field>
+           <field name="model">tareas</field>
+           <field name="arch" type="xml">
+               <search>
+                    <field name="n_tareas"/>
+                    <field name="otros_tareas2"/>
+                    <field name="estado"/>
+                    <field name="verificador"/>
+                    <field name="unidad_medida"/>
+                    <field name="cantidad"/>
+                    <field name="porcentaje"/>
+                    <field name="duracion_periodos"/>
+                    <field name="fecha_inicio"/>
+                    <field name="fecha_fin"/>
+                    <field name="Periodo1"/>
+                    <field name="Periodo2"/>
+                    <field name="Periodo3"/>
+                    <field name="Periodo4"/>
+                    <field name="Periodo5"/>
+                    <field name="Periodo6"/>
+                    <field name="Periodo7"/>
+                    <field name="Periodo8"/>
+                    <field name="Periodo9"/>
+                    <field name="Periodo10"/>
+                    <field name="Periodo11"/>
+                    <field name="Periodo12"/>
+                    <field name="Periodo13"/>
+                    <field name="Periodo14"/>
+                    <field name="Periodo15"/>
+                    <field name="Periodo16"/>
+                    <field name="Periodo17"/>
+                    <field name="Periodo18"/>
+                    <field name="Periodo19"/>
+                    <field name="Periodo20"/>
+                    <field name="Periodo21"/>
+                    <field name="Periodo22"/>
+                    <field name="Periodo23"/>
+                    <field name="Periodo24"/>
+                    <field name="Periodo25"/>
+                    <field name="Periodo26"/>
+                    <field name="Periodo27"/>
+                    <field name="Periodo28"/>
+                    <field name="Periodo29"/>
+                    <field name="Periodo30"/>
+               </search>
+           </field>
+        </record>
+
+    <record id="view_tareas_graph" model="ir.ui.view">
+        <field name="name">tareas.graph</field>
+        <field name="model">tareas</field>
+        <field name="arch" type="xml">
+            <graph string="tareas" type="bar">
+                <field name="n_tareas"/>
+                <field name="otros_tareas2"/>
+                <field name="estado"/>
+                <field name="verificador"/>
+                <field name="unidad_medida"/>
+                <field name="cantidad"/>
+                <field name="porcentaje"/>
+                <field name="duracion_periodos"/>
+                <field name="fecha_inicio"/>
+                <field name="fecha_fin"/>
+                <field name="Periodo1"/>
+                <field name="Periodo2"/>
+                <field name="Periodo3"/>
+                <field name="Periodo4"/>
+                <field name="Periodo5"/>
+                <field name="Periodo6"/>
+                <field name="Periodo7"/>
+                <field name="Periodo8"/>
+                <field name="Periodo9"/>
+                <field name="Periodo10"/>
+                <field name="Periodo11"/>
+                <field name="Periodo12"/>
+                <field name="Periodo13"/>
+                <field name="Periodo14"/>
+                <field name="Periodo15"/>
+                <field name="Periodo16"/>
+                <field name="Periodo17"/>
+                <field name="Periodo18"/>
+                <field name="Periodo19"/>
+                <field name="Periodo20"/>
+                <field name="Periodo21"/>
+                <field name="Periodo22"/>
+                <field name="Periodo23"/>
+                <field name="Periodo24"/>
+                <field name="Periodo25"/>
+                <field name="Periodo26"/>
+                <field name="Periodo27"/>
+                <field name="Periodo28"/>
+                <field name="Periodo29"/>
+                <field name="Periodo30"/>
+            </graph>
+        </field>
+    </record>
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<odoo>
+    <!-- Definición de la plantilla del informe -->
+    <template id="report_reporte_contratista">
+        <t t-call="web.html_container">
+            <!-- Aquí va tu contenido HTML/QWeb -->
+            <t t-raw="0"/>
+        </t>
+    </template>
+
+
+    <report
+        id="action_report_reporte_contratista"
+        model="reportes"
+        string="Reporte Contratista"
+        report_type="qweb-pdf"
+        name="Matriz.report_reporte_contratista"
+        file="Matriz.report_reporte_contratista"
+        attachment_use="False"
+    />
+</odoo>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fn_close_wizard_finalizar" model="ir.ui.view">
+        <field name="name">contrataciones_fuv.close.wizard.finalizar.normal</field>
+        <field name="model">contrataciones_fuv.close.wizard</field>
+        <field name="inherit_id" ref="view_close_contract_wizard"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tipo_acta']" position="attributes">
+                <!-- Sin modo horizontal: evita que Odoo imponga una fila sin salto. -->
+                <attribute name="options">{'horizontal': false}</attribute>
+                <attribute name="class">fc-finalizacion-radio-grid</attribute>
+            </xpath>
+            <xpath expr="//field[@name='tipo_acta']" position="after">
+                <div class="alert alert-info mt16" attrs="{'invisible': [('tipo_acta', '!=', 'finalizar')]}">
+                    Finaliza el contrato sin crear acta ni liberar recursos. Solo aplica cuando
+                    terminó su vigencia y supera las validaciones de otrosíes, suspensiones y cierres.
+                </div>
+                <div class="fc-cierre-card mt16" attrs="{'invisible': [('tipo_acta', '!=', 'finalizar')]}">
+                    <div class="fc-cierre-section-title">
+                        <i class="fa fa-comment-o"/>
+                        <span>Observaciones de finalización (opcional)</span>
+                    </div>
+                    <field name="observaciones_finalizacion" nolabel="1"
+                           placeholder="Agrega una observación si necesitas dejar una aclaración..."/>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('fc-cierre-card')][.//field[@name='valor_documento_seleccionado']]" position="attributes">
+                <attribute name="attrs">{'invisible': [('tipo_acta', 'in', ['anulacion', 'finalizar'])]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('fc-cierre-detail-option')]" position="attributes">
+                <attribute name="attrs">{'invisible': [('tipo_acta', 'in', ['anulacion', 'finalizar'])]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('fc-cierre-detail-date')]" position="attributes">
+                <attribute name="attrs">{'invisible': [('tipo_acta', 'in', ['anulacion', 'finalizar'])]}</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('fc-cierre-card')][.//field[@name='razones_solicitud']]" position="attributes">
+                <attribute name="attrs">{'invisible': [('tipo_acta', '=', 'finalizar')]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='razones_solicitud']" position="attributes">
+                <attribute name="attrs">{'required': [('tipo_acta', '!=', 'finalizar')]}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_fn_contrato_form" model="ir.ui.view">
+        <field name="name">contrataciones_fuv.finalizacion.normal</field>
+        <field name="model">contrataciones_fuv</field>
+        <field name="inherit_id" ref="view_contrataciones_fuv_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_close_contract']" position="after">
+                <field name="fn_finalizado_el" invisible="1"/>
+                <button name="action_fn_solicitar_otrosi" type="object" string="Autorizar otrosí posterior"
+                        groups="Matriz.group_soporte" class="btn btn-warning"
+                        attrs="{'invisible': ['|', ('estado_contratacion', '!=', 'finalizado'), ('fn_finalizado_el', '=', False)]}"/>
+            </xpath>
+            <xpath expr="(//sheet)[1]" position="inside">
+                <group string="Finalización normal" groups="Matriz.group_soporte"
+                       attrs="{'invisible': [('fn_finalizado_el', '=', False)]}">
+                    <field name="fn_fecha_vigente" readonly="1"/>
+                    <field name="fn_fecha_fin_finalizada" readonly="1"/>
+                    <field name="fn_reapertura_pendiente" readonly="1"/>
+                    <field name="fn_autorizacion_activa_id" options="{'no_open': True}" readonly="1"/>
+                    <field name="fn_incidencia" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_fn_autorizacion_tree" model="ir.ui.view">
+        <field name="name">fuv.finalizacion.autorizacion.tree</field>
+        <field name="model">fuv.finalizacion.autorizacion</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" delete="0">
+                <field name="contract_id"/><field name="director_id"/><field name="estado"/>
+                <field name="autorizado_el"/><field name="otrosi_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_fn_autorizacion_form" model="ir.ui.view">
+        <field name="name">fuv.finalizacion.autorizacion.form</field>
+        <field name="model">fuv.finalizacion.autorizacion</field>
+        <field name="arch" type="xml">
+            <form edit="0" delete="0" string="Autorización">
+                <header>
+                    <button name="action_autorizar" type="object" string="Autorizar" class="btn-primary"
+                            groups="Matriz.group_contratacion_director_fuv" attrs="{'invisible': [('estado', '!=', 'solicitada')]}"/>
+                    <button name="action_iniciar_otrosi" type="object" string="Iniciar otrosí autorizado" class="btn-primary"
+                            groups="Matriz.group_soporte" attrs="{'invisible': [('estado', '!=', 'autorizada')]}"/>
+                    <button name="action_cancelar" type="object" string="Cancelar autorización"
+                            groups="Matriz.group_soporte" attrs="{'invisible': [('estado', 'in', ['utilizada', 'cancelada'])]}"/>
+                    <!-- Estado técnico: protege los botones sin crear otro flujo visual. -->
+                    <field name="estado" invisible="1"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning">El contrato finalizó normalmente.
+                        Solo Soporte puede iniciar un otrosí posterior con autorización de la Dirección de FUV.
+                        La autorización y la ejecución quedan registradas en el contrato.</div>
+                    <group string="Autorización">
+                        <field name="contract_id" readonly="1" force_save="1"
+                               options="{'no_create': True, 'no_open': True}"/>
+                        <field name="director_id" widget="many2one"
+                               options="{'no_create': True, 'no_create_edit': True, 'no_open': True}"
+                               placeholder="Seleccione un usuario de Dirección FUV..."/>
+                        <field name="motivo"
+                               placeholder="Explique por qué se requiere el otrosí posterior..."/>
+                        <field name="documento_autorizacion_nombre" invisible="1"/>
+                        <field name="documento_autorizacion"
+                               filename="documento_autorizacion_nombre"/>
+                    </group>
+                    <!-- Se conservan internamente; la trazabilidad visible se publica en el FC. -->
+                    <field name="autorizado_por_id" invisible="1"/>
+                    <field name="autorizado_el" invisible="1"/>
+                    <field name="ejecutado_por_id" invisible="1"/>
+                    <field name="ejecutado_el" invisible="1"/>
+                    <field name="otrosi_id" invisible="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_fn_autorizaciones" model="ir.actions.act_window">
+        <field name="name">Otrosíes posteriores: autorizaciones</field>
+        <field name="res_model">fuv.finalizacion.autorizacion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- Respeta la estructura existente: autorizaciones dentro de Dirección, no en la barra principal. -->
+    <menuitem id="menu_fn_autorizaciones" name="Otrosíes posteriores: autorizaciones" parent="menu_horizontalcuatro"
+              action="action_fn_autorizaciones" sequence="95"
+              groups="Matriz.group_soporte"/>
+    <record id="view_fn_otrosi_warning" model="ir.ui.view">
+        <field name="name">otro_si.finalizacion.normal.advertencia</field>
+        <field name="model">otro_si</field><field name="inherit_id" ref="view_otro_si_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="(//sheet)[1]" position="inside">
+                <field name="fn_autorizacion_id" invisible="1"/>
+                <field name="fn_es_posterior" invisible="1"/>
+                <div class="alert alert-warning" attrs="{'invisible': [('fn_es_posterior', '=', False)]}">
+                    Este otrosí corresponde a un contrato finalizado normalmente.
+                    Su creación requiere Soporte y autorización de la Dirección de FUV.
+                    La operación conserva la trazabilidad de la finalización anterior.
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

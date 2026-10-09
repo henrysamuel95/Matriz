@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="holiday_new_year" model="colombia.holiday">
+    <field name="name">Año Nuevo</field>
+    <field name="date">2026-01-01</field>
+  </record>
+  <record id="holiday_independence" model="colombia.holiday">
+    <field name="name">Día de la Independencia</field>
+    <field name="date">2026-07-20</field>
+  </record>
+  <record id="holiday_labor_day" model="colombia.holiday">
+    <field name="name">Día del Trabajo</field>
+    <field name="date">2026-05-01</field>
+  </record>
+</odoo>

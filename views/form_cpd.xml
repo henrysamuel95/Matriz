@@ -1,0 +1,178 @@
+<!-- formulario_cdp_views.xml -->
+<odoo>
+    <data>
+        <!-- Vista para el formulario principal de formulario_cdp -->
+        <record id="view_formulario_cdp_form" model="ir.ui.view">
+            <field name="name">formulario_cdp.form</field>
+            <field name="model">formulario_cdp</field>
+            <field name="arch" type="xml">
+                <form create="0">
+                   <sheet style="background-color: #02225b;"> <!-- Fondo blanco -->
+                   <label for="proyecto_relacionado_cdp" style="color: black !important;" invisible="1">Selecionar contratista</label>
+                   <field name="proyecto_relacionado_cdp" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;" required="1" invisible="1"/>
+
+                    <table style="border-collapse: collapse; width: 100%; margin: auto; margin-bottom: 3mm;">
+                    <header style="background-color: white; border: 1px solid black; display: flex;">
+                        <!-- Left column for the image -->
+                        <div style="flex: 1; border-right: 1px solid black;">
+                            <img src="https://i.ibb.co/kDZzr9z/Logo.png" style="max-width: 100%; max-height: 200px; padding-bottom: 10px; margin-top: 5mm;" />
+                        </div>
+                        <!-- Center column for the title -->
+                        <div style="flex: 1; text-align: center;">
+                            <h1 style="padding: 6px; font-size: 16px; font-style: italic; font-weight: bold; color: black;">
+                                Formato: <br/> Control de disponibilidad presupuestal
+                            </h1>
+                        </div>
+                        <!-- Right column for the emission information -->
+                        <div style="flex: 1; text-align: right; border-left: 1px solid black;">
+                            <p style="padding: 16px; font-size: 14px; font-style: italic; color: black; text-transform: uppercase;">
+                                F. Emisión: 2023-01-23 Versión: 4<br/>fu-f-gpp-031
+                            </p>
+                        </div>
+                    </header>
+                    </table>
+                        <table style="width: 100%; border: 1px solid black;">
+                        <tr style="width: 100%; border: 1px solid black;">
+                                <!-- Otras filas -->
+                                <td style="vertical-align: top; padding: 5px;">
+                                    <label for="name" style="color: black !important;">Para: </label>
+                                    <field name="name" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="de_para" style="color: black !important;">De: </label>
+                                    <field name="de_para" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="fecha_actual" style="color: black !important;">Fecha actual: </label>
+                                    <field name="fecha_actual" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="fecha_inicial" style="color: black !important;">Fecha inicial: </label>
+                                    <field name="fecha_inicial" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="estado" style="color: black !important;">Estado: </label>
+                                    <field name="estado" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="vigencia" style="color: black !important;">Vigencia: </label>
+                                    <field name="vigencia" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                </td>
+                            </tr>
+                    </table>
+                    <h3>1: OBJETO</h3>
+                        <table style="width: 100%; border: 1px solid black; background-color: #EFF1F7;">
+                            <field name="objeto" style="text-align: left; font-weight: bold; font-size: 16px;"/>
+                        </table>
+                    <h3>2: CONTRATISTA</h3>
+                        <table style="width: 100%; border: 1px solid black; background-color: #EFF1F7;">
+                            <field name="contratista" style="text-align: left; font-weight: bold; font-size: 16px;"/>
+                        </table>
+                        <br></br>
+
+                       <h3>3: VALOR</h3>
+                       <table style="border: 0.2px solid #000; padding: 10px;">
+                            <field name="lineas_formulario_cdp" widget="one2many_list">
+                                <tree editable="bottom" col="6">
+                                    <field name="detalles" width="50"/>
+                                    <field name="valor_mensual" width="80"/>
+                                    <field name="valor_inicial" width="80"/>
+                                    <field name="adiciones" width="80"/>
+                                    <field name="disminuciones" width="100"/>
+                                    <field name="total" width="100" readonly="1"/>
+                                </tree>
+                            </field>
+                        </table>
+                    <table  style="width: 100%; background-color: #EFF1F7;">
+                        <label for="total_valor_inicial" string="Total Valor Inicial" readonly="1"/>
+                        <field name="total_valor_inicial" width="50" />
+
+                        <label for="total_adiciones" string="Total Adiciones" readonly="1"/>
+                        <field name="total_adiciones" width="50" />
+
+                        <label for="total_disminuciones" string="Total Disminuciones" readonly="1"/>
+                        <field name="total_disminuciones" width="50" />
+
+                        <label for="total_general" string="Total General" readonly="1"/>
+                        <field name="total_general" width="50" />
+                    </table>
+                       <br></br>
+                    <table style="width: 100%; border: 1px solid black; background-color: #EFF1F7;">
+                        <label for="valor_en_letras" string="Valor en letras"/>
+                        <field name="valor_en_letras" style="text-align: left; font-weight: bold; font-size: 20px;"/>
+                    </table>
+                        <br></br>
+                        <h3>4: PLAZO</h3>
+                    <table style="width: 100%; border: 1px solid black;">
+                        <tr style="width: 100%; border: 1px solid black;">
+                                <!-- Otras filas -->
+                                <td style="vertical-align: top; padding: 5px;">
+                                    <label for="plazo_inicial" style="color: black !important;">Plazo inicial</label>
+                                    <field name="plazo_inicial" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="otrosi1" style="color: black !important;">Otro si 1</label>
+                                    <field name="otrosi1" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="otrosi2" style="color: black !important;">Otro si 2</label>
+                                    <field name="otrosi2" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="otrosi3" style="color: black !important;">Otro si 3</label>
+                                    <field name="otrosi3" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="otrosi4" style="color: black !important;">Otro si 4</label>
+                                    <field name="otrosi4" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+                                    <label for="plazo_final" style="color: black !important;">Plazo final</label>
+                                    <field name="plazo_final" style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                </td>
+                            </tr>
+                    </table>
+                    <br></br>
+                    <h3>5:PROYECTO</h3>
+                        <table style="width: 100%; border: 1px solid black; background-color: #EFF1F7;">
+                            <field name="proyecto" style="text-align: center; font-weight: bold; font-size: 16px;"/>
+                        </table>
+                       <br></br>
+                       <br></br>
+                       <table style="width: 100%; border: 1px solid black; background-color: #EFF1F7;">
+                           <field name="text_observaciones"/>
+                       </table>
+                       <br></br>
+                       <button string="Descargar" type="object" class="oe_highlight" name="generar_informe_docx"/>
+                        <table style="text-align: center; width: 100%;">
+                            <tr>
+                                <td>
+                                    <div>
+                                        <field name="signature_field" widget="signature" style="width: 300px; height: 100px;"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center; font-weight: bold;">
+                                    DIANA LORENA CANO<br/>
+                                    DIRECTORA FINANCIERA
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right; font-weight: bold; position: absolute; bottom: 10px; right: 10px;">
+                                    <label for="eleborado_por" style="color: black !important;">Elaborado por:</label>
+                                    <field name="eleborado_por" style="width: 100px; text-align: right; background-color: #EFF1F7;"/>
+                                    <br></br>
+                                    <label for="fch_creacion" style="color: black !important;">Fecha de creación:</label>
+                                    <field name="fch_creacion" />
+                                </td>
+                            </tr>
+                        </table>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record id="view_tree_formulario_cdp_tree" model="ir.ui.view">
+        <field name="name">formulario_cdp.tree</field>
+        <field name="model">formulario_cdp</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="fch_creacion"/>
+                <field name="de_para"/>
+                <field name="name"/>
+                <field name="contratista"/>
+            </tree>
+        </field>
+    </record>
+    </data>
+</odoo>

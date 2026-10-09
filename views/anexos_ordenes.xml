@@ -1,0 +1,315 @@
+<odoo>
+    <!-- Tree view -->
+    <record id="view_anexo_tree" model="ir.ui.view">
+        <field name="name">anexo.tree</field>
+        <field name="model">anexo</field>
+        <field name="arch" type="xml">
+            <tree string="Anexos">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_anexo_form" model="ir.ui.view">
+        <field name="name">anexo.form</field>
+        <field name="model">anexo</field>
+        <field name="arch" type="xml">
+      <form create="0">
+            <header>
+                <!-- Fila 1: Botón de Descarga -->
+                <div style="display: flex; width: 100%; margin-bottom: 10px; margin: 10px;">
+                    <button name="generar_informe_docx" string="Descargar anexo" type="object" class="oe_highlight"/>
+                </div>
+
+                <!-- Fila 2: Sección de Soporte -->
+                <div groups="Matriz.group_soporte" style="display: flex; flex-wrap: wrap; gap: 10px; margin-left: 20px; align-items: center;" invisible="1">
+                    <div class="subtitulo_seccion_4" style="width: 100%; font-weight: bold; margin-bottom: 5px;">Soporte</div>
+                    <button name="abrir_municipios_nuevos" string="Agregar a la base de datos" type="object" class="oe_highlight"/>
+                    <button name="transferir_municipios_seleccionados" string="Transferir municipios seleccionados" type="object" class="oe_highlight"/>
+                    <button name="borrar_registros_relacionados" string="Borrar registros en la lista" type="object" class="oe_highlight"/>
+                    <button name="compute_repartir_dedicacion" string="Repartir dedicación" type="object" class="oe_highlight"/>
+                    <button name="compute_anio_fecha" string="compute_anio_fecha" type="object" class="oe_highlight"/>
+                </div>
+            </header>
+
+
+            <sheet style="background-color: #02225b;">
+                <label for="datos_adicionales" style="color: black !important;" invisible="1">Selecionar datos_adicionales</label>
+                <field name="datos_adicionales" invisible="1"
+                      style="color: black !important; border: 1px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+
+
+<!-- Encabezado visual -->
+<div class="card_header_moderno">
+    <div class="ch_left">
+        <img src="/Matriz/static/src/img/LogoFUV.png" alt="Logo"/>
+    </div>
+    <div class="ch_center">
+        <h2>PROCESO DE GESTION TRIBUTARIA</h2>
+        <span>ANEXO TRIBUTARIO</span>
+    </div>
+    <div class="ch_right">
+        <div class="item">F. Emisión 2023-07-18</div>  
+        <div class="item">Versión: 2</div>
+        <field name="consecutivo_unido"/>
+    </div>
+</div>
+
+
+
+<div class="card_seccion">
+    <div class="subtitulo_seccion_4" style="width: 100%;">Fecha:</div>
+    <field name="fecha" class="campo_hover campo_solo_lectura" />
+
+<div style="display:flex; gap:30px; width: 100%; align-items: flex-end;">
+    
+    <div style="flex: 1;">
+        <div class="subtitulo_seccion_4">De:</div>
+        <div style="border-radius: 6px !important;
+                    border: 1px solid #cfcfcf !important;
+                    padding: 8px !important;
+                    background-color: #ADD8E6 !important;
+                    display: block !important;
+                    width: 100%; 
+                    font-weight: bold;
+                    box-sizing: border-box;
+                    box-shadow: 0 0 0 1px rgba(13,110,253,.05);">
+            UNIDA CONTABLE Y FINANCIERA
+        </div>
+    </div>
+
+    <div style="flex: 1;">
+        <div class="subtitulo_seccion_4">Para:</div>
+        <field name="name" 
+               readonly="1" 
+               class="input_moderno campo_solo_lectura" 
+               style="width: 100% !important; display: block;"/>
+    </div>        
+</div>
+
+    <br/>
+    <div class="subtitulo_seccion_4" style="width: 100%;">Asunto:</div>
+    <div style="border-radius: 6px !important;
+            border: 1px solid #cfcfcf !important;
+            padding: 6px !important;
+            background-color: #ADD8E6 !important;
+            display: block !important;
+            width: 100%;
+            box-shadow: 0 0 0 1px rgba(13,110,253,.05);">INFORMACIÓN TRIBUTARIA DEL CONVENIO Y/O CONTRATO</div>
+    <br/>
+        <div class="subtitulo_seccion_4" style="width: 100%;">Proyecto:</div>
+        <field name="nombre_del_proyecto"
+                readonly="1"
+                options="{'no_open': True}"
+                class="campo_hover campo_solo_lectura"/>
+</div>
+
+<div class="card_seccion">
+    <div class="titulo_seccion" style="width: 100%;">1. RUT</div>
+    <div>
+        <div>
+            <div class="subtitulo_seccion_4" style="width: 100%;">Código CIIU:</div>
+            <field name="codigo_ciiu" class="campo_hover campo_solo_lectura" />
+        </div>
+
+        <div>
+            <div class="subtitulo_seccion_4" style="width: 100%;">Objeto Contractual:</div>
+            <field name="objeto_contractual" class="campo_hover campo_solo_lectura" />
+        </div>
+    </div>
+
+</div>
+<div class="card_seccion">
+    <div class="titulo_seccion" style="width: 100%;">2. Valor y forma de pago del contrato</div>
+    <div>
+        <div>
+            <div class="subtitulo_seccion_4" style="width: 100%;">Valor del contrato:</div>
+            <field name="valor_contrato" class="campo_hover campo_solo_lectura" />
+        </div>
+
+        <div>
+            <div class="subtitulo_seccion_4" style="width: 100%;">Forma de pago:</div>
+            <field name="forma_pago2" class="campo_hover campo_solo_lectura" />
+        </div>
+    </div>
+</div>
+<div class="card_seccion">
+    <div class="titulo_seccion" style="width: 100%;">3. Impuestos (Marque ☑)</div>
+    <div class="subtitulo_seccion_4" style="width: 100%;">Impuesto a la venta (IVA)</div>
+        
+    <div style="font-family: Arial, sans-serif; color: #333; margin-top: 10px;">
+        <div style="border: 1px solid #e3e3e3; border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div style="flex: 1; min-width: 120px;">
+                    <strong>Responsable: </strong>
+                    <field name="responsable"/>
+                </div>
+                <div style="flex: 1; min-width: 120px;">
+                    <strong>No responsable: </strong>
+                    <field name="no_responsable"/>
+                </div>
+                <div style="flex: 1; min-width: 120px;">
+                    <strong>Excluido: </strong>
+                    <field name="excluido"/>
+                </div>
+                <div style="flex: 1; min-width: 120px;">
+                    <strong>Exento: </strong>
+                    <field name="exento"/>
+                </div>
+            </div>
+        </div>
+
+        <div style="border: 1px solid #e3e3e3; border-radius: 8px; overflow: hidden;">
+            
+            <div style="padding: 10px; border-bottom: 1px solid #e3e3e3; background-color: #f9f9f9;">
+                <strong>Retención IVA: </strong>
+                <field name="retencion_iva2"/>
+            </div>
+
+            <div style="padding: 8px; background-color: #f2f2f2;">
+                <h1 style="font-size: 14px; font-weight: bold; color: #000; margin: 0; text-transform: uppercase;">
+                    Retención industria y comercio
+                </h1>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<table style="border-collapse: separate; border-spacing: 0; width: 100%; border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; margin-top: 10px; font-family: sans-serif;">
+    <field name="retencion2_visible" invisible="1"/>
+    
+    <thead>
+        <tr style="background-color: #ADD8E5; color: #495057; text-align: left; font-size: 13px;">
+            <th style="padding: 10px; border-bottom: 2px solid #dee2e6; border-right: 1px solid #dee2e6;">Concepto</th>
+            <th style="padding: 10px; border-bottom: 2px solid #dee2e6; border-right: 1px solid #dee2e6;">Base</th>
+            <th style="padding: 10px; border-bottom: 2px solid #dee2e6; border-right: 1px solid #dee2e6;" attrs="{'invisible': [('retencion2_visible', '=', True)]}">Retención Fuente %</th>
+            <th style="padding: 10px; border-bottom: 2px solid #dee2e6;" attrs="{'invisible': [('retencion2_visible', '=', False)]}">Retención Fuente %</th>
+        </tr>
+    </thead>
+    
+    <tbody style="font-size: 13px;">
+        <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed;">
+                <field name="concepto_2" placeholder="Seleccionar tipo de concepto" style="width: 100%;"/>
+            </td>
+            <td style="padding: 8px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed;">
+                <field name="base" />
+            </td>
+            <td style="padding: 8px; border-bottom: 1px solid #ededed; border-right: 1px solid #ededed;" attrs="{'invisible': [('retencion2_visible', '=', True)]}">
+                <field name="retencion2" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div style="border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; margin-top: 15px; background-color: white;">
+    
+    <div style="background-color: #ADD8E5; border-bottom: 2px solid #dee2e6; padding: 10px; text-align: center;">
+        <span style="font-weight: bold; font-size: 16px; color: #495057;">
+            Impuesto de Industria y Comercio (ICA)
+        </span>
+    </div>
+
+    <div style="padding: 5px;">
+        <field name="municipios_combinados_id2" nolabel="1">
+            <tree editable="bottom" create="0" decoration-info="1">
+                <field name="municipios3" options="{'no_open': True}" style="font-weight: bold;"/>
+                <field name="conceptos_bd" readonly="1"/>
+                <field name="tarifa_bd" readonly="0" sum="Total Tarifas"/>
+                <field name="base_servicio"/>
+                <field name="base_bienes"/>
+                <field name="dedicacion_comibinados" readonly="1"/>
+            </tree>
+        </field>
+    </div>
+    <button name="abrir_municipios_nuevos" string="Agregar Municipio (Concepto, tarifa, base bienes, base servicios)" type="object" 
+            class="btn_blue_moderno_espacios"
+            style="margin: 10px;"
+            groups="Matriz.group_contratacion_directivo,Matriz.group_soporte,Matriz.group_presupuestos,Matriz.group_contratacion_financiero"/>
+</div>
+<field name="orden_compra_bienes_id" invisible="1"/>
+<field name="retencion2_visible" invisible="1"/>
+
+<br/>
+<div class="card_seccion">
+    <div class="titulo_seccion">Nota</div>
+    <field name="nota" class="campo_hover" style="height: auto !important;"/>
+</div>
+
+<br/>
+<div style="border: 1px solid #dee2e6; border-radius: 8px; overflow: hidden; margin-top: 15px; font-family: sans-serif; background-color: white;">
+    
+    <div style="background-color: #ADD8E6; border-bottom: 2px solid #dee2e6; padding: 10px;">
+        <h1 style="font-size: 15px; font-weight: bold; color: #495057; margin: 0; text-transform: uppercase;">
+            Otros (Seleccionado previamente)
+        </h1>
+    </div>
+
+    <div style="padding: 5px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="padding: 12px; width: 33.33%; border-right: 1px solid #ededed; border-bottom: 1px solid #ededed;">
+                    <strong style="display: block; color: #666; font-size: 12px;">Facturador electrónico:</strong>
+                    <field name="f_electronica" readonly="1" style="font-weight: 500;"/>
+                </td>
+                <td style="padding: 12px; width: 33.33%; border-right: 1px solid #ededed; border-bottom: 1px solid #ededed;">
+                    <strong style="display: block; color: #666; font-size: 12px;">Declaración de renta:</strong>
+                    <field name="declaracion_renta" placeholder="Seleccionar"/>
+                </td>
+                <td style="padding: 12px; width: 33.33%; border-bottom: 1px solid #ededed;">
+                    <strong style="display: block; color: #666; font-size: 12px;">Régimen simple:</strong>
+                    <field name="regimen_simple_tributacion" placeholder="Seleccionar"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; width: 33.33%; border-right: 1px solid #ededed;">
+                    <strong style="display: block; color: #666; font-size: 12px;">Régimen especial:</strong>
+                    <field name="regimen_especial" placeholder="Seleccionar"/>
+                </td>
+                <td style="padding: 12px; width: 33.33%; border-right: 1px solid #ededed;">
+                    <strong style="display: block; color: #666; font-size: 12px;">Régimen ordinario:</strong>
+                    <field name="regimen_ordinario" placeholder="Seleccionar"/>
+                </td>
+                <td style="padding: 12px; width: 33.33%;">
+                    </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br/>
+<div class="float-end p-3 mb-2" style="background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6; min-width: 250px;">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <label for="eleborado_por" class="fw-bold mb-0 text-muted" style="font-size: 0.85rem;">Elaborado por:</label>
+        <field name="eleborado_por" class="text-end fw-bold" style="color: #4c4e5e; text-align: left;"/>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <label for="fch_creacion" class="fw-bold mb-0 text-muted" style="font-size: 0.85rem;">Fecha creación:</label>
+        <field name="fch_creacion" class="text-end"/>
+    </div>
+</div>
+<div class="clearfix"/> <!-- Importante para limpiar el float -->
+
+
+                <br/>
+                <br/>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+            </sheet>
+        </form>
+    </field>
+</record>
+    <!-- Action que abre el tree -->
+    <record id="action_anexo_tree" model="ir.actions.act_window">
+        <field name="name">Anexos</field>
+        <field name="res_model">anexo</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_anexo_tree"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

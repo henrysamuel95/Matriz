@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_ficha_resumen_form" model="ir.ui.view">
+            <field name="name">ficharesumen.form</field>
+            <field name="model">ficharesumen</field>
+            <field name="arch" type="xml">
+                <form create="0" style="background-color: #485B75;">
+                    <header class="mtz-ficha-actionbar">
+                        <button name="button_informacion_base" string="FORMULARIO DE INGRESO DE DATOS DEL PROYECTO" type="object" class="oe_highlight mtz-ficha-primary-action"/>
+                    </header>
+                    <sheet style="background: #f4f7fa">
+                        <div class="card_seccion mtz-ficha-brand-card">
+                            <div class="header_container mtz-ficha-brand">
+                                <div style="flex: 0 1 auto;">
+                                    <img src="https://i.ibb.co/kDZzr9z/Logo.png" class="mtz-ficha-brand-logo" style="max-height: 80px; max-width: 100%; height: auto;"/>
+                                </div>
+                                <div style="flex: 1 1 300px; text-align: right;">
+                                    <div class="mtz-ficha-brand-meta" style="color: #000000; font-size: 14px; font-weight: bold; font-style: italic; line-height: 1.2;">
+                                        FUNDACIÓN UNIVERSIDAD DEL VALLE<br/>
+                                        NIT: 800.187.151-9<br/>
+                                        Flujo de Procesos Internos Contractuales<br/>
+                                        Versión 1.0
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card_seccion">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="label_columna">Fecha de actualización</div>
+                                    <div class="campo_hover"><field name="Fecha_Actualización" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Fecha de emisión</div>
+                                    <div class="campo_hover"><field name="Fecha_Emisión" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Fecha de impresión</div>
+                                    <div class="campo_hover"><field name="Fecha_de_Impresión" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Detalles del Proyecto</div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Número de contrato</div>
+                                    <div class="campo_hover"><field name="Contrato_Número" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Nombre del proyecto</div>
+                                    <div class="campo_hover"><field name="nombre_proyecto" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Fecha de inicio del proyecto</div>
+                                    <div class="campo_hover"><field name="fecha_inicio" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Fecha de finalización del proyecto</div>
+                                    <div class="campo_hover"><field name="fecha_finalizacion" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Objeto</div>
+                                    <div class="campo_hover text-break"><field name="objeto" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Descripción de beneficiarios</div>
+                                    <div class="campo_hover text-break"><field name="descripcion_beneficiarios" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Modalidad de Contratación</div>
+                                    <div class="campo_hover"><field name="modalidad_id" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">Valor a contratar</div>
+                                    <div class="campo_hover"><field name="valor_contratar" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">Total de beneficiarios</div>
+                                    <div class="campo_hover"><field name="total_beneficiarios" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Valor total del proyecto</div>
+                                    <div class="campo_hover"><field name="valor_total_proyecto" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">¿Secop?</div>
+                                    <div class="campo_hover"><field name="secop_options" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Entidades Relacionadas</div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-8">
+                                    <div class="label_columna">Primera entidad relacionada</div>
+                                    <div class="campo_hover"><field name="entidad_relacionada" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Cuantía (COP)</div>
+                                    <div class="campo_hover"><field name="Cuantía4" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-8">
+                                    <div class="label_columna">NIT Primera entidad</div>
+                                    <div class="campo_hover"><field name="NIT" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Número de procesos entidades</div>
+                                    <div class="campo_hover"><field name="Número_de_proceso_entidad" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-8">
+                                    <div class="label_columna">Segunda entidad relacionada</div>
+                                    <div class="campo_hover"><field name="Otra_entidad1" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Cuantía (COP)</div>
+                                    <div class="campo_hover"><field name="Cuantía1" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-12">
+                                    <div class="label_columna">NIT Segunda entidad</div>
+                                    <div class="campo_hover"><field name="NIT2" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-8">
+                                    <div class="label_columna">Tercera entidad relacionada</div>
+                                    <div class="campo_hover"><field name="Otra_entidad2" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Cuantía (COP)</div>
+                                    <div class="campo_hover"><field name="Cuantía2" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-12">
+                                    <div class="label_columna">NIT Tercera entidad</div>
+                                    <div class="campo_hover"><field name="NIT3" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Gestión y Supervisión</div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Eje de trabajo</div>
+                                    <div class="campo_hover"><field name="eje_trabajo" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Coordinador responsable</div>
+                                    <div class="campo_hover"><field name="coordinador_asignado" class="campo_solo_lectura campo_hover" nolabel="1" options="{'no_create': True, 'no_open': True}"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-4">
+                                    <div class="label_columna">Teléfono</div>
+                                    <div class="campo_hover"><field name="telefono" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="label_columna">Ext.</div>
+                                    <div class="campo_hover"><field name="extension" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Carta de invitación</div>
+                                    <div class="campo_hover"><field name="carta_invitacion" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="label_columna">Fecha</div>
+                                    <div class="campo_hover"><field name="fecha1" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-4">
+                                    <div class="label_columna">Estudios previos</div>
+                                    <div class="campo_hover"><field name="estudios_previos_si" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="label_columna">Fecha</div>
+                                    <div class="campo_hover"><field name="fecha2" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Estudio de mercado</div>
+                                    <div class="campo_hover"><field name="estudio_mercado_documento_tecnico_si" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="label_columna">Doc. técnico</div>
+                                    <div class="campo_hover"><field name="Documento_Técnico" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-4">
+                                    <div class="label_columna">Matriz de riesgo</div>
+                                    <div class="campo_hover"><field name="matriz_riesgo" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="label_columna">Fecha</div>
+                                    <div class="campo_hover"><field name="fecha3" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Supervisor y/o interventor</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row row_ajustada">
+                                <div class="col-md-6">
+                                    <div class="label_columna">Correo electrónico</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor_correo" class="campo_solo_lectura campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna">Área de entidad del proceso</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor_area_entidad" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="label_columna">Celular</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor_celular" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Teléfono</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor_telefono" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="label_columna">Ext.</div>
+                                    <div class="campo_hover"><field name="supervisor_interventor_extension" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Municipio(s) de ejecución</div>
+                            <div class="row">
+                                <div class="col-md-6" style="border-right: 1px solid #eee;">
+                                    <div class="label_columna" style="text-align: center;">Municipio(s) de ejecución</div>
+                                    <div class="campo_hover"><field name="tag_municipios_ids" options="{'no_open': True, 'no_create': True}" class="campo_hover" nolabel="1" style="width: 100%;"/></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="label_columna" style="text-align: center;">Municipio(s) beneficiado(s)</div>
+                                    <div class="campo_hover"><field name="tag_municipios_ids2" options="{'no_open': True, 'no_create': True}" class="campo_hover" nolabel="1" style="width: 100%;"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card_seccion">
+                            <div class="titulo_seccion">Estado de Validaciones y Aprobación Final</div>
+                            <div class="row text-center row_ajustada">
+                                <div class="col-md-3">
+                                    <div class="label_columna">Adm.</div>
+                                    <div class="campo_hover"><field name="viable_Administrativa" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">Jur.</div>
+                                    <div class="campo_hover"><field name="viable_Juridica" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">Fin.</div>
+                                    <div class="campo_hover"><field name="viable_Financiera" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">Aprobación</div>
+                                    <div class="campo_hover"><field name="aprobado" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-3">
+                                    <div class="label_columna">F. Proyección</div>
+                                    <div class="campo_hover"><field name="fecha_proyeccion" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">F. Proyección</div>
+                                    <div class="campo_hover"><field name="fecha_proyeccion" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">F. Revisión</div>
+                                    <div class="campo_hover"><field name="fecha_revision" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="label_columna">F. Aprobación</div>
+                                    <div class="campo_hover"><field name="fecha_aprobacion" class="campo_hover" nolabel="1"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/><field name="activity_ids"/><field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_ficharesumen_tree" model="ir.ui.view">
+            <field name="name">ficharesumen.tree</field>
+            <field name="model">ficharesumen</field>
+            <field name="arch" type="xml">
+                <tree create="0">
+                    <field name="nombre_proyecto"/>
+                    <field name="Contrato_Número"/>
+                    <field name="fch_creacion"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="ficharesumen_view_search" model="ir.ui.view">
+            <field name="name">ficharesumen.search</field>
+            <field name="model">ficharesumen</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nombre_proyecto"/>
+                    <field name="Contrato_Número"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_ficharesumen_kanban" model="ir.ui.view">
+            <field name="name">ficharesumen.kanban</field>
+            <field name="model">ficharesumen</field>
+            <field name="arch" type="xml">
+                <kanban create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click" style="border-left: 5px solid #485B75; border-radius: 8px;">
+                                <div class="oe_kanban_image">
+                                    <img t-att-src="'/Matriz/static/src/img/Go-S-F.png'" style="width: 50px; height: 40px; object-fit: cover; margin-bottom: 5px;" />
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title" style="font-size: 15px; color: #043484;">
+                                                <field name="nombre_proyecto"/>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 5px; font-size: 13px;">
+                                        <div><strong>Contrato:</strong> <field name="Contrato_Número"/></div>
+                                        <div style="color: #666;">
+                                            <i class="fa fa-calendar" title="Fechas"/> 
+                                            <field name="fecha_inicio"/> al <field name="fecha_finalizacion"/>
+                                        </div>
+                                        <div style="margin-top: 5px;">
+                                            <strong>Valor a contratar:</strong> <field name="valor_contratar" widget="monetary"/>
+                                        </div>
+                                        <div style="color: #000; font-weight: bold;">
+                                            <strong>Valor Total:</strong> <field name="valor_total_proyecto" widget="monetary"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,134 @@
+.o_form_view .o_drive_access_intro {
+    margin: 18px 0;
+    border: 0;
+    border-left: 4px solid #1c7c92;
+    border-radius: 6px;
+    line-height: 1.55;
+}
+
+.o_form_view .o_drive_access_card {
+    background: #fff;
+    border: 1px solid #dbe4ee;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+    padding: 16px 18px;
+    margin: 16px 0;
+}
+
+.o_form_view .o_drive_access_card_heading {
+    color: #123d78;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    margin-bottom: 12px;
+}
+
+.o_form_view .o_drive_access_card_heading .fa {
+    color: #18728a;
+    margin-right: 7px;
+}
+
+.o_form_view .o_drive_access_users_card .o_field_widget {
+    width: 100%;
+}
+
+.o_form_view .o_drive_access_tags .o_field_many2manytags {
+    min-height: 38px;
+    padding: 4px 7px;
+    border-radius: 5px;
+}
+
+.o_form_view .o_drive_access_action_grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.o_form_view .o_drive_access_action_grid .o_drive_access_card {
+    margin: 0;
+}
+
+.o_form_view .o_drive_access_help {
+    color: #687386;
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0 0 15px;
+    min-height: 38px;
+}
+
+.o_form_view .o_drive_access_action_row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.o_form_view .o_drive_access_action_row > label {
+    color: #344054;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.o_form_view .o_drive_access_action_field {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.o_form_view .o_drive_access_action_field.o_field_widget {
+    width: auto;
+}
+
+.o_form_view .o_drive_access_button {
+    min-width: 116px;
+    height: 34px;
+    padding: 6px 13px;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.o_form_view .o_drive_access_last_sync {
+    background: #f8fafc;
+}
+
+.o_form_view .o_drive_access_sync_values {
+    display: flex;
+    gap: 48px;
+}
+
+.o_form_view .o_drive_access_sync_values > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.o_form_view .o_drive_access_sync_values span {
+    color: #667085;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .o_form_view .o_drive_access_action_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .o_form_view .o_drive_access_sync_values {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .o_form_view .o_drive_access_action_row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .o_form_view .o_drive_access_button {
+        width: 100%;
+    }
+}

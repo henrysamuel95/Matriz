@@ -1,0 +1,142 @@
+.mtz-kanban-decorator {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    z-index: 30;
+}
+
+.contrataciones-fuv-card {
+    overflow: visible !important;
+}
+
+.contrataciones-fuv-card .o_kanban_record_bottom > .d-flex {
+    width: 100%;
+}
+
+.mtz-kanban-decorator__toggle {
+    position: relative;
+    width: 34px;
+    height: 28px;
+    border: 1px solid rgba(0, 74, 153, 0.16);
+    border-radius: 8px;
+    background: #fff;
+    color: #004a99;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.mtz-kanban-decorator__toggle:hover,
+.mtz-kanban-decorator.is-open .mtz-kanban-decorator__toggle {
+    transform: translateY(-1px);
+    border-color: rgba(0, 74, 153, 0.38);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+}
+
+.mtz-kanban-decorator__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.mtz-kanban-decorator__badge {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.28);
+}
+
+.mtz-kanban-decorator__menu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    z-index: 999;
+    display: none;
+    min-width: 178px;
+    padding: 6px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}
+
+.mtz-kanban-decorator.is-open .mtz-kanban-decorator__menu {
+    display: block;
+}
+
+.mtz-kanban-decorator__menu::after {
+    content: "";
+    position: absolute;
+    right: 13px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    transform: rotate(45deg);
+}
+
+.mtz-kanban-decorator__action {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #243447;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mtz-kanban-decorator__action:hover {
+    background: #eef4ff;
+    color: #004a99;
+}
+
+.mtz-kanban-decorator__action i {
+    width: 14px;
+    color: #004a99;
+}
+
+.mtz-kanban-decorator__chatter-focus {
+    outline: 3px solid rgba(0, 74, 153, 0.22);
+    outline-offset: 8px;
+    border-radius: 8px;
+    transition: outline-color 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .mtz-kanban-decorator__toggle {
+        width: 40px;
+        height: 34px;
+    }
+
+    .mtz-kanban-decorator__menu {
+        right: -2px;
+        min-width: 190px;
+    }
+}

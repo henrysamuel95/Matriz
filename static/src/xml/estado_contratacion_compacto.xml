@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<templates>
+    <t t-name="EstadoContratacionCompactoField" owl="1">
+        <div t-att-class="ui.showFullFlow ? 'estado-contratacion-compacto estado-contratacion-compacto--pinned' : 'estado-contratacion-compacto'"
+             t-att-style="currentStyle"
+             t-on-mouseleave="closeFullFlow">
+            <div class="estado-contratacion-compacto__label">
+                Estado actual:
+            </div>
+            <div class="estado-contratacion-compacto__badge">
+                <span class="estado-contratacion-compacto__dot"/>
+                <span t-esc="current.label"/>
+                <span t-if="progressText" class="estado-contratacion-compacto__progress" t-esc="progressText"/>
+            </div>
+            <div class="estado-contratacion-compacto__popover">
+                <div t-if="previous" class="estado-contratacion-compacto__step">
+                    <span class="estado-contratacion-compacto__step-label">Anterior</span>
+                    <span class="estado-contratacion-compacto__step-value" t-esc="previous.label"/>
+                </div>
+                <div class="estado-contratacion-compacto__step estado-contratacion-compacto__step--current">
+                    <span class="estado-contratacion-compacto__step-label">Actual</span>
+                    <span class="estado-contratacion-compacto__step-value" t-esc="current.label"/>
+                </div>
+                <div t-if="showNextStep" class="estado-contratacion-compacto__step">
+                    <span class="estado-contratacion-compacto__step-label">Siguiente</span>
+                    <span class="estado-contratacion-compacto__step-value" t-esc="next ? next.label : 'Fin del flujo'"/>
+                </div>
+                <t t-if="isNewFlow">
+                    <button type="button"
+                            class="estado-contratacion-compacto__more"
+                            t-on-click="toggleFullFlow"
+                            t-att-aria-expanded="ui.showFullFlow ? 'true' : 'false'">
+                        <i t-att-class="ui.showFullFlow ? 'fa fa-chevron-up' : 'fa fa-chevron-down'"/>
+                        <span t-esc="ui.showFullFlow ? 'Ver menos' : 'Ver más'"/>
+                    </button>
+                    <div t-if="ui.showFullFlow" class="estado-contratacion-compacto__full-flow">
+                        <div t-foreach="fullFlowSteps"
+                             t-as="step"
+                             t-key="step.value"
+                             t-att-class="step.isCurrent ? 'estado-contratacion-compacto__flow-item estado-contratacion-compacto__flow-item--current' : 'estado-contratacion-compacto__flow-item'">
+                            <span class="estado-contratacion-compacto__flow-number" t-esc="step.number"/>
+                            <span class="estado-contratacion-compacto__flow-copy">
+                                <span class="estado-contratacion-compacto__flow-label" t-esc="step.label"/>
+                                <small t-if="step.description" class="estado-contratacion-compacto__flow-description" t-esc="step.description"/>
+                            </span>
+                            <span t-if="step.isCurrent" class="estado-contratacion-compacto__flow-current">Actual</span>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

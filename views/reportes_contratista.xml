@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_reportes_contratista" model="ir.ui.view">
+            <field name="name">reportes.form</field>
+            <field name="model">reportes</field>
+            <field name="arch" type="xml">
+                <form string="Reporte por Proyecto y Contratista" delete="false">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_download_pdf" type="object" class="oe_stat_button" icon="fa-file-pdf-o">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Generar PDF</span>
+                                </div>
+                            </button>
+                        </div>
+                        <field name="mostrar_proyectos" widget="html" readonly="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_kanban_reportes_contratista" model="ir.ui.view">
+            <field name="name">reportes.kanban</field>
+            <field name="model">reportes</field>
+            <field name="arch" type="xml">
+                <kanban action="actualizar_obtener_todos_los_proyectos_por_documento_identidad_o_nit2" type="object" create="1">
+                    <templates>
+                        <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_box">
+                            <div class="o_kanban_record_title" >
+                                <h4 class="oe_kanban_title" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                    t-att-title="record.contratista_reportes.value">
+                                    <field name="contratista_reportes" options="{'limit': 1000}"/>
+                                </h4>
+                            </div>
+                                <hr style="margin-top: 10px; margin-bottom: 10px;"/>
+                                <div t-if="record.documento_identidad.raw_value" class="kanban-field">
+                                    <span class="kanban-label">DI: </span>
+                                    <span class="kanban-value">
+                                        <field name="documento_identidad"/>
+                                    </span>
+                                </div>
+                                <div t-if="record.nit2.raw_value" class="kanban-field">
+                                    <span class="kanban-label">NIT: </span>
+                                    <span class="kanban-value">
+                                        <field name="nit2"/>
+                                    </span>
+                                </div>
+                                <div class="kanban-field">
+                                    <span class="kanban-label">Proyecto: </span>
+                                    <span class="kanban-value">
+                                        <field name="proyectos_relacionados_contratista" options="{'limit': 1000}"/>
+                                    </span>
+                                </div>
+                                <div class="kanban-field">
+                                    <span class="kanban-label">Inicio: </span>
+                                    <span class="kanban-value">
+                                        <field name="fecha_iniciacion_texto" options="{'limit': 1000}"/>
+                                    </span>
+                                </div>
+                                <div class="kanban-field">
+                                    <span class="kanban-label">Valor contrato: $</span>
+                                    <span class="kanban-value">
+                                        <field name="valor_total_contrato_reportes"/>
+                                    </span>
+                                </div>
+                                <div class="o_dropdown_kanban dropdown" tabindex="-1" style="position: absolute; top: 10px; right: 10px;" invisible="1">
+                                    <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-offset="0,-2" href="#" role="button" aria-label="Dropdown menu" title="Dropdown menu">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                    <div role="menu" class="dropdown-menu dropdown-menu-end" aria-labelledby="dLabel">
+                                        <a class="dropdown-item" role="menuitem" type="object" name="action_download_pdf">
+                                            <i class="fa fa-download"></i> Descargar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_reportes_contratista_tree" model="ir.ui.view">
+            <field name="name">reportes.tree</field>
+            <field name="model">reportes</field>
+            <field name="arch" type="xml">
+                <tree create="1">
+                    <field name="name" string="Contratista"/>
+                    <field name="documento_identidad" string="Documento de identificación"/>
+                    <field name="nit" string="NIT"/>
+                    <field name="representante_legal" string="Representante legal"/>
+                    <field name="correo_elctronico" string="Correo electrónico"/>
+                    <field name="telefono_contratista" string="Teléfono contratista"/>
+                    <field name="tipo_de_persona" string="Tipo de persona"/>
+                    <field name="id_contrato_reportes" string="ID contrato"/>
+                    <field name="estado_del_contrato" string="Estado del contrato"/>
+                    <field name="fecha_iniciacion" string="Fecha de inicio"/>
+                    <field name="fecha_terminacion" string="Fecha de fin"/>
+                    <field name="duracion_contrato" string="Duración del contrato (días)"/>
+                    <field name="valor_del_contrato" string="Valor del contrato"/>
+                    <field name="valor_del_contrato_otrosi" string="Valor del contrato con otrosí"/>
+                    <field name="valor_total_contrato_reportes" string="Valor del contrato + otrosí"/>
+                    <field name="rpc" string="RPC"/>
+                    <field name="proyecto_relacionado" string="Proyecto relacionado"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="reportes_view_search" model="ir.ui.view">
+            <field name="name">reportes.view.search</field>
+            <field name="model">reportes</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="contratista_reportes" string="Nombre del Contratista"/>
+                    <field name="documento_identidad" string="Cédula"/>
+                    <field name="nit2" string="NIT"/>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

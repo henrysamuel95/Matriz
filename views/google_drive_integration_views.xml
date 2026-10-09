@@ -1,0 +1,28 @@
+<odoo>
+        <!-- Vista de formulario para GoogleDriveIntegration -->
+        <record model="ir.ui.view" id="view_google_drive_integration_form">
+            <field name="name">matriz.google_drive.form</field>
+            <field name="model">matriz.google_drive</field>
+            <field name="arch" type="xml">
+                <form string="Google Drive Integration">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="file_id"/>
+                            <field name="file_url" widget="url" readonly="1"/>
+                            <field name="file_binary"/>
+                            <field name="folder_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <record id="action_google_drive" model="ir.actions.act_window">
+        <field name="name">Google Drive</field>
+        <field name="res_model">matriz.google_drive</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_google_drive" name="Google Drive" parent="menu_horizontaltres" action="action_google_drive"/>
+</odoo>

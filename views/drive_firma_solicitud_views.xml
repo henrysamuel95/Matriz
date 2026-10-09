@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_drive_firma_solicitud_tree" model="ir.ui.view">
+        <field name="name">drive.firma.solicitud.tree</field>
+        <field name="model">drive.firma.solicitud</field>
+        <field name="arch" type="xml">
+            <tree string="Solicitudes de Firma de Documentos"
+                  decoration-success="estado == 'firmado'"
+                  decoration-muted="estado in ('cancelado', 'expirado')"
+                  create="false" edit="false">
+                <field name="name"/>
+                <field name="contratacion_fuv_id"/>
+                <field name="email_contratista"/>
+                <field name="estado"/>
+                <field name="fecha_envio"/>
+                <field name="token_expira" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_drive_firma_solicitud_search" model="ir.ui.view">
+        <field name="name">drive.firma.solicitud.search</field>
+        <field name="model">drive.firma.solicitud</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Solicitudes de Firma">
+                <field name="name"/>
+                <field name="email_contratista"/>
+                <field name="contratacion_fuv_id"/>
+                <separator/>
+                <filter string="Pendientes" name="pendientes" domain="[('estado', '=', 'pendiente')]"/>
+                <filter string="Firmadas" name="firmadas" domain="[('estado', '=', 'firmado')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                    <filter string="Contratación" name="group_contratacion" context="{'group_by': 'contratacion_fuv_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_drive_firma_solicitud_form" model="ir.ui.view">
+        <field name="name">drive.firma.solicitud.form</field>
+        <field name="model">drive.firma.solicitud</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de Firma" create="false" edit="false">
+                <header>
+                    <field name="estado" widget="statusbar" statusbar_visible="pendiente,firmado"/>
+                    <button name="action_verificar_integridad" type="object" string="Verificar integridad"
+                            class="oe_highlight" attrs="{'invisible': [('estado', '!=', 'firmado')]}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group string="Solicitud">
+                            <field name="drive_id"/>
+                            <field name="contratacion_fuv_id"/>
+                            <field name="email_contratista"/>
+                            <field name="nombre_contratista"/>
+                            <field name="fecha_envio"/>
+                            <field name="enviado_por_id"/>
+                            <field name="token_expira"/>
+                        </group>
+                        <group string="Consentimiento informado">
+                            <field name="consentimiento_aceptado" widget="boolean_toggle"/>
+                            <field name="consentimiento_fecha"/>
+                        </group>
+                    </group>
+
+                    <group string="Integridad del documento">
+                        <field name="documento_hash" widget="CopyClipboardChar" string="SHA-256 del PDF firmado"/>
+                        <field name="firma_contratista_hash" widget="CopyClipboardChar" string="Hash del evento de firma"/>
+                        <field name="log_contratista_id"/>
+                    </group>
+
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle"/>
+                        "SHA-256 del PDF firmado" permite comprobar si el archivo en Drive sigue siendo
+                        el mismo que se firmó — "Verificar integridad" vuelve a descargarlo y compara.
+                    </div>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_drive_firma_solicitud" model="ir.actions.act_window">
+        <field name="name">Solicitudes de Firma de Documentos</field>
+        <field name="res_model">drive.firma.solicitud</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_drive_firma_solicitud"
+              name="Solicitudes de firma de documentos"
+              parent="menu_categoria_usuarios"
+              action="action_drive_firma_solicitud"
+              sequence="11"
+              groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_soporte"/>
+
+</odoo>

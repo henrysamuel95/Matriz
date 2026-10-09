@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario -->
+        <record id="view_informacion_base_form" model="ir.ui.view">
+            <field name="name">Ingreso da.base.form</field>
+            <field name="model">informacion_base</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <root>
+                            <Titulo_proyecto style="font-weight:bold; text-align:center; display:block; margin:auto;">FORMULARIO DE INGRESO INFORMACIÓN BASE PROYECTO</Titulo_proyecto>
+                        </root>
+                        <!-- Campos del encabezado del formulario -->
+                    </header>
+                    <style>
+                        .dropdown {
+                                position: relative;
+                                display: inline-block;
+                            }
+
+                            .dropdown-content {
+                                display: none;
+                                position: absolute;
+                                background-color: #EFF1F7;
+                                min-width: 160px;
+                                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
+                                padding: 17px 18px;
+                                z-index: 1;
+                            }
+
+                            .dropdown:hover .dropdown-content {
+                                display: block;
+                            }
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                    </style>
+                    <sheet>
+                        <group col="2" >
+                            <group>
+                                <field name="nombre_proceso_proyecto" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="modalidad_contratacion" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar">
+                                    <widget name="selection" options="[
+                                        ('cia', 'Convenio Interadministrativo (CIA)'),
+                                        ('cec', 'Convenio Especial de Cooperación (CEC)'),
+                                        ('ccf', 'Convenio de Cofinanciación (CCF)')
+                                    ]" style="dropdown" placeholder="Seleccione una opción"/>
+                                </field>
+                                <field name="objeto_proyecto" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="primera_entidad_relacionada" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="nit_primera_entidad" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="segunda_entidad_relacionada" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="nit_segunda_entidad" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="tercera_entidad_relacionada" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="nit_tercera_entidad" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="eje_trabajo" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="descripcion_beneficiarios" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="total_beneficiarios" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="municipio_ejecucion" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="otro_municipio_beneficiado" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="aporte_otro_municipio" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                            </group>
+
+                            <group>
+                                <field name="asignar_coordinador" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" placeholder="Seleccionar"/>
+                                <field name="id_proyecto" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="numero_contrato" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_acta_inicio" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="fecha_acta_fin" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+
+                                <field name="valor_total_neto" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_sin_contrapartida" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_contrapartida_fuv" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="costos_tributarios" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_poliza" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_administracion_costo_operativo" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="valor_operacion_para_contratar" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                <field name="secop" class="oe_form_field" style="background-color: #FFFFE0;"/>
+                            </group>
+                                <tr>
+                                    <td>
+                                        <label for="aporte" string="Aporte" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    </td>
+                                    <td>
+                                       <field name="aporte" class="oe_form_field" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    </td>
+                                    <td>
+                                        <button type="button" name="mi_funcion_del_boton" class="custom_button_style">Añadir</button>
+                                    </td>
+                                </tr>
+                        </group>
+                            <footer>
+                                <button name="action_save" type="object" class="custom_button_style dropdown" style="width: 150px;">
+                                    <span class="dropdown-content">
+                                        <!-- Contenido del botón Aprobar -->
+                                        APROBACION(REQUIERE CONTRASEÑA)
+                                    </span>
+                                APROBAR</button>
+                                <button name="action_discard" string="Limpiar datos" type="object" class="custom_button_style"/>
+                                <button name="action_ingresar_datos" string="Actualizar Datos" type="object" class="custom_button_style" confirm="¿Si ya completo todos los campos obligatorios, Desea continuar?" onclick="return validarCampos();"/>
+                                <script type="text/javascript">
+                                    function validarCampos() {
+                                        if (!document.getElementById("nombre_proceso_proyecto").value ||
+                                            !document.getElementById("modalidad_contratacion").value ||
+                                            !document.getElementById("objeto_proyecto").value ||
+                                            !document.getElementById("primera_entidad_relacionada").value ||
+                                            !document.getElementById("nit_primera_entidad").value ||
+                                            !document.getElementById("segunda_entidad_relacionada").value ||
+                                            !document.getElementById("nit_segunda_entidad").value ||
+                                            !document.getElementById("tercera_entidad_relacionada").value ||
+                                            !document.getElementById("nit_tercera_entidad").value ||
+                                            !document.getElementById("eje_trabajo").value ||
+                                            !document.getElementById("descripcion_beneficiarios").value ||
+                                            !document.getElementById("total_beneficiarios").value ||
+                                            !document.getElementById("municipio_ejecucion").value ||
+                                            !document.getElementById("aporte").value ||
+                                            !document.getElementById("otro_municipio_beneficiado").value ||
+                                            !document.getElementById("aporte_otro_municipio").value ||
+                                            !document.getElementById("asignar_coordinador").value ||
+                                            !document.getElementById("id_proyecto").value ||
+                                            !document.getElementById("numero_contrato").value ||
+                                            !document.getElementById("fecha_acta_inicio").value ||
+                                            !document.getElementById("fecha_acta_fin").value ||
+                                            !document.getElementById("valor_total_neto").value ||
+                                            !document.getElementById("valor_sin_contrapartida").value ||
+                                            !document.getElementById("valor_contrapartida_fuv").value ||
+                                            !document.getElementById("costos_tributarios").value ||
+                                            !document.getElementById("valor_administracion_costo_operativo").value ||
+                                            !document.getElementById("valor_operacion_para_contratar").value ||
+                                            !document.getElementById("secop").value) {
+                                            window.alert("Complete todos los campos obligatorios antes de continuar.");
+                                            return false;
+                                        }
+                                        return true;
+                                    }
+                                </script>
+
+                                <button name="action_ingresar_pagos_proyecto" type="object" class="custom_button_style dropdown">
+                                <span class="dropdown-content">
+                                    <!-- Contenido del botón Ingresar datos -->
+                                    PAGOS DE PROYECTO
+                                </span>
+                                Ingresar</button>
+                            </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

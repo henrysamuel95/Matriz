@@ -1,0 +1,1697 @@
+<odoo>
+    <record id="view_orden_compra_bienes_form" model="ir.ui.view">
+        <field name="name">orden_compra_bienes.form</field>
+        <field name="model">orden_compra_bienes</field>
+        <field name="arch" type="xml">
+            <form string="Orden de compra de bienes">
+<header class="mi_header_fijo">
+    <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px; padding: 2px;">
+        
+        <div style="display: flex; gap: 5px; flex-shrink: 0;">
+            <button string="Descargar" type="object" class="oe_highlight" name="generar_informe_docx"/>
+            <button name="action_ver_anexos" type="object" string="CREAR ANEXO" class="btn-primary" groups="Matriz.group_contratacion_financiero,Matriz.group_soporte"/>
+            <button name="buscar_carpeta" type="object" class="btn-primary" string="Crear carpeta" invisible="0" groups="Matriz.group_soporte"/>
+        </div>
+
+        <div class="custom-value-header-full-width single-row-layout" style="flex-grow: 1;">
+            <div style="display: flex; justify-content: flex-end; gap: 20px; align-items: center;">
+                
+                <div class="valor-box saldo-produccion">
+                    <strong>Saldo disponible (Producción): </strong>
+                    <field name="saldo_disponible_contratar" decoration-danger="saldo_disponible_contratar &lt;= 0"/>
+                </div>
+                
+                <div class="valor-box base-value small-value">
+                    <strong>Total compra de bienes: </strong>
+                    <field name="total_bienes"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <field name="estado_compra_bienes" widget="statusbar" statusbar_visible="coordinador,financiera,contratado"/>
+    <field name="estado_compra_bienes" invisible="1"/>
+</header>
+
+
+
+
+
+
+
+                <sheet style="background-color: #02225b;">
+<!-- Contenedor Principal -->
+<div class="o_form_sheet_bg">
+<!-- Barra de estado -->
+<div class="o_form_statusbar" style="position: relative; margin-bottom: 20px;" invisible="1">
+    <field name="estado_compra_bienes"
+           widget="statusbar"
+           invisible="0"
+           statusbar_visible="coordinador,financiera,contratado"
+           options="{'clickable': '1'}"
+           modifiers="{}"/>
+    <field name="financiera_aprobado" invisible="1"/>
+</div>
+
+<!-- Encabezado visual -->
+<div class="card_header_moderno">
+    <div class="ch_left">
+        <img src="/Matriz/static/src/img/LogoFUV.png" alt="Logo"/>
+    </div>
+    <div class="ch_center">
+        <h2>ORDEN DE COMPRA DE BIENES</h2>
+        <span>Actualización: 2024-07-26</span>
+    </div>
+    <div class="ch_right">
+        <div class="item">F. Emisión 2009-08-10</div>  
+        <div class="item">Versión: 5</div>
+        <div class="item">FU-F-GCS-002</div>
+    </div>
+</div>
+
+
+<div class="card_seccion">
+    <div class="titulo_seccion" style="border-left: 3px solid #043484; padding-left: 10px; margin-bottom: 15px;">
+        GESTIÓN DE ORDEN Y CRONOGRAMA
+    </div>
+
+    <div style="display: flex; gap: 20px; width: 100%; align-items: stretch; padding: 5px;">
+        
+        <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+            <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; margin-bottom: 8px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                Orden de Compra
+            </div>
+            
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">PROYECTO:</div>
+                <div style="width: 60%;">
+                    <field name="nombre_proyecto_relacionado" 
+                           class="campo_hover campo_solo_lectura" 
+                           options="{'no_create': True, 'no_edit': True}" 
+                           style="width: 100%;"/>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">CENTRO COSTO:</div>
+                <div style="width: 60%;">
+                    <field name="centro_costo" 
+                           class="campo_hover campo_solo_lectura" 
+                           options="{'no_create': True}" 
+                           style="width: 100%;"/>
+                </div>
+            </div>
+        </div>
+
+        <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+            <div style="color: #666; font-weight: bold; border-bottom: 1px solid #f2f2f2; margin-bottom: 8px; font-size: 11px; text-align: center; text-transform: uppercase;">
+                Fechas
+            </div>
+
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. SOLICITUD:</div>
+                <div style="width: 60%;">
+                    <field name="fecha_solicitud" class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. INICIO:</div>
+                <div style="width: 60%;">
+                    <field name="fecha_inicio" class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; width: 100%;">
+                <div style="color: #666; font-size: 12px; width: 40%; font-weight: 600;">F. FINALIZACIÓN:</div>
+                <div style="width: 60%;">
+                    <field name="fecha_fin" class="campo_hover campo_solo_lectura" style="width: 100%;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="card_seccion">
+    <div class="titulo_seccion">FORMULARIO DE ORDEN DE COMPRA DE BIENES</div>
+    
+    <div style="display: flex; gap: 20px; width: 100%; align-items: stretch;">
+        
+        <div style="width: 50%; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+            
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Tipo de persona</div>
+                <field name="seleccion_persona" 
+                       placeholder="Seleccione..." 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Proveedor</div>
+                <field name="proveedor" 
+                       required="1" 
+                       placeholder="Nombre del proveedor" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Dirección</div>
+                <field name="direccion" 
+                       placeholder="Dirección física" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Teléfono</div>
+                <field name="telefono" 
+                       placeholder="Número de contacto" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">E-mail</div>
+                <field name="email" 
+                       placeholder="correo@ejemplo.com" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+        </div>
+
+        <div style="width: 50%; border: 1px solid #e3e3e3; border-radius: 8px; padding: 15px; display: flex; flex-direction: column; gap: 10px; background-color: #ffffff;">
+            
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Ciudad</div>
+                <field name="ciudad" 
+                       placeholder="Ciudad de origen" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;" attrs="{'invisible': [('seleccion_persona', '!=', 'persona_juridica')]}">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">NIT</div>
+                <field name="nit" 
+                       placeholder="NIT con dígito" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;" attrs="{'invisible': [('seleccion_persona', '!=', 'persona_natural')]}">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Cédula</div>
+                <field name="cedula_proveedor" 
+                       placeholder="Número de cédula" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Celular</div>
+                <field name="cel" 
+                       placeholder="Número móvil" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <div style="color: #666; font-size: 13px; width: 40%; font-weight: bold;">Lugar de venta</div>
+                <field name="lugar_venta" 
+                       placeholder="Ingrese el lugar de venta aquí" 
+                       class="campo_hover campo_solo_lectura"
+                       style="flex: 1;"/>
+            </div>
+            
+            <field name="drive_file_id" invisible="1"/>  
+        </div>
+    </div>
+</div>
+<br/>
+<div class="card_seccion">
+    <div class="titulo_seccion">Objeto contractual</div>
+    <field name="objeto_contractual" placeholder="Ingrese el objeto contractual aquí"/>
+</div>
+<div class="card_seccion">
+    <div class="titulo_seccion">Información Tributaria</div>
+    
+    <div style="display: flex; gap: 20px; width: 100%; align-items: stretch; padding: 10px;">
+        
+        <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+            <div>
+                <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">Código CIIU:</strong>
+                <field name="codigo_ciiu" class="campo_hover campo_solo_lectura"/>
+            </div>
+            <div>
+                <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">RPC (Compromiso):</strong>
+                <field name="compromiso_presupuestal" class="campo_hover campo_solo_lectura"/>
+            </div>
+            <div>
+                <strong style="display: block; color: #666; font-size: 10px; text-transform: uppercase;">Centro de costos:</strong>
+                <field name="centro_costo" class="campo_hover campo_solo_lectura" readonly="1"/>
+            </div>
+        </div>
+
+        <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Facturación electrónica:</strong>
+                <field name="f_electronica" nolabel="1"/>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Responsable de IVA:</strong>
+                <field name="r_iva" nolabel="1"/>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">No responsable de IVA:</strong>
+                <field name="no_r_iva" nolabel="1"/>
+            </div>
+        </div>
+
+        <div style="flex: 1; border: 1px solid #e3e3e3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; background-color: #ffffff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Declaración de Renta:</strong>
+                <field name="declaracion_renta" nolabel="1"/>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Régimen Simple:</strong>
+                <field name="regimen_simple_tributacion" nolabel="1"/>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f2f2f2; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Régimen Especial:</strong>
+                <field name="regimen_especial" nolabel="1"/>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 2px 0;">
+                <strong style="color: #666; font-size: 11px;">Régimen Ordinario:</strong>
+                <field name="regimen_ordinario" nolabel="1"/>
+            </div>
+        </div>
+        
+    </div>
+</div>
+ <br/>
+ <div class="card_seccion">
+    <div class="titulo_seccion">Departamentos y Municipios</div>
+    <table style="padding: 10px;">
+        <field name="departamento_municipio_ids" class="js_block_click">
+            <tree editable="bottom" create="true" delete="true">
+                <field name="departamentos" options="{'no_create': True, 'no_open': True}"/>
+                <field name="municipios2" options="{'no_create': True, 'no_open': True}"/>
+            </tree>
+        </field>
+    </table>
+</div>
+<div class="card_seccion">
+    <div style="padding: 10px; margin-bottom: 10px;">
+        <div class="titulo_seccion">Detalles de ordenes de compra de servicios</div>    
+        <!-- Vista Tree -->
+        <field name="lineas_ids" widget="one2many">
+            <tree editable="bottom" create="1" delete="1" style="width: 100%;">
+                <field name="descripcion" string="Descripción" width="70%"/>
+                <field name="cantidad" string="Cantidad" width="10%"/>
+                <field name="valor_unitario" string="Valor unitario" width="10%"/>
+                <field name="valor_total" string="Valor total" readonly="1" width="10%"/>
+            </tree>
+        </field>
+    </div>
+</div>
+
+
+
+
+<div class="card_seccion">
+    <!-- Información General y Totales -->
+    <div style="display: flex; width: 100%; margin-top: 10px;">
+        <!-- Información General -->
+        <div style="flex: 1; margin-right: 10px;">
+            <table style="border-collapse: collapse; width: 100%;">
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;"><strong>Solicitante:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;">
+                        <field name="solicitante"
+                                placeholder="Ingrese el nombre del solicitante"
+                                class="campo_hover campo_solo_lectura"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;"><strong>Forma de pago:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;">
+                        <field name="forma_pago1"
+                                placeholder="Ingrese la forma de pago"
+                                class="campo_hover campo_solo_lectura"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;"><strong>Tiempo de entrega:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;">
+                        <field name="tiempo_entrega"
+                                placeholder="Ingrese el tiempo de entrega"
+                                class="campo_hover campo_solo_lectura"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Totales -->
+        <div style="flex: 1;">
+            <table style="border-collapse: collapse; width: 100%;">
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;"><strong>Subtotal:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px; background-color: #ADD8E6;"><field name="subtotal" readonly="1"/></td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;"><strong>Iva:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px;">
+                        <field name="iva" style="display: inline-block; margin-right: 5px;"/>
+                        <span style="color: #00bcd4; font-weight: bold; cursor: help;" 
+                            title="Ingrese el valor del IVA (en pesos $)">ⓘ</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px; border-radius: 0 0 0 5px;"><strong>Total:</strong></td>
+                    <td style="border: 1px solid #b0b2b5; padding: 10px; border-radius: 0 0 5px 0; background-color: #ADD8E6;"><field name="total" readonly="1"/></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+                         <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table"
+                             attrs="{'invisible': [('seleccion_persona', '!=', 'persona_juridica')]}">
+                            <table style="background-color: #ADD8E6;  width: 100%; color: black !important; border: 1px solid #b0b2b5;">
+                                 <td colspan="4" style="background-color: #ADD8E6; text-align: center; font-weight: bold; font-size: 16px; padding: 5px;">
+                                     DOCUMENTACIÓN BÁSICA PARA<br></br>
+                                     PERSONAS JURÍDICAS
+                                     <br/>
+                                    <div style="float: left;" groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera">
+                                        Seleccionar todos: <field name="selecionar_todos_coord" />
+                                    </div>
+                                    <div style="float: left;" groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera">
+                                        Seleccionar todos: <field name="selecionar_todos_fin" />
+                                    </div>
+                                 </td>
+                                <tr>
+                              <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table">
+                                 <table style="margin: 1px; padding: 5px; background-color: white;">
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            * RUT (Actualizado)
+                                            <field name="rut_pj_doc" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="rut_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="rut_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="rut_pj_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="rut_pj_aprueba_f" 
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="rut_pj_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="rut_pj_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('rut_pj_doc_visible', '=', False)]}"
+                                                   name="action_upload_rut_pj"
+                                                     type="object"
+                                                     string="Suba su archivo"
+                                                     class="oe_highlight custom_drive_button"
+                                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="rut_pj_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('rut_pj_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar el rut.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+
+                                        <field name="rut_pj_name" invisible="1"/>
+                                        <field name="rut_pj_doc_id"
+                                               attrs="{'invisible': [('rut_pj_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_rut_pj_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+
+                                                attrs="{'invisible': [('rut_pj_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                     <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            * Cámara de comercio (actualizada)
+                                            <field name="camara_comercio_doc" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="camara_comercio_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="camara_comercio_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="camara_comercio_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="camara_comercio_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="camara_comercio_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="camara_comercio_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('camara_comercio_doc_visible', '=', False)]}"
+                                                   name="action_upload_camara_comercio_pj"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="camara_comercio_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('camara_comercio_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar la cámara comercio.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+                                        <field name="camara_comercio_name" invisible="1"/>
+                                        <field name="camara_comercio_doc_id"
+                                               attrs="{'invisible': [('camara_comercio_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_camara_comercio_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('camara_comercio_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            Planilla de seguridad social
+                                            <field name="planilla_ss_doc" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="planilla_ss_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="planilla_ss_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="planilla_ss_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="planilla_ss_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="planilla_ss_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="planilla_ss_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('planilla_ss_doc_visible', '=', False)]}"
+                                                   name="action_upload_planilla_ss_pj"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="planilla_ss_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('planilla_ss_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar la planilla de seguridad social.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+                                        <field name="planilla_ss_name" invisible="1"/>
+                                        <field name="planilla_ss_doc_id"
+                                               attrs="{'invisible': [('planilla_ss_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_planilla_ss_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('planilla_ss_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            Certificado pago parafiscales
+                                            <field name="cert_parafiscales_doc" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="cert_parafiscales_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="cert_parafiscales_doc_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="cert_parafiscales_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="cert_parafiscales_doc_aprueba_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="cert_parafiscales_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="cert_parafiscales_doc_visible" invisible="1"/>
+                                            
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('cert_parafiscales_doc_visible', '=', False)]}"
+                                                   name="action_upload_certificado_parafiscales_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="cert_parafiscales_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('cert_parafiscales_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar la certificado parafiscales.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+                                        <field name="cert_parafiscales_name" invisible="1"/>
+                                        <field name="cert_parafiscales_doc_id"
+                                               attrs="{'invisible': [('cert_parafiscales_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_certificado_parafiscales_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('cert_parafiscales_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            Factura/Cuenta
+                                            <field name="factura_cuenta_pj" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="factura_cuenta_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="factura_cuenta_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="factura_cuenta_pj_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="factura_cuenta_pj_aprueba_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="factura_cuenta_pj_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="factura_cuenta_pj_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('factura_cuenta_pj_doc_visible', '=', False)]}"
+                                                   name="action_upload_factura_cuenta_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+                                        </span>
+
+                                        <field name="factura_cuenta_pj_name" invisible="1"/>
+                                        <field name="factura_cuenta_pj_doc_id"
+                                               attrs="{'invisible': [('factura_cuenta_pj_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_factura_cuenta_pj_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('factura_cuenta_pj_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                 </table>
+                              </td>
+
+                             <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table">
+                                    <table style="margin: 1px; padding: 5px; background-color: white;">
+                                        <!-- Columna izquierda -->
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                Junta de contadores
+                                                <field name="junta_contadores_doc" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="junta_contadores_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="junta_contadores_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="junta_contadores_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="junta_contadores_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="certificado_junta_contadores_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="certificado_junta_contadores_doc_visible" invisible="1"/>
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('certificado_junta_contadores_doc_visible', '=', False)]}"
+                                                       name="action_upload_certificado_junta_contadores_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="certificado_junta_contadores_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('certificado_junta_contadores_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el documento junta de contadores.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="junta_contadores_name" invisible="1"/>
+                                                <field name="certificado_junta_contadores_doc_id"
+                                                       attrs="{'invisible': [('certificado_junta_contadores_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_certificado_junta_contadores_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('certificado_junta_contadores_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                TP Contadores
+                                                <field name="tp_contador_doc" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="tp_contador_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="tp_contador_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="tp_contador_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="tp_contador_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="tp_contador_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="tp_contador_doc_visible" invisible="1"/>
+
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('tp_contador_doc_visible', '=', False)]}"
+                                                       name="action_upload_tp_contador_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="tp_contador_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('tp_contador_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el documento TP Contadores.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="tp_contador_name" invisible="1"/>
+                                                <field name="tp_contador_doc_id"
+                                                       attrs="{'invisible': [('tp_contador_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_tp_contador_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('tp_contador_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                * Certificado bancario (Vigente)
+                                                <field name="certificado_bancario_pj" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="certificado_bancario_pj_aprueba_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="certificado_bancario_pj_aprueba_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="certificado_bancario_pj_aprueba_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="certificado_bancario_pj_aprueba_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="certificado_bancario_pj_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="certificado_bancario_pj_doc_visible" invisible="1"/>
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('certificado_bancario_pj_doc_visible', '=', False)]}"
+                                                       name="action_upload_certificado_bancario_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="certificado_bancario_pj_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('certificado_bancario_pj_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el certificado bancario.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="certificado_bancario_pj_name" invisible="1"/>
+                                                <field name="certificado_bancario_pj_doc_id"
+                                                       attrs="{'invisible': [('certificado_bancario_pj_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_certificado_bancario_pj_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('certificado_bancario_pj_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr style="border: 2px solid black;">
+                                             <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                    Anexo tributario
+                                                    <field name="anexo_tributario_pj" invisible="1"/>
+                                                    <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                                    <field name="anexo_tributario_pj_aprueba_c"
+                                                           groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                    <!--Aprueba RUT Coor solo visible para Financiera-->
+                                                    <field name="anexo_tributario_pj_aprueba_c"
+                                                           groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                           readonly="1"/>
+
+                                                    <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                                    <field name="anexo_tributario_pj_aprueba_f"
+                                                           groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                           readonly="1"/>
+                                                    <!--Aprueba RUT Fin solo visble para Financiero-->
+                                                    <field name="anexo_tributario_pj_aprueba_f"
+                                                           groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                                    <field name="Anexo_tributario_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                    <field name="Anexo_tributario_doc_visible" invisible="1"/>
+                                                    <div style="float: right;">
+                                                    <button attrs="{'invisible': [('Anexo_tributario_doc_visible', '=', False)]}"
+                                                           name="action_upload_Anexo_tributario_pj"
+                                                            type="object"
+                                                            string="Suba su archivo"
+                                                            class="oe_highlight custom_drive_button"
+                                                           groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+                                                    </div>
+                                                </span>
+
+                                                <field name="Anexo_tributario_name" invisible="1"/>
+                                                <field name="Anexo_tributario_doc_id"
+                                                       attrs="{'invisible': [('Anexo_tributario_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_anexo_tributario_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+                                                        attrs="{'invisible': [('Anexo_tributario_doc_visible', '=', True)]}"/>
+                                                </div>
+                                             </td>
+                                       </tr>
+
+
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                Resolución facturación
+                                                <field name="resolucion_facturacion_doc" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="resolucion_facturacion_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="resolucion_facturacion_doc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="resolucion_facturacion_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="resolucion_facturacion_doc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="resolucion_facturacion_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="resolucion_facturacion_doc_visible" invisible="1"/>
+                                                 <div style="float: right;">
+                                                <button attrs="{'invisible': [('resolucion_facturacion_doc_visible', '=', False)]}"
+                                                       name="action_upload_resolucion_facturacion_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="resolucion_facturacion_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('resolucion_facturacion_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el documento resolución facturación.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="resolucion_facturacion_name" invisible="1"/>
+                                                <field name="resolucion_facturacion_doc_id"
+                                                       attrs="{'invisible': [('resolucion_facturacion_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_resolucion_facturacion_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('resolucion_facturacion_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            RPC
+                                            <field name="documento_rpc_pj" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="documento_rpc_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="documento_rpc_pj_aprueba_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="documento_rpc_pj_aprueba_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="documento_rpc_pj_aprueba_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="documento_rpc_pj_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="documento_rpc_pj_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('documento_rpc_pj_doc_visible', '=', False)]}"
+                                                   name="action_upload_documento_rpc_pj"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                   style="float: right;" groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+                                        </span>
+
+                                        <field name="documento_rpc_pj_name" invisible="1"/>
+                                        <field name="documento_rpc_pj_doc_id"
+                                               attrs="{'invisible': [('documento_rpc_pj_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_documento_rpc_pj_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('documento_rpc_pj_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+                                    </table>
+                             </td>
+                           </tr>
+                        </table>
+                        </td>
+
+
+
+
+
+                        <separator/>
+
+                        <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table"
+                             attrs="{'invisible': [('seleccion_persona', '!=', 'persona_natural')]}">
+                            <table style="background-color: #ADD8E6;  width: 100%; color: black !important; border: 1px solid #b0b2b5;">
+                                 <td colspan="4" style="background-color: #ADD8E6; text-align: center; font-weight: bold; font-size: 16px; padding: 5px;">
+                                        DOCUMENTACIÓN BÁSICA PARA<br></br>
+                                        PERSONAS NATURALES
+                                     <br/>
+                                        <div style="float: left;" groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera">
+                                            Seleccionar todos: <field name="selecionar_todos_coord_pn" />
+                                        </div>
+                                        <div style="float: left;" groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera">
+                                            Seleccionar todos: <field name="seleccionar_todos_finan_pn" />
+                                        </div>
+                                 </td>
+                                <tr>
+                              <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table">
+                                 <table style="margin: 1px; padding: 5px; background-color: white;">
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            * RUT (Actualizado)
+                                            <field name="rut_pn" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="rut_pn_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="rut_pn_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="rut_pn_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="rut_pn_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="rut_pn_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="rut_pn_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('rut_pn_doc_visible', '=', False)]}"
+                                                    name="action_upload_rut"
+                                                    type="object"
+                                                    string="Suba su archivo"
+                                                    class="oe_highlight custom_drive_button"
+                                                 groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="rut_pn_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('rut_pn_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar el rut.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+
+                                        <field name="rut_pn_name" invisible="1"/>
+                                        <field name="rut_pn_doc_id"
+                                               attrs="{'invisible': [('rut_pn_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_rut_pn_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+
+                                                attrs="{'invisible': [('rut_pn_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                     <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            Planilla
+                                            <field name="planilla" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="planilla_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="planilla_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="planilla_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="planilla_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="planilla_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="planilla_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            <button attrs="{'invisible': [('planilla_doc_visible', '=', False)]}"
+                                                   name="action_upload_planilla"
+                                                   type="object"
+                                                   string="Suba su archivo"
+                                                   class="oe_highlight custom_drive_button"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            </div>
+
+                                            <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                      onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                      onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                    <field name="planilla_actualizar_visible"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   attrs="{'invisible': [('planilla_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                    <div class="tooltip-content"
+                                                         style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                         Este campo es para pedir actualizar la planilla.
+                                                    </div>
+                                            </span>
+                                        </span>
+
+                                        <field name="planilla_name" invisible="1"/>
+                                        <field name="planilla_doc_id"
+                                               attrs="{'invisible': [('planilla_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_planilla_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('planilla_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                   <tr style="border: 2px solid black;">
+                                     <td style="text-align: left;">
+                                        <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                            Factura/Cuenta
+                                            <field name="factura_cuenta" invisible="1"/>
+                                            <span style="display: inline-block; width: 10px;"></span>
+                                            <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                            <field name="factura_cuenta_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            <!--Aprueba RUT Coor solo visible para Financiera-->
+                                            <field name="factura_cuenta_aprueba_doc_c"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+
+                                            <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                            <field name="factura_cuenta_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                   readonly="1"/>
+                                            <!--Aprueba RUT Fin solo visble para Financiero-->
+                                            <field name="factura_cuenta_aprueba_doc_f"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                            <field name="factura_cuenta_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                            <field name="factura_cuenta_doc_visible" invisible="1"/>
+                                            <div style="float: right;">
+                                            
+                                            <button attrs="{'invisible': [('factura_cuenta_doc_visible', '=', False)]}"
+                                                   name="action_upload_factura_cuenta"
+                                                   type="object"
+                                                   string="Suba su archivo"
+                                                   class="oe_highlight custom_drive_button"
+                                                   groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                            
+                                            </div>
+                                        </span>
+
+                                        <field name="factura_cuenta_name" invisible="1"/>
+                                        <field name="factura_cuenta_doc_id"
+                                               attrs="{'invisible': [('factura_cuenta_doc_visible', '=', True)]}"
+                                               class="readonly-field truncate-text"
+                                               options="{'no_open': True}"
+                                               readonly="1"/>
+
+                                        <div style="float: right;">
+                                        <button name="abrir_documento_factura_cuenta_pdf"
+                                                type="object"
+                                                class="fa fa-file-text"
+                                                attrs="{'invisible': [('factura_cuenta_doc_visible', '=', True)]}"/>
+                                        </div>
+                                     </td>
+                                   </tr>
+
+                                 </table>
+                              </td>
+
+                             <td style="vertical-align: top; padding: 5px; width: 50%;" class="contratacion-table">
+                                    <table style="margin: 1px; padding: 5px; background-color: white;">
+                                        <!-- Columna izquierda -->
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                * Documento de identidad
+                                                <field name="documento_identidad" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="documento_identidad_aprueba_doc_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="documento_identidad_aprueba_doc_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="documento_identidad_aprueba_doc_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="documento_identidad_aprueba_doc_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="documento_identidad_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="documento_identidad_doc_visible" invisible="1"/>
+
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('documento_identidad_doc_visible', '=', False)]}"
+                                                        name="action_upload_documento_identidad"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="documento_identidad_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('documento_identidad_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el documento de identidad.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="documento_identidad_name" invisible="1"/>
+                                                <field name="documento_identidad_doc_id"
+                                                       attrs="{'invisible': [('documento_identidad_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_documento_identidad_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('documento_identidad_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr style="border: 2px solid black;">
+                                            <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                * Certificado bancario (vigente)
+                                                <field name="certificado_bancario" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba Junta Coord solo visible para Coordinador-->
+                                                <field name="certificado_bancario_aprueba_doc_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba Junta Coor solo visible para Financiera-->
+                                                <field name="certificado_bancario_aprueba_doc_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visible para Coordinador-->
+                                                <field name="certificado_bancario_aprueba_doc_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba Junta Fin solo visble para Financiero-->
+                                                <field name="certificado_bancario_aprueba_doc_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       help="Area Financiera"/>
+                                                <field name="certificado_bancario_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="certificado_bancario_doc_visible" invisible="1"/>
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('certificado_bancario_doc_visible', '=', False)]}"
+                                                        name="action_upload_certificado_bancario"
+                                                        type="object"
+                                                        string="Suba su archivo"
+                                                        class="oe_highlight custom_drive_button"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                                <span class="tooltip-icon" style="margin-right: 10px; color: #007bff; font-size: 15px; position: relative; float: right;"
+                                                          onmouseover="this.querySelector('.tooltip-content').style.visibility='visible'; this.querySelector('.tooltip-content').style.opacity='1';"
+                                                          onmouseout="this.querySelector('.tooltip-content').style.visibility='hidden'; this.querySelector('.tooltip-content').style.opacity='0';">
+                                                        <field name="certificado_bancario_actualizar_visible"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       attrs="{'invisible': [('certificado_bancario_doc_visible', '=', True)]}" widget="boolean_toggle"/>
+                                                        <div class="tooltip-content"
+                                                             style="visibility: hidden; opacity: 0; position: absolute; top: -5px; left: 110%; background: #fff; color: #333; border: 1px solid #ccc; border-radius: 8px; padding: 10px; width: 250px; font-size: 13px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); z-index: 10;">
+                                                             Este campo es para pedir actualizar el certificado bancario.
+                                                        </div>
+                                                </span>
+                                              </span>
+
+
+                                                <field name="certificado_bancario_name" invisible="1"/>
+                                                <field name="certificado_bancario_doc_id"
+                                                       attrs="{'invisible': [('certificado_bancario_doc_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_certificado_bancario_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+
+                                                        attrs="{'invisible': [('certificado_bancario_doc_visible', '=', True)]}"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr style="border: 2px solid black;">
+                                             <td style="text-align: left;">
+                                                <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                    Anexo tributario
+                                                    <field name="anexo_tributario_pn" invisible="1"/>
+                                                    <span style="display: inline-block; width: 10px;"></span>
+                                                    <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                                    <field name="anexo_tributario_pn_aprueba_c"
+                                                           groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                    <!--Aprueba RUT Coor solo visible para Financiera-->
+                                                    <field name="anexo_tributario_pn_aprueba_c"
+                                                           groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                           readonly="1"/>
+
+                                                    <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                                    <field name="anexo_tributario_pn_aprueba_f"
+                                                           groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                           readonly="1"/>
+                                                    <!--Aprueba RUT Fin solo visble para Financiero-->
+                                                    <field name="anexo_tributario_pn_aprueba_f"
+                                                           groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                                    <field name="Anexo_tributario_doc_pn_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                    <field name="Anexo_tributario_doc_pn_visible" invisible="1"/>
+                                                    <div style="float: right;">
+                                                    <button attrs="{'invisible': [('Anexo_tributario_doc_pn_visible', '=', False)]}"
+                                                            name="action_upload_Anexo_tributario"
+                                                            type="object"
+                                                            string="Suba su archivo"
+                                                            class="oe_highlight custom_drive_button"
+                                                            groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+                                                    </div>
+                                                </span>
+
+                                                <field name="Anexo_tributario_name_pn" invisible="1"/>
+                                                <field name="Anexo_tributario_doc_pn_id"
+                                                       attrs="{'invisible': [('Anexo_tributario_doc_pn_visible', '=', True)]}"
+                                                       class="readonly-field truncate-text"
+                                                       options="{'no_open': True}"
+                                                       readonly="1"/>
+
+                                                <div style="float: right;">
+                                                <button name="abrir_documento_anexo_tributario_pn_pdf"
+                                                        type="object"
+                                                        class="fa fa-file-text"
+                                                        attrs="{'invisible': [('Anexo_tributario_doc_pn_visible', '=', True)]}"/>
+                                                </div>
+                                             </td>
+                                        </tr>
+
+
+
+                                        <tr style="border: 2px solid black;">
+                                         <td style="text-align: left;">
+                                            <span style="background-color: #f2f2f2; width: 100%; display: block; background-size: 100%;">
+                                                RPC
+                                                <field name="documento_rpc" invisible="1"/>
+                                                <span style="display: inline-block; width: 10px;"></span>
+                                                <!--Aprueba RUT Coord solo visible para Coordinador-->
+                                                <field name="doc_rpc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"/>
+                                                <!--Aprueba RUT Coor solo visible para Financiera-->
+                                                <field name="doc_rpc_aprueba_c"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+
+                                                <!--Aprueba RUT Fin solo visible para Coordinador-->
+                                                <field name="doc_rpc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_consulta_coordinacion_financiera"
+                                                       readonly="1"/>
+                                                <!--Aprueba RUT Fin solo visble para Financiero-->
+                                                <field name="doc_rpc_aprueba_f"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+
+                                                <field name="documento_rpc_doc_visible" invisible="0" groups="Matriz.group_soporte"/>
+                                                <field name="documento_rpc_doc_visible" invisible="1"/>
+                                                <div style="float: right;">
+                                                <button attrs="{'invisible': [('documento_rpc_doc_visible', '=', False)]}"
+                                                       name="action_upload_documento_rpc"
+                                                       type="object"
+                                                       string="Suba su archivo"
+                                                       class="oe_highlight custom_drive_button"
+                                                       groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero,Matriz.group_consulta_coordinacion_financiera"/>
+                                                </div>
+                                            </span>
+
+                                            <field name="documento_rpc_name" invisible="1"/>
+                                            <field name="documento_rpc_doc_id"
+                                                   attrs="{'invisible': [('documento_rpc_doc_visible', '=', True)]}"
+                                                   class="readonly-field truncate-text"
+                                                   options="{'no_open': True}"
+                                                   readonly="1"/>
+
+                                            <div style="float: right;">
+                                            <button name="abrir_documento_documento_rpc_pdf"
+                                                    type="object"
+                                                    class="fa fa-file-text"
+                                                    attrs="{'invisible': [('documento_rpc_doc_visible', '=', True)]}"/>
+                                            </div>
+                                         </td>
+                                       </tr>
+                                    </table>
+                             </td>
+                           </tr>
+                        </table>
+                        </td>
+
+
+                        <group style="background-color: #EFF1F7; width: 100%; color: black !important; border: 1px solid #b0b2b5; padding: 5px; margin: 0; margin-bottom: 10px;" groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador">
+                            <field name="observacion_coordinador"
+                                   style="margin: 3px 3px 3px 5px; border: 1px solid #b0b2b5; background-color: #EFF1F7; width: calc(100% - 8px);" widget="html"/>
+                        </group>
+                        <group style="background-color: #EFF1F7; width: 100%; color: black !important; border: 1px solid #b0b2b5; padding: 5px; margin: 0; margin-bottom: 10px;" groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero">
+                            <field name="observacion_financiera"
+                                   style="margin: 3px 3px 3px 5px; border: 1px solid #b0b2b5; background-color: #EFF1F7; width: calc(100% - 8px);" widget="html"/>
+                        </group>
+
+                        <!-- Botón Aprobar (solo visible para el grupo específico) -->
+                        <!-- Botón Aprobar (para el grupo coordinador) -->
+                        <button name="aprobar_orden_financiera" string="Aprobar"
+                                type="object"
+                                class="btn-primary"
+                                groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                attrs="{'invisible': ['|', ('estado_compra_bienes', '!=', 'coordinador'), ('financiera_aprobado', '=', True)]}"/>
+
+                        <div class="d-flex gap-2">
+                            <button name="finalizar_contratado" string="Contratar"
+                                    type="object"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                    attrs="{'invisible': ['|', ('estado_compra_bienes', '!=', 'coordinador'), ('financiera_aprobado', '=', False)]}"/>
+
+                            <button name="no_aprobado_coordinador" string="No Aprobar"
+                                    type="object"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador"
+                                    attrs="{'invisible': ['|', ('estado_compra_bienes', '!=', 'coordinador'), ('financiera_aprobado', '=', False)]}"/>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <!-- Botón Aprobar (para el grupo financiero) -->
+                            <button name="aprobar_orden_coordinador" string="Aprobar"
+                                    type="object"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero"
+                                    attrs="{'invisible': [('estado_compra_bienes', '!=', 'financiera')]}"/>
+                            <!-- Botón No Aprobado (para el grupo financiero) -->
+                            <button name="no_aprobado_financiera" string="No Aprobar"
+                                    type="object"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_director_financiero,Matriz.group_contratacion_financiero"
+                                    attrs="{'invisible': [('estado_compra_bienes', '!=', 'financiera')]}"/>
+                        </div>
+
+                        <!-- Contenedor de Observaciones -->
+                        <div style="border: 1px solid #b0b2b5; padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+                            <strong>Observaciones</strong>
+                            <ul>
+                                <li>Facturar a Fundación Universidad del Valle Nit: 800.187.151-9</li>
+                                <li>Enviar factura electrónica a <a href="mailto:facturacion@fundacionunivalle.org">facturacion@fundacionunivalle.org</a></li>
+                                <li>La factura debe incluir el área a cargo en la Fundación y el nombre de quien haya solicitado el servicio o la compra o el nombre del proyecto.</li>
+                            </ul>
+                            <p><strong>Adjunto a la factura electrónica debe entregar:</strong></p>
+                            <ul>
+                                <li>RUT Actualizado 2024</li>
+                                <li>Paz y salvo de aportes parafiscales (si es firmado por el contador o revisor, se debe adjuntar: cédula, tarjeta profesional y certificado de antecedentes vigente. Si es firmado por el representante legal, copia de cédula del mismo).</li>
+                                <li>Cédula del representante legal, Certificación Bancaria, Registro de Proveedores (si es primera vez o si ha pasado más de un año).</li>
+                            </ul>
+                        </div>
+
+                        <!-- Contenedor de Información de Contacto -->
+                        <div style="border: 1px solid #b0b2b5; padding: 10px; text-align: center;">
+                            <p style="color: red; font-weight: bold; font-size: 14px;">Fundación Universidad del Valle</p>
+                            <p>Carrera 27 No. 4-15, Cali - Colombia</p>
+                            <p>Telefax: 6023318004 | E-mail: <a href="mailto:facturacion@fundacionunivalle.org">facturacion@fundacionunivalle.org</a></p>
+                            <p><a href="https://fundacionunivalle.com/" target="_blank">https://fundacionunivalle.com/</a></p>
+                        </div>
+                    </div>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+ <record id="view_orden_compra_bienes_kanban" model="ir.ui.view">
+    <field name="name">Orden de Compra de Bienes Kanban</field>
+    <field name="model">orden_compra_bienes</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_view">
+            
+            <field name="name"/>
+            <field name="proveedor"/>
+            <field name="solicitante"/>
+            <field name="fecha_solicitud"/>
+            <field name="forma_pago1"/>
+            <field name="subtotal"/>
+            <field name="total"/>
+            <field name="estado_compra_bienes"/>
+            <field name="create_uid"/>
+            <field name="hiden" widget="handle"/>
+
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_global_click d-flex flex-column p-0 o_kanban_view" 
+                         style="margin: 0 -10px 0 -10px 0; position: relative; min-height: 350px; max-width: 280px; border-radius: 10px; overflow: hidden; background-color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        
+                        <div class="p-3" style="background-color: white; border-bottom: 3px solid #004a99;">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2 d-flex align-items-center justify-content-center" 
+                                     style="width: 35px; height: 35px; background-color: #e3f2fd; border-radius: 50%; color: #004a99;">
+                                    <i class="fa fa-cube" style="font-size: 16px;"/>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <h5 class="mb-0 fw-bold" style="color: #004a99; font-size: 14px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                        <field name="name"/>
+                                    </h5>
+                                    <small class="text-muted" style="font-size: 10px;">Orden de Compra (Bienes)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o_kanban_record_body p-3 flex-grow-1">
+                            
+                            <!-- <div class="mb-3">
+                                <small class="text-uppercase text-muted fw-bold" style="letter-spacing: 0.5px; font-size: 9px;">Proveedor</small>
+                                <div class="mt-1 text-dark fw-bold" style="font-size: 13px; line-height: 1.2;">
+                                    <field name="proveedor"/>
+                                </div>
+                            </div> -->
+
+                            <div class="mb-3 p-2" style="background-color: #f8f9fa; border-radius: 6px;">
+                                <div class="row g-0">
+                                    <div class="col-12 mb-2">
+                                        <small class="text-muted d-block" style="font-size: 9px;"><i class="fa fa-user me-1"/>Solicitante:</small>
+                                        <span class="text-dark fw-bold" style="font-size: 11px;"><field name="solicitante"/></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block" style="font-size: 9px;"><i class="fa fa-calendar me-1"/>Fecha:</small>
+                                        <span class="text-dark fw-bold" style="font-size: 11px;"><field name="fecha_solicitud"/></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block" style="font-size: 9px;"><i class="fa fa-credit-card me-1"/>Pago:</small>
+                                        <span class="text-dark fw-bold" style="font-size: 11px;"><field name="forma_pago1"/></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-1">
+                                <div class="d-flex justify-content-between mb-2 border-bottom pb-1">
+                                    <span class="text-muted" style="font-size: 11px;">Subtotal:</span>
+                                    <span class="fw-bold" style="font-size: 11px;">$ <field name="subtotal"/></span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-uppercase fw-bold text-dark" style="font-size: 11px;">TOTAL COMPRA</span>
+                                    <span class="fw-bold text-success" style="font-size: 14px;">$ <field name="total"/></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="o_kanban_record_bottom p-3 border-top" style="background-color: #f8f9fa;">
+                                <!-- Estado actual -->
+                                <div class="mb-2">
+                                        <small class="text-muted fw-bold d-block mb-1" style="font-size: 9px; letter-spacing: 0.5px;">ESTADO ACTUAL:</small>
+                                        <span class="estado_badge_ordenes fw-bold" 
+                                                t-att-data-estado="record.estado_compra_bienes.raw_value"
+                                                style="padding: 5px 12px; border-radius: 20px; font-size: 10px; font-weight: 600; display: inline-block; border: none; color: white; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <field name="estado_compra_bienes"/>
+                                        </span>
+                                </div>
+                                
+                                <!-- Creador abajo a la derecha -->
+                                <div class="d-flex justify-content-end">
+                                        <field name="create_uid" widget="many2one_avatar_user"/>
+                                </div>
+                        </div>
+
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+    <record id="view_orden_compra_bienes_tree" model="ir.ui.view">
+        <field name="name">orden_compra_bienes.tree</field>
+        <field name="model">orden_compra_bienes</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fecha_solicitud"/>
+                <field name="proveedor"/>
+                <field name="direccion"/>
+                <field name="nit"/>
+                <field name="telefono"/>
+                <field name="cel"/>
+                <field name="email"/>
+                <field name="lugar_venta"/>
+                <field name="ciudad"/>
+                <field name="solicitante"/>
+                <field name="forma_pago1"/>
+                <field name="tiempo_entrega"/>
+                <field name="subtotal"/>
+                <field name="iva"/>
+                <field name="total"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

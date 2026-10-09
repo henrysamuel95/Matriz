@@ -1,0 +1,7 @@
+<odoo>
+    <templates>
+        <t t-name="ImageWidget">
+            <img class="o_document_icon" t-att-src="imageUrl"/>
+        </t>
+    </templates>
+</odoo>

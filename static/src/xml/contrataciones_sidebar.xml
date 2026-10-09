@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="Matriz.ContratacionesSidebar" t-inherit="web.KanbanRenderer" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'o_kanban_renderer')]" position="before">
+            <t t-if="props.list.resModel === 'contrataciones_fuv'">
+                <!-- Sidebar con position sticky -->
+                <aside t-att-class="{ 'mtz_fuv_sidebar_master': true, 'collapsed': state.sidebarCollapsed }">
+                    <div class="mtz_sidebar_toggle" t-on-click="() => state.sidebarCollapsed = !state.sidebarCollapsed">
+                        <i t-att-class="state.sidebarCollapsed ? 'fa fa-chevron-right' : 'fa fa-chevron-left'"/>
+                    </div>
+                    <div class="mtz_fuv_sidebar_container" style="max-height: 100vh; overflow-y: auto;">
+                        <div class="mtz_fuv_sidebar_header">
+                            <h3 class="mtz_fuv_sidebar_title">RESUMEN GENERAL</h3>
+                        </div>
+                        <br/>
+                        <div class="mtz_fuv_sidebar_body">
+                            <!-- Estado de carga -->
+                            <t t-if="mtzStats and mtzStats.loading">
+                                <div class="text-center p-3">
+                                    <i class="fa fa-spinner fa-spin"/> Cargando...
+                                </div>
+                            </t>
+                            
+                            <!-- Error -->
+                            <t t-elif="mtzStats and mtzStats.error">
+                                <div class="alert alert-danger m-3">
+                                    Error: <t t-esc="mtzStats.error"/>
+                                </div>
+                            </t>
+                            
+                            <!-- Datos cargados -->
+                            <t t-elif="mtzStats and mtzStats.data and mtzStats.data.id">
+                                <div class="mtz_fuv_data_card">
+                                    <label>Saldo disponible producción</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.saldo_disponible_produccion || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Neto disponible tras descontar Contratos, Bienes, Servicios, Pólizas, Anticipos y Legalizaciones.
+                                    </small>
+                                </div>
+
+                                <t t-if="(mtzStats.data.recursos_liberados_cierre || 0) &gt; 0">
+                                    <div class="mtz_fuv_data_card">
+                                        <label>Recursos liberados</label>
+                                        <div class="mtz_value" style="color: #15803d;">
+                                            $ <t t-esc="(mtzStats.data.recursos_liberados_cierre || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                        </div>
+                                        <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #15803d; line-height: 1.2;">
+                                            <i class="fa fa-undo me-1"/>Valores informados por Presupuesto en cierres contractuales finalizados.
+                                        </small>
+                                    </div>
+                                </t>
+
+                                <div class="mtz_fuv_data_card">
+                                    <label>Saldo disponible (Póliza)</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.saldo_final_disponible || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Neto disponible tras descontar gastos en pólizas.
+                                    </small>
+                                </div>
+<!-- 
+                                <div class="mtz_fuv_data_card">
+                                    <label>Saldo costos FUV</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.saldo_disponible_personal_fuv || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Recurso disponible exclusivo para nómina y contratación FUV (Casos especiales)
+                                    </small>
+                                </div> -->
+
+                                <div class="mtz_fuv_data_card">
+                                    <label>Valor utilizado VCO</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.valor_utilizado_vco || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Total consumido del fondo Contratos VCO.
+                                    </small>
+                                </div>
+
+                                <t t-if="(mtzStats.data.valor_utilizado_costos_fuv || 0) > 0">
+                                    <div class="mtz_fuv_data_card">
+                                        <label>Valor utilizado Costos FUV</label>
+                                        <div class="mtz_value">
+                                            $ <t t-esc="(mtzStats.data.valor_utilizado_costos_fuv || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                        </div>
+                                        <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                            <i class="fa fa-info-circle me-1"/>Total consumido del fondo Costos FUV.
+                                        </small>
+                                    </div>
+                                </t>
+
+                                <div class="mtz_fuv_data_card">
+                                    <label>Valor total contratado</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.suma_valor_total_contrato || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Acumulado de contratos con valor asignado (En proceso o completados).
+                                    </small>
+                                </div>
+
+                                <div class="mtz_fuv_data_card">
+                                    <label>Valor utilizado en producción</label>
+                                    <div class="mtz_value">
+                                        $ <t t-esc="(mtzStats.data.total_gastado_produccion_v2 || 0).toLocaleString('es-CO', {minimumFractionDigits: 2, maximumFractionDigits: 2})"/>
+                                    </div>
+                                    <small class="text-uppercase fw-bold d-block mb-2" style="font-size: 9px; color: #856404; line-height: 1.2;">
+                                        <i class="fa fa-info-circle me-1"/>Ejecución total sumando contratos, bienes y servicios.
+                                    </small>
+                                </div>
+                                <!-- Sección de Anticipos y Viáticos -->
+<div class="mtz_fuv_data_card">
+    <label>
+        Flujo (Anticipos y Legalizaciones)
+    </label>
+
+    <div class="d-flex justify-content-between mb-1" style="font-size: 11px;">
+        <span>Anticipos (Girados):</span>
+        <span class="fw-bold">$ <t t-esc="(mtzStats.data.gasto_anticipos || 0).toLocaleString('es-CO')"/></span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-1" style="font-size: 11px; color: #28a745;">
+        <span>Reembolsos (Entra):</span>
+        <span class="fw-bold">+ $ <t t-esc="(mtzStats.data.impacto_positivo_viaticos || 0).toLocaleString('es-CO')"/></span>
+    </div>
+
+    <div class="d-flex justify-content-between mb-2" style="font-size: 11px; color: #dc3545;">
+        <span>Reintegros (Sale):</span>
+        <span class="fw-bold">- $ <t t-esc="(mtzStats.data.impacto_negativo_viaticos || 0).toLocaleString('es-CO')"/></span>
+    </div>
+
+    <div style="background: white; padding: 10px; border-radius: 6px; border: 1px solid #eee; margin-top: 5px;">
+        <label style="font-size: 9px; color: #1e293b; font-weight: bold; display: block;">Gasto real utilizado</label>
+        <div style="font-size: 16px; font-weight: 800; color: #043484; line-height: 1.2;">
+            $ <t t-esc="(mtzStats.data.total_utilizado_viaticos || 0).toLocaleString('es-CO', {minimumFractionDigits: 2})"/>
+        </div>
+        <small style="font-size: 9px; color: #999; font-style: italic;">
+            Deducción final de legalizaciones.
+        </small>
+    </div>
+</div>
+                            </t>
+                            
+                            <!-- Sin datos -->
+                            <t t-else="">
+                                <div class="alert alert-info m-3">
+                                    No hay datos disponibles
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </aside>
+            </t>
+        </xpath>
+    </t>
+</templates>

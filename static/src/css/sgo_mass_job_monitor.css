@@ -1,0 +1,158 @@
+.sgo-mass-job-panel {
+    position: fixed;
+    right: 22px;
+    top: 86px;
+    z-index: 1100;
+    display: none;
+    width: min(390px, calc(100vw - 32px));
+    max-height: calc(100vh - 110px);
+    overflow: hidden;
+    border: 1px solid #cbdaf3;
+    border-left: 5px solid #043484;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, .24);
+    font-family: Roboto, Arial, sans-serif;
+}
+
+.sgo-mass-job-panel.is-visible { display: block; }
+
+.sgo-mass-job-panel__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 16px;
+    background: linear-gradient(135deg, #eef6ff, #f8fbff);
+}
+
+.sgo-mass-job-panel__header strong {
+    display: block;
+    color: #043484;
+    font-size: 16px;
+}
+
+.sgo-mass-job-panel__header span {
+    display: block;
+    margin-top: 3px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.sgo-mass-job-panel__header button {
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.sgo-mass-job-panel__body {
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.sgo-mass-job-card {
+    padding: 12px;
+    border: 1px solid #dbe6f5;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.sgo-mass-job-card + .sgo-mass-job-card { margin-top: 10px; }
+
+.sgo-mass-job-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: #1e293b;
+    font-size: 13px;
+}
+
+.sgo-mass-job-card__status {
+    flex: 0 0 auto;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: #e8f1ff;
+    color: #043484;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.sgo-mass-job-card--done .sgo-mass-job-card__status {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.sgo-mass-job-card--done_errors .sgo-mass-job-card__status,
+.sgo-mass-job-card--failed .sgo-mass-job-card__status {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.sgo-mass-job-card--running .sgo-mass-job-card__bar,
+.sgo-mass-job-card--pending .sgo-mass-job-card__bar {
+    background: linear-gradient(90deg, #043484, #2f80ed, #043484);
+    background-size: 200% 100%;
+    animation: sgo-mass-job-progress 1.4s linear infinite;
+}
+
+@keyframes sgo-mass-job-progress {
+    from { background-position: 200% 0; }
+    to { background-position: 0 0; }
+}
+
+.sgo-mass-job-card__count {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.sgo-mass-job-card__track {
+    height: 6px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e5e7eb;
+}
+
+.sgo-mass-job-card__bar {
+    height: 100%;
+    border-radius: inherit;
+    background: #043484;
+    transition: width .25s ease;
+}
+
+.sgo-mass-job-card__error {
+    margin-top: 8px;
+    padding: 7px 8px;
+    border-radius: 8px;
+    background: #fff1f2;
+    color: #9f1239;
+    font-size: 11px;
+    line-height: 1.35;
+    max-height: 58px;
+    overflow: auto;
+}
+
+.sgo-mass-job-panel__refresh {
+    width: calc(100% - 24px);
+    margin: 0 12px 12px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: #043484;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+    .sgo-mass-job-panel {
+        right: 16px;
+        top: 72px;
+    }
+}

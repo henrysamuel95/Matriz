@@ -1,0 +1,67 @@
+/* BDD Órdenes especiales: estilo aislado para tabla editable. */
+
+/* Con todas las columnas visibles, conservar sus anchos y desplazar la tabla. */
+.o_list_renderer:has(.o_bd_ordenes_especiales_editable_tree) {
+    max-width: 100%;
+    overflow-x: auto !important;
+}
+
+.o_bd_ordenes_especiales_editable_tree.o_list_table,
+.o_bd_ordenes_especiales_editable_tree .o_list_table {
+    width: max-content !important;
+    min-width: 100%;
+    table-layout: auto !important;
+}
+
+.o_bd_ordenes_especiales_editable_tree.o_list_table th,
+.o_bd_ordenes_especiales_editable_tree .o_list_table th {
+    min-width: 10rem;
+    max-width: 18rem;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    vertical-align: middle;
+}
+
+.o_bd_ordenes_especiales_editable_tree.o_list_table th[data-name="objeto_contrato"],
+.o_bd_ordenes_especiales_editable_tree.o_list_table th[data-name="total_prestacion_servicios_obra_orden"],
+.o_bd_ordenes_especiales_editable_tree .o_list_table th[data-name="objeto_contrato"],
+.o_bd_ordenes_especiales_editable_tree .o_list_table th[data-name="total_prestacion_servicios_obra_orden"] {
+    min-width: 16rem;
+}
+
+.o_bd_ordenes_especiales_editable_tree .o_bd_ordenes_limit_18,
+.o_bd_ordenes_especiales_editable_tree td.o_bd_ordenes_limit_18 {
+    width: 18ch !important;
+    max-width: 18ch !important;
+    min-width: 18ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    vertical-align: middle;
+}
+
+.o_bd_ordenes_especiales_editable_tree td.o_bd_ordenes_limit_18 > * {
+    display: block !important;
+    max-width: 18ch !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.o_bd_ordenes_especiales_editable_tree .o_bd_ordenes_limit_18:hover,
+.o_bd_ordenes_especiales_editable_tree td.o_bd_ordenes_limit_18:hover {
+    position: relative;
+    z-index: 20;
+    max-width: 42ch !important;
+    min-width: 32ch !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    background: #ffffff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+}
+
+.o_bd_ordenes_especiales_editable_tree td.o_bd_ordenes_limit_18:hover > * {
+    max-width: 42ch !important;
+    overflow: visible !important;
+    white-space: normal !important;
+}

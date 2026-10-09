@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_cierre_form" model="ir.ui.view">
+            <field name="name">cierre.form</field>
+            <field name="model">cierre</field> <!-- Aquí se debe usar 'cierre' si ese es el nombre del modelo -->
+            <field name="arch" type="xml">
+            <form create="0">
+                <sheet style="background-color: #02225b; position: relative; margin-top: 0px; max-width: none !important; width: 100% !important;">
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 15px; box-sizing: border-box; margin-top: 10px; margin-bottom: 20px;">
+                        
+                        <div style="background-color: #ffffff; border: 1px solid #cccccc; border-radius: 4px; padding: 6px 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; align-items: center;">
+                            <i class="fa fa-calendar" style="color: #0071eb; margin-right: 8px; font-size: 14px;"></i>
+                            <field name="fecha_final_proyecto_texto" readonly="1" nolabel="1" style="font-weight: bold; color: #333333; margin: 0; font-size: 13px;"/>
+                        </div>
+
+                        <div style="display: flex; align-items: center;">
+                            <field name="state" widget="statusbar" style="margin: 0;"/>
+                        </div>
+
+                    </div>
+                    <br/>
+                    <field name="stage3_id" invisible="1"/>
+                    <style>
+                        .custom_card_container {
+                            background-color: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 12px;
+                            padding: 20px;
+                            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                            margin-bottom: 15px;
+                        }
+                        .status_dot {
+                            height: 10px;
+                            width: 10px;
+                            background-color: #10b981;
+                            border-radius: 50%;
+                            display: inline-block;
+                            margin-right: 8px;
+                            box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+                        }
+                        .section_title {
+                            font-size: 12px;
+                            font-weight: 900;
+                            color: #475569;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 15px;
+                        }
+                        .custom_textarea textarea {
+                            background-color: #f8fafc !important;
+                            border: 1px solid #cbd5e1 !important;
+                            border-radius: 8px !important;
+                            padding: 10px !important;
+                            min-height: 80px !important;
+                        }
+                        .btn_compact {
+                            padding: 8px 20px !important;
+                            font-weight: bold !important;
+                            text-transform: uppercase !important;
+                            font-size: 11px !important;
+                            letter-spacing: 1px !important;
+                            border-radius: 6px !important;
+                        }
+                        /* Forzamos verde en botones de éxito */
+                        .btn-success {
+                            background-color: #10b981 !important;
+                            border-color: #10b981 !important;
+                        }
+                        .btn-success:hover {
+                            background-color: #059669 !important;
+                        }
+                    </style>
+             
+<!-- Parte de abajo 2 cargar documentos-->
+<div width="100%" class="mi-clase-especifica">
+<div>
+<div attrs="{'invisible': [('state', '!=', 'coordinador')]}" 
+     groups="Matriz.group_contratacion_coordinador"
+     style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+    <div style="display: flex; align-items: flex-start; gap: 20px;">
+        <div style="flex: 0 0 55px; height: 55px; background-color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; border: 1px solid #e2e8f0;">
+            <i class="fa fa-user" style="font-size: 26px;"/>
+        </div>
+        <div style="flex: 1;">
+            <div style="margin-bottom: 12px; display: flex; align-items: center;">
+                <span style="height: 10px; width: 10px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 5px rgba(16, 185, 129, 0.4);"></span>
+                <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Coordinador</strong>
+            </div>
+            <div style="margin-bottom: 15px;" class="campo_hover">
+                <label for="observaciones_coordinador" style="font-size: 10px; font-weight: bold; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; display: block;">Observaciones</label>
+                <field name="observaciones_coordinador" 
+                       placeholder="De ser necesario, especifica tus observaciones para el siguiente paso..." 
+                       style="width: 100%; min-height: 70px; font-size: 13px; border: none !important;"/>
+            </div>
+            <div style="display: flex; align-items: center; gap: 15px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                <div style="flex: 1;">
+                    <div attrs="{'invisible': [('archivo_acta_liquidacion_visible', '=', False)]}">
+                        <button name="action_upload_archivo_acta_liquidacion" 
+                                type="object" 
+                                string="Cargar acta de liquidación"
+                                class="unique_pn_btn_upload w-100"
+                                style="font-weight: bold; text-transform: uppercase; font-size: 11px;"/>
+                    </div>
+                    <field name="archivo_acta_liquidacion_visible" invisible="1"/>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background-color: #ffffff; border-radius: 8px; border: 1px solid #e2e8f0;" class="">
+                    <div style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                        <i class="fa fa-calendar" style="color: #64748b; font-size: 14px;"/>
+                        <div style="display: flex; flex-direction: column; flex: 1;">
+                            <span style="font-size: 14px; font-weight: bold; color: #3a5170; margin-bottom: 5px;">Fecha de acta</span>
+                            <field name="fecha_acta_final" widget="date" placeholder="Seleccionar" required="1" style="border: none !important; background: transparent !important; font-size: 12px; font-weight: bold; color: #334155; padding: 0 !important;"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lado Derecho: Acción Final -->
+        <div style="flex: 0 0 auto; display: flex; gap: 10px; align-self: center;">
+                
+                <field name="devuelto_por_juridico" invisible="1"/>
+
+                <button string="APROBAR (A FINANCIERA)" 
+                        type="object" 
+                        name="approve_coordinador" 
+                        class="btn-success" 
+                        style="padding: 12px 25px; font-weight: bold; font-size: 12px; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);"/>
+                
+                <button string="REENVIAR A JURÍDICO" 
+                        type="object" 
+                        name="coordinador_reenvia_a_juridico" 
+                        class="btn-info" 
+                        attrs="{'invisible': [('devuelto_por_juridico', '=', False)]}"
+                        style="padding: 12px 25px; font-weight: bold; font-size: 12px; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.2); background-color: #0ea5e9; color: white; border: none;"/>
+            </div>
+        </div>
+</div>
+
+
+        <!-- financiero-->
+<div attrs="{'invisible': [('state', '!=', 'financiero')]}" 
+     groups="Matriz.group_contratacion_financiero"
+     style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+
+    <div style="display: flex; align-items: flex-start; gap: 20px;">
+        <!-- Lado Izquierdo: Icono Circular (Financiero) -->
+        <div style="flex: 0 0 55px; height: 55px; background-color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; border: 1px solid #e2e8f0;">
+            <i class="fa fa-money" style="font-size: 26px;"/>
+        </div>
+
+        <!-- Centro: Contenido de la Tarea -->
+        <div style="flex: 1;">
+            <!-- Título de Sección -->
+            <div style="margin-bottom: 12px; display: flex; align-items: center;">
+                <span style="height: 10px; width: 10px; background-color: #3b82f6; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 5px rgba(59, 130, 246, 0.4);"></span>
+                <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Financiera</strong>
+            </div>
+
+            <!-- Campo de Observaciones con Clase Hover -->
+            <div style="margin-bottom: 15px;" class="campo_hover">
+                <label for="motivo_rechazo_financiero" style="font-size: 10px; font-weight: bold; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; display: block;">Observaciones Financieras</label>
+                <field name="motivo_rechazo_financiero"
+                       placeholder="Especifica tu observación..."
+                       style="width: 100%; min-height: 70px; font-size: 13px; border: none !important;"/>
+                <field name="no_aprueba_financieros" invisible="1"/>
+            </div>
+
+            <!-- Gestión de Paz y Salvo -->
+            <div style="display: flex; align-items: center; gap: 15px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
+                
+                <div style="flex: 1;">
+                    <!-- Botón Cargar -->
+                    <div attrs="{'invisible': [('paz_y_salvo_visible', '=', False)]}">
+                        <button name="action_upload_paz_y_salvo" 
+                                type="object" 
+                                string="Cargar paz y salvo" 
+                                class="unique_pn_btn_upload w-100"
+                                style="font-weight: bold; text-transform: uppercase; font-size: 11px;"
+                                groups="Matriz.group_contratacion_financiero,Matriz.group_contratacion_director_financiero"/>
+                    </div>
+                    <field name="paz_y_salvo_visible" invisible="1"/>
+                </div>
+                
+                <!-- Espacio para mantener alineación o metadatos si fuera necesario -->
+                <div style="flex: 1;"></div>
+            </div>
+        </div>
+
+        <!-- Lado Derecho: Acciones (Aprobar / No Aprobar) -->
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; align-self: center;">
+            <button string="APROBAR" 
+                    type="object" 
+                    name="approve_financiero" 
+                    class="btn-success" 
+                    style="padding: 10px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);"/>
+            
+            <button string="NO APROBAR" 
+                    type="object" 
+                    name="financiera_no_aprueba" 
+                    class="btn-danger" 
+                    style="padding: 10px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);"/>
+        </div>
+    </div>
+</div>
+
+
+        <!-- juridico-->
+<div attrs="{'invisible': [('state', '!=', 'juridico')]}" 
+     groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico" 
+     style="width: 100%;">
+    
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+            
+            <!-- Lado Izquierdo: Icono Circular (Jurídico) -->
+            <div style="flex: 0 0 55px; height: 55px; background-color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #003366; border: 1px solid #e2e8f0;">
+                <i class="fa fa-gavel" style="font-size: 26px;"/>
+            </div>
+
+            <!-- Centro: Contenido -->
+            <div style="flex: 1;">
+                <!-- Título de Sección con punto de estado (Indigo para Jurídico) -->
+                <div style="margin-bottom: 12px; display: flex; align-items: center;">
+                    <span style="height: 10px; width: 10px; background-color: #6366f1; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 5px rgba(99, 102, 241, 0.4);"></span>
+                    <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Revisión Jurídica</strong>
+                </div>
+
+                <!-- Campo de Observaciones con Clase Hover -->
+                <div style="margin-bottom: 5px;" class="campo_hover">
+                    <label for="motivo_rechazo_juridico" style="font-size: 10px; font-weight: bold; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; display: block;">Observaciones Jurídicas</label>
+                    <field name="motivo_rechazo_juridico" 
+                           placeholder="Especifica el motivo o detalles para el área jurídica..." 
+                           style="width: 100%; min-height: 70px; font-size: 13px; border: none !important;"/>
+                    <field name="no_aprueba_juridico" invisible="1"/>
+                </div>
+            </div>
+
+            <!-- Lado Derecho: Acciones (Aprobar / No Aprobar) -->
+            <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; align-self: center;">
+                <button string="APROBAR" 
+                        type="object" 
+                        name="approve_juridico" 
+                        class="btn-success" 
+                        style="padding: 10px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);"/>
+                
+                <button string="DEVOLVER A FINANCIERA" 
+                        type="object" 
+                        name="juridico_no_aprueba" 
+                        class="btn btn-warning text-white fw-bold text-uppercase" />
+                        
+                <button string="DEVOLVER A COORDINADOR" 
+                        type="object" 
+                        name="juridico_devuelve_a_coordinador" 
+                        class="btn-danger" 
+                        style="padding: 10px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- fase final coordinador -->
+<div attrs="{'invisible': [('state', '!=', 'finalizado')]}" 
+     groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador" 
+     style="width: 100%;">
+    
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+            
+            <!-- Lado Izquierdo: Icono Circular (Cierre) -->
+            <div style="flex: 0 0 55px; height: 55px; background-color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; border: 1px solid #e2e8f0;">
+                <i class="fa fa-flag-checkered" style="font-size: 26px;"/>
+            </div>
+
+            <!-- Centro: Contenido de Cierre -->
+            <div style="flex: 1;">
+                <!-- Título de Sección con punto de estado (Verde para Finalizado) -->
+                <div style="margin-bottom: 12px; display: flex; align-items: center;">
+                    <span style="height: 10px; width: 10px; background-color: #10b981; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 5px rgba(16, 185, 129, 0.4);"></span>
+                    <strong style="font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Cierre de Proyecto</strong>
+                </div>
+
+                <!-- Gestión de Acta Firmada -->
+                <div style="margin-bottom: 5px; padding: 15px; border: 1px solid #f1f5f9; border-radius: 10px;">
+                    <div style="margin-bottom: 10px;">
+                        <strong style="font-size: 11px; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 5px;">Acta de liquidación firmada</strong>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div attrs="{'invisible': [('acta_liquidacion_firmada_visible', '=', False)]}" style="flex: 1;">
+                            <button name="action_upload_acta_firmada" 
+                                    type="object" 
+                                    string="Cargar acta firmada" 
+                                    class="unique_pn_btn_upload w-100"
+                                    style="font-weight: bold; text-transform: uppercase; font-size: 11px;"/>
+                        </div>
+                        <field name="acta_liquidacion_firmada_visible" invisible="1"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lado Derecho: Acciones Finales -->
+            <div style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; align-self: center;">
+            <field name="cerrado" invisible="1"/>
+                <button string="CERRAR PROYECTO" 
+                        type="object" 
+                        name="action_cerrar_proyecto" 
+                        class="btn-success"
+                        attrs="{'invisible': [('cerrado', '=', True)]}"
+                        style="padding: 12px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);"/>
+                <button string="REGRESAR A JURÍDICO" 
+                        type="object" 
+                        name="no_aprueba_finalizar"
+                        attrs="{'invisible': [('cerrado', '=', True)]}"
+                        class="btn-danger" 
+                        style="padding: 10px 25px; font-weight: 900; font-size: 11px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<div class="p-3 my-3 bg-light rounded shadow-sm" 
+     style="border-left: 4px solid #4a6fa5;" 
+     groups="Matriz.group_contratacion_juridico,Matriz.group_contratacion_director_juridico">
+    
+    <div class="d-flex align-items-center">
+        <i class="fa fa-balance-scale fa-2x me-3" style="color: #4a6fa5;"></i>
+        
+        <span class="text-muted" style="font-size: 0.95em; line-height: 1.4;">
+            La unidad jurídica valida y verifica que la información suministrada cumpla con los requerimientos contractuales pactados y que no hayan novedades o pendientes para proceder con la firma del director.
+        </span>
+    </div>
+</div>
+<!-- Parte de abajo 3 aprobar -->
+<div style="width: 100%;">
+    <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 10px;">
+        <div style="display: flex; align-items: flex-start; gap: 20px;">
+            <!-- Bloque 2: Visualización de Documentos Anteriores (2 Columnas) -->
+            <div style="display: flex; gap: 15px; width: 100%;">
+                <field name="activar_campo_acta_firmada" invisible="1"/>
+                
+                <!-- Columna 1: Ver Acta -->
+                <div style="flex: 1;" attrs="{'invisible': [('archivo_acta_liquidacion_visible', '=', True)]}">
+                    <button name="abrir_documento_archivo_acta" 
+                            type="object"  
+                            string="Ver acta de liquidación"
+                            class="unique_pn_btn_view w-100"
+                            style="font-weight: bold; text-transform: uppercase; font-size: 11px; border-radius: 8px; padding: 10px;"/>
+                </div>
+
+                <!-- Columna 2: Ver Paz y Salvo -->
+                <div style="flex: 1;" attrs="{'invisible': [('paz_y_salvo_visible', '=', True)]}">
+                    <button name="abrir_documento_paz_y_salvo" 
+                            type="object"  
+                            string="Ver paz y salvo"
+                            class="unique_pn_btn_view w-100"
+                            style="font-weight: bold; text-transform: uppercase; font-size: 11px; border-radius: 8px; padding: 10px;"/>
+                </div>
+                <div attrs="{'invisible': [('acta_liquidacion_firmada_visible', '=', True)]}" style="flex: 1;">
+                    <button name="abrir_acta_firmada" 
+                            type="object"
+                            string="Ver acta firmada"
+                            class="unique_pn_btn_view w-100"
+                            style="font-weight: bold; text-transform: uppercase; font-size: 11px; border-radius: 8px; padding: 10px;"/>
+                </div>
+                <field name="acta_liquidacion_firmada_visible" invisible="1"/>
+                <field name="paz_y_salvo_visible" invisible="1"/>
+                <field name="archivo_acta_liquidacion_visible" invisible="1"/>
+            </div>
+        </div>
+    </div>
+</div>
+<field name="aprobado_juridico_visible_pendientes" invisible="1"/>
+<hr style="margin-top: 10px; margin-bottom: 15px;"/>
+<table width="100%" class="mi-clase-especifica"
+       groups="Matriz.group_contratacion_coordinador"
+       attrs="{'invisible': [('aprobado_juridico_visible_pendientes', '=', False)]}">
+    <tr>
+        <td width="50%" class="td-cierre" style="color: orange;">
+            <div style="text-align: left;">
+                <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                    <field name="pagos_pendientes" style="margin-right: 5px;"/>
+                    <strong>Pagos pendientes</strong>
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <div style="display: flex; align-items: center;">
+                    <field name="cobros_pendientes" style="margin-right: 5px;"/>
+                    <strong>Cobros pendientes</strong>
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <div style="display: flex; align-items: center; margin-bottom: 5px;">
+                    <field name="otros_pendientes" style="margin-right: 5px;"/>
+                    <strong>Otros pendientes</strong>
+                </div>
+            </div>
+            <div style="text-align: left;">
+                <div style="display: flex; align-items: center;">
+                    <field name="no_hay_pendientes" style="margin-right: 5px;"/>
+                    <strong>No hay pendientes</strong>
+                </div>
+            </div>
+        </td>
+        <td width="50%" class="td-cierre" style="color: black; vertical-align: top;">
+            <div style="text-align: left;" attrs="{'invisible': [('no_hay_pendientes', '=', True)]}">
+                <div>
+                    <strong style="color: orange;">Especificar pendientes</strong>
+                    <field name="observaciones_pendientes" widget="html"
+                           style="border: 1px solid #CCCCCC; border-radius: 5px;"/>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div style="border-left: 4px solid #17a2b8; background-color: rgba(255, 194, 103, 0.5); border-radius: 8px; width: 50%;" groups="Matriz.group_contratacion_director_financiero">
+    
+    <span for="usuarios_financieros_ids" class="fw-bold mb-2" style="color: #0c5460; padding: 10px; display: block;">
+        <i class="fa fa-info-circle me-1"></i> Agregar usuario encargado de cargar el paz y salvo
+    </span>
+    <div class="d-block mt-1" style="padding: 10px;">
+        <field name="usuarios_financieros_ids" 
+               widget="many2many_avatar_user"
+               options="{'no_create_edit': False}"
+               placeholder="Agregar usuario"/>
+    </div>
+</div>
+                        <br/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+          <record id="view_cierre_kanban" model="ir.ui.view">
+            <field name="name">CIERRE.kanban</field>
+            <field name="model">cierre</field>
+            <field name="arch" type="xml">
+                <kanban create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- En el archivo views.xml dentro de la vista de otro_modelo style="text-align: right;" -->
+                            <div class="o_kanban_global_click o_kanban_card">
+                                <div class="oe_kanban_image">
+                                <h1>
+                                  <span style="color: #043484;">CIERRE</span>
+                                </h1>
+                                </div>
+                                <div class="o_kanban_record_dates">
+                                    <field name="name"/>
+                                    <div class="o_kanban_record_date">
+                                        <label for="fch_creacion">Fecha de Creación:</label>
+                                        <field name="fch_creacion"/>
+                                    </div>
+                                    <div class="o_kanban_record_date">
+                                        <label for="write_date">Última Modificación:</label>
+                                        <field name="write_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="view_cierre_tree" model="ir.ui.view">
+            <field name="name">cierre.tree</field>
+            <field name="model">cierre</field>
+            <field name="arch" type="xml">
+                <tree create="0">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="ir_cron_notificar_vencimiento_proyectos" model="ir.cron">
+            <field name="name">Notificación de vencimiento de proyectos</field>
+            <field name="model_id" ref="Matriz.model_cierre"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_notificar_vencimiento_proyectos()</field>
+            <field name="active">True</field>
+            <field name="interval_type">hours</field>
+            <field name="interval_number">6</field>
+            <field name="numbercall">-1</field>
+        </record>																			 			 
+    </data>
+</odoo>

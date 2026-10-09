@@ -1,0 +1,53 @@
+<odoo>
+    <template id="report_contratista_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Reporte del Contratista</h2>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ID Contrato</td>
+                                    <td><t t-esc="doc.id_contrato"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Total</td>
+                                    <td><t t-esc="doc.valor_total_contrato3"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Proyecto Relacionado</td>
+                                    <td><t t-esc="doc.proyecto_relacionado"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Pago</td>
+                                    <td><t t-esc="doc.valor_pago"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Contrato ID</td>
+                                    <td><t t-esc="doc.contrato_id"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_contratista"
+        model="contrato"
+        string="Reporte Contratista"
+        report_type="qweb-pdf"
+        name="Matriz.report_contratista_pdf"
+        file="Matriz.report_contratista_pdf"
+        attachment_use="False"
+    />
+</odoo>

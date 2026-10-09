@@ -1,0 +1,1906 @@
+/* =========================
+   KANBAN PROYECTOS (estable)
+   ========================= */
+
+/* La clase del <kanban class="gd_projects_kanban"> normalmente cae en .o_kanban_view,
+   pero por si acaso la aplicamos en ambos scopes */
+.o_kanban_view.gd_projects_kanban,
+.o_kanban_renderer.gd_projects_kanban {
+  --KanbanRecord-width: 254px;
+}
+
+/* Espaciado y compactación */
+.o_kanban_view.gd_projects_kanban .o_kanban_record,
+.o_kanban_renderer.gd_projects_kanban .o_kanban_record {
+  margin: 6px !important; /* si quieres más juntas: 4px */
+}
+
+.o_kanban_view.gd_projects_kanban .o_kanban_records,
+.o_kanban_renderer.gd_projects_kanban .o_kanban_records {
+  justify-content: flex-start;
+}
+
+/* Si tu card completa es un <button class="gd_project_card_btn"> NO uses all:unset */
+.o_kanban_view.gd_projects_kanban .gd_project_card_btn,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card_btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_project_card_btn:focus,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card_btn:focus {
+  outline: none;
+}
+
+/* Card (una sola definición) */
+.o_kanban_view.gd_projects_kanban .gd_project_card,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card {
+  border: 1px solid #e6e6e6;
+  border-radius: 14px;
+  padding: 16px 14px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_project_card:hover,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.10);
+}
+
+.o_kanban_view.gd_projects_kanban .gd_project_card_header,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card_header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_icon_folder,
+.o_kanban_renderer.gd_projects_kanban .gd_icon_folder {
+  color: #043484;
+  font-size: 22px;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_project_title,
+.o_kanban_renderer.gd_projects_kanban .gd_project_title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_project_card_footer,
+.o_kanban_renderer.gd_projects_kanban .gd_project_card_footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.o_kanban_view.gd_projects_kanban .gd_open_hint,
+.o_kanban_renderer.gd_projects_kanban .gd_open_hint {
+  font-weight: 600;
+  color: #043484;
+}
+/* =========================================================
+   GD BROWSER (Layout tipo Odoo Documents)
+   ========================================================= */
+
+.gd_browser_form {
+  .gd_sheet {
+    padding: 0 !important;
+  }
+
+  .gd_layout {
+    display: flex;
+    height: calc(100vh - 140px); /* ajusta según tu header/controlpanel */
+    min-height: 560px;
+    background: #f7f7f9;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* ---------- Left Sidebar ---------- */
+  .gd_left {
+    width: 280px;
+    background: #ffffff;
+    border-right: 1px solid #ececec;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gd_left_header {
+    padding: 14px 14px 8px 14px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .gd_left_title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #2b2b2b;
+
+      i { color: #6b7280; }
+      span { font-size: 12px; letter-spacing: .6px; }
+    }
+  }
+
+  .gd_left_search {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .gd_left_tree {
+    padding: 8px 10px 12px 10px;
+    overflow: auto;
+    flex: 1;
+
+    .o_list_view {
+      border: 0 !important;
+    }
+
+    .gd_select_ws_btn {
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      color: #374151 !important;
+    }
+  }
+
+  /* ---------- Center ---------- */
+  .gd_center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 520px;
+  }
+
+  .gd_center_toolbar {
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    .gd_current_folder {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #111827;
+
+      i { color: #6b7280; }
+    }
+  }
+
+  .gd_center_content {
+    padding: 12px;
+    overflow: auto;
+    flex: 1;
+  }
+
+  /* Kanban docs */
+  .gd_docs_kanban {
+    .o_kanban_record {
+      margin: 8px !important;
+    }
+  }
+
+  .gd_doc_card {
+    background: #ffffff;
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    transition: transform .12s ease, box-shadow .12s ease;
+    min-height: 190px;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,0,0,.10);
+    }
+
+    .gd_doc_thumb {
+      height: 125px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+
+      .gd_doc_icon {
+        font-size: 46px;
+        color: #9ca3af;
+      }
+    }
+
+    .gd_doc_meta {
+      padding: 10px 12px;
+
+      .gd_doc_name {
+        font-weight: 600;
+        color: #111827;
+        line-height: 1.2;
+        max-height: 2.4em;
+        overflow: hidden;
+      }
+    }
+  }
+
+  /* ---------- Right Panel ---------- */
+  .gd_right {
+    width: 320px;
+    background: #ffffff;
+    border-left: 1px solid #ececec;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gd_right_header {
+    padding: 14px;
+    border-bottom: 1px solid #f0f0f0;
+
+    .gd_right_title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #2b2b2b;
+
+      i { color: #6b7280; }
+      span { font-size: 13px; }
+    }
+  }
+
+  .gd_right_content {
+    padding: 14px;
+    overflow: auto;
+    flex: 1;
+
+    .gd_right_hint {
+      margin-top: 16px;
+      padding: 10px 12px;
+      background: #f9fafb;
+      border: 1px solid #eef2f7;
+      border-radius: 12px;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      i { color: #6b7280; }
+      span { font-size: 12.5px; }
+    }
+  }
+
+  /* Inputs */
+  .gd_search_input input {
+    border-radius: 12px !important;
+    padding: 8px 10px !important;
+  }
+}/* Contenedor principal del Kanban para que los items no se estiren */
+.o_kanban_view.gd_docs_kanban .o_kanban_record {
+    width: 200px !important; /* Ajusta el ancho para que quepan varias por fila */
+    flex: 0 0 200px !important;
+    margin: 10px !important;
+}
+
+/* La tarjeta base */
+.gd_entry_card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Botón que envuelve el contenido para que sea vertical */
+.gd_entry_card_btn {
+    display: flex;
+    flex-direction: column; /* Icono arriba, texto abajo */
+    align-items: center;    /* Centrado horizontal */
+    padding: 20px 10px !important;
+    gap: 12px;
+    width: 100%;
+    background: transparent;
+    border: none;
+}
+
+/* El círculo del icono */
+.gd_kanban_icon_area {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc; /* Fondo gris suave por defecto */
+}
+
+/* Estilo específico para carpetas (Color mostaza/café como la imagen) */
+.is_folder .gd_kanban_icon_area {
+    background: rgba(215, 181, 120, 0.15) !important;
+}
+.is_folder .gd_kanban_icon {
+    color: #a37d35 !important;
+    font-size: 32px;
+}
+
+/* Estilo para el texto */
+.gd_kanban_record_title {
+    text-align: center;
+    font-weight: 600;
+    color: #334155;
+    font-size: 13px;
+    word-break: break-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Máximo 2 líneas de texto */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* El menú de tres puntos arriba a la derecha */
+.gd_entry_card .o_dropdown_kanban {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    visibility: hidden; /* Se oculta por defecto */
+}
+
+.gd_entry_card:hover .o_dropdown_kanban {
+    visibility: visible; /* Aparece al pasar el mouse */
+}
+/* ===== Archivos (neutral) ===== */
+.gd_docs_kanban .gd_entry_card.is_file .gd_kanban_icon_area {
+  background: rgba(0, 0, 0, .04);
+}
+.gd_docs_kanban .gd_entry_card.is_file .gd_kanban_icon {
+  color: #374151;
+}
+.gd_sidebar_right,
+.sidebar-documents {
+    background: #fff !important;
+    aside {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: #fff !important;
+        overflow-y: auto;
+        padding: 0 !important;
+        gap: 0 !important;
+    }
+    // Reducir el preview a un tamaño compacto
+    .preview-container {
+        height: 280px !important;
+        min-height: 200px !important;
+        max-height: 280px !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #e8eaed !important;
+        background: #f1f3f4 !important;
+        iframe, img, embed, object, div {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            transform: none !important;
+        }
+    }
+    // Ocultar campos con fondo oscuro heredado
+    .field-white-text { color: #202124 !important; background: transparent !important; }
+}
+
+.gd_details_tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e8eaed;
+    .gd_tab {
+        all: unset;
+        cursor: pointer;
+        font-size: 13px;
+        color: #5f6368;
+        padding: 8px 16px;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: color .15s, border-color .15s;
+        &:hover { color: #1a73e8; }
+    }
+    .gd_tab_active {
+        color: #1a73e8 !important;
+        border-bottom-color: #1a73e8 !important;
+        font-weight: 500;
+    }
+}
+
+.gd_details_topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px 6px;
+    border-bottom: 1px solid #e8eaed;
+    .btn-action2, button {
+        background: transparent !important;
+        border: none !important;
+        color: #d93025 !important;
+        font-size: 16px;
+        border-radius: 50%;
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        &:hover { background: #fce8e6 !important; }
+    }
+}
+
+.gd_details_hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 16px 16px;
+    border-bottom: 1px solid #e8eaed;
+    .gd_details_hero_icon { font-size: 40px; color: #4d8fcc; margin-bottom: 8px; }
+    .gd_details_hero_name {
+        font-size: 14px; font-weight: 500; color: #202124;
+        text-align: center; word-break: break-word;
+        .o_field_widget { display: inline; }
+    }
+}
+
+.gd_details_section {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.gd_details_row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+    &:last-child { margin-bottom: 0; }
+    .gd_details_icon { width: 20px; flex-shrink: 0; color: #5f6368; font-size: 14px; margin-top: 2px; text-align: center; }
+    .gd_details_body { flex: 1; min-width: 0; }
+    .gd_details_label { font-size: 11px; color: #80868b; margin-bottom: 1px; }
+    .gd_details_value {
+        font-size: 13px; color: #202124; word-break: break-word;
+        .o_field_widget { display: inline; font-size: 13px; color: #202124; }
+    }
+}
+
+.gd_details_location_chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #f1f3f4; border-radius: 16px;
+    padding: 3px 10px 3px 6px; font-size: 12px; color: #202124;
+    max-width: 100%; overflow: hidden;
+    .o_field_widget { display: inline; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+.gd_details_stat_row {
+    display: flex; gap: 12px;
+}
+
+.gd_details_stat {
+    flex: 1; background: #f8f9fa; border-radius: 8px; padding: 8px 10px; text-align: center;
+    .gd_details_stat_val { font-size: 20px; font-weight: 600; color: #1a73e8; }
+    .gd_details_stat_lbl { font-size: 11px; color: #80868b; margin-top: 2px; }
+}
+.gd_ws_node { display:flex; align-items:center; gap:6px; }
+.gd_ws_label { all: unset; cursor: pointer; display:flex; align-items:center; gap:8px; padding:4px 6px; border-radius:6px; width:100%; }
+.gd_ws_node:hover .gd_ws_label { background: rgba(255,255,255,0.06); }
+.gd_ws_node.is_selected .gd_ws_label { background: rgba(60,130,255,0.20); }
+.gd_ws_caret { width:16px; display:inline-flex; justify-content:center; cursor:pointer; opacity:.85; }
+.gd_ws_caret.empty { visibility:hidden; }
+
+/* ══════════════════════════════════════════════════════════════════
+   ÁRBOL DE CARPETAS — Estilo Odoo 17 Documents
+   ══════════════════════════════════════════════════════════════════ */
+.gd_workspace_tree {
+
+    /* — Limpiar chrome de Odoo list-view — */
+    .o_list_view thead,
+    .o_list_view .o_optional_columns_dropdown,
+    .o_list_view .o_list_selection_box,
+    .o_x2m_control_panel,
+    .o_pager,
+    .o_list_renderer + .o_cp_pager { display: none !important; }
+
+    .o_list_view table { border: none !important; width: 100%; }
+    .o_data_row        { border-bottom: none !important; cursor: pointer; }
+    .o_data_row td     { border: none !important; vertical-align: middle; padding: 0 !important; }
+
+    /* — Ocultar columnas técnicas (siguen en DOM para el JS) — */
+    td[name="depth"],
+    td[name="is_selected"],
+    td[name="parent_id"] { display: none !important; }
+
+    /* — Hover — */
+    .o_data_row:hover td { background: #f0f4ff !important; border-radius: 6px; }
+
+    /* — Seleccionada — */
+    .o_data_row.gd_row_selected {
+        td { background: #dbeafe !important; border-radius: 6px; }
+        td[name="name"] { color: #1e40af !important; font-weight: 600 !important; }
+        button.gd_ws_open_btn { color: #1e40af !important; }
+    }
+
+    /* — Arrow toggle — */
+    .gd_ws_toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+        color: #9ca3af;
+        border-radius: 3px;
+        transition: transform 0.18s ease, color 0.1s;
+        user-select: none;
+        margin-right: 1px;
+        position: relative;
+        z-index: 2;
+
+        &:hover { color: #1e40af; background: rgba(30,64,175,0.08); }
+        &.gd_ws_toggle_empty { visibility: hidden; pointer-events: none; }
+    }
+
+    /* — Botón icono carpeta — */
+    button.gd_ws_open_btn {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 5px 0 0 !important;
+        font-size: 14px !important;
+        color: #9ca3af;
+        line-height: 1;
+        flex-shrink: 0;
+
+        &.is_current { color: #1e40af !important; }
+        &:hover      { color: #1e40af !important; }
+    }
+
+    /* — Botón info (flechita derecha) — */
+    button.gd_ws_info_btn {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 4px !important;
+        font-size: 10px !important;
+        color: #d1d5db;
+        line-height: 1;
+        opacity: 0;
+        transition: opacity 0.15s, color 0.15s;
+        flex-shrink: 0;
+
+        &:hover { color: #1e40af !important; opacity: 1 !important; }
+    }
+    .o_data_row:hover button.gd_ws_info_btn     { opacity: 1; }
+    .gd_row_selected button.gd_ws_info_btn       { opacity: 1; color: #1e40af !important; }
+
+    /* — Nombre — */
+    td[name="name"] {
+        font-size: 13px;
+        font-weight: 400;
+        color: #374151;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+/* — Cabecera WORKSPACE (igual a Odoo 17 Documents) — */
+.folders-title-row .toggle-title2 {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.9px !important;
+    color: #6b7280 !important;
+    text-transform: uppercase !important;
+    margin: 10px 0 6px 6px !important;
+    padding: 0 !important;
+    i { font-size: 12px; color: #9ca3af; }
+}
+
+/* — Buscador sidebar — */
+.gd_search_input {
+    .o_input, input {
+        border-radius: 20px !important;
+        border: 1px solid #e5e7eb !important;
+        font-size: 13px !important;
+        padding: 5px 12px !important;
+        background: #f9fafb !important;
+        transition: border-color 0.15s, background 0.15s;
+        &:focus { border-color: #3b82f6 !important; background: #fff !important; outline: none !important; }
+    }
+}
+
+/* Configuración para que las tarjetas sean cuadradas y no ocupen todo el ancho */
+.o_kanban_view.gd_docs_kanban .o_kanban_record {
+    width: 240px !important;
+    flex: 0 0 240px !important;
+    margin: 10px !important;
+}
+
+/* Estilo AZUL para carpetas */
+.gd_docs_kanban .gd_entry_card.is_folder {
+    border: 1px solid rgba(4, 52, 132, 0.2); /* Borde azul suave */
+
+    .gd_kanban_icon_area {
+        background: rgba(4, 52, 132, 0.1); /* Fondo azul muy claro */
+    }
+
+    .gd_kanban_icon {
+        color: #043484; /* El azul de tu proyecto */
+        font-size: 40px;
+    }
+}
+
+/* Forzar diseño vertical tipo "tile" */
+.gd_docs_kanban .gd_entry_card_btn {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 20px 10px !important;
+}
+
+.gd_docs_kanban .gd_kanban_details {
+    margin-top: 10px;
+}/* Forzar que las tarjetas de carpeta sean idénticas a las de archivos */
+
+
+/* ====================================
+   KANBAN DOCUMENTOS (Compacto y Azul)
+   ==================================== */
+
+/* 1. Ajuste de la Grilla (Tamaño más pequeño) */
+.o_kanban_view.gd_docs_kanban .o_kanban_record {
+    width: 160px !important;       /* Reducido de 240px */
+    flex: 0 0 160px !important;
+    margin: 6px !important;        /* Menos margen */
+}
+
+/* 2. Tarjeta Base */
+.kanban-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    height: 100%;
+    transition: all 0.2s ease;
+    overflow: hidden; /* Importante para bordes redondeados */
+}
+
+.kanban-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #d1d5db;
+    transform: translateY(-2px);
+}
+
+/* 3. Enlace Contenedor (Para que todo sea clicable) */
+.kanban-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.kanban-card-content:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 4. Área del Icono */
+.kanban-icon-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;            /* Altura controlada */
+    margin-bottom: 8px;
+}
+
+.kanban-file-icon {
+    max-height: 50px;        /* Iconos de archivo más pequeños */
+    width: auto;
+}
+
+/* 5. Títulos y Textos */
+.kanban-record-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    text-align: center;
+    line-height: 1.3;
+    max-height: 34px;        /* Máximo 2 líneas */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* 6. Footer (Fecha y Avatar) */
+.kanban-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #f3f4f6;
+    font-size: 10px;
+    color: #9ca3af;
+}
+
+/* 7. Dropdown (Tres puntos) */
+.kanban-card .o_dropdown_kanban {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 10; /* Encima del enlace principal */
+}
+
+/* 1. FORZAR TAMAÑO COMPACTO (Esto arregla lo de "muy grande") */
+.o_kanban_view.gd_docs_kanban .o_kanban_record {
+    width: 160px !important;  /* Tamaño compacto tipo tarjeta */
+    flex: 0 0 160px !important;
+    margin: 6px !important;   /* Márgenes pequeños */
+}
+
+/* 2. ESTILO DE LA TARJETA (Idéntico a Comunicaciones) */
+.gd_kanban_card_wrapper {
+    position: relative;       /* Necesario para posicionar el botón overlay */
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;       /* Borde suave estándar Odoo */
+    padding: 8px 8px 4px 8px; /* Padding ajustado */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;         /* Evita desbordamientos */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.gd_kanban_card_wrapper:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Efecto hover */
+}
+
+/* 3. BOTÓN OVERLAY (La magia del click total) */
+.gd_overlay_click {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    z-index: 1;               /* Nivel 1: Cubre el fondo */
+    cursor: pointer;
+}
+.gd_overlay_click:focus {
+    outline: none; /* Quitar borde azul al hacer clic */
+}
+
+/* Botones que deben estar POR ENCIMA del overlay (Estrella, Menú) */
+.gd_action_btn,
+.o_dropdown_kanban,
+.o_kanban_record_subtitle a {
+    position: relative;
+    z-index: 5;               /* Nivel 5: Encima del overlay */
+}
+
+/* 4. ÁREA DEL ICONO */
+.kanban-icon-area {
+    height: 70px;             /* Altura fija y pequeña */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+.kanban-file-icon {
+    max-height: 55px;         /* Iconos de archivo controlados */
+    width: auto;
+}
+
+/* 5. TEXTO Y FOOTER */
+.kanban-record-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #212529;
+    min-height: 38px;         /* Espacio para 2 líneas */
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.kanban-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 4px;
+    font-size: 11px;
+    color: #888;
+}
+
+.kanban-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Espacio entre reloj, estrella y avatar */
+}
+
+/* ─────────────────────────────────────────────
+   Informes / Comunicaciones: tarjetas carpetas y archivos
+   ───────────────────────────────────────────── */
+.infcom-card-container .o_kanban_view,
+.infcom-card-container .o_kanban_renderer {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+    padding: 8px 0 18px !important;
+    background: transparent !important;
+}
+
+.infcom-card-container .o_kanban_record {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+}
+
+.infcom-card-container .kanban-card {
+    border: 1px solid #dfe5ee;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
+    transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+    overflow: visible !important;
+}
+
+.infcom-card-container .kanban-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, .10);
+    transform: translateY(-1px);
+}
+
+.infcom-card-container .kanban-record-title {
+    color: #001f4f;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: left;
+    min-height: auto;
+    max-height: 34px;
+    margin: 0;
+}
+
+.infcom-card-container .kanban-footer {
+    min-height: 28px;
+    margin-top: 8px;
+    padding: 6px 10px;
+    border-top: 1px solid #edf1f7;
+    border-radius: 0 0 6px 6px;
+    background: #f6f8fb;
+    color: #8fa0bb;
+}
+
+.infcom-card-container .kanban-footer-right {
+    gap: 8px;
+}
+
+.infcom-folder-cards .o_kanban_record {
+    width: 300px !important;
+    flex: 0 0 300px !important;
+}
+
+.infcom-folder-cards {
+    min-height: 185px;
+    padding-bottom: 55px;
+    margin-bottom: 12px;
+    overflow: visible !important;
+}
+
+.infcom-folder-cards .o_kanban_view,
+.infcom-folder-cards .o_kanban_renderer {
+    min-height: 130px !important;
+    padding-bottom: 45px !important;
+    overflow: visible !important;
+}
+
+.infcom-folder-cards .kanban-card {
+    min-height: 100px;
+    padding: 12px 10px 8px;
+}
+
+.infcom-folder-cards .infcom-folder-open-action {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.infcom-folder-cards .kanban-card > br {
+    display: none;
+}
+
+.infcom-folder-cards .kanban-icon-area {
+    float: left;
+    width: 32px;
+    height: 34px;
+    margin: 3px 8px 0 0;
+    justify-content: flex-start;
+}
+
+.infcom-folder-cards .kanban-icon-area .fa-folder {
+    font-size: 22px !important;
+    color: #9aa7b8 !important;
+}
+
+.infcom-folder-cards .kanban-details {
+    min-height: 76px;
+}
+
+.infcom-folder-cards .kanban-record-title {
+    padding-top: 0;
+    color: #001f4f;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    min-height: 16px;
+    max-height: 18px;
+    text-align: left;
+    -webkit-line-clamp: 1;
+}
+
+.infcom-folder-cards .infcom-folder-subtitle {
+    color: #8fa0bb;
+    font-size: 11px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.infcom-folder-cards .kanban-footer {
+    clear: both;
+    margin-top: 14px;
+    min-height: 30px;
+    padding: 6px 10px;
+}
+
+.infcom-file-cards .o_kanban_record {
+    width: 258px !important;
+    flex: 0 0 258px !important;
+}
+
+.infcom-file-cards .kanban-card {
+    min-height: 246px;
+    padding: 8px;
+}
+
+/* Los tres puntos deben permanecer visibles; el usuario no debe adivinarlos. */
+.infcom-card-container .gd_folder_menu,
+.infcom-card-container .gd_file_menu {
+    opacity: .55;
+    visibility: visible !important;
+    pointer-events: auto;
+    z-index: 40 !important;
+}
+
+.infcom-card-container .kanban-card:hover .gd_folder_menu,
+.infcom-card-container .kanban-card:hover .gd_file_menu,
+.infcom-card-container .gd_folder_menu.show,
+.infcom-card-container .gd_file_menu.show {
+    opacity: 1;
+}
+
+.infcom-card-container .gd_folder_menu .dropdown-menu.show,
+.infcom-card-container .gd_file_menu .dropdown-menu.show {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin-top: 2px !important;
+    z-index: 60 !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.infcom-file-cards .kanban-card > br {
+    display: none;
+}
+
+.infcom-file-cards .kanban-icon-area {
+    height: 160px;
+    margin: 0 0 10px;
+    border-radius: 2px;
+    background: #f4f6f8;
+}
+
+.infcom-file-cards .kanban-file-icon {
+    max-height: 56px;
+    width: auto;
+}
+
+.infcom-file-cards .kanban-record-title {
+    padding: 0 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NUEVO DISEÑO — Tarjetas estilo Odoo Documents (fondo blanco)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Tamaños en la grilla: carpetas anchas, archivos compactos */
+.o_kanban_view.gd_docs_kanban .o_kanban_record,
+.o_kanban_renderer.gd_docs_kanban .o_kanban_record {
+    width: 220px !important;
+    flex: 0 0 220px !important;
+    margin: 6px !important;
+}
+
+/* ── Barra superior: solo buscador ── */
+.drv_topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 6px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* ── Fila de sección: título + botones ── */
+.drv_section_row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    margin-top: 4px;
+}
+
+.drv_section_btns {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.drv_sec_btn {
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 12px;
+    border: 1.5px solid;
+    background: #fff;
+    transition: background .15s, color .15s;
+    cursor: pointer;
+
+    &.drv_sec_btn_blue {
+        color: #2563eb;
+        border-color: #bfdbfe;
+        &:hover { background: #eff6ff; border-color: #2563eb; }
+    }
+
+    &.drv_sec_btn_orange {
+        color: #ea580c;
+        border-color: #fed7aa;
+        &:hover { background: #fff7ed; border-color: #ea580c; }
+    }
+
+    &.drv_sec_btn_green {
+        color: #16a34a;
+        border-color: #bbf7d0;
+        &:hover { background: #f0fdf4; border-color: #16a34a; }
+    }
+}
+
+.infcom-section-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 10px 2px;
+
+    > span {
+        color: #003F8F;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: .02em;
+        margin-right: 4px;
+        text-transform: uppercase;
+    }
+}
+
+.infcom-section-actions-files {
+    margin-top: 28px;
+}
+
+.drv_search_box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f1f5f9;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 5px 16px;
+    width: 360px;
+    transition: border-color .15s, box-shadow .15s;
+
+    &:focus-within {
+        border-color: #4d8fcc;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(77,143,204,.12);
+    }
+
+    .drv_search_icon_box { color: #9ca3af; font-size: 13px; }
+
+    .drv_search_field .o_field_widget input,
+    .drv_search_field input {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        font-size: 13px;
+        color: #374151;
+        outline: none;
+    }
+}
+
+/* ── Drag-and-drop zones (main browser) ── */
+/* ── Panel de progreso de subida (estilo Google Drive) ── */
+.drv_upload_panel {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 28px rgba(0,0,0,.22);
+    z-index: 10001;
+    overflow: hidden;
+    animation: drvSlideUp .25s ease;
+
+    transition: opacity .4s ease, transform .4s ease;
+    &.drv_up_hidden  { opacity: 0; pointer-events: none; transform: translateY(12px); }
+
+    .drv_up_header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #1e3a5f;
+        color: #fff;
+        padding: 12px 14px;
+
+        .drv_up_cloud_icon { font-size: 16px; opacity: .85; }
+        .drv_up_title      { flex: 1; font-size: 13px; font-weight: 700; }
+        .drv_up_close {
+            all: unset;
+            cursor: pointer;
+            font-size: 15px;
+            opacity: .7;
+            &:hover { opacity: 1; }
+        }
+    }
+
+    .drv_up_body {
+        padding: 14px 16px;
+
+        .drv_up_progress_bar {
+            height: 5px;
+            background: #e5e7eb;
+            border-radius: 99px;
+            margin-bottom: 10px;
+            overflow: hidden;
+
+            .drv_up_progress_fill {
+                height: 100%;
+                background: linear-gradient(90deg, #2e6da4, #4d8fcc);
+                border-radius: 99px;
+                transition: width .35s ease;
+                width: 0;
+            }
+        }
+
+        .drv_up_msg {
+            font-size: 12.5px;
+            color: #374151;
+            line-height: 1.4;
+        }
+    }
+
+    &.drv_up_success {
+        .drv_up_header { background: #15803d; }
+        .drv_up_progress_fill { background: #22c55e !important; }
+    }
+
+    &.drv_up_error {
+        .drv_up_header { background: #b91c1c; }
+        .drv_up_progress_fill { background: #ef4444 !important; }
+    }
+}
+
+@keyframes drvSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Drag-and-drop zones (main browser) ── */
+.drv_main_zone {
+    position: relative;
+    min-height: 80px;
+
+    .drv_zone_overlay {
+        display: none;
+        position: absolute;
+        inset: 0;
+        background: rgba(77, 143, 204, 0.08);
+        border: 2.5px dashed #4d8fcc;
+        border-radius: 12px;
+        z-index: 20;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        pointer-events: none;
+        color: #2e6da4;
+        font-size: 14px;
+        font-weight: 600;
+
+        .drv_zone_icon { font-size: 30px; }
+
+        &.drv_zone_busy {
+            display: flex;
+            background: rgba(77, 143, 204, 0.18);
+        }
+    }
+
+    &.drv_drag_over .drv_zone_overlay { display: flex; }
+
+    &.drv_files_zone { margin-top: 24px; }
+}
+
+/* Informes / Comunicaciones — soltar carpetas y documentos directamente */
+.infcom-folder-cards,
+.infcom-file-cards {
+    position: relative;
+    min-height: 86px;
+    border-radius: 12px;
+
+    .drv_infcom_overlay {
+        display: none;
+        position: absolute;
+        inset: 0;
+        z-index: 30;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: 2px dashed #4d8fcc;
+        border-radius: 12px;
+        background: rgba(239, 246, 255, .88);
+        color: #003b80;
+        font-size: 15px;
+        font-weight: 700;
+        pointer-events: none;
+        box-shadow: inset 0 0 0 2px rgba(77, 143, 204, .08);
+
+        i {
+            font-size: 28px;
+            color: #0d47a1;
+        }
+    }
+
+    &.drv_infcom_drag_over .drv_infcom_overlay,
+    &.drv_infcom_uploading .drv_infcom_overlay {
+        display: flex;
+    }
+
+    &.drv_infcom_uploading .drv_infcom_overlay {
+        border-color: #f59e0b;
+        background: rgba(255, 251, 235, .92);
+        color: #92400e;
+
+        i {
+            color: #f59e0b;
+        }
+    }
+
+    &.drv_infcom_success .drv_infcom_overlay {
+        border-color: #22c55e;
+        background: rgba(240, 253, 244, .92);
+        color: #166534;
+    }
+}
+
+/* sidebar variant — full-width, smaller radius */
+.drv_search_box_sidebar {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* ── CARPETA: tarjeta horizontal compacta ── */
+.gd_folder_card {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    transition: box-shadow .15s, border-color .15s;
+
+    &:hover {
+        border-color: #b6c9e0;
+        box-shadow: 0 3px 10px rgba(0,0,0,.09);
+    }
+}
+
+.gd_folder_card_btn {
+    all: unset;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 36px 10px 12px;
+    width: 100%;
+    cursor: pointer;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.gd_folder_meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 5px 12px;
+    border-top: 1px solid #f1f5f9;
+    background: #f8fafc;
+    border-radius: 0 0 10px 10px;
+    font-size: 11px;
+    color: #9ca3af;
+    .o_field_widget { display: inline; color: #9ca3af; font-size: 11px; }
+}
+
+.gd_folder_icon {
+    font-size: 22px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.gd_folder_info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.gd_folder_name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .o_field_widget { display: inline; }
+}
+
+.gd_folder_parent {
+    font-size: 11px;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .o_field_widget { display: inline; }
+}
+
+.gd_folder_menu {
+    position: absolute;
+    right: 6px;
+    top: 8px;
+    transform: none;
+    opacity: 0.35;
+    pointer-events: auto;
+    transition: opacity .15s;
+    z-index: 5;
+
+    &:hover { opacity: 1; }
+    .gd_folder_card:hover & { opacity: 1; }
+
+    .btn {
+        background: rgba(255,255,255,.95);
+        border: 1px solid #e2e8f0;
+        border-radius: 5px;
+        padding: 1px 7px;
+        font-size: 13px;
+        color: #374151;
+        &:hover { color: #043484; }
+    }
+}
+
+/* ── ARCHIVO: tarjeta portrait con preview ── */
+.gd_file_card {
+    position: relative;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    transition: box-shadow .15s, transform .15s;
+
+    &:hover {
+        box-shadow: 0 6px 18px rgba(0,0,0,.12);
+        transform: translateY(-2px);
+        .gd_file_menu { opacity: 1; pointer-events: auto; }
+    }
+}
+
+/* Área de preview (miniatura del documento) */
+.gd_file_preview {
+    position: relative;
+    height: 160px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    overflow: hidden;
+}
+
+/* Botón invisible que captura el clic */
+.gd_preview_overlay_btn {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Contenedor exterior sin interacción */
+.gd_preview_scale_outer {
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* Escalado 1/3 del HTML para que parezca miniatura real */
+.gd_preview_scale_inner {
+    width: 300%;
+    height: 480px;
+    transform: scale(0.333);
+    transform-origin: top left;
+    background: #fff;
+
+    /* Simula el aspecto de página de documento */
+    .o_field_html { padding: 4px; }
+}
+
+/* Estrella de favorito */
+.gd_file_star {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: #f1c40f;
+    font-size: 16px;
+    z-index: 15;
+    text-shadow: 0 0 2px rgba(0,0,0,.3);
+}
+
+/* Menú contextual del archivo */
+.gd_file_menu {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s;
+
+    .btn {
+        background: rgba(255,255,255,.92);
+        border: 1px solid #e2e8f0;
+        border-radius: 5px;
+        padding: 2px 7px;
+        font-size: 12px;
+        color: #374151;
+        backdrop-filter: blur(2px);
+        &:hover { color: #043484; }
+    }
+}
+
+/* Cuerpo del archivo: nombre + footer */
+.gd_file_body {
+    padding: 8px 10px 9px;
+}
+
+.gd_file_name {
+    margin-bottom: 7px;
+
+    .gd_file_name_btn {
+        all: unset;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #1f2937;
+        line-height: 1.3;
+        cursor: pointer;
+        width: 100%;
+        &:hover { color: #043484; }
+        .o_field_widget { display: inline; }
+    }
+}
+
+.gd_file_footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 6px;
+}
+
+.gd_file_date {
+    font-size: 10.5px;
+    color: #9ca3af;
+    .o_field_widget { display: inline; font-size: 10.5px; color: #9ca3af; }
+}
+
+.gd_file_avatar {
+    display: flex;
+    align-items: center;
+    .o_field_widget img,
+    .o_field_widget .o_avatar {
+        width: 22px !important;
+        height: 22px !important;
+        border-radius: 50%;
+    }
+}
+
+/* ─── Cabeceras de sección: Carpetas / Archivos ─── */
+.gd_section_header {
+    width: 100%;
+    padding: 18px 4px 6px;
+    margin-bottom: 4px;
+
+    &:first-child {
+        padding-top: 4px;
+    }
+}
+
+.gd_section_title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.gd_persona_group_header {
+    font-size: 11px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    padding: 10px 4px 4px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 6px;
+    margin-top: 12px;
+    width: 100%;
+}
+.gd_persona_group_header:first-child {
+    margin-top: 0;
+}
+
+
+/* ─── Anchos de kanban ─── */
+.o_kanban_view.gd_folders_kanban,
+.o_kanban_renderer.gd_folders_kanban {
+    --KanbanRecord-width: 220px;
+}
+
+.o_kanban_view.gd_files_kanban,
+.o_kanban_renderer.gd_files_kanban {
+    --KanbanRecord-width: 220px;
+}
+
+/* Las carpetas son cards horizontales, compactas → más anchas */
+.o_kanban_view.gd_folders_kanban .o_kanban_record,
+.o_kanban_renderer.gd_folders_kanban .o_kanban_record {
+    min-width: 230px;
+    max-width: 300px;
+    flex: 1 1 260px;
+    margin: 5px !important;
+    overflow: visible !important;
+}
+
+/* El dropdown del ⋮ se posiciona fixed via JS para salir de cualquier overflow */
+.gd_folder_menu .dropdown-menu,
+.gd_file_menu  .dropdown-menu {
+    /* Encima de las tarjetas, sin cubrir la barra principal de Odoo. */
+    z-index: 900 !important;
+    min-width: 200px;
+}
+
+.o_kanban_view.gd_files_kanban .o_kanban_record,
+.o_kanban_renderer.gd_files_kanban .o_kanban_record {
+    margin: 6px !important;
+}
+
+/* Alineación izquierda en ambos kanbans */
+.o_kanban_view.gd_folders_kanban .o_kanban_records,
+.o_kanban_renderer.gd_folders_kanban .o_kanban_records,
+.o_kanban_view.gd_files_kanban .o_kanban_records,
+.o_kanban_renderer.gd_files_kanban .o_kanban_records {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════════
+   DRIVE BROWSER — Upload / Create-folder wizard
+   ══════════════════════════════════════════════ */
+
+.drv_drop_zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 200px;
+    border: 2px dashed #c7d2e6;
+    border-radius: 12px;
+    background: #f8fafc;
+    padding: 28px 20px;
+    cursor: default;
+    transition: border-color .2s, background .2s;
+    text-align: center;
+
+    &.drv_drop_active {
+        border-color: #3b82f6;
+        background: #eff6ff;
+    }
+
+    &.drv_uploading {
+        border-color: #f59e0b;
+        background: #fffbeb;
+        pointer-events: none;
+    }
+
+    &.drv_drop_success {
+        border-color: #22c55e;
+        background: #f0fdf4;
+    }
+}
+
+.drv_drop_icon {
+    font-size: 40px;
+    color: #9ca3af;
+    .drv_drop_active &  { color: #3b82f6; }
+    .drv_uploading &    { color: #f59e0b; }
+    .drv_drop_success & { color: #22c55e; }
+}
+
+.drv_drop_label {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.drv_drop_sep {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.drv_drop_btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.drv_pick_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+
+    &:hover {
+        border-color: #3b82f6;
+        color: #1d4ed8;
+        box-shadow: 0 1px 4px rgba(59,130,246,.2);
+    }
+}
+
+.drv_pick_files_btn  i,
+.drv_pick_files_label  i { color: #6b7280; }
+.drv_pick_folder_btn i,
+.drv_pick_folder_label i { color: #f59e0b; }
+
+.drv_pick_btn_active {
+    border-color: #ea580c !important;
+    color: #ea580c !important;
+    box-shadow: 0 0 0 3px rgba(234,88,12,.15) !important;
+    i { color: #ea580c !important; }
+}
+
+/* ══════════════════════════════════════════════
+   DRIVE BROWSER — Botones de acción rápida
+   ══════════════════════════════════════════════ */
+
+.drv_quick_actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.drv_qa_btn.btn {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 72px;
+    min-height: 58px;
+    padding: 8px 6px 6px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    color: #374151;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: center;
+    white-space: normal;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    transition: background .15s, border-color .15s, box-shadow .18s, transform .1s;
+
+    .o_btn_icon, i.fa {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    &:hover {
+        box-shadow: 0 3px 10px rgba(0,0,0,.12);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+
+    /* ── Colores individuales ── */
+    &.drv_qa_new_folder {
+        border-color: #bfdbfe;
+        background: linear-gradient(160deg, #fff 60%, #eff6ff);
+        .o_btn_icon, i.fa { color: #2563eb; }
+        &:hover { border-color: #2563eb; background: #eff6ff; color: #1e40af; }
+    }
+
+    &.drv_qa_upload_file {
+        border-color: #bbf7d0;
+        background: linear-gradient(160deg, #fff 60%, #f0fdf4);
+        .o_btn_icon, i.fa { color: #16a34a; }
+        &:hover { border-color: #16a34a; background: #f0fdf4; color: #14532d; }
+    }
+
+    &.drv_qa_upload_folder {
+        border-color: #fed7aa;
+        background: linear-gradient(160deg, #fff 60%, #fff7ed);
+        .o_btn_icon, i.fa { color: #ea580c; }
+        &:hover { border-color: #ea580c; background: #fff7ed; color: #7c2d12; }
+    }
+}
+
+/* ── Botones de acción en el tree de carpetas ── */
+.gd_ws_color_btn,
+.gd_ws_delete_btn {
+    opacity: 0;
+    transition: opacity .15s;
+    padding: 1px 4px;
+    border-radius: 4px;
+}
+
+.o_data_row:hover .gd_ws_color_btn,
+.o_data_row:hover .gd_ws_delete_btn {
+    opacity: 1;
+}
+
+.gd_ws_color_btn { color: #9ca3af !important; }
+.gd_ws_color_btn:hover { color: #7c3aed !important; background: #f5f3ff; }
+
+.gd_ws_delete_btn { color: #9ca3af !important; }
+.gd_ws_delete_btn:hover { color: #dc2626 !important; background: #fef2f2; }
+
+/* ── Panel Detalles / Actividad para Informes y Comunicaciones ── */
+.infcom-details-notebook {
+    .o_notebook_headers {
+        margin-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .nav-link {
+        color: #004384;
+        font-weight: 600;
+    }
+
+    .nav-link.active {
+        color: #dc2626;
+        border-color: transparent transparent #dc2626 transparent;
+    }
+}
+
+.infcom-activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 4px 2px 12px;
+}
+
+.infcom-activity-item {
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #004384;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, .06);
+}
+
+.infcom-activity-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #0f172a;
+    font-size: 12px;
+    margin-bottom: 6px;
+
+    span {
+        color: #64748b;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+}
+
+.infcom-activity-body {
+    color: #334155;
+    font-size: 12px;
+    line-height: 1.4;
+
+    p {
+        margin-bottom: 4px;
+    }
+}
+
+.infcom-empty-activity {
+    color: #64748b;
+    font-size: 13px;
+    padding: 16px 6px;
+}

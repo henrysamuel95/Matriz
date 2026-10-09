@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="group_informes_cuentas_cobro" model="res.groups">
+            <field name="name">Consulta e informes de cuentas de cobro</field>
+            <field name="category_id" ref="Matriz.cat_sgo_admin_control"/>
+            <field name="comment">Rol de solo consulta para generar informes, analítica y archivos Excel de todas las cuentas de cobro, sin modificar los registros operativos.</field>
+        </record>
+    </data>
+</odoo>

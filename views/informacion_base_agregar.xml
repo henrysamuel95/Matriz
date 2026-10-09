@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_informacion_base_agregar_form" model="ir.ui.view">
+            <field name="name">Ingreso da.base.form</field>
+            <field name="model">informacion_base_agregar</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header style="padding: 10px;">
+                        <div class="titulo_seccion">Formulario de Ingreso: Información base del proyecto</div>
+                        
+                        <div class="campo_hover" style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #e8f5e9; border-radius: 4px;" invisible="1">
+                            <strong>Editar o no editar </strong>
+                            <field name="is_editable" widget="boolean_toggle" invisible="0"/>
+                        </div>
+                    </header>
+
+                    <sheet>
+                        <div style="display: flex; gap: 10px; align-items: flex-start;">
+                            
+                            <div class="card_seccion" style="flex: 1; padding: 15px;">
+                                <field name="contratacion_id" invisible="1"/>
+                                <field name="new_name" invisible="1"/>
+                                <field name="informacion_base_agregar_ids" invisible="1"/>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="nombre_proceso_proyecto"/>
+                                    <field name="nombre_proceso_proyecto" nolabel="1" required="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura" invisible="1">
+                                    <label for="modalidad_contratacion"/>
+                                    <field name="modalidad_contratacion" nolabel="1">
+                                        <widget name="selection" options="[
+                                            ('cia', 'Convenio Interadministrativo (CIA)'),
+                                            ('cec', 'Convenio Especial de Cooperación (CEC)'),
+                                            ('ccf', 'Convenio de Cofinanciación (CCF)')]"/>
+                                    </field>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="area_solicitante2"/>
+                                    <field name="area_solicitante2" nolabel="1" placeholder="Seleccionar" required="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura" attrs="{'invisible': [('area_solicitante2', '!=', 'regalias')]}">
+                                    <label for="bpin"/>
+                                    <field name="bpin" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="modalidad_id"/>
+                                    <field name="modalidad_id" nolabel="1" placeholder="Seleccionar" required="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura" invisible="1">
+                                    <label for="objeto_proyecto"/>
+                                    <field name="objeto_proyecto" nolabel="1"/>
+                                </div>
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="objeto_proyecto_texto"/>
+                                    <field name="objeto_proyecto_texto" nolabel="1" widget="text"/>
+                                </div>
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="primera_entidad_relacionada"/>
+                                    <field name="primera_entidad_relacionada" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="nit_primera_entidad"/>
+                                    <field name="nit_primera_entidad" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="segunda_entidad_relacionada"/>
+                                    <field name="segunda_entidad_relacionada" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="nit_segunda_entidad"/>
+                                    <field name="nit_segunda_entidad" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="tercera_entidad_relacionada"/>
+                                    <field name="tercera_entidad_relacionada" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="nit_tercera_entidad"/>
+                                    <field name="nit_tercera_entidad" nolabel="1"/>
+                                </div>
+                            </div>
+
+                            <div class="card_seccion" style="flex: 1; padding: 15px;">
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="asignar_coordinador"/>
+                                    <field name="asignar_coordinador" nolabel="1" placeholder="Seleccionar" options="{'no_open': True}"/>
+                                </div>
+
+                                <field name="asignar_coordinador" invisible="1"/>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="id_proyecto"/>
+                                    <field name="id_proyecto" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="numero_contrato"/>
+                                    <field name="numero_contrato" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="fecha_acta_inicio"/>
+                                    <field name="fecha_acta_inicio" nolabel="1" required="1" autocomplete="off"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="fecha_acta_fin"/>
+                                    <field name="fecha_acta_fin" nolabel="1" autocomplete="off"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="eje_trabajo"/>
+                                    <field name="eje_trabajo" nolabel="1" placeholder="Seleccionar"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="descripcion_beneficiarios"/>
+                                    <field name="descripcion_beneficiarios" nolabel="1"/>
+                                </div>
+
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="total_beneficiarios"/>
+                                    <field name="total_beneficiarios" nolabel="1"/>
+                                </div>
+
+                                <field name="municipio_ejecucion2" invisible="1"/>
+                                <field name="aporte_otro_municipio" invisible="1"/>
+                                <field name="secop" invisible="1"/>
+                                
+                                <div class="campo_hover campo_solo_lectura">
+                                    <label for="secop_option_id"/>
+                                    <field name="secop_option_id" nolabel="1" options="{'create': True}" placeholder="Seleccionar"/>
+                                </div>
+
+                                <field name="otro_municipio_beneficiado2" invisible="1"/>
+                            </div>
+                        </div>
+
+                        
+
+                        <table style="width: 98%; text-align: center; " class="table-cell">
+                                <tr style="background-color: #F0F0F0; font-weight: bold;">
+                                    <td style="width: 49%; border: 1px solid #cfcfcf;">Municipio(s) de Ejecución</td>
+                                    <td style="width: 49%; border: 1px solid #cfcfcf;">Municipio(s) Beneficiado(s)</td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid #cfcfcf; padding: 5px; border-radius: 4px !important;">
+                                        <field name="tag_municipios2_ids" options="{'no_open': True, 'no_create': True}" style="background-color: white; color: black; width: 100%;"/>
+                                    </td>
+                                    <td style="border: 1px solid #cfcfcf; padding: 5px;">
+                                        <field name="tag_municipios_ids" options="{'no_open': True, 'no_create': True}" style="background-color: white; color: black; width: 100%;" />
+                                    </td>
+                                </tr>
+                        </table>
+                        <table style="width: 98%; text-align: center; " class="table-cell">
+                                <tr invisible="1">
+                                    <td>
+                                        <label for="aporte" string="Aporte" style="background-color: #F0F0F0; border: 1px solid #cfcfcf;"/>
+                                    </td>
+                                    <td>
+                                       <field name="aporte" class="oe_form_field" style="background-color: #F0F0F0; border: 1px solid #cfcfcf;"/>
+                                    </td>
+                                    <td>
+                                        <button type="button" name="mi_funcion_del_boton" class="custom_button_style">Añadir</button>
+                                    </td>
+                                </tr>
+                        </table>
+                        <footer>
+                            <button name="action_discard" string="Cancelar" type="object" class="oe_highlight"/>
+                            <button name="action_ingresar_datos" string="Crear proyecto" type="object" class="oe_highlight"/>
+                        </footer>
+                        <separator colspan="4" style="border-top:2px solid #000000;"/>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

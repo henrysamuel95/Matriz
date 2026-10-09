@@ -1,0 +1,80 @@
+/* Estilos generales para la barra de estado de contratación */
+.o_kanban_view .o_kanban_record {
+  width: 320px; /* Ancho del contenedor padre */
+}
+
+.o_kanban_view .o_kanban_record .estado-contratacion {
+  display: flex;
+  flex-wrap: wrap; /* Permitir que los elementos se envuelvan a la siguiente línea */
+  width: 310px; /* Ancho completo de la barra */
+  margin: 0 auto; /* Centrar el cuadro */
+  border-radius: 5px; /* Bordes redondeados */
+  overflow: hidden; /* Para asegurar que no sobresalga el contenido */
+  border: 1px solid #ccc; /* Borde gris alrededor de todos los estados */
+}
+
+/* Estilo para cada estado */
+.o_kanban_view .o_kanban_record .estado-contratacion-item {
+  flex: 1 1 33.33%; /* Cada estado ocupa un tercio del espacio disponible */
+  text-align: center; /* Centrar texto */
+  padding: 6px 0; /* Espacio interno */
+  color: black; /* Color de texto */
+  cursor: pointer; /* Cambiar cursor a mano para indicar que es clickeable */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el cambio de color de fondo y texto */
+  background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco con 70% de transparencia */
+  position: relative; /* Para añadir el triángulo */
+  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 60%, calc(100% - 15px) 100%, 0 100%); /* Forma de flecha */
+}
+
+/* Remover borde derecho del último elemento en la primera fila */
+.o_kanban_view .o_kanban_record .estado-contratacion-item:nth-child(3) {
+  border-right: none;
+}
+
+/* Ajustes específicos para el último estado */
+.o_kanban_view .o_kanban_record .estado-contratacion-item-last {
+  flex: 1 1 100%; /* Ocupa todo el ancho disponible */
+  border-right: none; /* Sin borde derecho */
+  margin-top: 8px; /* Espacio entre las filas */
+}
+
+/* Estilo para el estado activo */
+.o_kanban_view .o_kanban_record .estado-contratacion-item.estado-contratacion-item-active {
+  color: white; /* Color de texto cuando está activo */
+}
+
+/* Colores específicos para cada estado */
+.o_kanban_view .o_kanban_record .estado-contratacion-item[data-status="coordinador"].estado-contratacion-item-active {
+  background-color: rgba(3, 44, 113); /* Rojo para Coordinador (RGB: 205, 18, 18) con 70% de transparencia */
+}
+
+.o_kanban_view .o_kanban_record .estado-contratacion-item[data-status="financiera"].estado-contratacion-item-active {
+  background-color: rgba(11, 37, 128); /* Amarillo para Financiera (RGB: 45, 28, 109) con 70% de transparencia */
+}
+
+.o_kanban_view .o_kanban_record .estado-contratacion-item[data-status="juridico"].estado-contratacion-item-active {
+  background-color: rgba(3, 59, 129); /* Verde para Jurídico (RGB: 11, 76, 14) con 70% de transparencia */
+}
+
+.o_kanban_view .o_kanban_record .estado-contratacion-item[data-status="recursos_humanos"].estado-contratacion-item-active {
+  background-color: rgba(22, 0, 156); /* Azul para Recursos humanos (RGB: 31, 43, 157) con 70% de transparencia */
+}
+
+.o_kanban_view .o_kanban_record .estado-contratacion-item[data-status="contratado"].estado-contratacion-item-active {
+  background-color: rgba(62, 113, 53); /* Morado para Contratado (RGB: 156, 39, 176) con 70% de transparencia */
+}
+
+
+
+
+
+/* Forzar que los estados del statusbar se muestren en una sola fila */
+.o_statusbar_status {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+}
+
+.o_statusbar_status > button {
+    flex-shrink: 0; /* Evita que los botones se reduzcan */
+}

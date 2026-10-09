@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_base_datos_regalias_tree" model="ir.ui.view">
+            <field name="name">base.datos.regalias.tree</field>
+            <field name="model">base.datos.regalias</field>
+            <field name="arch" type="xml">
+                <tree string="PROYECTOS" editable="bottom" default_order="id desc">
+                    <field name="unidad_de_negocio"/>
+                    <field name="nombre_proyecto"/>
+                    <field name="bpin"/>
+                    <field name="objeto_del_proyecto"/>
+                    <field name="valor_de_presupuesto_2025_2026"/>
+                    <field name="valor_ya_ejecutado_al_31_de_agosto_de_2026"/>
+                    <field name="saldo_del_proyecto_por_ejecutar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_base_datos_regalias_form" model="ir.ui.view">
+            <field name="name">base.datos.regalias.form</field>
+            <field name="model">base.datos.regalias</field>
+            <field name="arch" type="xml">
+                <form string="PROYECTOS">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="unidad_de_negocio"/>
+                                <field name="nombre_proyecto"/>
+                                <field name="bpin"/>
+                                <field name="objeto_del_proyecto"/>
+                            </group>
+                            <group>
+                                <field name="valor_de_presupuesto_2025_2026"/>
+                                <field name="valor_ya_ejecutado_al_31_de_agosto_de_2026"/>
+                                <field name="saldo_del_proyecto_por_ejecutar"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_base_datos_regalias_search" model="ir.ui.view">
+            <field name="name">base.datos.regalias.search</field>
+            <field name="model">base.datos.regalias</field>
+            <field name="arch" type="xml">
+                <search string="Buscar PROYECTOS">
+                    <field name="unidad_de_negocio"/>
+                    <field name="nombre_proyecto"/>
+                    <field name="bpin"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="UNIDAD DE NEGOCIO" name="group_unidad_de_negocio" context="{'group_by': 'unidad_de_negocio'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_base_datos_regalias_contrato_tree" model="ir.ui.view">
+            <field name="name">base.datos.regalias.contrato.tree</field>
+            <field name="model">base.datos.regalias.contrato</field>
+            <field name="arch" type="xml">
+                <tree string="CONTRATOS" editable="bottom" default_order="id desc">
+                    <field name="un"/>
+                    <field name="rpc"/>
+                    <field name="tipo_identificacion"/>
+                    <field name="identificacion"/>
+                    <field name="razon_social"/>
+                    <field name="contraro"/>
+                    <field name="numero_de_contrato"/>
+                    <field name="valor_de_contrato_vigencia_2025_2026"/>
+                    <field name="saldo_por_utilizar"/>
+                    <field name="resumen_objeto_contractual"/>
+                    <field name="fuente"/>
+                    <field name="rubro"/>
+                    <field name="recurso"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_base_datos_regalias_contrato_form" model="ir.ui.view">
+            <field name="name">base.datos.regalias.contrato.form</field>
+            <field name="model">base.datos.regalias.contrato</field>
+            <field name="arch" type="xml">
+                <form string="CONTRATOS">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="un"/>
+                                <field name="rpc"/>
+                                <field name="tipo_identificacion"/>
+                                <field name="identificacion"/>
+                                <field name="razon_social"/>
+                                <field name="contraro"/>
+                                <field name="numero_de_contrato"/>
+                            </group>
+                            <group>
+                                <field name="valor_de_contrato_vigencia_2025_2026"/>
+                                <field name="saldo_por_utilizar"/>
+                                <field name="resumen_objeto_contractual"/>
+                                <field name="fuente"/>
+                                <field name="rubro"/>
+                                <field name="recurso"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_base_datos_regalias_contrato_search" model="ir.ui.view">
+            <field name="name">base.datos.regalias.contrato.search</field>
+            <field name="model">base.datos.regalias.contrato</field>
+            <field name="arch" type="xml">
+                <search string="Buscar CONTRATOS">
+                    <field name="un"/>
+                    <field name="rpc"/>
+                    <field name="identificacion"/>
+                    <field name="razon_social"/>
+                    <field name="numero_de_contrato"/>
+                    <field name="rubro"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="UN" name="group_un" context="{'group_by': 'un'}"/>
+                        <filter string="RAZON SOCIAL" name="group_razon_social" context="{'group_by': 'razon_social'}"/>
+                        <filter string="RUBRO" name="group_rubro" context="{'group_by': 'rubro'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_base_datos_regalias" model="ir.actions.act_window">
+            <field name="name">PROYECTOS</field>
+            <field name="res_model">base.datos.regalias</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Importe aquí la pestaña PROYECTOS del archivo SGR.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_base_datos_regalias_contrato" model="ir.actions.act_window">
+            <field name="name">CONTRATOS</field>
+            <field name="res_model">base.datos.regalias.contrato</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Importe aquí la pestaña CONTRATOS del archivo SGR.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_base_datos_regalias"
+                  name="Base Regalías"
+                  parent="Matriz.menu_principal"
+                  sequence="125"
+                  groups="Matriz.group_contratacion_regalias"/>
+        <menuitem id="menu_base_datos_regalias_proyectos"
+                  name="PROYECTOS"
+                  parent="menu_base_datos_regalias"
+                  sequence="10"
+                  action="action_base_datos_regalias"
+                  groups="Matriz.group_contratacion_regalias"/>
+        <menuitem id="menu_base_datos_regalias_contratos"
+                  name="CONTRATOS"
+                  parent="menu_base_datos_regalias"
+                  sequence="20"
+                  action="action_base_datos_regalias_contrato"
+                  groups="Matriz.group_contratacion_regalias"/>
+    </data>
+</odoo>

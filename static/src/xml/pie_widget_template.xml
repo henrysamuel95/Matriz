@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PieChartWidget" owl="1">
+        <div t-ref="PieChartWidget-root" class="chart-container">
+            <canvas class="pie-chart-canvas"></canvas>
+        </div>
+    </t>
+</templates>

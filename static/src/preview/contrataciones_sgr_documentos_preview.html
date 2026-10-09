@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Documentos SGR | Vista previa</title>
+  <style>
+    :root{color-scheme:light;font-family:Arial,Helvetica,sans-serif;color:#24374d;background:#f4f7f9}
+    *{box-sizing:border-box}
+    body{margin:0;letter-spacing:0}
+    button{font:inherit;cursor:pointer}
+    .top{background:#082b62;color:#fff;padding:12px max(24px,calc((100% - 1180px)/2));font-size:13px}
+    .top span{opacity:.75}
+    main{max-width:1180px;margin:0 auto;padding:24px 20px 55px}
+    .identity{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:22px;border-bottom:1px solid #dce5ea}
+    .identity img{width:245px;max-width:50%;height:auto}
+    .identity h1{margin:0;color:#122f56;font-size:20px;text-align:right}
+    .identity p{margin:4px 0 0;color:#617181;font-size:12px;text-align:right}
+    .toolbar{margin:24px 0 18px}
+    .toolbar h2{margin:0 0 4px;color:#173b67;font-size:18px}
+    .toolbar p{margin:0;color:#657785;font-size:13px}
+    .document-panel{background:#fff;border:1px solid #d6e2e9;border-top:3px solid #0b5d91}
+    .panel-head{display:flex;justify-content:space-between;align-items:center;gap:16px;background:#d6eaf1;padding:17px 19px}
+    .panel-head h3{margin:0;color:#173b56;font-size:15px;text-transform:uppercase}
+    .panel-head .count{color:#28576e;font-size:13px;font-weight:700;white-space:nowrap}
+    #rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+    .doc{display:grid;grid-template-columns:25px minmax(0,1fr) auto;grid-template-rows:auto auto auto;align-content:center;column-gap:9px;row-gap:4px;min-width:0;min-height:96px;padding:11px 16px;border-bottom:1px solid #e7edef;font-size:13px}
+    .doc:nth-child(odd){border-right:1px solid #e7edef}
+    .doc:nth-last-child(-n+2){border-bottom:0}
+    .doc:nth-child(4n+3),.doc:nth-child(4n+4){background:#fbfcfd}
+    .index{grid-column:1;grid-row:1/4;color:#8395a1;font-weight:700}
+    .doc-name{grid-column:2;grid-row:1;min-width:0;padding-right:12px;color:#173b67;font-weight:600;line-height:1.3;overflow-wrap:anywhere}
+    .condition{grid-column:2;grid-row:2;color:#5d6c77;font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+    .condition.empty{display:none}
+    .file-name{grid-column:2;grid-row:3;color:#485d70;overflow-wrap:anywhere;font-size:12px}
+    .file-name.empty{color:#a3afb7}
+    .status{display:inline-flex;grid-column:3;grid-row:1;align-items:center;gap:6px;width:max-content;max-width:100%;font-size:11px;font-weight:700;color:#717f88}
+    .status:before{content:"";width:7px;height:7px;flex:none;background:#aebcc5;border-radius:50%}
+    .status.selected{color:#1a7d58}
+    .status.selected:before{background:#1ca16f}
+    .actions{display:flex;grid-column:3;grid-row:2/4;align-self:end;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+    .upload,.view{border-radius:4px;min-height:31px;padding:6px 10px;font-size:12px;font-weight:700;white-space:nowrap}
+    .upload{background:#0d5592;color:#fff;border:1px solid #0d5592}
+    .upload:hover{background:#083e72}
+    .view{background:#2ecc71;color:#fff;border:1px solid #2ecc71}
+    .view:hover{background:#27ae60}
+    .viewer{width:min(900px,calc(100% - 24px));max-height:calc(100vh - 28px);padding:0;border:1px solid #cbd9e1;border-radius:6px;box-shadow:0 16px 50px #09284a45}
+    .viewer::backdrop{background:#09223a91}
+    .viewer-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 20px;border-bottom:1px solid #dce6eb}
+    .viewer-head h2{margin:0;font-size:17px;color:#173b67}
+    .viewer-head button{border:0;background:transparent;color:#415c70;font-size:25px;line-height:1}
+    .viewer-file{padding:12px 20px;color:#536779;font-size:13px;overflow-wrap:anywhere}
+    .viewer iframe{display:block;width:calc(100% - 40px);height:min(60vh,560px);margin:0 20px;border:1px solid #dce6eb;background:#f6f8fa}
+    .viewer-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px}
+    .viewer-foot button,.viewer-foot a{min-height:34px;padding:7px 13px;border-radius:4px;font-size:13px;font-weight:700;text-decoration:none}
+    .viewer-delete{border:1px solid #bf3344;background:#bf3344;color:#fff}
+    .viewer-open{border:1px solid #bed0da;color:#0d5592;background:#fff}
+    @media(max-width:1100px){#rows{grid-template-columns:minmax(0,1fr)}.doc:nth-child(odd){border-right:0}.doc:nth-last-child(2){border-bottom:1px solid #e7edef}.doc:nth-child(4n+3),.doc:nth-child(4n+4){background:#fff}.doc:nth-child(even){background:#fbfcfd}.identity img{width:205px}}
+    @media(max-width:620px){main{padding:18px 12px 35px}.identity{align-items:start}.identity img{width:145px}.identity h1{font-size:15px}.panel-head{padding:14px 12px}.panel-head h3{font-size:13px}.doc{padding:11px 12px;grid-template-columns:22px minmax(0,1fr) auto}.doc-name{grid-column:2/4}.status{grid-column:2;grid-row:2}.condition{grid-column:2/4;grid-row:3}.file-name{grid-column:2/4;grid-row:4}.actions{grid-column:2/4;grid-row:5;justify-content:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="top">PRINCIPAL <span>/ PROYECTO SGR / 2. Contratación / Documentos</span></div>
+  <main>
+    <div class="identity">
+      <img src="../img/logo_fundacion_univalle_horizontal_color.jpg" alt="Fundación Univalle">
+      <div><h1>Formulario de solicitud de contratación SGR</h1><p>Documentación anexa</p></div>
+    </div>
+    <div class="toolbar">
+      <div><h2>Documentos del contratista</h2><p id="subtitle">Persona natural</p></div>
+    </div>
+    <section class="document-panel" aria-label="Requisitos documentales">
+      <div class="panel-head"><h3 id="section-title">Persona natural</h3><span class="count" id="count"></span></div>
+      <div id="rows"></div>
+    </section>
+  </main>
+  <dialog class="viewer" id="viewer" aria-labelledby="viewer-title">
+    <div class="viewer-head"><h2 id="viewer-title">Documento</h2><button id="viewer-close" type="button" aria-label="Cerrar">×</button></div>
+    <div class="viewer-file" id="viewer-file"></div>
+    <iframe id="viewer-frame" title="Vista previa del documento"></iframe>
+    <div class="viewer-foot"><button class="viewer-delete" id="viewer-delete" type="button">Mover a papelera</button><a class="viewer-open" id="viewer-open" target="_blank" rel="noopener">Abrir documento</a></div>
+  </dialog>
+  <script>
+    const catalogs = {
+      pn: [
+        ['Documento de identidad',''],['RUT actualizado',''],['Hoja de vida',''],['Certificados de estudio',''],
+        ['Certificados laborales',''],['Afiliación a salud','No mayor a 30 días'],['Afiliación a pensión','No mayor a 30 días'],
+        ['Examen preocupacional','No mayor a 30 días'],['Certificado de Contraloría','No mayor a 30 días'],
+        ['Certificado de Procuraduría','No mayor a 30 días'],['Antecedentes judiciales','No mayor a 30 días'],
+        ['Inhabilidades por delitos sexuales','No mayor a 30 días'],['Medidas correctivas','No mayor a 30 días'],
+        ['Certificado de inhabilidades','No mayor a 30 días'],['Libreta militar','Menor de 50 años, si aplica'],
+        ['Resolución de pensionado vigente','Si aplica'],['Certificación bancaria','Vigente'],
+        ['Declaración juramentada',''],['Tarjeta profesional','Cuando aplique'],
+        ['Antecedentes disciplinarios del ejercicio de la profesión','Cuando aplique']
+      ],
+      pj: [
+        ['Propuesta',''],['Cámara de comercio','Actualizada'],['RUT actualizado',''],['RUP','Si aplica'],
+        ['Hoja de vida jurídica','Actualizada'],['Certificado de Contraloría','No mayor a 30 días'],
+        ['Certificado de Procuraduría','No mayor a 30 días'],['Cédula del representante legal',''],
+        ['Libreta militar','Menor de 50 años, si aplica'],['Contraloría del representante legal',''],
+        ['Procuraduría del representante legal',''],
+        ['Antecedentes judiciales, medidas correctivas e inhabilidades sexuales','No mayor a 30 días'],
+        ['Certificado de inhabilidades',''],['Resolución de facturación electrónica',''],['Experiencia laboral',''],
+        ['Certificado de pago de parafiscales',''],['Planilla de seguridad social',''],
+        ['Certificado de Junta de Contadores','Si aplica'],['Cédula de revisor fiscal y/o contador','Si aplica'],
+        ['Certificado bancario','Vigente'],['Anexo tributario','']
+      ]
+    };
+    function examplePdf(){
+      const stream='BT /F1 18 Tf 72 750 Td (Documento de ejemplo SGR) Tj ET';
+      const objects=[
+        '<< /Type /Catalog /Pages 2 0 R >>',
+        '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
+        '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>',
+        `<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`,
+        '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>'
+      ];
+      let body='%PDF-1.4\n';const offsets=[];
+      objects.forEach((object,index)=>{offsets.push(body.length);body+=`${index+1} 0 obj\n${object}\nendobj\n`});
+      const startxref=body.length;
+      body+='xref\n0 6\n0000000000 65535 f \n'+offsets.map(offset=>String(offset).padStart(10,'0')+' 00000 n \n').join('');
+      body+=`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${startxref}\n%%EOF`;
+      return URL.createObjectURL(new Blob([body],{type:'application/pdf'}));
+    }
+    const sampleUrl=examplePdf();
+    const files={
+      'pn:0':{name:'documento_identidad_ejemplo.pdf',url:sampleUrl,state:'cargado'},
+      'pj:0':{name:'propuesta_sgr_ejemplo.pdf',url:sampleUrl,state:'cargado'}
+    };
+    const requestedMode=new URLSearchParams(window.location.search).get('persona');
+    const mode=['pn','pj','laboral'].includes(requestedMode)?requestedMode:'pn';
+    const viewer=document.getElementById('viewer');
+    document.getElementById('viewer-close').addEventListener('click',()=>viewer.close());
+    viewer.addEventListener('click',event=>{if(event.target===viewer)viewer.close()});
+    function showDocument(key,name){
+      const file=files[key];if(!file)return;
+      document.getElementById('viewer-title').textContent=name;
+      document.getElementById('viewer-file').textContent=file.name;
+      document.getElementById('viewer-frame').src=file.url;
+      document.getElementById('viewer-open').href=file.url;
+      document.getElementById('viewer-delete').onclick=()=>{
+        if(!window.confirm('¿Mover este documento a la papelera? Podrá cargar uno nuevo después.'))return;
+        if(file.url!==sampleUrl)URL.revokeObjectURL(file.url);
+        delete files[key];viewer.close();render();
+      };
+      viewer.showModal();
+    }
+    function text(value,className){const span=document.createElement('span');span.className=className;span.textContent=value;return span}
+    function render(){
+      const category=mode==='pj'?'pj':'pn', docs=catalogs[category], rows=document.getElementById('rows');
+      rows.replaceChildren();
+      document.getElementById('section-title').textContent=mode==='pj'?'Persona jurídica':mode==='laboral'?'Contrato laboral · Persona natural':'Persona natural';
+      document.getElementById('subtitle').textContent=mode==='laboral'?'Contrato laboral':mode==='pj'?'Persona jurídica':'Persona natural';
+      let loaded=0;
+      docs.forEach(([name,condition],i)=>{
+        const key=category+':'+i, file=files[key];if(file)loaded++;
+        const row=document.createElement('div');row.className='doc';
+        row.append(text(String(i+1).padStart(2,'0'),'index'),text(name,'doc-name'),text(condition||'—','condition'+(condition?'':' empty')));
+        row.append(text(file?(file.state==='cargado'?'En Drive':'Seleccionado'):'Pendiente','status'+(file?' selected':'')));
+        row.append(text(file?file.name:'Sin archivo','file-name'+(file?'':' empty')));
+        const actions=document.createElement('div');actions.className='actions';
+        const button=document.createElement('button');button.className=file?'view':'upload';button.type='button';button.textContent=file?'Ver documento':'Suba su archivo';
+        if(file){button.addEventListener('click',()=>showDocument(key,name))}
+        else{button.addEventListener('click',()=>{const input=document.createElement('input');input.type='file';input.hidden=true;input.addEventListener('change',()=>{if(input.files[0]){files[key]={name:input.files[0].name,url:URL.createObjectURL(input.files[0]),state:'cargado'};render()}});input.click()})}
+        actions.append(button);row.append(actions);rows.append(row);
+      });
+      document.getElementById('count').textContent=loaded+' de '+docs.length+' con archivo';
+    }
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_trazabilidad_interna_tree" model="ir.ui.view">
+        <field name="name">trazabilidad_interna.tree</field>
+        <field name="model">trazabilidad_interna</field>
+        <field name="arch" type="xml">
+            <tree string="Trazabilidad interna" create="0" edit="0" delete="0" decoration-info="tipo_accion == 'creacion'" decoration-warning="tipo_accion == 'edicion'" decoration-danger="tipo_accion == 'eliminacion'">
+                <field name="id" optional="hide"/>
+                <field name="fecha"/>
+                <field name="usuario_id" widget="many2one_avatar_user" options="{'no_open': True}"/>
+                <field name="tipo_accion"/>
+                <field name="modelo_afectado"/>
+                <field name="origen_cambio"/>
+                <field name="proyecto_id" optional="show" options="{'no_open': True}"/>
+                <field name="contratacion_fuv_id" optional="show" string="FUV Relacionado" options="{'no_open': True}"/>
+                <field name="orden_compra_bienes_id" optional="hide"/>
+                <field name="orden_compra_servicios_id" optional="hide"/>
+                <field name="otro_si_id" optional="hide"/>
+                <field name="anticipo_id" optional="hide"/>
+                <field name="legalizacion_id" optional="hide"/>
+                <field name="usuario_afectado_id" optional="hide" options="{'no_open': True}"/>
+                <field name="informacion_base_id" optional="hide"/>
+                <field name="departamento_id" optional="hide"/>
+                <field name="municipio_id" optional="hide"/>
+                <field name="departamento_y_municipio_id" optional="hide"/>
+                <field name="municipios_combinados_id" optional="hide"/>
+                <field name="municipios_nuevos_id" optional="hide"/>
+                <field name="nombre_registro"/>
+                <field name="detalle_cambios" widget="html" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_trazabilidad_usuarios_tree" model="ir.ui.view">
+        <field name="name">trazabilidad_interna.usuarios.tree</field>
+        <field name="model">trazabilidad_interna</field>
+        <field name="arch" type="xml">
+            <tree string="Trazabilidad de usuarios y roles" create="0" edit="0" delete="0"
+                  decoration-info="tipo_accion == 'creacion'"
+                  decoration-warning="tipo_accion == 'edicion'"
+                  decoration-danger="tipo_accion == 'eliminacion'">
+                <field name="fecha"/>
+                <field name="usuario_ejecutor"/>
+                <field name="usuario_id" string="Cuenta ejecutora" widget="many2one_avatar_user"
+                       options="{'no_open': True}" optional="hide"/>
+                <field name="usuario_afectado_id" options="{'no_open': True}"/>
+                <field name="tipo_accion"/>
+                <field name="nombre_registro"/>
+                <field name="detalle_cambios" widget="html" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_trazabilidad_interna_form" model="ir.ui.view">
+        <field name="name">trazabilidad_interna.form</field>
+        <field name="model">trazabilidad_interna</field>
+        <field name="arch" type="xml">
+            <form string="Detalle de trazabilidad" create="0" edit="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="nombre_registro"/></h1>
+                    </div>
+                    <group>
+                        <group string="Documentos relacionados">
+                            <!-- Enlaces directos a los padres -->
+                            <field name="informacion_base_id" attrs="{'invisible': [('informacion_base_id', '=', False)]}"/>
+                            <field name="proyecto_id" attrs="{'invisible': [('proyecto_id', '=', False)]}" options="{'no_open': True}"/>
+                            <field name="contratacion_fuv_id" attrs="{'invisible': [('contratacion_fuv_id', '=', False)]}" options="{'no_open': True}"/>
+                            <field name="orden_compra_bienes_id" attrs="{'invisible': [('orden_compra_bienes_id', '=', False)]}"/>
+                            <field name="orden_compra_servicios_id" attrs="{'invisible': [('orden_compra_servicios_id', '=', False)]}"/>
+                            <field name="otro_si_id" attrs="{'invisible': [('otro_si_id', '=', False)]}"/>
+                            <field name="anticipo_id" attrs="{'invisible': [('anticipo_id', '=', False)]}"/>
+                            <field name="legalizacion_id" attrs="{'invisible': [('legalizacion_id', '=', False)]}"/>
+                            <field name="usuario_afectado_id"
+                                   attrs="{'invisible': [('usuario_afectado_id', '=', False)]}"
+                                   options="{'no_open': True}"/>
+                            
+                            <field name="fecha"/>
+                            <field name="usuario_id" options="{'no_open': True}"/>
+                            <field name="usuario_ejecutor"
+                                   attrs="{'invisible': [('usuario_ejecutor', '=', False)]}"/>
+                            <field name="tipo_accion"/>
+                        </group>
+                        <group string="Origen del cambio">
+                            <field name="modelo_afectado"/>
+                            <field name="origen_cambio"/>
+                            
+                            <field name="departamento_id" attrs="{'invisible': [('modelo_afectado', '!=', 'departamento')]}"/>
+                            <field name="municipio_id" attrs="{'invisible': [('modelo_afectado', '!=', 'municipio')]}"/>
+                            <field name="departamento_y_municipio_id" attrs="{'invisible': [('modelo_afectado', '!=', 'departamento_y_municipio')]}"/>
+                            <field name="municipios_combinados_id" attrs="{'invisible': [('modelo_afectado', '!=', 'municipios_combinados')]}"/>
+                            <field name="municipios_nuevos_id" attrs="{'invisible': [('modelo_afectado', '!=', 'municipios_nuevos')]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detalle exacto del cambio">
+                            <field name="detalle_cambios" widget="html" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_trazabilidad_interna_search" model="ir.ui.view">
+        <field name="name">trazabilidad_interna.search</field>
+        <field name="model">trazabilidad_interna</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="usuario_id"/>
+                <field name="nombre_registro"/>
+                <field name="origen_cambio"/>
+                <field name="proyecto_id"/>
+                <field name="contratacion_fuv_id"/> <!-- BÚSQUEDA POR FUV -->
+                <field name="orden_compra_bienes_id"/>
+                <field name="orden_compra_servicios_id"/>
+                <field name="otro_si_id"/>
+                <field name="anticipo_id"/>
+                <field name="legalizacion_id"/>
+                <field name="usuario_afectado_id"/>
+                
+                <filter string="Hoy" name="hoy" domain="[('fecha', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter string="Modelo" name="group_modelo" context="{'group_by':'modelo_afectado'}"/>
+                    <filter string="FUV relacionado" name="group_fuv" context="{'group_by':'contratacion_fuv_id'}"/>
+                    <filter string="Proyecto" name="group_proyecto" context="{'group_by':'proyecto_id'}"/>
+                    <filter string="Usuario" name="group_usuario" context="{'group_by':'usuario_id'}"/>
+                    <filter string="Acción" name="group_accion" context="{'group_by':'tipo_accion'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_trazabilidad_interna" model="ir.actions.act_window">
+        <field name="name">Municipios y departamentos</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">['|', ('modelo_afectado', 'in', ['departamento', 'municipio', 'departamento_y_municipio', 'municipios_combinados', 'municipios_nuevos', 'informacion_base_agregar']), ('departamento_y_municipio_id', '!=', False)]</field>
+    </record>
+
+    <record id="action_trazabilidad_contrataciones_fuv" model="ir.actions.act_window">
+        <field name="name">Contrataciones FUV</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', '=', 'contrataciones_fuv'), ('departamento_y_municipio_id', '=', False)]</field>
+    </record>
+
+    <record id="action_trazabilidad_ordenes_compra" model="ir.actions.act_window">
+        <field name="name">Órdenes de compra</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', 'in', ['orden_compra_bienes', 'orden_compra_servicios'])]</field>
+    </record>
+
+    <record id="action_trazabilidad_otrosi" model="ir.actions.act_window">
+        <field name="name">Otrosí</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', '=', 'otro_si')]</field>
+    </record>
+
+    <record id="action_trazabilidad_anticipos" model="ir.actions.act_window">
+        <field name="name">Anticipos</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', '=', 'anticipos')]</field>
+    </record>
+
+    <record id="action_trazabilidad_legalizaciones" model="ir.actions.act_window">
+        <field name="name">Legalizaciones</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', '=', 'legalizaciones')]</field>
+    </record>
+
+    <record id="action_trazabilidad_usuarios" model="ir.actions.act_window">
+        <field name="name">Usuarios y roles</field>
+        <field name="res_model">trazabilidad_interna</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_trazabilidad_usuarios_tree"/>
+        <field name="search_view_id" ref="view_trazabilidad_interna_search"/>
+        <field name="domain">[('modelo_afectado', '=', 'res_users')]</field>
+    </record>
+
+    <menuitem id="menu_trazabilidad_root"
+              name="Trazabilidad Interna"
+              sequence="99"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_trazabilidad_interna" 
+              name="Municipios y departamentos"
+              parent="menu_trazabilidad_root"
+              action="action_trazabilidad_interna" 
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_trazabilidad_contratos"
+              name="Contratos"
+              parent="menu_trazabilidad_root"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_trazabilidad_usuarios" name="Usuarios y roles"
+              parent="menu_trazabilidad_root" action="action_trazabilidad_usuarios"
+              sequence="30" groups="base.group_system"/>
+
+    <menuitem id="menu_trazabilidad_contrataciones_fuv" name="Contrataciones FUV"
+              parent="menu_trazabilidad_contratos" action="action_trazabilidad_contrataciones_fuv"
+              sequence="10" groups="base.group_system"/>
+    <menuitem id="menu_trazabilidad_ordenes_compra" name="Órdenes de compra"
+              parent="menu_trazabilidad_contratos" action="action_trazabilidad_ordenes_compra"
+              sequence="20" groups="base.group_system"/>
+    <menuitem id="menu_trazabilidad_otrosi" name="Otrosí"
+              parent="menu_trazabilidad_contratos" action="action_trazabilidad_otrosi"
+              sequence="30" groups="base.group_system"/>
+    <menuitem id="menu_trazabilidad_anticipos" name="Anticipos"
+              parent="menu_trazabilidad_contratos" action="action_trazabilidad_anticipos"
+              sequence="40" groups="base.group_system"/>
+    <menuitem id="menu_trazabilidad_legalizaciones" name="Legalizaciones"
+              parent="menu_trazabilidad_contratos" action="action_trazabilidad_legalizaciones"
+              sequence="50" groups="base.group_system"/>
+</odoo>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sgo_destacados_search" model="ir.ui.view">
+        <field name="name">sgo.destacados.post.search</field>
+        <field name="model">sgo.destacados.post</field>
+        <field name="arch" type="xml">
+            <search string="Buscar en SGO Academy">
+                <field name="name" string="Título"/>
+                <field name="modelo_tecnico"/>
+                <field name="tipo"/>
+                <field name="ruta"/>
+                <field name="contenido" string="Contenido"/>
+                <filter name="con_menu" string="Con menú" domain="[('tiene_menu', '=', True)]"/>
+                <filter name="uso_interno" string="Uso interno" domain="[('tiene_menu', '=', False)]"/>
+                <separator/>
+                <filter name="publicado" string="Publicado" domain="[('estado', '=', 'publicado')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_tipo" string="Tipo" context="{'group_by': 'tipo'}"/>
+                    <filter name="group_menu" string="Tiene menú" context="{'group_by': 'tiene_menu'}"/>
+                    <filter name="group_estado" string="Estado" context="{'group_by': 'estado'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_sgo_destacados_kanban" model="ir.ui.view">
+        <field name="name">sgo.destacados.post.kanban</field>
+        <field name="model">sgo.destacados.post</field>
+        <field name="arch" type="xml">
+            <kanban create="false" edit="false" class="o_sgo_academy_wall">
+                <field name="name"/>
+                <field name="modelo_tecnico"/>
+                <field name="descripcion_usuario"/>
+                <field name="contenido"/>
+                <field name="fecha_publicacion"/>
+                <field name="estado"/>
+                <field name="tipo"/>
+                <field name="tiene_menu"/>
+                <field name="ruta"/>
+                <field name="detalles"/>
+                <field name="pasos_ids"/>
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_sgo_mural_card">
+                            <div class="o_sgo_card_topline">
+                                <span class="o_sgo_badge o_sgo_badge_type">
+                                    <t t-esc="record.tipo.value || 'Sin tipo'"/>
+                                </span>
+                                <t t-if="record.tiene_menu.raw_value">
+                                    <span class="o_sgo_badge o_sgo_badge_menu">Con menú</span>
+                                </t>
+                                <t t-else="">
+                                    <span class="o_sgo_badge o_sgo_badge_internal">Interno</span>
+                                </t>
+                            </div>
+
+                            <div class="o_sgo_card_title">
+                                <field name="name"/>
+                            </div>
+
+                            <t t-if="record.modelo_tecnico.value">
+                                <div class="o_sgo_model_name">
+                                    <i class="fa fa-code"/> <field name="modelo_tecnico"/>
+                                </div>
+                            </t>
+
+                            <div class="o_sgo_card_content">
+                                <field name="contenido" widget="html"/>
+                            </div>
+
+                            <div class="o_sgo_route_box">
+                                <div class="o_sgo_route_label"><i class="fa fa-location-arrow"/> Ruta de acceso</div>
+                                <div class="o_sgo_route_text">
+                                    <t t-esc="record.ruta.value || 'Uso interno del sistema'"/>
+                                </div>
+                            </div>
+
+                            <div class="o_sgo_card_footer">
+                                <span><i class="fa fa-calendar-o"/> <field name="fecha_publicacion" widget="date"/></span>
+                                <t t-if="record.pasos_ids.raw_value.length > 0">
+                                    <span class="o_sgo_steps"><i class="fa fa-book"/> <t t-esc="record.pasos_ids.raw_value.length"/> pasos</span>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_sgo_destacados_tree" model="ir.ui.view">
+        <field name="name">sgo.destacados.post.tree</field>
+        <field name="model">sgo.destacados.post</field>
+        <field name="arch" type="xml">
+            <tree string="SGO Academy" decoration-muted="estado == 'borrador'">
+                <field name="fecha_publicacion"/>
+                <field name="name"/>
+                <field name="modelo_tecnico"/>
+                <field name="tipo"/>
+                <field name="tiene_menu"/>
+                <field name="ruta"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sgo_agente_form" model="ir.ui.view">
+        <field name="name">sgo.agente.publicador.form</field>
+        <field name="model">sgo.agente.publicador</field>
+        <field name="arch" type="xml">
+            <form string="Configuración IA">
+                <header>
+                    <button name="accion_crear_publicacion"
+                            string="Generar Publicación"
+                            type="object"
+                            class="oe_highlight"
+                            icon="fa-magic"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Conexión">
+                            <field name="api_key_ia" password="True"/>
+                        </group>
+                        <group string="Base de alimentación">
+                            <field name="archivo_datos" filename="archivo_nombre" widget="binary"/>
+                            <field name="archivo_nombre" invisible="1"/>
+                            <field name="ultima_fila_procesada" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sgo_destacados_form" model="ir.ui.view">
+        <field name="name">sgo.destacados.post.form</field>
+        <field name="model">sgo.destacados.post</field>
+        <field name="arch" type="xml">
+            <form string="Ficha SGO Academy">
+                <sheet>
+                    <div class="o_sgo_form_header">
+                        <div>
+                            <span class="o_sgo_badge o_sgo_badge_type"><field name="tipo" readonly="1"/></span>
+                            <field name="estado" widget="statusbar" statusbar_visible="borrador,publicado"/>
+                            <h1><field name="name"/></h1>
+                            <div class="o_sgo_model_name"><i class="fa fa-code"/> <field name="modelo_tecnico"/></div>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group string="Entrada del usuario">
+                            <field name="tiene_menu"/>
+                            <field name="ruta" placeholder="Ruta de acceso o punto del proceso desde donde se abre"/>
+                        </group>
+                        <group string="Datos de origen">
+                            <field name="fecha_publicacion" readonly="1"/>
+                            <field name="tipo"/>
+                            <field name="modelo_tecnico"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Mural">
+                            <div class="o_sgo_form_panel">
+                                <h3>Explicación para el equipo</h3>
+                                <field name="contenido" widget="html" nolabel="1"/>
+                            </div>
+                        </page>
+                        <page string="Base de alimentación">
+                            <group>
+                                <field name="descripcion_usuario"/>
+                                <field name="descripcion_desarrollador"/>
+                                <field name="detalles"/>
+                            </group>
+                        </page>
+                        <page string="Mini-Tutorial (Pasos)">
+                            <field name="pasos_ids">
+                                <tree editable="bottom">
+                                    <field name="secuencia" widget="handle"/>
+                                    <field name="nombre_paso"/>
+                                    <field name="instruccion"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="secuencia"/>
+                                        <field name="nombre_paso"/>
+                                        <field name="instruccion" widget="html"/>
+                                        <field name="imagen" widget="image"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sgo_destacados_muro" model="ir.actions.act_window">
+        <field name="name">Muro SGO Academy</field>
+        <field name="res_model">sgo.destacados.post</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_sgo_destacados_search"/>
+        <field name="context">{'search_default_publicado': 1}</field>
+    </record>
+
+    <record id="action_sgo_agente_config" model="ir.actions.act_window">
+        <field name="name">IA Publicadora</field>
+        <field name="res_model">sgo.agente.publicador</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_sgo_root"
+              name="SGO Academy"
+              sequence="5"
+              groups="Matriz.group_soporte"/>
+
+    <menuitem id="menu_sgo_muro"
+              name="Muro"
+              parent="menu_sgo_root"
+              action="action_sgo_destacados_muro"
+              sequence="1"/>
+
+    <menuitem id="menu_sgo_agente"
+              name="IA Publicadora"
+              parent="menu_sgo_root"
+              action="action_sgo_agente_config"
+              sequence="2"/>
+
+</odoo>

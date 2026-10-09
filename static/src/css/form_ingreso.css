@@ -1,0 +1,181 @@
+/*body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}*/
+
+/**********DATOS A COMPLETAR POR EL PROVEEDOR / CLIENTES **********************/
+
+/* style_form.css */
+.container-fit {
+    border: 1px solid black;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-fit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #d9d9d9;
+    padding: 5px 0;
+}
+
+.header2-fit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.icon-fit img {
+    width: 100px;
+    height: auto;
+    justify-content: left;
+    margin-right: 10px;
+}
+
+.header-text-fit h1 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-text-fit h2 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.alert-fit {
+    text-align: center;
+    background-color: yellow;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+
+.alert-fit h3 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.alert-end-fit {
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.alert-end-fit h3 {
+    font-size: 14px;
+    color: darkblue; /* Color azul oscuro */
+    margin: 0;
+}
+
+/********** DATOS A COMPLETAR POR EL PROVEEDOR / CLIENTES **********************/
+/********** DATOS BÁSICOS **********************/
+
+/* Contenedor principal */
+.container-fit {
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    max-width: 100%; /* Elimina posibles restricciones de ancho máximo */
+    box-sizing: border-box; /* Incluye los bordes y el relleno en el cálculo del ancho */
+    padding: 20px; /* Espaciado interno */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    border: 1px solid #ccc; /* Bordes para diferenciar */
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: #f9f9f9; /* Fondo claro */
+}
+
+/* Encabezado */
+.header1-fit h2 {
+    text-align: center; /* Centrar el texto */
+    font-size: 18px; /* Tamaño del texto */
+    font-weight: bold; /* Texto en negrita */
+    color: #333; /* Color del texto */
+    margin: 0 0 10px; /* Espaciado inferior */
+    border-bottom: 2px solid #007bff; /* Línea decorativa */
+    padding-bottom: 10px; /* Espaciado interno inferior */
+}
+
+/* Contenido de los campos */
+.content-fit {
+    display: flex;
+    flex-direction: column; /* Alinea los elementos verticalmente */
+    gap: 15px; /* Espaciado entre los campos */
+}
+
+/* Grupo de cada campo */
+.field-group-fit {
+    display: flex;
+    flex-direction: row; /* Alinea etiqueta y campo horizontalmente */
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 10px; /* Espaciado entre etiqueta y campo */
+}
+
+/* Etiquetas */
+.field-group-fit label {
+    width: 180px; /* Ancho fijo para las etiquetas */
+    font-size: 14px; /* Tamaño de fuente */
+    color: #555; /* Color de texto */
+    font-weight: bold; /* Negrita */
+}
+
+/* Campo (ajusta según Odoo) */
+.field-group-fit field {
+    flex: 1; /* El campo toma el espacio restante */
+    font-size: 14px; /* Tamaño de fuente */
+    padding: 5px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 4px; /* Bordes redondeados */
+    background-color: #fff; /* Fondo blanco */
+}
+
+
+
+/*.container-fit {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+.header-fit {
+    display: flex:
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+.header2-fit {
+    overflow: hidden;
+}
+
+
+.header-text-fit {
+    poscition: relative;
+    text-align: center;
+}
+
+.alert-fit{
+    background-color: yellow;
+    color: black;
+}
+
+.header-fit img {
+    width: 150px;
+}
+
+.header-fit h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.header-fit p {
+    margin: 5px 0;
+    font-size: 14px;
+}*/
+

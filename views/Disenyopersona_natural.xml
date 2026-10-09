@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Vista del formulario de persona_natural -->
+        <record id="view_persona_natural_form" model="ir.ui.view">
+            <field name="name">persona_natural.form</field>
+            <field name="model">persona_natural</field>
+            <field name="arch" type="xml">
+                <form string="Persona Natural">
+                    <sheet>
+                        <header>
+                            <field name="new_name" placeholder="Escribe tu Nombre" required="1" default_focus="1" class="oe_avatar" style="width: 200px;"></field>
+                            <root>
+                              <Titulo_proyecto style="font-weight:bold; text-align:center; display:block; margin:auto; font-size:24px;">PERSONA NATURAL</Titulo_proyecto>
+                            </root>
+                            <span style="display: inline-block; width: 20px;"></span>
+                            <tr>
+                                <td>
+                                    <label for="nit" string="Buscar NIT(solo numero sin DV ni guiones o espacios" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" invisible="1"/>
+                                </td>
+                                <td class="oe_inline" style="text-align: center;">
+                                    <field name="nit" class="oe_inline" style="background-color: #FFFFFF; border: 1px solid #CCCCCC; white-space: nowrap; padding-left: 10px;" invisible="1"/>
+                                </td>
+                                <td class="oe_inline">
+                                    <span style="display: inline-block; width: 15px;"></span>
+                                    <button name="nit" string="Buscar" type="object" class="custom_button_style" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" invisible="1"/>
+                                </td>
+                            </tr>
+                        </header>
+                        <br/>
+                            <style>
+                                .custom_button_style {
+                                    background-color: #485B75;
+                                    color: white;
+                                    border: none;
+                                    padding: 10px 20px;
+                                    font-size: 16px;
+                                    border-radius: 5px;
+                                }
+                           </style>
+                        <div>
+                            <group>
+                                <group>
+                                    <field name="razon_social" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="documentos_id" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="correo" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="direccion" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    <field name="telefono" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <!-- Pestaña Documentos del Representante Legal -->
+                                <page string="Documentos del Representante Legal">
+                                    <group>
+                                        <field name="cedula_representante" string="Cédula Representante"/>
+                                        <field name="rut" string="RUT"/>
+                                        <field name="c_procuraduria" string="C. Procuraduría"/>
+                                        <field name="c_contraloria" string="C. Contraloría"/>
+                                        <field name="c_antecedentes_judiciales" string="C. Antecedentes Judiciales"/>
+                                        <field name="c_medidas_correctivas" string="C. Medidas Correctivas"/>
+                                        <field name="c_no_inhabilidades" string="C. No inhabilidades"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Persona Natural -->
+                                <page string="Documentos Persona Natural">
+                                    <group>
+                                        <field name="hdv" string="HDV"/>
+                                        <field name="c_estudios" string="C. Estudios"/>
+                                        <field name="c_laboral" string="C. Laboral"/>
+                                        <field name="c_preocupacional" string="C. Preocupacional"/>
+                                        <field name="c_afiliacion_salud" string="C. Afiliación Salud"/>
+                                        <field name="c_afiliacion_arl" string="C. Afiliación ARL"/>
+                                        <field name="c_afiliacion_pension" string="C. Afiliación Pensión"/>
+                                        <field name="copia_libreta_militar" string="Copia Libreta Militar"/>
+                                        <field name="c_copia_tp" string="C. Copia o TP"/>
+                                        <field name="c_polizas" string="C. Pólizas (Si Aplica)"/>
+                                        <field name="c_bancaria" string="C. Bancaria"/>
+                                    </group>
+                                </page>
+                                <!-- Pestaña Documentos Fundacion Universidad del Valle -->
+                                <page string="Documentos Fundación Universidad del Valle">
+                                    <group>
+                                        <field name="formulario_contratacion" string="Formulario de contratación"/>
+                                        <field name="cdp" string="CDP"/>
+                                        <field name="formulario_arl" string="Formulario ARL"/>
+                                        <field name="acta_aprobacion_polizas" string="Acta de aprobación de pólizas (Si Aplica)"/>
+                                        <field name="acta_inicio" string="Acta de inicio (Si Aplica)"/>
+                                        <field name="acta_terminacion" string="Acta de Terminación Anticipada (Si Aplica)"/>
+                                        <field name="acta_liquidacion" string="Acta de liquidación (Si Aplica)"/>
+                                        <field name="numero_contrato_orden_servicio" string="Número de contrato/Orden de servicio" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;"/>
+                                    </group>
+                                </page>
+                            </notebook>
+                            <group>
+                                <field name="observaciones" style="background-color: #FFFFE0; border: 1px solid #CCCCCC;" widget="html" class="oe_inline_full"/>
+                            </group>
+                            <span style="display: inline-block; width: 110px;"></span>
+                            <span>
+                                Documentos anexos que no se encuentren en este formulario. Si no aplica uno de los documentos especificar cual y por qué.
+                            </span>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button name="action_agregar" string="Guardar" type="object" class="custom_button_style"/>
+                        <span style="display: inline-block; width: 30px;"></span>
+                        <button name="action_cerrar" string="Cerrar" type="object" class="custom_button_style"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

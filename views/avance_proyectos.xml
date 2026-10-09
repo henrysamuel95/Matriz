@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="avances_proyectos_view_tree" model="ir.ui.view">
+            <field name="name">avances_proyectos.view.tree</field>
+            <field name="model">avances_proyectos</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" decoration-success="dias_faltantes &gt; 30" decoration-warning="dias_faltantes &gt;= 0 and dias_faltantes &lt;= 30" decoration-danger="dias_faltantes &lt; 0">
+                    <field name="is_editable_avances" widget="boolean_toggle" invisible="1"/>
+                    <field name="nombre_proyecto" string="Nombre del Proyecto" optional="show"/>
+                    <field name="entidad_contratante" string="Entidad contratante" optional="show" />
+                    <field name="numero_contrato" string="Numero de contrato" optional="show"/>
+                    <field name="fecha_inicio" string="Fecha de inicio" optional="show"/>
+                    <field name="fecha_finalizacion" string="Fecha de fin" optional="show"/>
+                    <field name="porcentaje_ejecucion" string="Porcentaje Ejecución" widget="progressbar" optional="show"/>
+                    <field name="coordinador_asignado" string="Coordinador" optional="show"/>
+                    <field name="valor_contratar" string="Valor a contratar" optional="hide"/>
+                    <field name="valor_poliza" string="Valor Poliza" optional="hide"/>
+                    <field name="valor_administracion_costo_operativo" string="Valor de administración y costo operativo" optional="hide"/>
+                    <field name="valor_por_facturar" string="Valor por facturar" optional="hide"/>
+                    <field name="valor_sin_contrapartida" string="Valor sin contrapartida" optional="hide"/>
+                    <field name="suma_contrapartidas" string="Valor contrapartida" optional="hide"/>
+                    <field name="valor_total_proyecto" string="Valor total" optional="show"/>
+                    <field name="resultado_tecnica_representada_dinero" string="Técnica Representada Dinero" optional="hide"/>
+                    <field name="dias_faltantes" string="Días faltantes" optional="show" attrs="{'invisible': [('is_editable_avances', '=', True)]}"/>
+                    <field name="proyecto_finalizado"
+                           widget="badge"
+                           decoration-danger="proyecto_finalizado == 'Proyecto atrasado'"
+                           decoration-success="proyecto_finalizado == 'Proyecto finalizado'"
+                           attrs="{'invisible': [('proyecto_finalizado', '=', '')]}"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="avances_proyectos_view_search" model="ir.ui.view">
+            <field name="name">avances_proyectos.view.search</field>
+            <field name="model">avances_proyectos</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="nombre_proyecto" string="Nombre del Proyecto"/>
+                    <field name="entidad_contratante" string="Entidad contratante"/>
+                    <field name="numero_contrato" string="Numero de contrato"/>
+                    <field name="fecha_inicio" string="Fecha de inicio"/>
+                    <field name="fecha_finalizacion" string="Fecha de fin"/>
+                    <field name="porcentaje_ejecucion" string="Porcentaje Ejecución" widget="progressbar"/>
+                    <field name="coordinador_asignado" string="Coordinador"/>
+                    <field name="valor_contratar" string="Valor a contratar"/>
+                    <field name="valor_poliza" string="Valor Poliza"/>
+                    <field name="valor_administracion_costo_operativo" string="Valor de administración y costo operativo"/>
+                    <field name="valor_por_facturar" string="Valor por facturar"/>
+                    <field name="valor_sin_contrapartida" string="Valor sin contrapartida"/>
+                    <field name="suma_contrapartidas" string="Valor contrapartida"/>
+                    <field name="valor_total_proyecto" string="Valor total"/>
+                    <field name="resultado_tecnica_representada_dinero" string="Técnica Representada Dinero"/>
+                    <field name="dias_faltantes" string="Días faltantes"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="avances_proyectos_graph_view" model="ir.ui.view">
+            <field name="name">avances_proyectos.graph</field>
+            <field name="model">avances_proyectos</field>
+            <field name="arch" type="xml">
+                <graph string="Gráfica de Avances de Proyectos" type="pie">
+                    <field name="nombre_proyecto" string="Nombre del Proyecto" type="row"/>
+                    <field name="int_valor_total_proyecto" string="Valor total" type="measure"/>
+                    <field name="int_valor_contratar" string="Valor a contratar" type="measure"/>
+                    <field name="int_valor_poliza" string="Valor Poliza" type="measure"/>
+                    <field name="int_valor_administracion_costo_operativo" string="Valor de administración y costo operativo" type="measure"/>
+                    <field name="int_valor_por_facturar" string="Valor por facturar" type="measure"/>
+                    <field name="int_valor_sin_contrapartida" string="Valor sin contrapartida" type="measure"/>
+                    <field name="int_suma_contrapartidas" string="Valor contrapartida" type="measure"/>
+                    <field name="int_resultado_tecnica_representada_dinero" string="Tecnica representada en dinero" type="measure"/>
+                    <field name="dias_faltantes" string="Días faltantes" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_avances_proyectos_pivot" model="ir.ui.view">
+            <field name="name">avances_proyectos.pivot</field>
+            <field name="model">avances_proyectos</field>
+            <field name="arch" type="xml">
+                <pivot string="Avances de Proyectos">
+
+                </pivot>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_detalle_por_un_tree" model="ir.ui.view">
+        <field name="name">detalle.por.un.tree</field>
+        <field name="model">detalle.por.un</field>
+        <field name="arch" type="xml">
+            <tree string="Detalles" create="true" edit="true" delete="true" import="true">
+                <field name="tipo_movimiento"/>
+                <field name="un"/>
+                <field name="contrato"/>
+                <field name="numero_pago_cuota"/>
+                <field name="fecha_causacion"/>
+                <field name="factura"/>
+                <field name="identificacion"/>
+                <field name="nombre"/>
+                <field name="valor_cobrado" sum="Valor cobrado"/>
+                <field name="retenciones" sum="Retenciones"/>
+                <field name="otras_deducciones" sum="Otras deducciones"/>
+                <field name="neto_a_pagar" sum="Neto a pagar"/>
+                <field name="neto_a_recibir" sum="Neto a recibir"/>
+                <field name="pagado" sum="Pagado"/>
+                <field name="valor_recibido" sum="Valor recibido"/>
+                <field name="saldo" sum="Saldo"/>
+                <field name="saldo_por_cobrar" sum="Saldo por cobrar"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_detalle_por_un_form" model="ir.ui.view">
+        <field name="name">detalle.por.un.form</field>
+        <field name="model">detalle.por.un</field>
+        <field name="arch" type="xml">
+            <form string="Detalles">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="tipo_movimiento"/>
+                            <field name="un"/>
+                            <field name="contrato"/>
+                            <field name="numero_pago_cuota"/>
+                            <field name="fecha_causacion"/>
+                            <field name="causacion"/>
+                            <field name="factura"/>
+                        </group>
+                        <group>
+                            <field name="identificacion"/>
+                            <field name="nombre"/>
+                            <field name="fecha"/>
+                            <field name="documento"/>
+                            <field name="documento_recibo_caja"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Valores">
+                        <group>
+                            <field name="valor_cobrado"/>
+                            <field name="retenciones"/>
+                            <field name="otras_deducciones"/>
+                            <field name="neto_a_pagar"/>
+                        </group>
+                        <group>
+                            <field name="neto_a_recibir"/>
+                            <field name="pagado"/>
+                            <field name="valor_recibido"/>
+                            <field name="saldo"/>
+                            <field name="saldo_por_cobrar"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_detalle_por_un_search" model="ir.ui.view">
+        <field name="name">detalle.por.un.search</field>
+        <field name="model">detalle.por.un</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Detalles">
+                <field name="un"/>
+                <field name="contrato"/>
+                <field name="identificacion"/>
+                <field name="nombre"/>
+                <field name="documento"/>
+                <filter name="egresos" string="Egresos" domain="[('tipo_movimiento', '=', 'egreso')]"/>
+                <filter name="ingresos" string="Ingresos" domain="[('tipo_movimiento', '=', 'ingreso')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_un" string="UN" context="{'group_by': 'un'}"/>
+                    <filter name="group_contrato" string="Contrato" context="{'group_by': 'contrato'}"/>
+                    <filter name="group_tipo_movimiento" string="Tipo de movimiento" context="{'group_by': 'tipo_movimiento'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_detalle_por_un" model="ir.actions.act_window">
+        <field name="name">Detalles</field>
+        <field name="res_model">detalle.por.un</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_detalle_por_un_search"/>
+        <field name="context">{}</field>
+        <field name="groups_id" eval="[(4, ref('Matriz.group_soporte'))]"/>
+    </record>
+
+    <menuitem
+        id="menu_detalle_por_un"
+        name="Detalles"
+        sequence="70"
+        action="action_detalle_por_un"
+        parent="menu_categoria_bdd"
+        groups="Matriz.group_soporte"/>
+</odoo>

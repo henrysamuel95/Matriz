@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Integra el ciclo de actualización sin mezclarlo con el diseño base de Otrosí. -->
+    <record id="view_otro_si_form_inherit_solicitud_polizas" model="ir.ui.view">
+        <field name="name">otro.si.form.actualizacion.polizas</field>
+        <field name="model">otro_si</field>
+        <field name="inherit_id" ref="Matriz.view_otro_si_form"/>
+        <field name="active" eval="True"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet[@style='background-color: #02225b;']/div[1]" position="before">
+                <field name="aplica_actualizacion_polizas" invisible="1"/>
+                <field name="puede_solicitar_actualizacion_polizas" invisible="1"/>
+                <field name="solicitud_actualizacion_poliza_id" invisible="1"/>
+                <div class="fc-poliza-origin-panel" invisible="1"
+                     attrs="{'invisible': [('aplica_actualizacion_polizas', '=', False)]}">
+                    <div>
+                        <strong>Actualización de pólizas</strong>
+                        <span>Este evento conserva las garantías del contrato y solicita sus versiones actualizadas al formalizarse.</span>
+                    </div>
+                    <button name="action_solicitar_actualizacion_polizas" type="object"
+                            string="Solicitar actualización" icon="fa-shield"
+                            class="btn-primary"
+                            attrs="{'invisible': [('puede_solicitar_actualizacion_polizas', '=', False)]}"
+                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"/>
+                    <button name="action_view_actualizacion_polizas" type="object"
+                            string="Ver pólizas" icon="fa-external-link"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('solicitud_actualizacion_poliza_id', '=', False)]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_cierre_form_inherit_solicitud_polizas" model="ir.ui.view">
+        <field name="name">cierre.contractual.form.polizas.liquidacion</field>
+        <field name="model">contrataciones_fuv.cierre.proceso</field>
+        <field name="inherit_id" ref="Matriz.view_contrataciones_fuv_cierre_proceso_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@class, 'fc-cierre-request-card')]" position="after">
+                <field name="puede_solicitar_polizas_liquidacion" invisible="1"/>
+                <field name="solicitud_actualizacion_poliza_id" invisible="1"/>
+                <div class="fc-poliza-origin-panel"
+                     attrs="{'invisible': [('puede_solicitar_polizas_liquidacion', '=', False)]}">
+                    <div>
+                        <strong>Pólizas en liquidación (opcional)</strong>
+                        <span>Permite solicitar las mismas garantías actualizadas cuando el cierre lo requiera.</span>
+                    </div>
+                    <button name="action_solicitar_polizas_liquidacion" type="object"
+                            string="Solicitar pólizas" icon="fa-shield"
+                            class="btn-primary"
+                            attrs="{'invisible': [('solicitud_actualizacion_poliza_id', '!=', False)]}"
+                            groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"/>
+                    <button name="action_view_polizas_liquidacion" type="object"
+                            string="Ver pólizas" icon="fa-external-link"
+                            class="btn-secondary"
+                            attrs="{'invisible': [('solicitud_actualizacion_poliza_id', '=', False)]}"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_solicitar_poliza_wizard" model="ir.ui.view">
+        <field name="name">solicitar.poliza.wizard.form</field>
+        <field name="model">contrataciones_fuv.solicitar.poliza.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Solicitar póliza" class="fc-poliza-wizard-form">
+                <sheet>
+                    <field name="modo_soporte" invisible="1"/>
+                    <div class="fc-poliza-hero">
+                        <div class="fc-poliza-hero-icon"><i class="fa fa-shield"/></div>
+                        <div>
+                            <h2>Solicitud de pólizas</h2>
+                            <p>Seleccione únicamente las garantías requeridas para este contrato.</p>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-contract">
+                        <span class="fc-poliza-contract-label">Contrato</span>
+                        <field name="contract_id" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('sgr_contract_id', '!=', False)]}"
+                               options="{'no_open': True}"/>
+                        <field name="sgr_contract_id" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('sgr_contract_id', '=', False)]}"
+                               options="{'no_open': True}"/>
+                    </div>
+                    <div class="fc-poliza-section-title">
+                        <span>Pólizas a solicitar</span>
+                        <small>Al guardar solo se mostrarán las opciones seleccionadas.</small>
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         attrs="{'invisible': [('modo_soporte', '=', False)]}">
+                        <strong>Solicitud extraordinaria de Soporte.</strong>
+                        Se creará un ciclo independiente y el enlace se enviará de inmediato,
+                        sin modificar trámites anteriores.
+                    </div>
+                    <div class="fc-poliza-grid">
+                        <div class="fc-poliza-option"><span>Póliza de cumplimiento</span><field name="poliza_cumplimiento" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de buen manejo y correcta inversión del anticipo</span><field name="poliza_buen_manejo_anticipo" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de devolución del primer pago anticipado</span><field name="poliza_devolucion_pago_anticipado" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de pago de salarios, prestaciones sociales legales e indemnizaciones laborales</span><field name="poliza_salarios_prestaciones" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de estabilidad y calidad de la obra</span><field name="poliza_estabilidad_calidad_obra" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de calidad del servicio</span><field name="poliza_calidad_servicio" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de calidad de los bienes</span><field name="poliza_calidad_bienes" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de seriedad de la oferta</span><field name="poliza_seriedad_oferta" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Póliza de responsabilidad civil extracontractual</span><field name="poliza_responsabilidad_civil" widget="boolean_toggle" nolabel="1"/></div>
+                        <div class="fc-poliza-option"><span>Otras pólizas</span><field name="otras_polizas" widget="boolean_toggle" nolabel="1"/></div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="Guardar solicitud" type="object"
+                            name="action_guardar_solicitud_poliza"
+                            class="btn-success fc-poliza-primary-action"/>
+                    <button string="Cerrar" class="btn-secondary fc-poliza-close"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_agregar_poliza_wizard" model="ir.ui.view">
+        <field name="name">agregar.poliza.wizard.form</field>
+        <field name="model">contrataciones_fuv.agregar.poliza.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Agregar póliza" class="fc-poliza-add-wizard">
+                <sheet>
+                    <div class="fc-poliza-add-hero">
+                        <div class="fc-poliza-add-icon"><i class="fa fa-shield"/></div>
+                        <div>
+                            <h3>Agregar una póliza a la solicitud</h3>
+                            <p>Seleccione la garantía adicional que debe cargar el contratista.</p>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-add-content">
+                        <group>
+                            <field name="solicitud_id" string="Solicitud actual"
+                                   options="{'no_open': True}"/>
+                            <field name="tipo_poliza" string="Póliza que desea agregar"/>
+                        </group>
+                        <div class="fc-poliza-add-notice">
+                            <i class="fa fa-info-circle"/>
+                            <span>Esta acción crea una fila pendiente, pero no envía el correo. Después deberá utilizar <strong>Enviar solicitud</strong> o, si es Soporte, <strong>Solicitar al contratista</strong>.</span>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="Agregar póliza" type="object"
+                            name="action_agregar_poliza" icon="fa-plus"
+                            class="btn-primary fc-poliza-add-action"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_devolver_poliza_wizard" model="ir.ui.view">
+        <field name="name">devolver.poliza.wizard.form</field>
+        <field name="model">contrataciones_fuv.devolver.poliza.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Devolver póliza para corrección"
+                  class="fc-poliza-return-wizard">
+                <sheet>
+                    <field name="modo_soporte" invisible="1"/>
+                    <div class="fc-poliza-return-hero">
+                        <div class="fc-poliza-return-icon">
+                            <i class="fa fa-reply"/>
+                        </div>
+                        <div>
+                            <h3>Solicitar corrección de la póliza</h3>
+                            <p>Describe con claridad el ajuste que debe realizar el contratista.</p>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-return-content">
+                        <group>
+                            <field name="linea_id" string="Póliza seleccionada"
+                                   options="{'no_open': True}"/>
+                            <field name="observacion"
+                                   placeholder="Ejemplo: La vigencia o el valor asegurado no corresponde a lo establecido en el contrato..."/>
+                        </group>
+                        <div class="fc-poliza-return-notice">
+                            <i class="fa fa-envelope-o"/>
+                            <span>Al confirmar, se notificará al contratista y se generará un nuevo enlace privado para cargar la corrección.</span>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_confirmar_devolucion" type="object"
+                            string="Devolver y notificar" icon="fa-reply"
+                            class="btn-warning fc-poliza-return-action"
+                            confirm="¿Está seguro de devolver esta póliza para corrección y notificar al contratista?"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_asignar_juridico_poliza_wizard" model="ir.ui.view">
+        <field name="name">solicitud.poliza.asignar.juridico.wizard.form</field>
+        <field name="model">contrataciones_fuv.solicitud.poliza.asignar.juridico.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Gestionar responsable jurídico" class="fc-poliza-add-wizard fc-poliza-assignment-wizard">
+                <sheet>
+                    <field name="solicitud_id" invisible="1"/>
+                    <field name="juridicos_asignables_ids" invisible="1"/>
+                    <div class="fc-poliza-add-hero">
+                        <div class="fc-poliza-add-icon"><i class="fa fa-user"/></div>
+                        <div>
+                            <h3>Responsable jurídico de pólizas</h3>
+                            <p>Asigne, reemplace o retire al profesional encargado de la revisión.</p>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-add-content">
+                        <label for="juridicos_seleccionados_ids" string="Seleccione el responsable jurídico"/>
+                        <field name="juridicos_seleccionados_ids" widget="many2many_tags"
+                           nolabel="1" class="fc-poliza-assignment-tags"
+                           placeholder="Buscar un jurídico..."
+                           domain="[('id', 'in', juridicos_asignables_ids), ('active', '=', True)]"
+                           options="{'no_create': True, 'no_open': True}"/>
+                        <div class="fc-poliza-add-notice">
+                            <i class="fa fa-info-circle"/>
+                            <span>El trámite admite un responsable. Para retirarlo, quite su tag con la × y guarde. Una nueva asignación envía correo; el retiro queda registrado en el chatter sin eliminar accesos compartidos del contrato.</span>
+                        </div>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_confirmar_asignacion" type="object"
+                            string="Guardar cambios" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_solicitud_poliza_guia_usuario_form" model="ir.ui.view">
+        <field name="name">solicitud.poliza.guia.usuario.form</field>
+        <field name="model">contrataciones_fuv.solicitud.poliza.guia.usuario</field>
+        <field name="arch" type="xml">
+            <form string="Guía de usuario · Pólizas" class="fc-poliza-guide-form">
+                <div class="fc-poliza-guide">
+                    <div class="fc-poliza-guide-hero">
+                        <span class="fc-poliza-guide-eyebrow"><i class="fa fa-compass"/> GUÍA RÁPIDA</span>
+                        <h2>Así funciona la solicitud de pólizas</h2>
+                        <p>Del checklist inicial a la revisión jurídica y el acta definitiva.</p>
+                    </div>
+                    <div class="fc-poliza-guide-steps">
+                        <div class="fc-poliza-guide-step">
+                            <span class="fc-poliza-guide-number">1</span>
+                            <div><h3>Preparar</h3><p>Coordinación o Jurídica selecciona las garantías del contrato y guarda la solicitud.</p></div>
+                        </div>
+                        <div class="fc-poliza-guide-step">
+                            <span class="fc-poliza-guide-number">2</span>
+                            <div><h3>Notificar</h3><p>Al contratar, el sistema envía al contratista un enlace privado. Si se agrega otra póliza después, use <strong>Enviar solicitud</strong> para pedirla.</p></div>
+                        </div>
+                        <div class="fc-poliza-guide-step">
+                            <span class="fc-poliza-guide-number">3</span>
+                            <div><h3>Cargar</h3><p>El contratista sube un archivo por cada garantía. Los documentos quedan en la carpeta Pólizas del contratista y se avisa a los responsables de revisión.</p></div>
+                        </div>
+                        <div class="fc-poliza-guide-step">
+                            <span class="fc-poliza-guide-number">4</span>
+                            <div><h3>Revisar</h3><p>Dirección Jurídica o el Jurídico asignado aprueba o devuelve con una observación. Si se devuelve, el contratista recibe un enlace para cargar la corrección.</p></div>
+                        </div>
+                        <div class="fc-poliza-guide-step">
+                            <span class="fc-poliza-guide-number">5</span>
+                            <div><h3>Finalizar</h3><p>Cuando todas las pólizas están aprobadas, Dirección Jurídica o el Jurídico asignado carga el acta definitiva y termina el trámite.</p></div>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-guide-note"><i class="fa fa-info-circle"/><span><strong>Estado Guardada:</strong> Coordinación y Jurídica aún no pueden cargar pólizas. El botón Cargar se habilita para cada póliza después de enviarla al contratista; Soporte puede cargarla antes del envío.</span></div>
+                    <div class="fc-poliza-guide-note"><i class="fa fa-info-circle"/><span>Las actualizaciones por otrosí y las solicitudes extraordinarias de Soporte forman ciclos propios y conservan los documentos anteriores.</span></div>
+                </div>
+                <footer>
+                    <button string="Entendido" special="cancel" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_poliza_soporte_estado_wizard" model="ir.ui.view">
+        <field name="name">poliza.soporte.estado.wizard.form</field>
+        <field name="model">contrataciones_fuv.poliza.estado.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Soporte · Cambiar estado de pólizas">
+                <sheet>
+                    <group>
+                        <field name="solicitud_id" readonly="1" force_save="1"/>
+                        <field name="estado_capturado" readonly="1" force_save="1"/>
+                        <field name="estado_nuevo"/>
+                        <field name="motivo" placeholder="Explique por qué se requiere el ajuste manual"/>
+                    </group>
+                    <div class="alert alert-warning" role="alert">
+                        Este cambio administrativo no aprueba pólizas, no carga actas y no envía correos.
+                        Una acción posterior del flujo puede recalcular el estado según los documentos y revisiones.
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="action_aplicar" type="object"
+                            string="Aplicar cambio" class="btn-danger"/>
+                    <button string="Cancelar" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_solicitud_poliza_form" model="ir.ui.view">
+        <field name="name">solicitud.poliza.form</field>
+        <field name="model">contrataciones_fuv.solicitud.poliza</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de pólizas"
+                  class="fc-poliza-wizard-form fc-poliza-process-form"
+                  create="false" delete="true" duplicate="false" edit="false">
+
+                <sheet>
+                    <field name="solicitud_poliza_drive_folder_id" invisible="1"/>
+                    <field name="acta_aprobacion_documento_id" invisible="1"/>
+                    <field name="origen" invisible="1"/>
+                    <field name="puede_cargar_acta" invisible="1"/>
+                    <field name="puede_revisar_polizas" invisible="1"/>
+                    <field name="otro_si_id" invisible="1"/>
+                    <field name="cierre_proceso_id" invisible="1"/>
+                    <div class="fc-poliza-hero">
+                        <div class="fc-poliza-hero-main">
+                            <div class="fc-poliza-hero-icon"><i class="fa fa-shield"/></div>
+                            <div>
+                                <h2>Solicitud de pólizas</h2>
+                                <p>Garantías seleccionadas y documentos cargados para el contrato.</p>
+                            </div>
+                        </div>
+                        <div class="fc-poliza-hero-tools">
+                            <div class="fc-poliza-hero-state">
+                                <field name="estado" readonly="1" nolabel="1"
+                                       widget="estado_polizas_flujo"/>
+                            </div>
+                            <button name="action_abrir_guia_usuario" type="object"
+                                    string="Guía de usuario" icon="fa-question-circle"
+                                    class="fc-poliza-guide-trigger"/>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-contract">
+                        <span class="fc-poliza-contract-label">Contrato</span>
+                        <field name="contract_id" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('sgr_contract_id', '!=', False)]}"
+                               options="{'no_open': True}"/>
+                        <field name="sgr_contract_id" readonly="1" nolabel="1"
+                               attrs="{'invisible': [('sgr_contract_id', '=', False)]}"
+                               options="{'no_open': True}"/>
+                    </div>
+
+                    <div class="fc-poliza-details">
+                        <div class="fc-poliza-details-grid">
+                            <group class="fc-poliza-details-column">
+                                <field name="origen_nombre" readonly="1" class="campo_hover campo_solo_lectura"/>
+                                <field name="solicitado_por_id" readonly="1"
+                                       options="{'no_open': True}" class="campo_hover campo_solo_lectura"/>
+                                <field name="fecha_solicitud" readonly="1" class="campo_hover campo_solo_lectura"/>
+                            </group>
+                            <group class="fc-poliza-details-column">
+                                <field name="contratista_email" readonly="1" class="campo_hover campo_solo_lectura"/>
+                                <field name="enviado_por_id" readonly="1"
+                                       options="{'no_open': True}" class="campo_hover campo_solo_lectura"/>
+                                <field name="otro_si_id" readonly="1"
+                                       attrs="{'invisible': [('otro_si_id', '=', False)]}"
+                                       options="{'no_open': True}" class="campo_hover campo_solo_lectura"/>
+                                <field name="cierre_proceso_id" readonly="1"
+                                       attrs="{'invisible': [('cierre_proceso_id', '=', False)]}"
+                                       options="{'no_open': True}" class="campo_hover campo_solo_lectura"/>
+                            </group>
+                        </div>
+                        <div class="fc-poliza-assignment"
+                             groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico">
+                            <div>
+                                <strong>Responsable jurídico</strong>
+                                <span>Profesional asignado para revisar las pólizas y gestionar el acta.</span>
+                            </div>
+                            <field name="juridico_responsable_id" readonly="1" nolabel="1"
+                                   options="{'no_open': True}"/>
+                            <button name="action_abrir_asignar_juridico_poliza" type="object"
+                                    string="Asignar jurídico" icon="fa-user-plus"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_director_juridico"/>
+                        </div>
+                        <div class="fc-poliza-actions">
+                            <button name="action_enviar_solicitud" type="object"
+                                    string="Enviar solicitud" icon="fa-envelope"
+                                    class="btn-primary"
+                                    confirm="¿Está seguro de enviar la nueva solicitud de póliza al contratista?"
+                                    attrs="{'invisible': [('estado', '!=', 'pendiente_envio')]}"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"/>
+                            <button name="action_soporte_solicitar_al_contratista" type="object"
+                                    string="Solicitar al contratista"
+                                    icon="fa-envelope"
+                                    class="btn-danger fc-poliza-support-action"
+                                    help="Envía un único correo al contratista con todas las pólizas de esta solicitud que todavía no tienen documento. No agrega pólizas ni abre otro asistente."
+                                    groups="Matriz.group_soporte"/>
+                            <button name="action_soporte_cambiar_estado" type="object"
+                                    string="Soporte: cambiar estado"
+                                    icon="fa-random"
+                                    class="btn-danger fc-poliza-support-action"
+                                    help="Ajuste manual del estado con motivo obligatorio y trazabilidad en el chatter. No aprueba pólizas ni envía correos."
+                                    groups="Matriz.group_soporte"/>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-documents">
+                        <div class="fc-poliza-documents-head">
+                            <div>
+                                <strong>Pólizas solicitadas</strong>
+                                <span>Cada garantía conserva su propio documento y revisión en Drive.</span>
+                            </div>
+                            <i class="fa fa-folder-open-o"
+                               title="Destino: carpeta Pólizas"/>
+                        </div>
+                        <field name="linea_ids" nolabel="1" readonly="1"
+                               class="fc-poliza-document-list">
+                            <kanban create="false" edit="false" delete="false">
+                                <field name="tipo_poliza"/>
+                                <field name="documento_id"/>
+                                <field name="puede_cargar_documento"/>
+                                <field name="fecha_envio_contratista"/>
+                                <field name="estado_revision"/>
+                                <field name="revisado_por_id"/>
+                                <field name="fecha_revision"/>
+                                <field name="observaciones_juridicas"/>
+                                <field name="puede_revisar_polizas"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="fc-poliza-document-row">
+                                            <div class="fc-poliza-document-info">
+                                                <strong><field name="tipo_poliza"/></strong>
+                                                <span>Destino: carpeta Pólizas</span>
+                                                <div class="fc-poliza-review-meta">
+                                                    <div class="fc-poliza-review-meta-row">
+                                                        <span t-if="record.fecha_envio_contratista.raw_value">
+                                                            <b>Fecha de envío:</b> <field name="fecha_envio_contratista"/>
+                                                        </span>
+                                                        <span t-if="!record.fecha_envio_contratista.raw_value">
+                                                            <b>Fecha de envío:</b> Pendiente
+                                                        </span>
+                                                        <span><b>Revisión:</b> <field name="estado_revision"/></span>
+                                                    </div>
+                                                    <div class="fc-poliza-review-meta-row fc-poliza-review-result"
+                                                         t-if="record.revisado_por_id.raw_value or record.fecha_revision.raw_value">
+                                                        <span t-if="record.revisado_por_id.raw_value">
+                                                            <b>Revisado por:</b> <field name="revisado_por_id"/>
+                                                        </span>
+                                                        <span t-if="record.fecha_revision.raw_value">
+                                                            <b>Fecha de revisión:</b> <field name="fecha_revision"/>
+                                                        </span>
+                                                    </div>
+                                                    <div class="fc-poliza-review-meta-row"
+                                                         t-if="record.observaciones_juridicas.raw_value">
+                                                        <span>
+                                                            <b>Observaciones:</b> <field name="observaciones_juridicas"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="fc-poliza-document-pending"
+                                                  t-if="!record.documento_id.raw_value">Pendiente</span>
+                                            <span class="fc-poliza-document-ready"
+                                                  t-if="record.documento_id.raw_value">Cargado</span>
+                                            <div class="fc-poliza-document-actions">
+                                                <button name="action_cargar_documento"
+                                                        type="object" string="CARGAR"
+                                                        icon="fa-upload" class="btn-primary"
+                                                        t-if="!record.documento_id.raw_value and record.puede_cargar_documento.raw_value"/>
+                                                <button name="action_quitar_poliza"
+                                                        type="object" string="QUITAR"
+                                                        icon="fa-trash" class="btn-danger"
+                                                        confirm="¿Está seguro de quitar esta póliza de la solicitud?"
+                                                        groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                                        t-if="!record.documento_id.raw_value"/>
+                                                <button name="action_ver_documento"
+                                                        type="object" string="VER DOCUMENTO"
+                                                        icon="fa-file"
+                                                        class="fc-poliza-document-view"
+                                                        t-if="record.documento_id.raw_value"/>
+                                                <button name="action_aprobar_poliza"
+                                                        type="object" string="APROBAR"
+                                                        icon="fa-check" class="btn-success"
+                                                        groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                                        t-if="record.puede_revisar_polizas.raw_value and record.documento_id.raw_value and record.estado_revision.raw_value != 'aprobada' and record.estado_revision.raw_value != 'devuelta'"/>
+                                                <button name="action_devolver_poliza"
+                                                        type="object" string="DEVOLVER"
+                                                        icon="fa-reply" class="btn-warning"
+                                                        groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                                        t-if="record.puede_revisar_polizas.raw_value and record.documento_id.raw_value and record.estado_revision.raw_value == 'pendiente'"/>
+                                                <button name="action_soporte_devolver_poliza"
+                                                        type="object" string="SOPORTE: DEVOLVER"
+                                                        icon="fa-wrench" class="btn-danger"
+                                                        groups="Matriz.group_soporte"
+                                                        t-if="record.documento_id.raw_value and record.estado_revision.raw_value == 'aprobada'"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        </field>
+                        <div class="fc-poliza-add-actions">
+                            <button name="action_agregar_poliza" type="object"
+                                    string="Agregar otra póliza" icon="fa-plus"
+                                    class="btn-primary"
+                                    attrs="{'invisible': [('estado', '=', 'finalizada')]}"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_asis_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico,Matriz.group_soporte"/>
+                        </div>
+                    </div>
+                    <div class="fc-poliza-documents fc-poliza-other-documents">
+                        <div class="fc-poliza-documents-head">
+                            <div>
+                                <strong>Otros</strong>
+                                <span>Documentos complementarios internos, como cartas o soportes adicionales.</span>
+                            </div>
+                            <button name="action_cargar_otro_documento" type="object"
+                                    string="Cargar otro documento"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_coordinador,Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico,Matriz.group_soporte"/>
+                        </div>
+                        <field name="otros_documentos_ids" nolabel="1" readonly="1">
+                            <tree create="false" edit="false" delete="false">
+                                <field name="file_name" string="Documento"/>
+                                <field name="user_id" string="Cargado por"
+                                       options="{'no_open': True}"/>
+                                <field name="create_date" string="Fecha de carga"/>
+                                <button name="action_ver_otro_documento_poliza"
+                                        type="object" string="Ver" icon="fa-file"
+                                        class="btn-secondary"/>
+                            </tree>
+                        </field>
+                    </div>
+                    <div class="fc-poliza-documents fc-poliza-acta-section">
+                        <div class="fc-poliza-documents-head">
+                            <div>
+                                <strong>Acta de aprobación de pólizas</strong>
+                                <span>Carga el acta definitiva elaborada por Jurídica.</span>
+                            </div>
+                            <i class="fa fa-file-text-o"/>
+                        </div>
+                        <div class="fc-poliza-acta-actions">
+                            <button name="action_cargar_acta_aprobacion" type="object"
+                                    string="Cargar acta definitiva" icon="fa-upload"
+                                    class="btn-primary"
+                                    groups="Matriz.group_contratacion_director_juridico,Matriz.group_contratacion_juridico"
+                                    attrs="{'invisible': ['|', ('puede_cargar_acta', '=', False), ('puede_revisar_polizas', '=', False)]}"/>
+                            <button name="action_cargar_acta_aprobacion" type="object"
+                                    string="Cargar acta definitiva" icon="fa-upload"
+                                    class="btn-primary"
+                                    groups="Matriz.group_soporte"
+                                    attrs="{'invisible': ['|', '|', ('origen', '!=', 'soporte'), ('puede_cargar_acta', '=', False), ('puede_revisar_polizas', '=', True)]}"/>
+                            <button name="action_ver_acta_aprobacion" type="object"
+                                    string="Ver acta definitiva" icon="fa-file"
+                                    class="fc-poliza-document-view"
+                                    attrs="{'invisible': [('acta_aprobacion_documento_id', '=', False)]}"/>
+                        </div>
+                        <group attrs="{'invisible': [('acta_aprobacion_documento_id', '=', False)]}">
+                            <field name="acta_cargada_por_id" readonly="1"
+                                   options="{'no_open': True}"/>
+                            <field name="fecha_acta_cargada" readonly="1"/>
+                        </group>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="secop_option_1" model="secop_option">
+        <field name="name">SECOP I</field>
+    </record>
+    <record id="secop_option_2" model="secop_option">
+        <field name="name">SECOP II</field>
+    </record>
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Hereda la vista de login de auth_signup -->
+    <template id="website_login" inherit_id="auth_signup.login">
+        <!-- Inserta el reCAPTCHA inmediatamente antes del botón de inicio de sesión. -->
+        <xpath expr="//form//button[@type='submit']" position="before">
+            <!-- Google reCAPTCHA v2 -->
+            <script src="https://www.google.com/recaptcha/api.js" async="true" defer="true"></script>
+            <div class="g-recaptcha mb-3" data-sitekey="6LdU1jQrAAAAAH09TWILydF9sTAukGK3kp9_Em9g"></div>
+        </xpath>
+        <xpath expr="//a[contains(@href, '/web/reset_password') or contains(@t-attf-href, '/web/reset_password')]" position="attributes">
+            <attribute name="class" add="d-block w-100 text-center" separator=" "/>
+        </xpath>
+    </template>
+</odoo>

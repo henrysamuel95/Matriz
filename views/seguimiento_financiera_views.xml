@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!-- ===================== -->
+    <!-- VISTA KANBAN          -->
+    <!-- ===================== -->
+    <record id="view_seguimiento_financiera_kanban" model="ir.ui.view">
+        <field name="name">seguimiento.financiera.kanban</field>
+        <field name="model">seguimiento_financiera</field>
+        <field name="type">kanban</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="nombre_mes"/>
+                <field name="estado"/>
+                <field name="porcentaje_avance"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_record oe_kanban_global_click"
+                            style="padding:25px 20px; border-radius:14px; background:#ffffff;
+                                    box-shadow:0 3px 10px rgba(0,0,0,0.1); 
+                                    display:flex; flex-direction:column; align-items:center; 
+                                    justify-content:space-between; min-height:180px;">
+
+                            <!-- Mes -->
+                            <div style="font-size:22px; font-weight:700; color:#02225B; margin-bottom:12px; border:2px solid white; text-align:center;">
+                                <t t-esc="record.nombre_mes.value"/> - <field name="anio"/>
+                            </div>
+
+                            <!-- Estado como etiqueta con color -->
+                            <t t-if="record.estado.raw_value == 'pendiente'">
+                                <div style="background:#fef3c7; color:#92400e; padding:6px 14px; 
+                                            border-radius:20px; font-weight:600; margin-bottom:15px;
+                                            font-size:13px; width:auto;">
+                                    Pendiente
+                                </div>
+                            </t>
+                            <t t-if="record.estado.raw_value == 'proceso'">
+                                <div style="background:#dbeafe; color:#1e3a8a; padding:6px 14px; 
+                                            border-radius:20px; font-weight:600; margin-bottom:15px;
+                                            font-size:13px; width:auto;">
+                                    En curso
+                                </div>
+                            </t>
+                            <t t-if="record.estado.raw_value == 'cerrado'">
+                                <div style="background:#dcfce7; color:#166534; padding:6px 14px; 
+                                            border-radius:20px; font-weight:600; margin-bottom:15px;
+                                            font-size:13px; width:auto;">
+                                    Completado
+                                </div>
+                            </t>
+                            <t t-if="record.estado.raw_value == 'alerta'">
+                                <div style="background:#fee2e2; color:#991b1b; padding:6px 14px; 
+                                            border-radius:20px; font-weight:600; margin-bottom:15px;
+                                            font-size:13px; width:auto;">
+                                    Alerta
+                                </div>
+                            </t>
+
+                            <!-- Avance de actividades -->
+                            <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-top:10px; border-radius:4px;">
+                                <strong style="color:#334155; font-size:14px;">Avance de actividades</strong>
+                                <field name="porcentaje_avance" readonly="1" widget="percentpie"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- ===================== -->
+    <!-- VISTA FORM (PRINCIPAL) -->
+    <!-- ===================== -->
+    <record id="view_seguimiento_financiera_form" model="ir.ui.view">
+        <field name="name">seguimiento.financiera.form</field>
+        <field name="model">seguimiento_financiera</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+
+            <form string="Seguimiento de actividades financiera" style="width:90%; margin:auto;">
+                <header>
+                    <field name="fecha_vencimiento" groups="Matriz.group_soporte"/>
+                </header>
+                
+                <div style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border:1px solid #e0e0e0; padding:10px; border-radius:8px;" groups="Matriz.group_supervisor_actividades_financieras">
+                    
+                    <!-- Lado izquierdo: selección y botones -->
+                    <div>
+                        <strong>Seleccionar mes: </strong>
+                        <field name="nombre_mes" style="border:1px solid #e0e0e0; border-radius:4px; padding:4px 8px;"/>
+                        <br/><br/>
+                        <button name="marcar_todas_completas"
+                                type="object"
+                                string="Marcar todas como completas"
+                                class="btn-primary"
+                                groups="Matriz.group_soporte"
+                                icon="fa-check-circle"/>
+                        <button name="action_ver_resumen"
+                                type="object"
+                                string="Ver resumen"
+                                class="btn-secondary"
+                                groups="Matriz.group_supervisor_actividades_financieras"
+                                icon="fa-eye"/>
+                    </div>
+
+                    <!-- Lado derecho: estado -->
+                    <div style="padding-bottom: 4%;">
+                        <field name="estado" widget="statusbar" options="{'clickable': False}"/>
+                    </div>
+
+                </div>
+
+                <notebook>
+<page string="Actividades del mes" name="actividades_cierre">
+    <field name="linea_ids">
+        <tree editable="bottom"
+              limit="500"
+              import="1"
+              export_xlsx="1"
+              decoration-info="estado == 'pendiente'"
+              decoration-success="estado == 'completo'">
+            
+            <field name="semana" readonly="1" widget="badge"/>
+            <field name="actividad" attrs="{'readonly': [('id', '!=', False)]}"/>
+            <field name="linea_base" invisible="1"/>
+            <field name="conservar_siguiente_mes" string="Conservar próximo mes"/>
+            <field name="estado"/>               
+            <field name="puede_supervisar_financiera" invisible="1"/>
+            
+            <field name="responsables_ids" widget="many2many_tags" 
+                   groups="Matriz.group_actividades_financieras,Matriz.group_supervisor_actividades_financieras"
+                   attrs="{'readonly': [('puede_supervisar_financiera', '=', False)]}"/>   
+            
+            <field name="fecha_cronograma"
+                   groups="Matriz.group_actividades_financieras,Matriz.group_supervisor_actividades_financieras"
+                   attrs="{'readonly': [('puede_supervisar_financiera', '=', False)]}"/>   
+            
+            <field name="fecha_realizado"/>
+            <field name="observaciones_financiera"/>    
+            
+            <field name="observacion_final"
+                   groups="Matriz.group_actividades_financieras,Matriz.group_supervisor_actividades_financieras"
+                   attrs="{'readonly': [('puede_supervisar_financiera', '=', False)]}"/>
+            
+            <field name="aprobado" groups="Matriz.group_supervisor_actividades_financieras"/>
+            <field name="fecha_aprobado" readonly="1"/>
+            
+            <field name="avance_linea" widget="progressbar" avg="Promedio Total %"/>
+            
+        </tree>
+    </field>
+</page>
+                </notebook>
+                <!-- Chatter -->
+
+
+            </form>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- VISTA POPUP RESUMEN   -->
+    <!-- ===================== -->
+    <record id="view_seguimiento_financiera_resumen_form" model="ir.ui.view">
+        <field name="name">seguimiento.financiera.resumen.form</field>
+        <field name="model">seguimiento_financiera</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Resumen de trazabilidad" create="false" edit="false">
+                <table style="width:100%;" >
+                    <field name="trazabilidad_resumen" nolabel="1" readonly="1" widget="html" style="width:100%;"/>
+                </table>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===================== -->
+    <!-- VISTA TREE            -->
+    <!-- ===================== -->
+    <record id="view_seguimiento_financiera_tree" model="ir.ui.view">
+        <field name="name">seguimiento.financiera.tree</field>
+        <field name="model">seguimiento_financiera</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Seguimiento Financiera"
+                  decoration-success="estado == 'cerrado'"
+                  decoration-danger="estado == 'alerta'">
+                <field name="nombre_mes"/>
+                <field name="porcentaje_avance" widget="progressbar"/>
+                <field name="estado"/>
+            </tree>
+        </field>
+    </record>
+  </data>
+</odoo>

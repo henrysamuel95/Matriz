@@ -1,0 +1,211 @@
+<odoo>
+    <data>
+        <!-- Vista formulario -->
+        <record id="view_contrato_form" model="ir.ui.view">
+            <field name="name">bd contratacion.form</field>
+            <field name="model">bd_contratacion</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <table style="background-color: #485B75; width: 100%; color: black !important; border: 1px solid black;">
+                        <img src="https://i.ibb.co/nkbts0Z/imagen1-removebg-preview.png" alt="Descripción de la imagen" style="max-width: 500px; max-height: 300px; padding-bottom: 3px; margin-top: 20px;" />
+                        <h1 style="background-color: #485B75; text-align: center; font-weight: bold; color: white; font-size: 20px; padding: 8px;">
+                                        DATOS DE CONTRATACION
+                            </h1>
+                            <tr>
+                                <td style="text-align: right; padding: 8px; font-size: 16px; font-style: italic; color: white;">F. Emisión: 2012-09-10 Versión: A0.1<br/>FU-F-GPP-019</td>
+                            </tr>
+                        </table>
+
+                        <table style="background-color: #EFF1F7; width: 100%; color: black !important; border: 1px solid black;">
+
+
+                            <td style="vertical-align: top; padding: 5px; width: 32%;">
+
+                                <table style="margin: 5px; padding: 5px; background-color: #EFF1F7;">
+
+                                    <tr>
+                                        <td>
+                                            <label for="item" style="color: white !important; ">item</label>
+                                            <field name="item" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="tipo_solicitud" style="color: black !important;">Tipo de Solicitud</label>
+                                            <field name="tipo_solicitud" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="tipo_contrato" style="color: black !important;">Tipo de Contrato</label>
+                                            <field name="tipo_contrato" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="fecha_solicitud" style="color: black !important;">Fecha de Solicitud</label>
+                                            <field name="fecha_solicitud" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="nombre_solicitante" style="color: black !important;">Nombre de Solicitante</label>
+                                            <field name="nombre_solicitante" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="objeto_contrato" style="color: black !important;">Obejecto de Contrato</label>
+                                            <field name="objeto_contrato" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="justificacion_solicitud" style="color: black !important;">Justificación de Solicitud</label>
+                                            <field name="justificacion_solicitud" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="cpd" style="color: black !important;">CDP</label>
+                                            <field name="cpd" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                                <td style="vertical-align: top; padding: 5px; width: 32%;">
+                                    <table style="margin: 5px; padding: 5px; background-color: #EFF1F7;">
+                                    <tr>
+                                        <td>
+                                            <label for="fecha_cdp" style="color: black !important;">Fecha de CDP</label>
+                                            <field name="fecha_cdp" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="nombre_contratista" style="color: black !important;">Nombre de Contratista</label>
+                                            <field name="nombre_contratista" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="documento_identificacion" style="color: black !important;">D.Identificación</label>
+                                            <field name="documento_identificacion" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="direccion" style="color: black !important;">Dirección</label>
+                                            <field name="direccion" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="telefono" style="color: black !important;">Telefono</label>
+                                            <field name="telefono" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="correo_electronico" style="color: black !important;">Correo Electronico</label>
+                                            <field name="correo_electronico" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="clase_contrato" style="color: black !important;">Clase de Contrato</label>
+                                            <field name="clase_contrato" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="fecha_inicio" style="color: black !important;">Fecha Inicio</label>
+                                            <field name="fecha_inicio" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="fecha_fin" style="color: black !important;">Fecha Fin</label>
+                                            <field name="fecha_fin" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <td style="vertical-align: top; padding: 5px; width: 32%; position: relative;">
+                            <td style="vertical-align: top; padding: 5px; width: 32%;">
+                                <table style="margin: 5px; padding: 5px; background-color: #EFF1F7;">
+                                    <tr>
+                                        <td>
+                                            <label for="valor_total_contrato" style="color: black !important;">Valor Total de Contracto</label>
+                                            <field name="valor_total_contrato" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="valor_total_contrato_letras" style="color: black !important;">Valor en Letras</label>
+                                            <field name="valor_total_contrato_letras" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="forma_pago" style="color: black !important;">Foma de Pago</label>
+                                            <field name="forma_pago" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="actividades_especificas" style="color: black !important;">Actividades Especificas</label>
+                                            <field name="actividades_especificas" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="ciiu" style="color: black !important;">CIIU</label>
+                                            <field name="ciiu" style="color: black !important; border: 0.3px solid black; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="municipio" style="color: black !important; border: 0.3px solid black;">Municipio</label>
+                                            <field name="municipio" class="oe_form_field" style="color: black !important; border: 0.3px solid black;  background-color: #EFF1F7; width: 100%; margin: 1px;" placeholder="Seleccionar"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="facturacion_electronica" style="color: black !important;">Facturación Electronica</label>
+                                            <field name="facturacion_electronica" style="color: black !important; background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="responsable_iva" style="color: black !important;">Responsable IVA</label>
+                                            <field name="responsable_iva" style="color: black !important;background-color: #EFF1F7; width: 100%; margin: 1px;"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            </td>
+                        </table>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista lista -->
+        <record id="view_contrato_tree" model="ir.ui.view">
+            <field name="name">bd_contratacion.tree</field>
+            <field name="model">bd_contratacion</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="nombre_solicitante"/>
+                    <field name="ciiu"/>
+                    <field name="facturacion_electronica"/>
+                    <field name="municipio"/>
+                    <field name="responsable_iva"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

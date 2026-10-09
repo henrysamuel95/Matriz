@@ -1,0 +1,881 @@
+<odoo>
+    <data>
+    <record id="view_form_new_mcb" model="ir.ui.view">
+        <field name="name">new_mcb.form</field>
+        <field name="model">new_mcb</field>
+        <field name="arch" type="xml">
+            <form create="false" delete="false" duplicate="false">
+                <sheet style="background-color: #02225b; position: relative;">
+                    <div groups="Matriz.group_soporte"
+                                style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
+                                <button name="action_soporte_recalcular_mcb"
+                                        type="object"
+                                        string="Recalcular MCB"
+                                        icon="fa-refresh"
+                                        class="btn btn-danger"
+                                        groups="Matriz.group_soporte"
+                                        confirm="¿Desea recalcular los valores dependientes de esta MCB?"/>
+                            </div>
+                            <div>
+                                <h4 style="margin-left: 0.4cm; height: 30px; font-weight: 600; color: #02225b;">
+                                    AGREGAR OTROSÍ AL PROYECTO
+                                </h4>
+                                <field name="otrosi_ids_new" widget="kanban" string="otrosí">
+                                    <kanban create="1" action="action_abrir_pantalla_completa" type="object">
+                                        <field name="name"/>
+                                        <field name="tipo_otrosi"/>
+                                        <field name="fecha_finalizacion"/>
+                                        <templates>
+                                            <t t-name="kanban-box">
+                                                <div style="border-radius: 6px !important; padding: 10px !important; background-color: #f8fafc; border: 1px solid #e2e8f0 !important;">
+                                                    <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 4px;">
+                                                        <t t-esc="record.name.value"/> - <field name="tipo_otrosi"/>
+                                                    </div>
+                                                    <div t-if="record.fecha_finalizacion.raw_value" style="font-size: 12px; color: #64748b; margin-bottom: 8px;">
+                                                        <strong>Fecha finalización: </strong> <field name="fecha_finalizacion"/>
+                                                    </div>
+                                                    
+                                                    <!-- <div class="o_kanban_record_bottom mt-2" style="border-top: 1px solid #f1f5f9; padding-top: 6px; margin-top: 6px;">
+                                                        <div class="oe_kanban_bottom_left" style="display: flex; align-items: center; gap: 6px; font-size: 11px; color: #64748b;">
+                                                            <span>Creado por:</span>
+                                                            <field name="create_uid"
+                                                                options="{'no_open': True}"
+                                                                widget="many2one_avatar_user"
+                                                                domain="[('share', '=', False)]"/>
+                                                        </div>
+                                                    </div> -->
+                                                </div>  
+                                            </t>
+                                        </templates>
+                                    </kanban>
+                                </field>
+                            </div>
+                
+                    <style>
+                        .acta_comite_view_btn {
+                            color: #003b7a !important;
+                            background-color: #ffffff !important;
+                            border: 1px solid transparent !important;
+                            transition: background-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+                        }
+                        .acta_comite_view_btn:hover {
+                            color: #ffffff !important;
+                            background-color: #003b7a !important;
+                            border-color: #003b7a !important;
+                            box-shadow: 0 2px 6px rgba(0, 59, 122, 0.22);
+                        }
+                    </style>
+
+
+                    <div class="card_header_moderno2" style="margin-top: 10px;">
+                        <div class="ch_left">
+                             <img src="https://i.ibb.co/kDZzr9z/Logo.png" style="max-width: 400px; max-height: 200px; padding-bottom: 10px; margin: auto; margin-top: 5mm;" />
+                        </div>
+                        <div class="ch_right">
+                            <div class="item">FUNDACIÓN UNIVERSIDAD DEL VALLE</div>
+                            <div class="item">MATRIZ GENERAL DE COSTO BENEFICIO</div>
+                        </div>
+                    </div>
+
+                    <div class="card_seccion2" style="margin: 10px 0 20px 0; padding: 14px 18px; border: 1px solid #dbe5f1; border-left: 4px solid #003b7a; border-radius: 8px; background: #f8fbff; width: 100%; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                        <!-- Bloque de texto a la izquierda -->
+                        <div style="flex: 1; min-width: 240px;">
+                            <strong style="color: #003b7a; display: block; margin-bottom: 2px; font-size: 15px;">Actas de comité</strong>
+                            <span style="display: block; color: #64748b; font-size: 12px;">Carga y consulta los documentos.</span>
+                        </div>
+                        
+                        <!-- Botones alineados a la derecha en la misma línea -->
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <button name="action_upload_acta_comite"
+                                    type="object"
+                                    string="Suba sus archivos"
+                                    class="btn-primary"
+                                    attrs="{'invisible': [('es_usuario_consulta', '=', True)]}"
+                                    style="min-width: 170px; padding: 9px 14px;"/>
+                            <button name="action_open_acta_comite"
+                                    type="object"
+                                    string="Ver documentos"
+                                    class="btn-secondary acta_comite_view_btn"
+                                    attrs="{'invisible': [('acta_comite_count', '=', 0)]}"
+                                    style="min-width: 120px; padding: 8px 14px;"/>
+                        </div>
+                    </div>
+                    <div class="card_seccion2" style="display: flex; width: 100%; margin-top: 12px;">
+
+                        <div style="width: 25%; vertical-align: top; padding: 0 10px 10px 0;">
+                            
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Entidad contratante:</strong>
+                                <field name="entidad_contratante" class="input_moderno campo_hover"/>
+                            </div>
+
+
+                            <div style="margin-bottom: 8px; padding: 3px 8px 8px 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Centro costo:</strong>
+                                
+                                <field name="centro_costo" 
+                                    class="input_moderno campo_hover"
+                                    attrs="{'required': [('es_usuario_presupuesto', '=', True)]}"/>
+                            </div>
+
+                            <field name="es_usuario_presupuesto" invisible="1"/>
+                            <field name="es_usuario_consulta" invisible="1"/>
+
+                            
+                            <div style="margin-bottom: 8px; padding: 3px 8px 8px 8px;" invisible="1">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Fecha creación del registro:</strong>
+                                <field name="fch_creacion" class="input_moderno campo_hover"/>
+                            </div>
+                        </div>
+
+                        <div style="width: 25%; vertical-align: top; padding: 3px 10px 10px 10px;">
+                            
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Solicitante:</strong>
+                                <field name="solicitante"
+                                       options="{'no_open': True}"
+                                       style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                            
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Fecha inicio:</strong>
+                                <field name="fecha_inicio" 
+                                       style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                        </div>
+
+                        <div style="width: 25%; vertical-align: top; padding: 3px 10px 10px 10px;">
+                            
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Número del contrato:</strong>
+                                <field name="numero_contrato" style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                            
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Fecha finalización inicial:</strong>
+                                <field name="fecha_finalizacion" style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                        </div>
+
+                        <div style="width: 25%; vertical-align: top; padding: 3px 0 10px 10px;">
+                            <field name="acta_comite_count" invisible="1"/>
+                            <field name="acta_comite_ids" invisible="1"/>
+                            <field name="tiene_fecha_finalizacion_otrosi" invisible="1"/>
+                            <div style="margin-bottom: 8px; padding: 8px;" attrs="{'invisible': [('tiene_fecha_finalizacion_otrosi', '=', False)]}">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Fecha finalización otrosí:</strong>
+                                <field name="fecha_finalizacion_otrosi" style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                            <div style="margin-bottom: 8px; padding: 8px;">
+                                <strong style="color: #1e1c1b; display: block; margin-bottom: 2px; font-size: 13px;">Modalidad:</strong>
+                                <field name="modalidad_id" 
+                                       options="{'no_open': True}"
+                                       style="padding: 5px; background-color: #ADD8E6; border-radius: 4px; display: block; width: 100%;"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card_seccion">
+                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Objeto del proyecto</strong>
+                        
+                        <field name="objeto_proyecto_texto2" class="campo_solo_lectura campo_hover" readonly="1" style="display: block !important; width: 100% !important; white-space: pre-wrap !important; word-break: break-word !important; overflow-wrap: break-word !important;"/>
+                    </div>
+
+                    <!-- Notebook para organizar el contenido -->
+                    <notebook>
+                        <!-- Primera página: Información General y Costos -->
+                        <page string="MCB" class="custom-style">
+                            <style>
+                                .custom-style {
+                                    font-weight: bold;
+                                    font-size: 20px;
+                                }
+                                .responsive-container {
+                                    max-width: 100%;
+                                    box-sizing: border-box;
+                                    margin: 0 auto;
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                }
+
+                                .o_notebook {
+                                    max-width: 100%;
+                                }
+                            </style>
+
+                            <table style="padding: 15px; width: 100%; border-collapse: collapse; margin-top: 10px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;"
+                                   groups="Matriz.group_contratacion_director_fuv,Matriz.group_soporte">
+
+                                <!-- Fila del título -->
+                                <tr>
+                                    <td colspan="2" style="padding: 8px; color: white; text-align: center; background: linear-gradient(135deg, #02225B 0%, #1e3a8a 100%); border-radius: 8px 8px 0 0;">
+                                        <h2 style="color: white; margin: 0; font-weight: 600; font-size: 18px; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">Sobrecosto</h2>
+                                    </td>
+                                </tr>
+
+                                <!-- Fila con dos columnas -->
+                                <tr>
+                                    <!-- Columna izquierda -->
+                                    <td style="width: 50%; padding: 8px; background-color: #f8f9fa; vertical-align: top;">
+                                        <div style="background-color: #ffffff; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #02225B;">
+                                            <div style="margin-bottom: 6px; color: #02225B; font-weight: 600; font-size: 13px;">
+                                                📋 Activación de sobrecosto
+                                            </div>
+                                            <p style="margin: 6px 0; color: #6c757d; font-size: 11px;">Marque si desea activar el sobrecosto para este proyecto</p>
+                                            <field name="aprueba_director" widget="boolean_toggle" string="Aprobar sobrecosto"/>
+                                        </div>
+                                    </td>
+
+                                    <!-- Columna derecha -->
+                                    <td style="width: 50%; padding: 8px; background-color: #f8f9fa; vertical-align: top;">
+                                        <div style="background-color: #ffffff; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #28a745;"
+                                             attrs="{'invisible': [('aprueba_director', '=', False)]}">
+                                            <div style="margin-bottom: 6px; color: #28a745; font-weight: 600; font-size: 13px;">
+                                                💰 Valor del sobrecosto
+                                            </div>
+                                            <p style="margin: 6px 0; color: #6c757d; font-size: 11px;">Por favor ingrese el valor del sobrecosto a aplicar</p>
+                                            <field name="cantidad_aprobada" string="Asignar valor del sobrecosto"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="card_seccion2" style="width: 100%; margin-top: 15px;
+                                        background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; padding: 15px;">
+
+                                <div style="width: 100%; display: flex; justify-content: space-between; gap: 15px; margin-bottom: 12px;">
+                                    <div style="flex: 1;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Valor proyecto:</strong>
+                                        <field name="valor_proyecto_convenio3" 
+                                                style="width: 100%;"
+                                                placeholder="Agregar el valor al proyecto"
+                                                attrs="{'required': [('es_usuario_presupuesto', '=', True)]}"
+                                                class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                    
+                                    <div style="flex: 1;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Contrapartida (FUV):</strong>
+                                        <field name="contrapartida4" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                    </div>
+                                    
+                                    <div style="flex: 1;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Contrapartida (OTROS):</strong>
+                                        <field name="contrapartida_otros" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                    </div>
+                                </div>
+                                
+                                <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+                                
+                                <div style="width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 15px;">
+
+                                    <div style="flex: 2;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">Seleccionar tipo de costo:</strong>
+                                        <field name="alias_costo"
+                                            string="Seleccionar"
+                                            placeholder="Seleccionar"
+                                            class="input_moderno campo_hover_mcb"
+                                            style="width: 100%; display: block;"/>
+                                    </div>
+                                    
+                                    <div style="flex: 0.5;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"></strong>
+                                        <div style="display: flex; align-items: center; gap: 5px;">
+                                            <span style="font-weight: bold;">%</span>
+                                            <field name="costo_operativo_porc" class="input_moderno campo_hover_mcb" style="width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="flex: 2;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                                attrs="{'invisible': [('alias_costo', '!=', 'gastos_admin')]}">
+                                            Valor costo administrativo:
+                                        </strong>
+
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                                attrs="{'invisible': [('alias_costo', '!=', 'costo_operativo')]}">
+                                            Valor costo operativo:
+                                        </strong>
+
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                                attrs="{'invisible': [('alias_costo', '!=', 'amd_fuv')]}">
+                                            Valor administración FUV:
+                                        </strong>
+
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;"
+                                                attrs="{'invisible': [('alias_costo', '!=', False)]}">
+                                            Valor:
+                                        </strong>
+
+                                        <field name="costo_operativo1" 
+                                            placeholder="Agregar el valor"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <strong style="font-weight: bold; font-size: 13px; color: #1e1c1b; display: block; margin-bottom: 2px;">
+                                            Contratos VCO:
+                                        </strong>
+                                        <field name="contratos_vco" 
+                                            placeholder="Agregar el valor"
+                                            style="width: 100%;"
+                                            class="input_moderno campo_hover_mcb"/>
+                                    </div>
+                                </div>
+
+                                <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+
+                                <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Costos tributarios</h2>
+                                <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px;">
+
+                                    <div style="width: 48%;">
+
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Iva:</span>
+                                                <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                    %<field name="porc_iva" placeholder='%'
+                                                        class="input_moderno campo_hover_mcb"
+                                                        style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="IVA_ADMON_vaor"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Reteica:</span>
+                                                <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                    %<field name="porc_reteica" placeholder='%'
+                                                        class="input_moderno campo_hover_mcb"
+                                                        style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="reteica_result"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                    readonly="0" />
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Estampillas:</span>
+                                                <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                    %<field name="porc_estampillas" placeholder='%'
+                                                        class="input_moderno campo_hover_mcb"
+                                                        style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="estampillas_result"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                    readonly="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="width: 48%;">
+                                        
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">ICA, avisos y tableros:</span>
+                                                <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                    %<field name="porc_avisos_tableros" placeholder='%'
+                                                        class="input_moderno campo_hover_mcb"
+                                                        style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="resul_avisos_tableros"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                    readonly="0"/>
+                                            </div>
+                                        </div>
+
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Gastos bancarios:</span>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="gastos_bancarios"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                    readonly="0"/>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Personal FUV:</span>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="personal_fuv"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"
+                                                    readonly="0"/>
+                                            </div>
+                                        </div> -->
+
+
+                                        <div style="display: flex; padding: 3px 0;">
+                                            <div style="width: 40%; display: flex; align-items: center; justify-content: space-between;">
+                                                <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Retefuente:</span>
+                                                <div style="display: flex; align-items: center; gap: 5px; padding-right: 10px;">
+                                                    %<field name="porc_retefuente" placeholder='%'
+                                                        class="input_moderno campo_hover_mcb"
+                                                        style="padding: 5px; width: 60px; border-radius: 4px; text-align: right; display: block;" />
+                                                </div>
+                                            </div>
+                                            <div style="width: 60%; padding-left: 5px;">
+                                                <field name="reteica_retefuente"
+                                                    class="input_moderno campo_hover_mcb"
+                                                    style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+                                    <div style="width: 40%; display: flex; align-items: center;">
+                                        <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Total tributarios:</span>
+                                    </div>
+                                    <div style="width: 60%; padding-left: 5px;">
+                                        <field name="costos_total_valor2"
+                                            class="input_moderno campo_hover_mcb"
+                                            style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                                    </div>
+                                </div>
+
+                                <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+                                
+                                <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Póliza</h2>
+                                <div style="width: 100%;">
+                                    
+                                    <div style="display: flex; padding: 3px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                            <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Póliza de cumplimiento:</span>
+                                        </div>
+                                        <div style="width: 60%;">
+                                            <field name="poliza_cumplim"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 3px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                            <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Póliza de responsabilidad:</span>
+                                        </div>
+                                        <div style="width: 60%;">
+                                            <field name="poliza_respon"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+                                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Total pólizas:</span>
+                                    </div>
+                                    <div style="width: 60%;">
+                                        <field name="poliza_total"
+                                            class="input_moderno campo_hover_mcb"
+                                            style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                                    </div>
+                                </div>
+
+                                <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+
+                                <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">FUV</h2>
+                                
+                                <div style="width: 100%; display: flex; align-items: center;">
+
+                                    <div style="width: 40%; display: flex; justify-content: flex-end; align-items: center; padding-right: 10px;">
+                                        <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Costos FUV:</span>
+                                    </div>
+
+                                    <div style="width: 60%; padding-left: 5px;">
+                                        <field name="costos_fuv"
+                                            class="input_moderno campo_hover_mcb"
+                                            style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                    </div>
+                                </div>
+
+                                <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+
+                                <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Participación</h2>
+                                <div style="width: 100%;">
+                                    
+                                    <div style="display: flex; padding: 3px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                            <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">Participación UV/FAC, ESC:</span>
+                                        </div>
+                                        <div style="width: 60%;">
+                                            <field name="new_Participación_UV"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+
+                                    <div style="display: flex; padding: 3px 0;">
+                                        <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                                            <span style="font-weight: bold; font-size: 13px; color: #1e1c1b;">FUV - Programas sociales:</span>
+                                        </div>
+                                        <div style="width: 60%;">
+                                            <field name="new_fuv_programas"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block;"/>
+                                        </div>
+                                    </div>
+                                <hr style="border-color: #D3D3D3; margin: 15px 0;"/>
+                                <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Costo de producción</h2>
+                                    <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+             
+                                            <field name="new_total_costos_produccion_N"
+                                                class="input_moderno campo_hover_mcb"
+                                                style="font-weight: bold; font-size: 14px; border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                         
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">
+                                <tr>
+                                    <td style="padding: 12px;">
+
+                                        <table style="width: 100%; border-collapse: collapse;">
+                                            <tr>
+                                                <!-- Aprobado por -->
+                                                <td style="width: 50%; padding: 8px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+                                                    <div style="color: #1e1c1b; font-weight: 600; font-size: 13px; margin-bottom: 15px;">Aprobado por</div>
+                                                    <div style="height: 35px; border-bottom: 1px solid #ccc; margin-bottom: 6px;"></div>
+                                                    <div style="color: #6c757d; font-size: 11px; text-align: right;"><field name="realizado_por"/><field name="realizado_por_check"/></div>
+                                                </td>
+
+                                                <!-- Elaborado por -->
+                                                <td style="width: 50%; padding: 8px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-left: 10px;">
+                                                    <div style="color: #1e1c1b; font-weight: 600; font-size: 13px; margin-bottom: 15px;">Elaborado por</div>
+                                                    <div style="height: 35px; border-bottom: 1px solid #ccc; margin-bottom: 6px;"></div>
+                                                    <div style="color: #6c757d; font-size: 11px; text-align: right;"><field name="aprobado_por"/><field name="aprobado_por_check"/></div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </page>
+                    <!-- Tercera página: También lista para más contenido -->
+<page string="MCB resumen" class="custom-style">
+    <style>
+        .custom-style {
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .responsive-container {
+            max-width: 100%;
+            box-sizing: border-box;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .o_notebook {
+            max-width: 100%;
+        }
+    </style>
+
+    <div class="card_seccion2" style="width: 100%; margin-top: 10px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; padding: 10px;">
+        <div style="display: flex; width: 100%; gap: 20px;">
+        
+        <div style="width: 32%; display: flex; flex-direction: column; gap: 10px;">
+            
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Valor proyecto:</strong>
+                <field name="valor_proyecto_convenio3_related" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Adición:</strong>
+                <field name="suma_adicion_otro_si2" class="input_moderno campo_hover_mcb alinear-derecha" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #ccc;">
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Valor total:</strong>
+                <field name="valor_total2_final" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #9ff1c8ff;"/>
+            </div>
+
+        </div>
+
+        <div style="width: 32%; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid #eee; padding-left: 10px;">
+            
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Contrapartida (FUV):</strong>
+                <field name="suma_contrapartida4" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Contrapartida (OTROS):</strong>
+                <field name="contrapartida_otros_r" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Contrapartida (FUV + OTROS):</strong>
+                <field name="suma_contrapartida_otros" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 10px; border-top: 1px dashed #ccc;">
+                
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Valor total convenio:</strong>
+
+                <div style="display: flex; align-items: center; width: 100%;">
+                    
+                    <div style="width: 95%;">
+                        <field name="valor_aportes" 
+                            class="input_moderno campo_hover_mcb" 
+                            style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #9ff1c8ff;"/>
+                    </div>
+
+                    <div style="width: 5%; text-align: center; display: flex; justify-content: center;">
+                        <span style="color: #6c757d; cursor: help; font-size: 16px;" 
+                            title="Este campo es informativo. Corresponde a la suma de: Valor total + Contrapartida (FUV) + OTROS.">
+                            ⓘ
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- Nueva columna 3 -->
+        <div style="width: 32%; display: flex; flex-direction: column; gap: 10px; border-left: 1px solid #eee; padding-left: 10px;">
+            
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Valor operativo:</strong>
+                <field name="suma_costo_operativo1" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+
+            <div>
+                <strong style="font-weight: bold; font-size: 14px; color: #1e1c1b; display: block; margin-bottom: 3px;">Contratos VCO:</strong>
+                <field name="contratos_vco_resumen" class="input_moderno campo_hover_mcb alinear-derecha" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+        </div>
+    </div>
+
+<hr style="border-color: #D3D3D3; margin: 15px 0;"/>
+
+        <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Costos tributarios</h2>
+
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+            <div style="width: 48%; padding-right: 10px;">
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Iva:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="suma_IVA_ADMON_vaor" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Reteica:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="suma_RETEICA_valor" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Estampillas:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="suma_Descuentos_Estampillas_valor" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="width: 48%; padding-left: 10px;">
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">ICA, avisos y tableros:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="suma_ICA_AVISOS_Y_TABLEROS_valor" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Gastos bancarios:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="gastos_bancarios_otrosi_general" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+                <div style="display: flex; padding: 5px 0;">
+                    <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                        <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Retefuente:</span>
+                    </div>
+                    <div style="width: 60%; padding-left: 5px;">
+                        <field name="suma_cuatro_X1000_valor" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; padding: 5px 0;">
+            <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Total tributarios:</span>
+            </div>
+            <div style="width: 60%; padding-left: 5px;">
+                <field name="costos_total_valor2R" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+        </div>
+
+        <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+
+        <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Póliza</h2>
+        <div style="width: 100%;">
+            <div style="display: flex; padding: 5px 0;">
+                <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Póliza de cumplimiento:</span>
+                </div>
+                <div style="width: 60%;">
+                    <field name="suma_poliza_cumplim" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                </div>
+            </div>
+            <div style="display: flex; padding: 5px 0;">
+                <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Póliza de responsabilidad:</span>
+                </div>
+                <div style="width: 60%;">
+                    <field name="suma_poliza_respon" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; padding: 5px 0;">
+            <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Total pólizas:</span>
+            </div>
+            <div style="width: 60%;">
+                <field name="poliza_total_r" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+        </div>
+
+        <hr style="border-color: #D3D3D3; margin: 10px 0;" />
+        
+        <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">FUV</h2>
+        <div style="width: 100%; display: flex; align-items: center;">
+            <div style="width: 40%; display: flex; justify-content: flex-end; align-items: center; padding-right: 10px;">
+                <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Costos FUV:</span>
+            </div>
+            <div style="width: 60%; padding-left: 5px;">
+                <field name="suma_costos_fuv" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+            </div>
+        </div>
+        
+        <hr style="border-color: #D3D3D3; margin: 10px 0;"/>
+        
+        <h2 class="titulo_seccion" style="margin: 0; color: #1e1c1b;">Participación</h2>
+        <div style="width: 100%;">
+            <div style="display: flex; padding: 5px 0;">
+                <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">Participación UV/FAC, ESC:</span>
+                </div>
+                <div style="width: 60%;">
+                    <field name="suma_new_Participación_UV" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                </div>
+            </div>
+            <div style="display: flex; padding: 5px 0;">
+                <div style="width: 40%; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;">
+                    <span style="font-weight: bold; font-size: 14px; color: #1e1c1b;">FUV - Programas sociales:</span>
+                </div>
+                <div style="width: 60%;">
+                    <field name="suma_new_fuv_programas" class="input_moderno campo_hover_mcb" style="border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+                </div>
+            </div>
+        </div>
+
+        <hr style="border-color: #D3D3D3; margin: 15px 0;"/>
+        
+        <h2 class="titulo_seccion" style="margin: 0 0 8px 0; color: #1e1c1b;">Costo de producción</h2>
+        <div style="display: flex; padding: 5px 0; margin-top: 5px;">
+            <field name="new_total_costos_produccion_N_r" class="input_moderno campo_hover_mcb" style="font-weight: bold; font-size: 14px; border-radius: 4px; padding: 5px; text-align: right; width: 100%; display: block; background-color: #ADD8E6;"/>
+        </div>
+
+    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px; background-color: #ffffff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;">
+        <tr>
+            <td style="padding: 15px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="width: 50%; padding: 10px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1);">
+                            <div style="color: #1e1c1b; font-weight: 600; font-size: 14px; margin-bottom: 20px;">Aprobado por</div>
+                            <div style="height: 40px; border-bottom: 1px solid #ccc; margin-bottom: 8px;"></div>
+                            <div style="color: #6c757d; font-size: 12px; text-align: right;"><field name="realizado_por"/></div>
+                        </td>
+                        <td style="width: 50%; padding: 10px; border: 1px solid #D3D3D3; border-radius: 6px; background-color: #f9f9f9; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-left: 10px;">
+                            <div style="color: #1e1c1b; font-weight: 600; font-size: 14px; margin-bottom: 20px;">Elaborado por</div>
+                            <div style="height: 40px; border-bottom: 1px solid #ccc; margin-bottom: 8px;"></div>
+                            <div style="color: #6c757d; font-size: 12px; text-align: right;"><field name="aprobado_por"/></div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</page>
+                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </sheet>
+
+                </form>
+            </field>
+        </record>
+        <record id="view_kanban_new_mcb_otrosi" model="ir.ui.view">
+            <field name="name">new_mcb_otrosi.kanban</field>
+            <field name="model">new_mcb_otrosi</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong><field name="name"/></strong><br/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="view_kanban_new_mcb" model="ir.ui.view">
+            <field name="name">new_mcb.kanban</field>
+            <field name="model">new_mcb</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <strong><field name="name"/></strong><br/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>

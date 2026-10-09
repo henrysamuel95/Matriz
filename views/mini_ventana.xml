@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista para la generación de archivos -->
+        <record id="view_mini_ventana_form" model="ir.ui.view">
+            <field name="name">Mini Ventana.form</field>
+            <field name="model">mini_ventana</field>
+            <field name="arch" type="xml">
+                <sheet string="Selecciona">
+                    <footer>
+                        <!-- Oculta los botones de guardar y descartar -->
+                        <button name="object" string=" " class="oe_edit_only"/>
+                        <button name="object" string=" " class="oe_edit_only"/>
+                    </footer>
+                    <group style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; display: flex; flex-direction: column; align-items: center;">
+                        <button
+                            name="Ingreso_Nueva_Actividad_a_Contratar_y_Programacion_de_Pagos1"
+                            string="Contrato Persona Jurídica"
+                            type="object"
+                            class="custom_button_style"
+                            style="margin-bottom: 10px;"/>
+                        <button
+                            name="Ingreso_Nueva_Actividad_a_Contratar_y_Programacion_de_Pagos2"
+                            string="Contrato Persona Natural"
+                            type="object"
+                            class="custom_button_style"/>
+                    </group>
+                    <style>
+                        .modal-dialog {
+                            width: 40%; /* Ajusta el ancho según tus necesidades */
+                            max-width: 700px; /* Establece un ancho máximo si lo deseas */
+                            margin: 50px auto; /* Controla el margen al centro */
+                        }
+                        .custom_button_style {
+                            background-color: #485B75;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            font-size: 16px;
+                            border-radius: 5px;
+                        }
+                    </style>
+                </sheet>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+.progress_bar {
+    width: 100%;
+    margin: 10px 0 15px;
+    position: relative;
+}
+
+.progress_bar .pro-bar {
+    background: hsl(0, 0%, 97%);
+    box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1) inset;
+    height: 16px; /* Ajustado para una barra un poco más delgada */
+    width: 90%; /* Ajustado para que ocupe un 90% del contenedor */
+    border-radius: 8px; /* Esquinas redondeadas */
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto; /* Centrar la barra */
+}
+
+.progress_bar .progress_number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-weight: normal; /* Quitar la negrilla */
+    z-index: 1;
+}
+
+.progress_bar .progress-bar-inner {
+    background: linear-gradient(90deg, hsl(120, 60%, 50%), hsl(120, 70%, 40%));
+    display: block;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 1s linear 0s;
+    border-radius: 8px;
+}

@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_vistas_director_form" model="ir.ui.view">
+            <field name="name">vistas_director.form</field>
+            <field name="model">vistas_director</field>
+            <field name="arch" type="xml">
+                <form create="0" class="all" style="background-color: #F0F0F0;">
+                    <style>
+                        /* Ocultar los botones de Guardar, Descartar y Editar en el panel de control */
+                        .o_form_button_save, .o_form_button_cancel, .o_form_button_edit, .o_control_panel_main_buttons, .o_cp_bottom_left {
+                            display: none !important;
+                        }
+                    </style>
+                    <!-- Header -->
+                    <div class="select">
+                        <div class="oe_highlight custom_button_style">
+                            <span class="indicator-title-button">Seleccione</span>
+                            <field name="seleccionador_graficas" widget="selection"/>
+                        </div>
+                        <div class="oe_highlight custom_button_style" attrs="{'invisible': [('seleccionador_graficas', '!=', '02')]}">
+                            <span class="indicator-title-button">Selección de Proyecto</span>
+                            <field name="nombre_proyecto" class="indicator-value-header" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <div class="oe_highlight custom_button_style" attrs="{'invisible': [('seleccionador_graficas', '!=', '02')]}">
+                            <span class="indicator-title-button">Seleccionar Año</span>
+                            <field name="seleccion_anio_proyecto" class="indicator-value-header" widget="selection"/>
+                        </div>
+                        <div class="oe_highlight custom_button_style" attrs="{'invisible': [('seleccionador_graficas', '!=', '03')]}">
+                            <span class="indicator-title-button">Selección de Coordinador</span>
+                            <field name="coordinador_id" class="indicator-value-header" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <div class="oe_highlight custom_button_style" attrs="{'invisible': [('seleccionador_graficas', '!=', '03')]}">
+                            <span class="indicator-title-button">Seleccionar Año</span>
+                            <field name="seleccion_anio_coordinador" class="indicator-value-header" widget="selection"/>
+                        </div>
+                        <div class="dashboard-desc-container" style="flex: 1; min-width: 250px; padding: 0 16px; display: flex; align-items: center;">
+                            <field name="dashboard_description" readonly="1" nolabel="1"/>
+                        </div>
+                        <button name="action_open_glosario" string="Guía Técnica y Fórmulas" type="object" class="oe_highlight custom_button_style" icon="fa-book"/>
+                        <button name="ir_a_tablero_avances" string="Ir a proyectos" type="object" class="oe_highlight custom_button_style" icon="fa-arrow-right"/>
+                    </div>
+
+                    <!-- Topbar "Detalle de Proyecto" (solo modo Proyectos, con proyecto seleccionado) -->
+                    <div class="project-topbar" attrs="{'invisible': ['|', ('seleccionador_graficas', '!=', '02'), ('nombre_proyecto', '=', False)]}">
+                        <div class="project-topbar-logo">SGO</div>
+                        <div class="project-topbar-brand">
+                            <h1>Detalle de Proyecto</h1>
+                            <p><field name="nombre_proyecto" nolabel="1" readonly="1"/> · Coordinador(a): <field name="coordinador_asignado" nolabel="1" readonly="1"/></p>
+                        </div>
+                        <div class="project-topbar-right">
+                            <button name="action_volver_global" string="Consolidado" type="object" class="project-topbar-pill project-topbar-link" icon="fa-arrow-left"/>
+                            <div class="project-topbar-pill">
+                                <span class="project-topbar-pill-lbl">Actualizado</span>
+                                <span attrs="{'invisible': [('ultima_sync_proyecto', '=', False)]}">
+                                    <field name="ultima_sync_proyecto" nolabel="1" readonly="1"/>
+                                </span>
+                                <span attrs="{'invisible': [('ultima_sync_proyecto', '!=', False)]}">Sin sincronizar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topbar "Detalle de Coordinador" (solo modo Coordinadores, con coordinador seleccionado) -->
+                    <div class="project-topbar" attrs="{'invisible': ['|', ('seleccionador_graficas', '!=', '03'), ('coordinador_id', '=', False)]}">
+                        <div class="project-topbar-logo">SGO</div>
+                        <div class="project-topbar-avatar"><field name="avatar_iniciales_coordinador" nolabel="1" readonly="1"/></div>
+                        <div class="project-topbar-brand">
+                            <h1><field name="coordinador_id" nolabel="1" readonly="1"/></h1>
+                            <p>Coordinador(a) de proyectos · <field name="proyectos_count_coordinador" nolabel="1" readonly="1"/> proyecto(s) a cargo</p>
+                        </div>
+                        <div class="project-topbar-right">
+                            <button name="action_volver_global" string="Consolidado" type="object" class="project-topbar-pill project-topbar-link" icon="fa-arrow-left"/>
+                            <div class="project-topbar-pill">
+                                <span class="project-topbar-pill-lbl">Actualizado</span>
+                                <span attrs="{'invisible': [('ultima_sync_coordinador', '=', False)]}">
+                                    <field name="ultima_sync_coordinador" nolabel="1" readonly="1"/>
+                                </span>
+                                <span attrs="{'invisible': [('ultima_sync_coordinador', '!=', False)]}">Sin sincronizar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores Global -->
+                    <div class="container_header" attrs="{'invisible': [('seleccionador_graficas', '!=', '01')]}">
+                        <div class="indicator">
+                            <span class="indicator-title">Presupuesto Total <span class="fa fa-info-circle chart-info-icon" title="Lo que se espera cobrar del financiador (MCB/convenio) para ejecutar todos los proyectos. Es un techo distinto al de Presupuesto Contratado."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'presupuesto_total'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="valor_total_global" class="indicator-value" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Presupuesto Contratado <span class="fa fa-info-circle chart-info-icon" title="Suma de lo contratado (valor total + otrosí) en todas las contrataciones FUV de la organización."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'presupuesto_contratado'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="contratado_global" class="indicator-value" widget="monetary"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Ejecución Financiera <span class="fa fa-info-circle chart-info-icon" title="Pagos acumulados como porcentaje de lo contratado."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="ejecucion_financiera_global_pct" class="indicator-value" widget="float" options="{'digits': [16, 1]}"/><span class="indicator-value">%</span>
+                            <div class="indicator-foot"><field name="pagado_global" widget="monetary"/> ejecutado del contratado</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Cobros Acumulados <span class="fa fa-info-circle chart-info-icon" title="Suma de recaudo (SIESA) de todos los proyectos activos."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'cobros_acumulados'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="cobrado_global" class="indicator-value" widget="monetary"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Pagos Acumulados <span class="fa fa-info-circle chart-info-icon" title="Salida de caja: suma de pagos reales (SIESA) de todos los proyectos activos."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'pagos_acumulados'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="pagado_global" class="indicator-value" widget="monetary"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Flujo Neto (Cash Gap) <span class="fa fa-info-circle chart-info-icon" title="Cobrado menos pagado, acumulado a la fecha. Negativo significa que se ha pagado más de lo que se ha recaudado."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'flujo_neto_global'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <span class="indicator-value flujo-neto-negativo" attrs="{'invisible': [('flujo_neto_global', '>=', 0)]}">
+                                <span class="fa fa-arrow-down"/>
+                                <field name="flujo_neto_global" widget="monetary" nolabel="1"/>
+                            </span>
+                            <span class="indicator-value flujo-neto-positivo" attrs="{'invisible': [('flujo_neto_global', '&lt;', 0)]}">
+                                <span class="fa fa-arrow-up"/>
+                                <field name="flujo_neto_global" widget="monetary" nolabel="1"/>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores proyectos -->
+                    <div class="container_header" attrs="{'invisible': [('seleccionador_graficas', '!=', '02')]}">
+                        <div class="indicator">
+                            <span class="indicator-title">Presupuesto Total <span class="fa fa-info-circle chart-info-icon" title="Monto financiero total destinado y planeado para este proyecto."/>
+                            </span>
+                            <br/>
+                            <field name="valor_total" class="indicator-value" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <div class="indicator-foot">valor contratado</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Ejecución Técnica <span class="badge-en-construccion">En construcción</span> <span class="fa fa-info-circle chart-info-icon" title="Porcentaje de avance físico/de actividades reportado. Este dato todavía está en construcción en toda la aplicación."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="suma_total" class="indicator-value" widget="float" options="{'digits': [16, 1]}"/><span class="indicator-value">%</span>
+                            <div class="indicator-foot">avance físico</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Ejecución Financiera <span class="fa fa-info-circle chart-info-icon" title="Pagos acumulados como porcentaje del presupuesto del convenio."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="financiera_pct_proyecto" class="indicator-value" widget="float" options="{'digits': [16, 1]}"/><span class="indicator-value">%</span>
+                            <div class="indicator-foot"><field name="pagado_proyecto" widget="monetary"/> pagados</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Cobros Acumulados <span class="fa fa-info-circle chart-info-icon" title="Suma histórica de recaudo (SIESA) de este proyecto, sin filtrar por año."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'cobros_acumulados_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="cobrado_proyecto" class="indicator-value" widget="monetary"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Saldo en Banco <span class="fa fa-info-circle chart-info-icon" title="Cobrado menos pagado de este proyecto, acumulado a la fecha. Negativo significa que este proyecto ha pagado más de lo que ha recaudado."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'flujo_neto_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <span class="indicator-value flujo-neto-negativo" attrs="{'invisible': [('flujo_neto_proyecto', '>=', 0)]}">
+                                <span class="fa fa-arrow-down"/>
+                                <field name="flujo_neto_proyecto" widget="monetary" nolabel="1"/>
+                            </span>
+                            <span class="indicator-value flujo-neto-positivo" attrs="{'invisible': [('flujo_neto_proyecto', '&lt;', 0)]}">
+                                <span class="fa fa-arrow-up"/>
+                                <field name="flujo_neto_proyecto" widget="monetary" nolabel="1"/>
+                            </span>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Fin del Proyecto <span class="fa fa-info-circle chart-info-icon" title="Fecha de finalización según MCB, ajustada por el otrosí vigente con la fecha más lejana."/>
+                            </span>
+                            <br/>
+                            <span attrs="{'invisible': [('fecha_fin_proyecto', '=', False)]}">
+                                <field name="fecha_fin_proyecto" class="indicator-value"/>
+                            </span>
+                            <span class="indicator-value flujo-neto-negativo" attrs="{'invisible': [('fecha_fin_proyecto', '!=', False)]}">Sin definir</span>
+                            <div class="indicator-foot" attrs="{'invisible': [('fecha_fin_proyecto', '!=', False)]}">falta fecha de cierre</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Total de contratistas <span class="fa fa-info-circle chart-info-icon" title="Cantidad de contratos o contratistas únicos involucrados."/>
+                            </span>
+                            <br/>
+                            <field name="contratos_count" class="indicator-value"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Días faltantes</span>
+                            <br/>
+                            <field name="tiempo_restante" class="indicator-value"/>
+                        </div>
+                    </div>
+
+                    <!-- Indicadores Coordinador -->
+                    <div class="container_header" attrs="{'invisible': [('seleccionador_graficas', '!=', '03')]}">
+                        <div class="indicator">
+                            <span class="indicator-title">Presupuesto Coordinado <span class="fa fa-info-circle chart-info-icon" title="Sumatoria del presupuesto de todos los proyectos que maneja este coordinador."/>
+                            </span>
+                            <br/>
+                            <field name="valor_total_coordinador" class="indicator-value" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <div class="indicator-foot">valor total a cargo</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Proyectos <span class="fa fa-info-circle chart-info-icon" title="Cantidad de proyectos a cargo de este coordinador, y cuántos están activos vs. cerrados."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'proyectos_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="proyectos_count_coordinador" class="indicator-value"/>
+                            <div class="indicator-foot"><field name="proyectos_activos_coordinador" nolabel="1"/> activos · <field name="proyectos_cerrados_coordinador" nolabel="1"/> cerrados</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Ejec. Técnica Promedio <span class="badge-en-construccion">En construcción</span> <span class="fa fa-info-circle chart-info-icon" title="Promedio simple del % de avance técnico de todos los proyectos a cargo. Este dato todavía está en construcción en toda la aplicación."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="tecnica_promedio_coordinador" class="indicator-value" widget="float" options="{'digits': [16, 1]}"/><span class="indicator-value">%</span>
+                            <div class="indicator-foot">avance físico promedio</div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Ejec. Financiera Promedio <span class="fa fa-info-circle chart-info-icon" title="Promedio simple del % pagado frente al presupuesto de cada proyecto a cargo."/>
+                                <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona este indicador"/>
+                            </span>
+                            <br/>
+                            <field name="financiera_promedio_coordinador" class="indicator-value" widget="float" options="{'digits': [16, 1]}"/><span class="indicator-value">%</span>
+                            <div class="indicator-foot"><field name="total_pagado_coordinador" widget="monetary"/> pagados de <field name="valor_total_coordinador" widget="monetary"/></div>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Total Cobrado <span class="fa fa-info-circle chart-info-icon" title="Suma de recaudo (SIESA) de todos los proyectos a cargo de este coordinador."/>
+                            </span>
+                            <br/>
+                            <field name="total_cobrado_coordinador" class="indicator-value" widget="monetary"/>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Flujo Neto <span class="fa fa-info-circle chart-info-icon" title="Cobrado menos pagado, acumulado a la fecha, de todos los proyectos de este coordinador. Negativo significa que se ha pagado más de lo que se ha recaudado."/>
+                            </span>
+                            <br/>
+                            <span class="indicator-value flujo-neto-negativo" attrs="{'invisible': [('flujo_neto_coordinador', '>=', 0)]}">
+                                <span class="fa fa-arrow-down"/>
+                                <field name="flujo_neto_coordinador" widget="monetary" nolabel="1"/>
+                            </span>
+                            <span class="indicator-value flujo-neto-positivo" attrs="{'invisible': [('flujo_neto_coordinador', '&lt;', 0)]}">
+                                <span class="fa fa-arrow-up"/>
+                                <field name="flujo_neto_coordinador" widget="monetary" nolabel="1"/>
+                            </span>
+                        </div>
+
+                        <div class="indicator">
+                            <span class="indicator-title">Total de Contratistas <span class="fa fa-info-circle chart-info-icon" title="Cantidad de contratos o contratistas únicos involucrados en los proyectos de este coordinador."/>
+                            </span>
+                            <br/>
+                            <field name="contratos_count_coordinador" class="indicator-value"/>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-header">
+
+                            <field name="mes_seleccionado" class="month2" widget="selection" placeholder="Seleccionar Mes" invisible="1"/>
+                        </div>
+                        <!-- Dashboard Global -->
+                        <div id="prueba_1_dashboard" class="dashboard" attrs="{'invisible': [('seleccionador_graficas', '!=', '01')]}">
+                            <div class="dash-row dash-row-a">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Flujo de caja mensual (neto)
+                                        <span class="fa fa-info-circle chart-info-icon" title="Ingresos (cobros) vs egresos (pagos) y el neto de ese mes específico (no acumulado) para el año seleccionado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'flujo_caja'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_flujo_caja_data" widget="chart_widget"/>
+                                    <field name="seleccion_anio_flujo_caja" placeholder="Seleccionar Año" widget="selection"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Focos de atención
+                                        <span class="fa fa-info-circle chart-info-icon" title="Alertas calculadas en tiempo real a partir de los datos globales: caja negativa, cartera por recaudar, concentración de riesgo por coordinador e inconsistencias de datos."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'focos_atencion'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="alertas_globales_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                            <div class="dash-row dash-row-full" attrs="{'invisible': [('flujo_neto_global', '&gt;=', 0)]}">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Proyectos con mayor flujo de caja negativo
+                                        <span class="fa fa-info-circle chart-info-icon" title="Los proyectos donde se ha pagado más de lo que se ha cobrado (SIESA), de mayor a menor déficit. Clic en una barra para ir al dashboard de ese proyecto."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'proyectos_flujo_negativo'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="proyectos_flujo_negativo_chart_data" widget="horizontal_bar_chart_widget"/>
+                                </div>
+                            </div>
+                            <div class="dash-row dash-row-full" attrs="{'invisible': [('flujo_neto_global', '&lt;', 0)]}">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Proyectos con mayor flujo de caja positivo
+                                        <span class="fa fa-info-circle chart-info-icon" title="Los proyectos donde se ha cobrado más de lo que se ha pagado (SIESA), de mayor a menor superávit. Clic en una barra para ir al dashboard de ese proyecto."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'proyectos_flujo_positivo'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="proyectos_flujo_positivo_chart_data" widget="horizontal_bar_chart_widget"/>
+                                </div>
+                            </div>
+                            <div class="dash-row dash-row-b">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Estado del portafolio
+                                        <span class="fa fa-info-circle chart-info-icon" title="En ejecución / En ejecución (vencido) / Cerrados, según la fecha de finalización MCB y el estado del trámite de cierre formal (modelo cierre)."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'portafolio'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="portafolio_chart_data" widget="pie_chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Ejecución técnica vs financiera <span class="badge-en-construccion">Técnica en construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="Avance técnico, ejecución financiera (pagos) y recaudo (cobros), cada uno como porcentaje de lo contratado. La parte de ejecución técnica todavía está en construcción en toda la aplicación."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="panel_ejecucion_html" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Composición financiera
+                                        <span class="fa fa-info-circle chart-info-icon" title="Del contratado al cobrado: contratado, ejecutado técnicamente, pagado y cobrado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'composicion_financiera'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="pipeline_financiero_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                            <div class="dash-row dash-row-full">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Carga de trabajo por coordinador
+                                        <span class="fa fa-info-circle chart-info-icon" title="Barras: presupuesto total consolidado de los proyectos activos a cargo de cada coordinador (eje izquierdo). Línea: cantidad de proyectos a su cargo (eje derecho)."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'carga_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="carga_coordinadores_chart_data" widget="chart_widget"/>
+                                </div>
+                            </div>
+                            <div class="dash-row dash-row-full">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Top 10 contratistas por monto
+                                        <span class="fa fa-info-circle chart-info-icon" title="Muestra los 10 contratistas que concentran la mayor parte de los montos contratados de la organización (incluidos adiciones/otrosíes)."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'top_contratistas'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="top_contratistas_chart_data" widget="horizontal_bar_chart_widget"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dashboard alternativo para otros proyectos -->
+                        <div id="dash_proyecto_dashboard" class="dashboard" attrs="{'invisible': [('seleccionador_graficas', '!=', '02')]}">
+
+                            <div class="dash-row dash-row-a">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Flujo de caja del proyecto
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Cobros (Siesa) vs pagos (Siesa) de este proyecto específico, mes a mes, y el neto de cada mes (no acumulado). Usa el selector 'Seleccionar Año' de la cabecera."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'flujo_caja'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_flujo_caja_data" widget="chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Focos de atención
+                                        <span class="fa fa-info-circle chart-info-icon" title="Alertas calculadas en tiempo real para este proyecto: caja negativa, sin cronograma de cierre, cobros por encima del presupuesto, retraso de cronograma."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'focos_atencion_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="alertas_proyecto_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-b">
+                                <div class="dashboard-item g-wrap">
+                                    <h2>
+                                        Eficiencia de costo · CPI <span class="badge-en-construccion">En construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Histórico] - Índice de Desempeño del Costo (CPI). Valor Ganado / Costo Real. Si es menor a 1.0, indica sobrecosto. Depende de Ejecución Técnica, dato aún en construcción en toda la aplicación."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'evm'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="cpi_chart_data" widget="gauge_chart_widget"/>
+                                </div>
+                                <div class="dashboard-item g-wrap">
+                                    <h2>
+                                        Eficiencia de cronograma · SPI <span class="badge-en-construccion">En construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Histórico] - Índice de Desempeño del Cronograma (SPI). Valor Ganado / Valor Planificado. Si es menor a 1.0, indica retraso. Depende de Ejecución Técnica, dato aún en construcción en toda la aplicación."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'evm'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="spi_chart_data" widget="gauge_chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Liquidez y flujo de caja
+                                        <span class="fa fa-info-circle chart-info-icon" title="Del dinero cobrado, cuánto ya se pagó y cuánto queda disponible."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'liquidez_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="liquidez_proyecto_chart_data" widget="pie_chart_widget"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-c">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Ejecución técnica vs financiera <span class="badge-en-construccion">Técnica en construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="Avance técnico, ejecución financiera (pagos) y la brecha entre ambos, como porcentaje del presupuesto de este proyecto."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="panel_ejecucion_proyecto_html" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Balance de caja del proyecto
+                                        <span class="fa fa-info-circle chart-info-icon" title="Del cobro al saldo disponible: en qué se fue el dinero que ya entró a este proyecto."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'balance_caja_proyecto'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="balance_caja_proyecto_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-c">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Cobros mensuales (Año Seleccionado)
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Suma de cobros y facturas recibidas de este proyecto específico para el año filtrado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'cobros_mensuales'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_cobros_mensuales" widget="chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Pagos mensuales (Año Seleccionado)
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Suma mensual de pagos y egresos realizados a contratistas y proveedores para este proyecto en el año filtrado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'pagos_mensuales'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_pagos_mensuales" widget="chart_widget"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dashboard para Coordinadores -->
+                        <div id="dash_coordinador_dashboard" class="dashboard" attrs="{'invisible': [('seleccionador_graficas', '!=', '03')]}">
+
+                            <div class="dash-row dash-row-a">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Flujo de caja del coordinador
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Cobros (Siesa) vs pagos (Siesa) de todos los proyectos de este coordinador, mes a mes, y el neto de cada mes (no acumulado). Usa el selector 'Seleccionar Año' de la cabecera."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'flujo_caja'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_flujo_caja_data" widget="chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Focos de atención
+                                        <span class="fa fa-info-circle chart-info-icon" title="Alertas calculadas en tiempo real para este coordinador: cronograma en riesgo, concentración presupuestal, pago atípico y costo bajo control."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'focos_atencion_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="alertas_coordinador_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-full">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Proyectos a cargo
+                                        <span class="fa fa-info-circle chart-info-icon" title="Estado de cada proyecto de este coordinador, ordenados de mayor a menor presupuesto."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'proyectos_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="tabla_proyectos_coordinador_html" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-b">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Ejecución técnica vs financiera <span class="badge-en-construccion">Técnica en construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="Promedio de avance técnico, ejecución financiera y la brecha entre ambos, entre todos los proyectos de este coordinador."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'ejecucion_tecnica_financiera_coordinador'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="panel_ejecucion_coordinador_html" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="dashboard-item g-wrap">
+                                    <h2>
+                                        Eficiencia de costo · CPI <span class="badge-en-construccion">En construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Histórico] - Índice de Desempeño del Costo (CPI) consolidado de todos los proyectos del coordinador. Depende de Ejecución Técnica, dato aún en construcción en toda la aplicación."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'evm'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="cpi_chart_data_coordinador" widget="gauge_chart_widget"/>
+                                </div>
+                                <div class="dashboard-item g-wrap">
+                                    <h2>
+                                        Eficiencia de cronograma · SPI <span class="badge-en-construccion">En construcción</span>
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Histórico] - Índice de Desempeño del Cronograma (SPI) consolidado de todos los proyectos del coordinador. Depende de Ejecución Técnica, dato aún en construcción en toda la aplicación."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'evm'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="spi_chart_data_coordinador" widget="gauge_chart_widget"/>
+                                </div>
+                            </div>
+
+                            <div class="dash-row dash-row-c">
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Cobros mensuales (Año Seleccionado)
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Distribución mensual de los cobros recaudados de todos los proyectos bajo la supervisión del coordinador seleccionado para el año filtrado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'cobros_mensuales'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_cobros_coordinador" widget="chart_widget"/>
+                                </div>
+                                <div class="dashboard-item">
+                                    <h2>
+                                        Pagos mensuales (Año Seleccionado)
+                                        <span class="fa fa-info-circle chart-info-icon" title="[Cálculo Anual] - Distribución mensual de pagos y desembolsos realizados a contratistas de los proyectos liderados por el coordinador en el año filtrado."/>
+                                        <button name="action_open_glosario" type="object" context="{'default_topic': 'pagos_mensuales'}" icon="fa-question-circle" class="chart-help-btn" title="Cómo funciona esta gráfica"/>
+                                    </h2>
+                                    <field name="chart_pagos_coordinador" widget="chart_widget"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Vista administrador oculta -->
+                    <div class="admin-view" style="display: none;">
+                        <table groups="Matriz.group_contratacion_directivo">
+                            <h4>Vista administrador</h4>
+                            <br/>
+                            <label for="valor_mes9" string="OCTUBRE"/>
+                            <field name="valor_mes9"/>
+                            <br/>
+                            <label for="valor_mes10" string="NOVIEMBRE"/>
+                            <field name="valor_mes10"/>
+                            <br/>
+                            <label for="valor_mes11" string="DICIEMBRE"/>
+                            <field name="valor_mes11"/>
+                            <br/>
+                            <label for="valor_mes0" string="ENERO"/>
+                            <field name="valor_mes0"/>
+                            <br/>
+                            <label for="valor_mes1" string="FEBRERO"/>
+                            <field name="valor_mes1"/>
+                            <br/>
+                            <label for="valor_mes2" string="MARZO"/>
+                            <field name="valor_mes2"/>
+                        </table>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+
+        <!-- Letrero de afuera -->
+
+        <record id="view_vistas_director_kanban" model="ir.ui.view">
+            <field name="name">vistas_director.kanban</field>
+            <field name="model">vistas_director</field>
+            <field name="arch" type="xml">
+                <kanban create="0">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_kanban_record oe_kanban_global_click" style="text-align: left; display: auto width: 100%;">
+                                <!-- Detalles del proyecto -->
+                                <div class="oe_kanban_details">
+                                    <!-- Título del proyecto -->
+                                    <h4 class="oe_kanban_title">
+                                        <field name="name" widget="kanban_click" invisible="1"/>
+                                    </h4>
+                                    <div class="oe_kanban_image" style="text-align: left;">
+                                        <img src="https://i.ibb.co/pKyfKds/LogoGo23.png" alt="Descripción de la imagen" style="width: auto; object-fit: cover; margin-top: -4px; padding: 3mm;" />
+                                    </div>
+                                    <h2>INDICADORES</h2>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_vistas_director_glosario_form" model="ir.ui.view">
+            <field name="name">vistas_director.glosario.form</field>
+            <field name="model">vistas_director.glosario</field>
+            <field name="arch" type="xml">
+                <form string="Guía Técnica de Fórmulas y Metodología" create="0" edit="0" delete="0">
+                    <sheet style="max-height: 80vh; overflow-y: auto;">
+                        <field name="html_content" widget="html" readonly="1" nolabel="1"/>
+                    </sheet>
+                    <footer>
+                        <button string="Cerrar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_mongo_db_model_tree" model="ir.ui.view">
+        <field name="name">mongo.db.model.tree</field>
+        <field name="model">mongo.db.model</field>
+        <field name="arch" type="xml">
+            <tree string="MongoDB Models">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="search_term"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_mongo_db_model_form" model="ir.ui.view">
+        <field name="name">mongo.db.model.form</field>
+        <field name="model">mongo.db.model</field>
+        <field name="arch" type="xml">
+            <form string="MongoDB Model">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <field name="search_term"/>
+                        <button name="mostrar_datos" type="object" string="Buscar en MongoDB" class="btn-primary"/>
+                    </group>
+                    <group>
+                        <field name="search_results" widget="text" readonly="1"/>
+                    </group>
+                </sheet>
+                    <button name="button_connect" type="object" string="Conectar a MongoDB" class="btn-secondary"/>
+            </form>
+        </field>
+    </record>
+
+</odoo>

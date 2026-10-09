@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- =====================================================================
+             FICHA DEL TERCERO (se abre al hacer CLICK en una fila de la tabla).
+             Estilo SGO: header con nombre en azul + badge de estado + barra azul,
+             tarjeta del contrato (SGO), KPIs SIESA, tabla de causaciones con
+             retenciones por fila, y pagos programados (SGO).
+             Clic en una causación -> mini ficha con SUS retenciones específicas.
+             ===================================================================== -->
+        <record id="view_pagos_siesa_line_detalle" model="ir.ui.view">
+            <field name="name">pagos.siesa.line.detalle.form</field>
+            <field name="model">pagos.siesa.line</field>
+            <field name="arch" type="xml">
+                <form string="Detalle del tercero" create="false" edit="false">
+                    <style>
+                        .sgo_det { --sgo-navy:#1c2b5a; --sgo-blue:#0d6efd; --sgo-royal:#2145c9;
+                            --sgo-money:#1f3d8f; --sgo-green:#198754; --sgo-green-bg:#eef7f1;
+                            --sgo-amber:#9a3412; --sgo-amber-bg:#fbf6f1; --sgo-border:#e8edf5;
+                            --sgo-muted:#7a8699; padding: 2px 2px 8px; }
+                        .sgo_det .card0 { background:#fff; border:1px solid var(--sgo-border);
+                            border-radius:12px; overflow:hidden; margin-bottom:14px; box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                        /* --- Header tipo kanban SGO --- */
+                        .sgo_det .dhead { display:flex; align-items:center; gap:12px; padding:14px 16px 12px; }
+                        .sgo_det .dh_ico { width:40px; height:40px; border-radius:50%; background:#eef3fb;
+                            color:var(--sgo-blue); display:flex; align-items:center; justify-content:center;
+                            font-size:17px; flex:none; }
+                        .sgo_det .dh_name .o_field_widget { font-size:19px; font-weight:500; color:var(--sgo-blue); }
+                        .sgo_det .dh_meta { margin-top:3px; font-size:12px; color:var(--sgo-muted);
+                            display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+                        .sgo_det .pill { padding:3px 12px; border-radius:999px; font-size:11px;
+                            font-weight:500; text-transform:uppercase; letter-spacing:.4px; }
+                        .sgo_det .pill.cls { background:#eef3fb; color:#1a4bbd; }
+                        .sgo_det .pill.estado { background:var(--sgo-green); color:#fff; margin-left:auto; }
+                        .sgo_det .pill.estado .o_field_widget { color:#fff; font-weight:500; font-size:11px; }
+                        .sgo_det .dh_bar { height:4px; background:var(--sgo-royal); }
+                        /* --- Secciones --- */
+                        .sgo_det .card_h { padding:9px 16px; background:#f8fafd; color:var(--sgo-navy);
+                            font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.5px;
+                            border-bottom:1px solid var(--sgo-border); display:flex; gap:8px; align-items:center; }
+                        .sgo_det .card_h .fa { color:var(--sgo-blue); }
+                        .sgo_det .card_h .hint { margin-left:auto; font-weight:500; text-transform:none;
+                            letter-spacing:0; font-size:11px; color:#94a3b8; }
+                        /* --- Grid del contrato --- */
+                        .sgo_det .cgrid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); }
+                        .sgo_det .cgrid .ci { padding:10px 16px; border-right:1px solid #f3f6fb; border-bottom:1px solid #f3f6fb; }
+                        .sgo_det .l { display:block; font-size:10px; color:var(--sgo-muted);
+                            text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; font-weight:700; }
+                        .sgo_det .cgrid .ci .o_field_widget { font-weight:700; color:#1f2937; }
+                        .sgo_det .cgrid .ci.money .o_field_widget { color:var(--sgo-money); }
+                        .sgo_det .cempty { padding:22px 16px; text-align:center; color:var(--sgo-muted); }
+                        .sgo_det .cempty .fa { font-size:22px; color:#c3cbdb; display:block; margin-bottom:6px; }
+                        /* --- KPIs SIESA --- */
+                        .sgo_det .kpis { display:flex; flex-wrap:wrap; }
+                        .sgo_det .kpi { flex:1; min-width:150px; padding:12px 16px; border-right:1px solid #f3f6fb; }
+                        .sgo_det .kpi .o_field_widget { font-size:17px; font-weight:500; color:var(--sgo-money); }
+                        .sgo_det .kpi.pag { background:var(--sgo-green-bg); }
+                        .sgo_det .kpi.pag .o_field_widget { color:var(--sgo-green); }
+                        .sgo_det .kpi.ok { background:var(--sgo-green-bg); }
+                        .sgo_det .kpi.ok .o_field_widget { color:var(--sgo-green); }
+                        .sgo_det .kpi.bad { background:#fdeaea; }
+                        .sgo_det .kpi.bad .o_field_widget { color:#b91c1c; }
+                        .sgo_det .cnote { padding:9px 16px; font-size:12px; color:#7a8699;
+                            border-top:1px dashed var(--sgo-border); }
+                        .sgo_det .cnote.conv { color:#9a3412; background:#fffdf8; }
+                        .sgo_det .retchips { display:flex; gap:8px; flex-wrap:wrap; padding:10px 16px;
+                            border-top:1px dashed #edd9c3; background:#fffdf9; }
+                        .sgo_det .chip { background:var(--sgo-amber-bg); color:var(--sgo-amber);
+                            border:1px solid #f5dfc4; border-radius:999px; padding:4px 12px; font-size:12px;
+                            font-weight:700; display:flex; gap:6px; align-items:center; }
+                        .sgo_det .chip .o_field_widget { font-weight:500; color:var(--sgo-amber); }
+                        /* --- Tablas --- */
+                        .sgo_det .o_list_table thead th { background:#fff; color:var(--sgo-navy);
+                            text-transform:uppercase; font-size:10.5px; letter-spacing:.3px;
+                            vertical-align:middle; line-height:1.3; padding-top:8px; padding-bottom:8px;
+                            border-bottom:2px solid var(--sgo-royal); }
+                        .sgo_det .o_list_table td.o_data_cell, .sgo_det .o_list_table th { text-align:right; }
+                        .sgo_det .o_list_table td[name="consec"], .sgo_det .o_list_table th[data-name="consec"]
+                            { text-align:left; font-weight:500; }
+                        .sgo_det .o_list_table td[name="valor_pagado"] { font-weight:500; }
+                        .sgo_det .o_list_table tbody tr:hover { background:#eef4fe; cursor:pointer; }
+                        .sgo_det .o_list_table tfoot { border-top:2px solid var(--sgo-border); font-weight:600; }
+                    </style>
+                    <sheet>
+                        <div class="sgo_det">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="det_tiene_contrato" invisible="1"/>
+
+                            <!-- Header -->
+                            <div class="card0">
+                                <div class="dhead">
+                                    <div class="dh_ico"><i class="fa fa-user"/></div>
+                                    <div>
+                                        <div class="dh_name"><field name="contratista" readonly="1"/></div>
+                                        <div class="dh_meta">
+                                            <span class="pill cls"><field name="clase_tercero" readonly="1"/></span>
+                                            <span>NIT/CC <field name="nit" readonly="1" class="oe_inline"/></span>
+                                        </div>
+                                    </div>
+                                    <span class="pill estado" attrs="{'invisible': [('det_tiene_contrato', '=', False)]}">
+                                        <field name="det_estado" readonly="1"/>
+                                    </span>
+                                </div>
+                                <div class="dh_bar"/>
+                            </div>
+
+                            <!-- CONTRATOS Y OTROSÍ del tercero (lo primero e importante) -->
+                            <div class="card0">
+                                <field name="det_num_contratos" invisible="1"/>
+                                <div class="card_h">
+                                    <i class="fa fa-files-o"/> Contratos y otrosí del tercero
+                                    (<field name="det_num_contratos" readonly="1" class="oe_inline"/>)
+                                    <span class="hint">cada contrato = un RPC; el otrosí va en su propia columna</span>
+                                </div>
+                                <div class="cempty" attrs="{'invisible': [('det_tiene_contrato', '=', True)]}">
+                                    <i class="fa fa-folder-open-o"/>
+                                    Este NIT no tiene contrato registrado en SGO para este proyecto.
+                                </div>
+                                <field name="det_contratos_ids" nolabel="1" readonly="1"
+                                       attrs="{'invisible': [('det_tiene_contrato', '=', False)]}">
+                                    <tree create="false" edit="false" delete="false" decoration-info="valor_del_otrosi &gt; 0">
+                                        <field name="id_del_contrato" string="ID contrato"/>
+                                        <field name="compromiso_presupuestal" string="RPC / RCF"/>
+                                        <field name="estado_contratacion" string="Estado"/>
+                                        <field name="fecha_iniciacion" string="Inicio"/>
+                                        <field name="fecha_terminacion" string="Fin"/>
+                                        <field name="nuemor_de_cuotas" string="Cuotas"/>
+                                        <field name="valor_total_contrato" string="Valor base" sum="Total"/>
+                                        <field name="valor_del_otrosi" string="Otrosí" sum="Total"/>
+                                        <field name="total" string="Total contrato" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </div>
+
+                            <!-- Cuadre: contratado vs cobrado -->
+                            <div class="card0" attrs="{'invisible': [('det_tiene_contrato', '=', False)]}">
+                                <field name="det_cuadra" invisible="1"/>
+                                <field name="det_es_convenio" invisible="1"/>
+                                <div class="card_h">
+                                    <i class="fa fa-check-square-o"/> Cuadre: contratado vs cobrado
+                                    <span class="hint">contratado (todos los contratos + otrosí) vs bruto causado en SIESA</span>
+                                </div>
+                                <div class="kpis">
+                                    <div class="kpi"><span class="l">Valor contratado (SGO)</span><field name="det_valor_odoo_total" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi"><span class="l">Bruto causado (SIESA)</span><field name="det_bruto" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi ok" attrs="{'invisible': [('det_cuadra', '=', False)]}">
+                                        <span class="l">Diferencia · cuadra al peso ✓</span><field name="det_diferencia" nolabel="1" readonly="1"/>
+                                    </div>
+                                    <div class="kpi bad" attrs="{'invisible': [('det_cuadra', '=', True)]}">
+                                        <span class="l">Diferencia</span><field name="det_diferencia" nolabel="1" readonly="1"/>
+                                    </div>
+                                </div>
+                                <div class="cnote conv" attrs="{'invisible': [('det_es_convenio', '=', False)]}">
+                                    Convenio de asociación (UN 15-xx): de todo peso se rinde cuentas — no debe quedar
+                                    diferencia entre lo contratado y lo cobrado; si la hay, la resuelve el coordinador del proyecto.
+                                </div>
+                                <div class="cnote" attrs="{'invisible': [('det_es_convenio', '=', True)]}">
+                                    Proyecto propio / interadministrativo: una diferencia de un peso puede suceder;
+                                    el redondeo de retenciones se ajusta contablemente.
+                                </div>
+                            </div>
+
+                            <!-- Conciliación SIESA -->
+                            <div class="card0">
+                                <div class="card_h"><i class="fa fa-balance-scale"/> Conciliación SIESA del tercero</div>
+                                <div class="kpis">
+                                    <div class="kpi"><span class="l">Bruto causado</span><field name="det_bruto" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi"><span class="l">Retención total</span><field name="det_retencion_total" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi"><span class="l">Neto a pagar</span><field name="det_neto" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi pag"><span class="l">Pagado</span><field name="det_pagado" nolabel="1" readonly="1"/></div>
+                                </div>
+                                <div class="retchips">
+                                    <span class="chip">Retefuente <field name="det_retefuente" nolabel="1" readonly="1"/></span>
+                                    <span class="chip">ReteICA <field name="det_reteica" nolabel="1" readonly="1"/></span>
+                                    <span class="chip">ReteIVA <field name="det_reteiva" nolabel="1" readonly="1"/></span>
+                                </div>
+                            </div>
+
+                            <!-- Causaciones con retenciones por fila -->
+                            <div class="card0">
+                                <div class="card_h">
+                                    <i class="fa fa-list-ul"/> Causaciones y retenciones (SIESA)
+                                    <span class="hint">clic en una causación para ver su ficha</span>
+                                </div>
+                                <field name="hist_siesa_ids" nolabel="1" readonly="1">
+                                    <tree create="false" edit="false" delete="false" limit="60" default_order="rcf, fecha">
+                                        <field name="consec" string="Causación"/>
+                                        <field name="estado" widget="badge" optional="show"
+                                          decoration-success="estado == 'Saldada'"
+                                          decoration-warning="estado == 'Parcial'"
+                                          decoration-danger="estado == 'Pendiente'"
+                                          decoration-muted="estado == 'Reversado'"/>
+                                        <field name="rcf" string="RPC/RCF" optional="show"/>
+                                        <field name="fecha" string="Fecha"/>
+                                        <field name="bruto" sum="Total"/>
+                                        <field name="retefuente" sum="Total"/>
+                                        <field name="reteica" sum="Total"/>
+                                        <field name="reteiva" sum="Total"/>
+                                        <field name="retencion" string="Retención" sum="Total"/>
+                                        <field name="neto" sum="Total"/>
+                                        <field name="deduccion_dd" string="Deducción" sum="Total"/>
+                                        <field name="doc_deduccion" string="Doc. deducción"/>
+                                        <field name="pendiente" string="Pendiente" sum="Total"/>
+                                        <field name="pe" string="Pago"/>
+                                        <field name="fecha_pago" string="F. pago"/>
+                                        <field name="valor_pagado" sum="Total"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                    <!-- Mini ficha: SOLO las retenciones de ESA causación -->
+                                    <form string="Detalle de la causación" create="false" edit="false">
+                                        <style>
+                                            .sgo_mini { --sgo-navy:#1c2b5a; --sgo-royal:#2145c9; --sgo-money:#1f3d8f;
+                                                --sgo-green:#198754; --sgo-green-bg:#eef7f1; --sgo-amber:#9a3412;
+                                                --sgo-amber-bg:#fbf6f1; --sgo-muted:#7a8699; padding:2px 2px 6px; }
+                                            .sgo_mini .mh { padding-bottom:10px; margin-bottom:12px;
+                                                border-bottom:3px solid var(--sgo-royal); }
+                                            .sgo_mini .mh_t .o_field_widget { font-size:18px; font-weight:500; color:var(--sgo-navy); }
+                                            .sgo_mini .mh_s { font-size:12px; color:var(--sgo-muted); margin-top:2px; }
+                                            .sgo_mini .mgrid { display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+                                                background:#e8edf5; border:1px solid #e8edf5; border-radius:12px;
+                                                overflow:hidden; margin-bottom:10px; }
+                                            .sgo_mini .mi { background:#fff; padding:10px 12px; }
+                                            .sgo_mini .mi .l { display:block; font-size:10px; color:var(--sgo-muted);
+                                                text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; font-weight:700; }
+                                            .sgo_mini .mi .o_field_widget { font-size:15px; font-weight:500; color:var(--sgo-money); }
+                                            .sgo_mini .mi.ret { background:var(--sgo-amber-bg); }
+                                            .sgo_mini .mi.ret .o_field_widget { color:var(--sgo-amber); }
+                                            .sgo_mini .mi.tot { background:var(--sgo-navy); }
+                                            .sgo_mini .mi.tot .l { color:#9fb0dd; }
+                                            .sgo_mini .mi.tot .o_field_widget { color:#fff; }
+                                            .sgo_mini .mi.pag { background:var(--sgo-green-bg); }
+                                            .sgo_mini .mi.pag .o_field_widget { color:var(--sgo-green); }
+                                        </style>
+                                        <sheet>
+                                            <div class="sgo_mini">
+                                                <field name="currency_id" invisible="1"/>
+                                                <div class="mh">
+                                                    <div class="mh_t"><field name="consec" readonly="1"/></div>
+                                                    <div class="mh_s">
+                                                        <field name="contratista" readonly="1" class="oe_inline"/>
+                                                        <span> · </span><field name="fecha" readonly="1" class="oe_inline"/>
+                                                    </div>
+                                                </div>
+                                                <div class="mgrid">
+                                                    <div class="mi"><span class="l">Bruto causado</span><field name="bruto" readonly="1"/></div>
+                                                    <div class="mi ret"><span class="l">Retefuente</span><field name="retefuente" readonly="1"/></div>
+                                                    <div class="mi ret"><span class="l">ReteICA</span><field name="reteica" readonly="1"/></div>
+                                                    <div class="mi ret"><span class="l">ReteIVA</span><field name="reteiva" readonly="1"/></div>
+                                                    <div class="mi tot"><span class="l">Retención total</span><field name="retencion" readonly="1"/></div>
+                                                    <div class="mi"><span class="l">Neto a pagar</span><field name="neto" readonly="1"/></div>
+                                                </div>
+                                                <div class="mgrid">
+                                                    <div class="mi"><span class="l">Deducción (DD/AJ/NI)</span><field name="deduccion_dd" readonly="1"/></div>
+                                                    <div class="mi"><span class="l">Doc. deducción</span><field name="doc_deduccion" readonly="1"/></div>
+                                                    <div class="mi"><span class="l">Pendiente</span><field name="pendiente" readonly="1"/></div>
+                                                    <div class="mi"><span class="l">Pago (PE/PD)</span><field name="pe" readonly="1"/></div>
+                                                    <div class="mi pag"><span class="l">Pagado</span><field name="valor_pagado" readonly="1"/></div>
+                                                </div>
+                                            </div>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </div>
+
+                            <!-- Pagos programados (SGO) -->
+                            <div class="card0" attrs="{'invisible': [('det_tiene_contrato', '=', False)]}">
+                                <div class="card_h"><i class="fa fa-calendar-check-o"/> Pagos programados (SGO)</div>
+                                <field name="hist_odoo_ids" nolabel="1" readonly="1">
+                                    <tree create="false" edit="false" delete="false">
+                                        <field name="numero_pago"/>
+                                        <field name="valor_pago" sum="Total"/>
+                                        <field name="fecha_de_pago"/>
+                                        <field name="pago_efectuado2_valor" sum="Total"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             FORM PRINCIPAL (estilo SGO): resumen navy arriba, fila de herramientas
+             (Ver desplegable + buscador), y la tabla. Clic en fila -> ficha.
+             ===================================================================== -->
+        <record id="view_programapagos_form_siesa" model="ir.ui.view">
+            <field name="name">programapagos.form.siesa</field>
+            <field name="model">programapagos</field>
+            <field name="inherit_id" ref="view_programapagos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='programapagos_ids']" position="after">
+                    <field name="pagos_siesa_ids" invisible="1"/>
+                    <field name="siesa_currency_id" invisible="1"/>
+
+                    <div class="o_siesa_box">
+                        <style>
+                            .o_siesa_box { --sgo-navy:#1c2b5a; --sgo-blue:#0d6efd; --sgo-royal:#2145c9;
+                                --sgo-money:#1f3d8f; --sgo-green:#198754; --sgo-green-bg:#eef7f1;
+                                --sgo-orange:#c2410c; --sgo-orange-bg:#fbf6f1; --sgo-border:#e8edf5;
+                                --sgo-muted:#7a8699;
+                                margin-top:16px; padding:16px; background:#f0f3f8;
+                                border:1px solid var(--sgo-border); border-radius:12px; }
+                            .o_siesa_head { display:flex; align-items:center; justify-content:space-between;
+                                flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+                            .o_siesa_title { font-size:15px; font-weight:500; color:var(--sgo-navy); }
+                            .o_siesa_title .fa { color:var(--sgo-blue); margin-right:8px; }
+                            .o_siesa_sub { font-size:12px; color:var(--sgo-muted); font-weight:400; }
+                            .o_siesa_tools { display:flex; align-items:center; gap:10px; }
+                            .o_siesa_btn { background:var(--sgo-navy) !important; border-color:var(--sgo-navy) !important;
+                                color:#fff !important; font-weight:700; }
+                            .o_siesa_btn:hover { background:#16234a !important; }
+                            .o_siesa_btn_xls { background:var(--sgo-green) !important; border-color:var(--sgo-green) !important;
+                                color:#fff !important; font-weight:700; }
+                            .o_siesa_btn_xls:hover { background:#146c43 !important; }
+                            /* ===== Resumen ===== */
+                            .o_siesa_resumen { background:#fff; border:1px solid var(--sgo-border);
+                                border-radius:12px; overflow:hidden; box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                            .o_siesa_res_head { background:linear-gradient(120deg,#1c2b5a,#22377e); color:#fff; padding:9px 14px;
+                                font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.5px;
+                                display:flex; align-items:center; gap:8px; }
+                            .o_siesa_res_head .fa { color:#8fb0ff; }
+                            .o_siesa_res_count { margin-left:auto; font-weight:500; text-transform:none;
+                                color:#c7d3f2; font-size:12px; }
+                            .o_siesa_res_grid { display:flex; flex-wrap:wrap; }
+                            .o_siesa_res_item { flex:1; min-width:135px; padding:12px 16px; border-right:1px solid #f3f6fb; }
+                            .o_siesa_res_item .lbl { display:block; font-size:10px; color:var(--sgo-muted);
+                                text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; font-weight:700; }
+                            .o_siesa_res_item .o_field_widget { font-size:17px; font-weight:500; color:var(--sgo-money); }
+                            .o_siesa_res_item.ok { background:var(--sgo-green-bg); }
+                            .o_siesa_res_item.ok .o_field_widget { color:var(--sgo-green); }
+                            .o_siesa_res_item.saldo { background:var(--sgo-orange-bg); }
+                            .o_siesa_res_item.saldo .o_field_widget { color:var(--sgo-orange); font-size:16.5px; font-weight:600; }
+                            /* ===== Herramientas: Ver + buscador ===== */
+                            .o_siesa_toolsrow { display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+                                margin:16px 0 10px; }
+                            .o_siesa_toolsrow .pl { font-size:11px; font-weight:500; text-transform:uppercase;
+                                letter-spacing:.5px; color:var(--sgo-navy); }
+                            .o_siesa_toolsrow select { background:#fff; border:1px solid #d3dbea; border-radius:9px;
+                                padding:7px 30px 7px 12px; font-weight:700; color:var(--sgo-navy); min-width:230px; }
+                            .o_siesa_search { position:relative; flex:1 1 240px; max-width:430px; }
+                            .o_siesa_search .o_field_widget { width:100%; }
+                            .o_siesa_search input { width:100%; background:#fff; border:1px solid #d3dbea;
+                                border-radius:9px; padding:6px 36px 6px 12px; font-size:12.5px;
+                                color:var(--sgo-navy); }
+                            .o_siesa_search input:focus { border-color:var(--sgo-royal); outline:none;
+                                box-shadow:0 0 0 3px rgba(33,69,201,.10); }
+                            .o_siesa_search .o_siesa_clear { position:absolute; right:6px; top:50%;
+                                transform:translateY(-50%); display:flex; align-items:center;
+                                justify-content:center; width:20px; height:20px; padding:0;
+                                border:0; border-radius:50%; background:#dc2626; color:#fff;
+                                line-height:1; box-shadow:none; cursor:pointer; }
+                            .o_siesa_search .o_siesa_clear:hover { background:#b91c1c; color:#fff; }
+                            .o_siesa_search .o_siesa_clear .fa { font-size:11px; }
+                            .o_siesa_btn_guia { background:#fff !important; border:1px solid var(--sgo-royal) !important;
+                                color:var(--sgo-royal) !important; font-weight:700; white-space:nowrap; }
+                            .o_siesa_btn_guia:hover { background:var(--sgo-royal) !important; color:#fff !important; }
+                            .o_siesa_notecat { margin:-2px 0 10px; padding:9px 14px; font-size:12.5px;
+                                color:#5c3a1e; background:#fffdf8; border:1px dashed #ecdcc3; border-radius:9px; }
+                            .o_siesa_notecat .fa { color:#b45309; margin-right:6px; }
+                            /* ===== Tabla (card blanca, header con barra azul SGO) ===== */
+                            .o_siesa_tablecard { background:#fff; border:1px solid var(--sgo-border);
+                                border-radius:12px; overflow-x:auto; overflow-y:hidden;
+                                box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                            .o_siesa_tablecard .o_list_table { min-width:100%; }
+                            .o_siesa_tablecard .o_list_table thead th { background:#fff; color:var(--sgo-navy);
+                                text-transform:uppercase; font-size:10.5px; letter-spacing:.3px;
+                                vertical-align:middle; line-height:1.3; padding-top:8px; padding-bottom:8px;
+                                border-bottom:2px solid var(--sgo-royal); }
+                            .o_siesa_tablecard .o_list_table td.o_data_cell,
+                            .o_siesa_tablecard .o_list_table th { text-align:right; }
+                            .o_siesa_tablecard .o_list_table td[name="contratista"],
+                            .o_siesa_tablecard .o_list_table th[data-name="contratista"],
+                            .o_siesa_tablecard .o_list_table td[name="rcf"],
+                            .o_siesa_tablecard .o_list_table th[data-name="rcf"],
+                            .o_siesa_tablecard .o_list_table td[name="consec"],
+                            .o_siesa_tablecard .o_list_table th[data-name="consec"],
+                            .o_siesa_tablecard .o_list_table td[name="pe"],
+                            .o_siesa_tablecard .o_list_table th[data-name="pe"]
+                                { text-align:left; }
+                            .o_siesa_tablecard .o_list_table td[name="contratista"]
+                                { font-weight:500; }
+                            .o_siesa_tablecard .o_list_table td[name="valor_pagado"]
+                                { font-weight:500; }
+                            .o_siesa_tablecard .o_list_table tbody tr { cursor:pointer; }
+                            .o_siesa_tablecard .o_list_table tbody tr:nth-child(even) { background:#fbfcfe; }
+                            .o_siesa_tablecard .o_list_table tbody tr:hover { background:#eef4fe; }
+                            .o_siesa_tablecard .o_list_table tfoot { border-top:2px solid var(--sgo-border); font-weight:600; }
+                            .o_siesa_tablecard .badge, .sgo_det .badge { font-weight:600;
+                                letter-spacing:.2px; border-radius:999px; padding:3px 10px; }
+                            .o_siesa_toolsrow .o_siesa_btn_guia { margin-left:auto; }
+                            .o_siesa_estado .o_field_radio { display:flex; gap:6px; flex-wrap:wrap; }
+                            .o_siesa_estado .form-check { margin:0; padding:0; min-height:0; }
+                            .o_siesa_estado input { position:absolute; opacity:0; pointer-events:none; }
+                            .o_siesa_estado label { cursor:pointer; border:1px solid #d3dbea; background:#fff;
+                                color:#5b6a8c; border-radius:999px; padding:4px 12px; font-size:11.5px;
+                                font-weight:600; margin:0; line-height:1.4; }
+                            .o_siesa_estado label:hover { border-color:var(--sgo-royal); color:var(--sgo-navy); }
+                            .o_siesa_estado input:checked + label { background:var(--sgo-navy);
+                                border-color:var(--sgo-navy); color:#fff; }
+                            .o_siesa_nores { display:flex; align-items:center; gap:8px; color:#7a8699;
+                                font-size:12.5px; padding:10px 4px 4px; }
+                            .o_siesa_nores .fa { color:#9aa6bd; }
+                            .o_siesa_first { display:flex; align-items:flex-start; gap:10px;
+                                border:1px dashed #c7d3ea; background:#fbfcff; color:#5b6a8c;
+                                border-radius:12px; padding:13px 16px; margin:2px 0 10px;
+                                font-size:12.5px; line-height:1.5; }
+                            .o_siesa_first .fa { color:var(--sgo-royal); font-size:15px; margin-top:1px; }
+                            .o_siesa_tablecard .o_list_table tbody tr { cursor:pointer; }
+                            .o_siesa_tablecard .o_list_table, .sgo_det .o_list_table,
+                            .o_siesa_res_grid .o_field_widget { font-variant-numeric:tabular-nums; }
+                            .o_siesa_hint { text-align:right; font-size:11px; color:#94a3b8; margin:6px 2px 0; }
+                            .o_siesa_legend { display:flex; gap:16px; flex-wrap:wrap; justify-content:flex-end;
+                                margin:4px 2px 0; font-size:11px; color:#7a8699; }
+                            .o_siesa_legend .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; }
+                            .o_siesa_legend .d_ok { background:#198754; }
+                            .o_siesa_legend .d_par { background:#fd7e14; }
+                            .o_siesa_legend .d_mut { background:#9aa4b2; }
+                            .o_siesa_legend .d_pen { background:#1f2937; }
+                        </style>
+
+                        <!-- Encabezado -->
+                        <div class="o_siesa_head">
+                            <div class="o_siesa_title">
+                                <i class="fa fa-database"/>Pagos reales (SIESA)
+                                <span class="o_siesa_sub"> — conciliación contra el programa de pagos</span>
+                            </div>
+                            <div class="o_siesa_tools">
+                                <span class="o_siesa_sub">Última act.:</span>
+                                <field name="pagos_siesa_last_sync" nolabel="1" readonly="1" class="oe_inline"/>
+                                <button name="action_cargar_pagos_siesa" type="object"
+                                        string="Refrescar" icon="fa-refresh" class="btn btn-sm o_siesa_btn"/>
+                                <button name="action_exportar_excel_siesa" type="object"
+                                        string="Excel" icon="fa-file-excel-o" class="btn btn-sm o_siesa_btn_xls"/>
+                            </div>
+                        </div>
+
+                        <!-- Resumen (arriba, header navy como el SGO) -->
+                        <div class="o_siesa_resumen">
+                            <div class="o_siesa_res_head">
+                                <i class="fa fa-calculator"/> Resumen
+                                <span class="o_siesa_res_count"><field name="total_siesa_count" nolabel="1"/> causaciones</span>
+                            </div>
+                            <div class="o_siesa_res_grid">
+                                <div class="o_siesa_res_item" title="Total causado a favor de los terceros en SIESA (S4, FP...)"><span class="lbl">Bruto causado</span><field name="total_siesa_bruto" nolabel="1"/></div>
+                                <div class="o_siesa_res_item" title="Retenciones practicadas a los terceros (fuente, ICA, IVA)"><span class="lbl">Retención</span><field name="total_siesa_retencion" nolabel="1"/></div>
+                                <div class="o_siesa_res_item" title="Bruto causado − retenciones"><span class="lbl">Neto a pagar</span><field name="total_siesa_neto" nolabel="1"/></div>
+                                <div class="o_siesa_res_item ok" title="Comprobantes de egreso aplicados a las causaciones"><span class="lbl">Pagado</span><field name="total_siesa_pagado" nolabel="1"/></div>
+                                <div class="o_siesa_res_item saldo" title="Neto a pagar − pagado"><span class="lbl">Pendiente por pagar</span><field name="total_siesa_saldo" nolabel="1"/></div>
+                                <div class="o_siesa_res_item" title="Avance del pago sobre el neto a pagar"><span class="lbl">% pagado</span><field name="total_siesa_pct" nolabel="1" widget="progressbar"/></div>
+                            </div>
+                        </div>
+
+                        <!-- Ver (desplegable) + buscador + guía técnica en una fila -->
+                        <div class="o_siesa_toolsrow">
+                            <span class="pl">Ver:</span>
+                            <field name="siesa_vista_sel" nolabel="1"/>
+                            <span class="pl">Estado:</span>
+                            <div class="o_siesa_estado" title="Filtrar la tabla por estado">
+                                <field name="pagos_filtro_estado" widget="radio"
+                                       options="{'horizontal': true}" nolabel="1"/>
+                            </div>
+                            <div class="o_siesa_search">
+                                <field name="pagos_siesa_buscar" nolabel="1"
+                                       placeholder="Buscar tercero, NIT, causación… (Enter)"/>
+                                <button name="action_limpiar_busqueda_siesa" type="object"
+                                        class="o_siesa_clear" icon="fa-times"
+                                        attrs="{'invisible': [('pagos_siesa_buscar', 'in', [False, ''])]}"
+                                        title="Limpiar la búsqueda"/>
+                            </div>
+                            <button name="action_guia_tecnica_siesa" type="object"
+                                    class="btn btn-sm o_siesa_btn_guia" icon="fa-question-circle">
+                                Guía técnica
+                            </button>
+                        </div>
+
+                        <!-- Nota explicativa: solo al mirar Notas/Reversiones -->
+                        <div class="o_siesa_notecat" attrs="{'invisible': [('siesa_vista_sel', '!=', 'Nota/Reversion')]}">
+                            <i class="fa fa-info-circle"/> En esta categoría los valores salen en <b>negativo a propósito</b>:
+                            una nota reversa una factura y el banco la <b>descuenta dentro del pago</b>. Se dejan con su
+                            signo para que la suma cuadre exacto con el banco (quitarles el signo inflaría los totales).
+                        </div>
+
+                        <!-- Tabla. Clic en una fila -> ficha del tercero -->
+                        <field name="pagos_vista_count" invisible="1"/>
+                        <div class="o_siesa_nores"
+                             attrs="{'invisible': ['|','|',('pagos_siesa_last_sync','=',False),('pagos_vista_count','&gt;',0),'&amp;',('pagos_siesa_buscar','in',[False,'']),('pagos_filtro_estado','in',[False,'todos'])]}">
+                            <i class="fa fa-filter"/> Sin resultados con los filtros actuales — cambiá el estado, la categoría o limpiá la búsqueda con la ×.
+                        </div>
+                        <div class="o_siesa_first"
+                             attrs="{'invisible': [('pagos_siesa_last_sync','!=',False)]}">
+                            <i class="fa fa-database"/>
+                            <span>Todavía no se ha consultado SIESA para este proyecto.
+                                Presioná <b>Refrescar</b> (arriba a la derecha) para traer las causaciones y pagos reales.</span>
+                        </div>
+                        <div class="o_siesa_tablecard" attrs="{'invisible': [('pagos_siesa_last_sync','=',False)]}">
+                            <field name="pagos_vista_ids" nolabel="1" readonly="1">
+                                <tree default_order="fecha desc" string="Pagos SIESA" create="false" edit="false" delete="false" limit="25">
+                                    <field name="contratista"/>
+                                    <field name="estado" widget="badge" optional="show"
+                                    decoration-success="estado == 'Saldada'"
+                                    decoration-warning="estado == 'Parcial'"
+                                    decoration-danger="estado == 'Pendiente'"
+                                    decoration-muted="estado == 'Reversado'"/>
+                                    <field name="nit" optional="hide"/>
+                                    <field name="rcf" string="RPC/RCF" optional="hide"/>
+                                    <field name="consec" string="Causación"/>
+                                    <field name="fecha" string="Fecha"/>
+                                    <field name="dias" string="Días" optional="show"
+                                           decoration-danger="dias &gt; 60"
+                                           decoration-warning="dias &gt; 30 and dias &lt;= 60"
+                                           decoration-muted="dias == 0"/>
+                                    <field name="bruto" sum="Total"/>
+                                    <field name="retencion" string="Retención" sum="Total"/>
+                                    <field name="neto" sum="Total"/>
+                                    <field name="deduccion_dd" string="Deducción" sum="Total" optional="hide"/>
+                                    <field name="doc_deduccion" string="Doc. deducción" optional="hide"/>
+                                    <field name="pendiente" string="Pendiente" sum="Total"/>
+                                    <field name="pe" string="Pago"/>
+                                    <field name="fecha_pago" string="F. pago" optional="hide"/>
+                                    <field name="valor_pagado" sum="Total"/>
+                                    <field name="pct_acumulado" widget="progressbar" optional="show"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <div class="o_siesa_hint" attrs="{'invisible': [('pagos_siesa_last_sync','=',False)]}">Clic en una fila para abrir la ficha del tercero: contrato, pagos y retenciones.</div>
+</div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             WIZARD: elegir qué categorías descargar en Excel.
+             Cada categoría elegida sale en su propia hoja del archivo.
+             ===================================================================== -->
+        <record id="view_pagos_siesa_export_wizard" model="ir.ui.view">
+            <field name="name">pagos.siesa.export.wizard.form</field>
+            <field name="model">pagos.siesa.export.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Descargar Excel">
+                    <style>
+                        .sgo_exp .t { font-size:13px; color:#7a8699; margin:2px 0 12px; }
+                        .sgo_exp .opt { display:flex; align-items:center; gap:10px; background:#fff;
+                            border:1px solid #e8edf5; border-radius:12px; padding:10px 14px; margin-bottom:8px; }
+                        .sgo_exp .opt:hover { border-color:#0d6efd; }
+                        .sgo_exp .opt .fa { color:#0d6efd; width:18px; text-align:center; }
+                        .sgo_exp .opt label { margin:0; font-weight:700; color:#1c2b5a; }
+                    </style>
+                    <field name="programapagos_id" invisible="1"/>
+                    <div class="sgo_exp">
+                        <div class="t">Elegí qué categorías incluir. Cada una sale en su propia hoja del archivo, con totales.</div>
+                        <div class="opt">
+                            <field name="incluir_contratistas" nolabel="1"/>
+                            <i class="fa fa-user"/><label for="incluir_contratistas">Contratistas</label>
+                        </div>
+                        <div class="opt">
+                            <field name="incluir_compras" nolabel="1"/>
+                            <i class="fa fa-shopping-cart"/><label for="incluir_compras">Compras / Proveedores</label>
+                        </div>
+                        <div class="opt">
+                            <field name="incluir_gastos" nolabel="1"/>
+                            <i class="fa fa-credit-card"/><label for="incluir_gastos">Gastos</label>
+                        </div>
+                        <div class="opt">
+                            <field name="incluir_notas" nolabel="1"/>
+                            <i class="fa fa-undo"/><label for="incluir_notas">Notas / Reversiones</label>
+                        </div>
+                    </div>
+                    <footer>
+                        <button name="action_exportar" type="object" string="Descargar"
+                                class="btn-primary" icon="fa-download"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             GUÍA TÉCNICA: explicación completa del módulo, para dummies.
+             ===================================================================== -->
+        <record id="view_pagos_siesa_guia_wizard" model="ir.ui.view">
+            <field name="name">pagos.siesa.guia.wizard.form</field>
+            <field name="model">pagos.siesa.guia.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Guía técnica - Pagos SIESA">
+                    <style>
+                        .sgo_guia { --navy:#1c2b5a; --blue:#0d6efd; --royal:#2145c9; --green:#198754;
+                            --amber:#9a3412; --muted:#7a8699; --border:#e8edf5; max-width:900px; }
+                        .sgo_guia .g_hero { background:linear-gradient(120deg,#1c2b5a,#2145c9); color:#fff;
+                            border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+                        .sgo_guia .g_hero h2 { margin:0; font-size:20px; font-weight:500; color:#fff; }
+                        .sgo_guia .g_hero p { margin:6px 0 0; font-size:13px; color:#d7e0f7; }
+                        .sgo_guia .g_sec { background:#fff; border:1px solid var(--border);
+                            border-radius:12px; margin-bottom:12px; overflow:hidden; }
+                        .sgo_guia .g_h { display:flex; align-items:center; gap:9px; padding:10px 16px;
+                            background:#f8fafd; border-bottom:1px solid var(--border);
+                            font-size:13px; font-weight:500; color:var(--navy); text-transform:uppercase; letter-spacing:.4px; }
+                        .sgo_guia .g_h .fa { color:var(--blue); font-size:15px; }
+                        .sgo_guia .g_b { padding:12px 16px; font-size:13.5px; color:#25324a; line-height:1.6; }
+                        .sgo_guia .g_b p { margin:0 0 8px; }
+                        .sgo_guia .g_b b { color:var(--navy); }
+                        .sgo_guia .g_b .tag { display:inline-block; background:#eef2fb; color:var(--royal);
+                            border-radius:6px; padding:1px 7px; font-weight:700; font-size:12px; font-family:monospace; }
+                        .sgo_guia table.g_t { width:100%; border-collapse:collapse; margin:4px 0; font-size:13px; }
+                        .sgo_guia table.g_t th { background:#eef2f7; color:var(--navy); text-align:left;
+                            padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.3px;
+                            border-bottom:2px solid var(--royal); }
+                        .sgo_guia table.g_t td { padding:6px 10px; border-bottom:1px solid #f3f6fb; vertical-align:top; }
+                        .sgo_guia table.g_t td:first-child { font-weight:700; color:var(--navy); white-space:nowrap; }
+                        .sgo_guia .g_call { border-left:4px solid var(--amber); background:#fffdf8;
+                            padding:9px 14px; border-radius:0 8px 8px 0; margin:8px 0; font-size:13px; color:#5c3a1e; }
+                        .sgo_guia .g_ok { border-left-color:var(--green); background:#f2fbf6; color:#14532d; }
+                        .sgo_guia ol.g_steps { margin:0; padding-left:20px; }
+                        .sgo_guia ol.g_steps li { margin-bottom:6px; font-size:13.5px; }
+                    </style>
+                    <div class="sgo_guia">
+                        <field name="dummy" invisible="1"/>
+
+                        <div class="g_hero">
+                            <h2>📘 Guía técnica — Pagos reales (SIESA)</h2>
+                            <p>Todo lo que hace este módulo, explicado simple. Guardá esto de referencia.</p>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-info-circle"/> ¿Qué es esto?</div>
+                            <div class="g_b">
+                                <p>Este módulo trae los <b>pagos reales</b> que están registrados en el ERP contable
+                                <b>SIESA</b> y los muestra dentro del proyecto, para <b>conciliarlos</b> contra lo que
+                                se planeó pagar. En cristiano: te dice <b>a quién se le debía, cuánto se le retuvo y
+                                cuánto se le pagó de verdad</b>, sacado de la contabilidad — no de un cálculo aparte.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-database"/> ¿De dónde sale la información?</div>
+                            <div class="g_b">
+                                <p>Sale de <b>SIESA (SQL Server)</b>. El módulo guarda una copia local ("tabla espejo")
+                                que se <b>refresca sola cada vez que entrás por el botón "Pagos del proyecto"</b>, o cuando
+                                pulsás <b>Refrescar</b>. No consulta SIESA en segundo plano — solo cuando vos lo pedís.</p>
+                                <p>El filtro es siempre <b>por proyecto</b> (la Unidad de Negocio, ej. <span class="tag">15-160</span>):
+                                solo ves lo de ESE proyecto.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-tags"/> Las 4 categorías (el selector "Ver:")</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Categoría</th><th>Qué es</th><th>Documentos</th></tr>
+                                    <tr><td>Contratistas + Proveedores</td><td><b>Vista por defecto</b>: personas y empresas juntas — lo principal del proyecto</td><td>—</td></tr>
+                                    <tr><td>Contratistas</td><td>Personas con cuenta de cobro (no obligados a facturar)</td><td><span class="tag">S4</span> <span class="tag">S5</span></td></tr>
+                                    <tr><td>Compras / Proveedores</td><td>Empresas que facturan (vuelos, Amazon, software…)</td><td><span class="tag">FP</span> <span class="tag">FS</span> <span class="tag">FT</span> <span class="tag">CP</span></td></tr>
+                                    <tr><td>Gastos</td><td>Gastos y consumos de tarjeta de crédito</td><td><span class="tag">CC</span> <span class="tag">CJ</span></td></tr>
+                                    <tr><td>Notas / Reversiones</td><td>Notas crédito y reversos (ajustan/anulan)</td><td><span class="tag">NJ</span> <span class="tag">NO</span></td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-table"/> Qué significa cada columna</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Columna</th><th>Significado</th></tr>
+                                    <tr><td>RPC / RCF</td><td>El registro presupuestal del contrato. Si un tercero tiene varios (ej. <span class="tag">RCF 396 | RCF 3357</span>) es que tiene varios contratos/otrosí.</td></tr>
+                                    <tr><td>Causación</td><td>El documento que crea la deuda (ej. <span class="tag">S4 4671</span>).</td></tr>
+                                    <tr><td>Bruto causado</td><td>El valor total antes de retenciones.</td></tr>
+                                    <tr><td>Retención</td><td>Lo retenido. Al abrir la ficha se desglosa en <b>Retefuente + ReteICA + ReteIVA</b> (que suman esta columna).</td></tr>
+                                    <tr><td>Neto a pagar</td><td>Bruto − Retención. Lo que quedaba por pagarle.</td></tr>
+                                    <tr><td>Deducción</td><td>Bajó la deuda pero <b>no es plata de banco</b>. <b>No es solo DD</b>: también <span class="tag">AJ</span> <span class="tag">NI</span> <span class="tag">OAJ</span>. La columna <b>Doc. deducción</b> muestra el tipo y número exacto (ej. <span class="tag">DD 7402</span>, <span class="tag">AJ 430 + NI 76832</span>).</td></tr>
+                                    <tr><td>Pago (PE/PD)</td><td>El documento con que se pagó por banco.</td></tr>
+                                    <tr><td>Pagado</td><td>Lo que efectivamente salió del banco.</td></tr>
+                                    <tr><td>Pendiente por pagar</td><td>Neto − <b>TODO lo aplicado</b> (pago del banco + deducciones). Si da 0, la causación quedó <b>saldada</b> aunque el pago haya sido menor al neto (la deducción cubrió el resto).</td></tr>
+                                    <tr><td>% acumulado</td><td>Solo para contratistas: cuánto llevan cobrado de su total (las cuotas suman 100%).</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-file-text-o"/> Tipos de documento (los que importan)</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Rol</th><th>Documentos</th></tr>
+                                    <tr><td>Crean la deuda (causación)</td><td><span class="tag">S4</span> <span class="tag">S5</span> <span class="tag">FP</span> <span class="tag">FS</span> <span class="tag">FT</span> <span class="tag">CP</span></td></tr>
+                                    <tr><td>Pagan (sale plata del banco)</td><td><span class="tag">PE</span> <span class="tag">PD</span> <span class="tag">PN</span> <span class="tag">PSS</span></td></tr>
+                                    <tr><td>Reversan un pago (restan)</td><td><span class="tag">NB</span> (pago rebotado)</td></tr>
+                                    <tr><td>Bajan la deuda (no es banco)</td><td><span class="tag">DD</span> <span class="tag">AJ</span> <span class="tag">NI</span> <span class="tag">OAJ</span></td></tr>
+                                    <tr><td>NO son pagos (son cobros/entradas)</td><td><span class="tag">CT</span> <span class="tag">RT</span> <span class="tag">FE</span> <span class="tag">RC</span></td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-check-square-o"/> El "Cuadre" (contratado vs cobrado)</div>
+                            <div class="g_b">
+                                <p>En la ficha de un tercero, el cuadre compara el <b>valor contratado</b> (todos sus contratos + otrosí, de SGO)
+                                contra el <b>bruto causado</b> (SIESA). La regla la dio financiera:</p>
+                                <div class="g_call">🔴 <b>Convenios (UN 15-xx):</b> de todo peso se rinde cuentas — no debe quedar diferencia. Si la hay, la resuelve el coordinador.</div>
+                                <div class="g_call g_ok">🟢 <b>Proyectos propios (UN 09-xx):</b> una diferencia de un peso puede pasar; se ajusta contablemente (redondeo de retenciones).</div>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-exclamation-triangle"/> ¿Por qué "Pagado" a veces sale NEGATIVO?</div>
+                            <div class="g_b">
+                                <p>Pasa en las <b>Notas/Reversiones</b>. Una nota reversa una factura, y cuando el banco paga,
+                                el mismo pago <b>descuenta esa nota</b> (la resta). Por eso la nota aparece con el número del pago
+                                y un valor en negativo: significa "esta nota se usó para <b>descontarle</b> plata al proveedor dentro de ese pago".
+                                Se deja así <b>a propósito</b> para que la suma cuadre con el banco (si no, el total quedaría inflado).</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-paint-brush"/> Colores de las filas (semáforo)</div>
+                            <div class="g_b">
+                                <p><span style="color:#198754;font-weight:500;">● Verde</span> = <b>saldada</b>: no queda pendiente (se pagó y/o se dedujo) ·
+                                   <span style="color:#fd7e14;font-weight:500;">● Naranja</span> = parcial: SÍ queda pendiente ·
+                                   <span style="color:#9aa4b2;font-weight:500;">● Gris</span> = reversado o en cero (notas) ·
+                                   <span style="color:#1f2937;font-weight:500;">● Negro</span> = pendiente por pagar.</p>
+                                <p>El color aplica a <b>toda la fila</b>, incluido el número de la causación. Por eso se ven
+                                S4 verdes y S4 negros mezclados: no es un error, es el <b>estado</b> de cada pago.</p>
+                                <p><b>Ojo con las deducciones:</b> si a una causación le hicieron una DD (o AJ/NI), el pago del
+                                banco es <b>menor</b> que el neto y aun así está <b>bien pagada</b> → sale <b>verde</b>, porque
+                                pago + deducción = neto. El semáforo mira el <b>pendiente</b>, no el pago solo.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-hand-pointer-o"/> Cómo usarlo</div>
+                            <div class="g_b">
+                                <ol class="g_steps">
+                                    <li><b>Selector "Ver:"</b> — elegís qué categoría mirar. El resumen de arriba se ajusta a lo que elijas.</li>
+                                    <li><b>Buscador</b> — busca en TODAS las páginas por tercero, NIT, causación, RCF o pago. Podés poner varias palabras (ej. "manuel rojas").</li>
+                                    <li><b>Chips de estado</b> — filtran la tabla al instante (Pendientes, Parciales...); la columna <b>Días</b> muestra la antigüedad de lo abierto (ámbar &gt;30, rojo &gt;60); y con el <b>engranaje ⚙</b> de la tabla podés mostrar u ocultar columnas.</li>
+                                    <li><b>Clic en una fila</b> — abre la <b>ficha del tercero</b>: sus contratos y otrosí, el cuadre, sus causaciones y pagos.</li>
+                                    <li><b>Clic en una causación</b> (dentro de la ficha) — muestra las <b>retenciones específicas</b> de ESE documento.</li>
+                                    <li><b>Botón Excel</b> — descarga la tabla; elegís qué categorías y cada una sale en su propia hoja, con totales.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-cogs"/> Notas técnicas</div>
+                            <div class="g_b">
+                                <p>• La <b>retención se lee de la contabilidad</b> (subcuentas 2436), no se calcula acá: ReteICA <span class="tag">243627</span>, ReteIVA <span class="tag">243625</span>, el resto Retefuente.</p>
+                                <p>• El <b>RPC/RCF</b> sale de la tabla presupuestal de SIESA (<span class="tag">t3332</span>), amarrado por tercero dentro del proyecto.</p>
+                                <p>• Los valores <b>no se aproximan</b>: se trabaja con decimales exactos y el bruto sale por partida doble.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <button string="Entendido" special="cancel" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,281 @@
+.mi_header_fijo.fc-fuv-header {
+    padding: 0 !important;
+    border-top: 3px solid #123e79;
+    border-bottom: 1px solid #dce3ea !important;
+    background: #fff !important;
+    box-shadow: 0 3px 12px rgba(28, 45, 68, 0.05);
+}
+
+.fc-fuv-header .custom-value-header-full-width {
+    display: grid;
+    grid-template-columns: 1.15fr repeat(5, minmax(0, 1fr));
+    gap: 0;
+    align-items: stretch;
+    margin: 0;
+    padding: 10px 20px 9px;
+}
+
+.fc-fuv-header .custom-value-header-full-width > .valor-box {
+    min-width: 0;
+    margin: 0;
+    padding: 2px 18px;
+    border: 0;
+    border-left: 1px solid #e2e7ed;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    transition: none;
+}
+
+.fc-fuv-header .custom-value-header-full-width > .valor-box:first-child {
+    padding-left: 12px;
+    border-left: 3px solid #0a68a3;
+}
+
+.fc-fuv-header .custom-value-header-full-width > .valor-box:hover {
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left-color: #e2e7ed;
+    box-shadow: none;
+}
+
+.fc-fuv-header .custom-value-header-full-width > .valor-box:first-child:hover {
+    border-left-color: #0a68a3;
+}
+
+.fc-fuv-header .custom-value-header-full-width > .valor-box[invisible="1"],
+.fc-fuv-header .custom-value-header-full-width > .valor-box.o_invisible_modifier {
+    display: none !important;
+}
+
+.fc-fuv-header .custom-value-header-full-width .valor-box strong {
+    display: block;
+    min-height: 29px;
+    margin: 0 0 4px;
+    color: #667384;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.fc-fuv-header .custom-value-header-full-width .valor-box .o_field_widget,
+.fc-fuv-header .custom-value-header-full-width .valor-box field {
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    color: #26374d;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.fc-fuv-header .custom-value-header-full-width .saldo-produccion .o_field_widget,
+.fc-fuv-header .custom-value-header-full-width .saldo-produccion field {
+    color: #104a83;
+    font-size: 20px;
+}
+
+.fc-fuv-header .custom-value-header-full-width .valor-box .o_field_widget.text-danger,
+.fc-fuv-header .custom-value-header-full-width .valor-box .o_field_widget .text-danger {
+    color: #b34c44 !important;
+}
+
+.fc-fuv-header__toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+    flex: 0 0 100%;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 8px 16px;
+    min-height: 56px;
+    padding: 6px 20px;
+    border-top: 1px solid #e9edf2;
+    background: #fbfcfe;
+}
+
+.fc-fuv-header__toolbar > div:first-child {
+    justify-self: start;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+}
+
+.fc-fuv-header__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    justify-self: end;
+    gap: 8px;
+    max-width: 100%;
+}
+
+.fc-fuv-header .fc-header-action-btn,
+.o_form_view .fc-fuv-header .fc-header-action-btn {
+    min-height: 34px;
+    padding: 6px 14px !important;
+    border-color: #123e79 !important;
+    border-radius: 4px;
+    background: #123e79 !important;
+    color: #fff !important;
+    box-shadow: none;
+}
+
+.fc-fuv-header .fc-header-action-btn:hover,
+.fc-fuv-header .fc-header-action-btn:focus {
+    border-color: #0b2e5f !important;
+    background: #0b2e5f !important;
+}
+
+.fc-fuv-header .fc-contract-support-menu {
+    position: relative;
+    flex: 0 0 auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.fc-fuv-header .fc-contract-support-menu summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    min-width: 100px;
+    min-height: 34px;
+    padding: 0 13px;
+    border: 1px solid #ccd6e1;
+    border-radius: 4px;
+    background: #fff;
+    color: #344b65;
+    font-size: 12px;
+    font-weight: 700;
+    list-style: none;
+    cursor: pointer;
+}
+
+.fc-fuv-header .fc-contract-support-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.fc-fuv-header .fc-contract-support-menu summary:hover {
+    background: #f2f6fa;
+}
+
+.fc-fuv-header .fc-contract-support-menu summary:focus-visible,
+.fc-fuv-header .fc-header-action-btn:focus-visible {
+    outline: 2px solid #0b71ad;
+    outline-offset: 2px;
+}
+
+.fc-fuv-header .fc-contract-support-menu summary .fa {
+    font-size: 11px;
+    transition: transform 0.15s ease;
+}
+
+.fc-fuv-header .fc-contract-support-menu details[open] summary .fa {
+    transform: rotate(180deg);
+}
+
+.fc-fuv-header .fc-contract-support-grid {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 1001;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+    width: 220px;
+    padding: 5px;
+    border: 1px solid #d4dde7;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 12px 25px rgba(29, 45, 68, 0.14);
+}
+
+.fc-fuv-header .fc-contract-support-grid > button {
+    width: 100%;
+    min-height: 34px;
+    margin: 0 !important;
+    padding: 7px 10px !important;
+    border: 0 !important;
+    border-radius: 3px;
+    background: transparent !important;
+    color: #35485d !important;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.fc-fuv-header .fc-contract-support-grid > button:hover,
+.fc-fuv-header .fc-contract-support-grid > button:focus-visible {
+    background: #eef4fa !important;
+}
+
+.fc-fuv-header .fc-contract-support-grid > .fc-poliza-support-header-btn {
+    background: #fff1f2 !important;
+    color: #a12630 !important;
+}
+
+.fc-fuv-header .fc-contract-support-grid > .fc-poliza-support-header-btn:hover,
+.fc-fuv-header .fc-contract-support-grid > .fc-poliza-support-header-btn:focus-visible {
+    background: #ffe2e6 !important;
+    color: #8d1c28 !important;
+}
+
+@media (max-width: 1300px) {
+    .fc-fuv-header .custom-value-header-full-width {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        row-gap: 10px;
+    }
+}
+
+@media (max-width: 850px) {
+    .fc-fuv-header__toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .fc-fuv-header .custom-value-header-full-width {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        row-gap: 8px;
+        padding: 10px;
+    }
+
+    .fc-fuv-header .custom-value-header-full-width > .valor-box {
+        padding: 2px 10px;
+    }
+
+    .fc-fuv-header .custom-value-header-full-width .valor-box strong {
+        min-height: 29px;
+        font-size: 11px;
+    }
+
+    .fc-fuv-header .custom-value-header-full-width .valor-box .o_field_widget,
+    .fc-fuv-header .custom-value-header-full-width .valor-box field,
+    .fc-fuv-header .custom-value-header-full-width .saldo-produccion .o_field_widget,
+    .fc-fuv-header .custom-value-header-full-width .saldo-produccion field {
+        font-size: 15px;
+    }
+
+    .fc-fuv-header__toolbar {
+        padding: 7px 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .fc-fuv-header .custom-value-header-full-width {
+        grid-template-columns: 1fr;
+    }
+
+    .fc-fuv-header .custom-value-header-full-width .valor-box strong {
+        min-height: 0;
+    }
+}

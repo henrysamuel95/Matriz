@@ -1,0 +1,71 @@
+/* 1. APUNTAMOS A TODO LO QUE SE MUEVA DENTRO DE TU CONTAINER */
+.card-container .o_kanban_view,
+.card-container .o_kanban_renderer {
+    display: grid !important;
+    /* Forzamos 4 columnas del mismo tamaño, sin importar el contenido */
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important; 
+    gap: 15px !important;
+    width: 100% !important;
+    padding: 10px 0 !important; /* Un poco de aire arriba/abajo */
+}
+
+/* 2. DOMAMOS LAS TARJETAS INDIVIDUALES */
+.card-container .o_kanban_record {
+    width: 100% !important; /* Que se estire al 100% de SU columna */
+    min-width: 0 !important; /* Evita que la tarjeta se desborde si el texto es largo */
+    max-width: none !important; /* Quitamos límites de Odoo */
+    flex: none !important; /* Matamos el flex nativo de Odoo */
+    margin: 0 !important; /* El espaciado lo maneja el 'gap' del grid */
+}
+
+/* 3. TU ESTILO VISUAL (Mantenemos lo bonito) */
+.kanban-card {
+    background: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 12px;
+    padding: 12px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+    /* Aseguramos que el contenido interno no rompa la tarjeta */
+    overflow: hidden; 
+}
+
+.kanban-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+/* 4. RESPONSIVE (Por si lo ven en laptop pequeña) */
+@media (max-width: 1366px) {
+    .card-container .o_kanban_view,
+    .card-container .o_kanban_renderer {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* Bajamos a 3 si la pantalla se achica */
+    }
+}
+
+.custom-button {
+  background-color: #0056b3; /* Color de fondo azul más oscuro */
+  color: #ffffff; /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 8px 16px; /* Espaciado interno reducido */
+  font-size: 14px; /* Tamaño de la fuente reducido */
+  border-radius: 4px; /* Bordes redondeados más pequeños */
+  display: flex; /* Flexbox para alinear el icono y el texto */
+  align-items: center; /* Alineación vertical */
+  cursor: pointer; /* Cursor en forma de mano */
+  transition: background-color 0.3s; /* Transición para el color de fondo */
+}
+
+.custom-button:hover {
+  background-color: #004494; /* Color de fondo al pasar el mouse, azul más oscuro */
+}
+
+.custom-button i {
+  margin-right: 6px; /* Espaciado entre el icono y el texto reducido */
+}
+
+
+

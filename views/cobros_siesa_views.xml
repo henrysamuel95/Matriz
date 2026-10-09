@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- =====================================================================
+             FICHA DEL CLIENTE / APORTANTE (clic en una fila de la tabla).
+             Estilo SGO. Regla "una fila, un color": las celdas NO fuerzan color.
+             ===================================================================== -->
+        <record id="view_cobros_siesa_line_detalle" model="ir.ui.view">
+            <field name="name">cobros.siesa.line.detalle.form</field>
+            <field name="model">cobros.siesa.line</field>
+            <field name="arch" type="xml">
+                <form string="Detalle del cliente" create="false" edit="false">
+                    <style>
+                        .sgo_cdet { --sgo-navy:#1c2b5a; --sgo-blue:#0d6efd; --sgo-royal:#2145c9;
+                            --sgo-money:#1f3d8f; --sgo-green:#198754; --sgo-green-bg:#eef7f1;
+                            --sgo-amber:#9a3412; --sgo-amber-bg:#fbf6f1; --sgo-orange:#c2410c;
+                            --sgo-orange-bg:#fbf6f1; --sgo-border:#e8edf5; --sgo-muted:#7a8699;
+                            padding:2px 2px 8px; }
+                        .sgo_cdet .card0 { background:#fff; border:1px solid var(--sgo-border);
+                            border-radius:12px; overflow:hidden; margin-bottom:14px;
+                            box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                        .sgo_cdet .dhead { display:flex; align-items:center; gap:12px; padding:14px 16px 12px; }
+                        .sgo_cdet .dh_ico { width:40px; height:40px; border-radius:50%; background:#eef3fb;
+                            color:var(--sgo-blue); display:flex; align-items:center; justify-content:center;
+                            font-size:17px; flex:none; }
+                        .sgo_cdet .dh_name .o_field_widget { font-size:19px; font-weight:500; color:var(--sgo-blue); }
+                        .sgo_cdet .dh_meta { margin-top:3px; font-size:12px; color:var(--sgo-muted);
+                            display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+                        .sgo_cdet .pill { padding:3px 12px; border-radius:999px; font-size:11px;
+                            font-weight:500; text-transform:uppercase; letter-spacing:.4px;
+                            background:#eef3fb; color:#1a4bbd; }
+                        .sgo_cdet .dh_bar { height:4px; background:var(--sgo-royal); }
+                        .sgo_cdet .card_h { padding:9px 16px; background:#f8fafd; color:var(--sgo-navy);
+                            font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.5px;
+                            border-bottom:1px solid var(--sgo-border); display:flex; gap:8px; align-items:center; }
+                        .sgo_cdet .card_h .fa { color:var(--sgo-blue); }
+                        .sgo_cdet .card_h .hint { margin-left:auto; font-weight:500; text-transform:none;
+                            letter-spacing:0; font-size:11px; color:#94a3b8; }
+                        .sgo_cdet .kpis { display:flex; flex-wrap:wrap; }
+                        .sgo_cdet .kpi { flex:1; min-width:150px; padding:12px 16px; border-right:1px solid #f3f6fb; }
+                        .sgo_cdet .l { display:block; font-size:10px; color:var(--sgo-muted);
+                            text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; font-weight:700; }
+                        .sgo_cdet .kpi .o_field_widget { font-size:17px; font-weight:500; color:var(--sgo-money); }
+                        .sgo_cdet .kpi.ok { background:var(--sgo-green-bg); }
+                        .sgo_cdet .kpi.ok .o_field_widget { color:var(--sgo-green); }
+                        .sgo_cdet .kpi.pend { background:var(--sgo-orange-bg); }
+                        .sgo_cdet .kpi.pend .o_field_widget { color:var(--sgo-orange); }
+                        .sgo_cdet .cnote { padding:9px 16px; font-size:12px; color:#5c3a1e;
+                            background:#fffdf8; border-top:1px dashed #ecdcc3; }
+                        .sgo_cdet .o_list_table thead th { background:#fff; color:var(--sgo-navy);
+                            text-transform:uppercase; font-size:10.5px; letter-spacing:.3px;
+                            vertical-align:middle; line-height:1.3; padding-top:8px; padding-bottom:8px;
+                            border-bottom:2px solid var(--sgo-royal); }
+                        .sgo_cdet .o_list_table td.o_data_cell, .sgo_cdet .o_list_table th { text-align:right; }
+                        .sgo_cdet .o_list_table td[name="consec"], .sgo_cdet .o_list_table th[data-name="consec"],
+                        .sgo_cdet .o_list_table td[name="doc_recaudo"], .sgo_cdet .o_list_table th[data-name="doc_recaudo"],
+                        .sgo_cdet .o_list_table td[name="doc_deduccion"], .sgo_cdet .o_list_table th[data-name="doc_deduccion"]
+                            { text-align:left; }
+                        .sgo_cdet .o_list_table td[name="consec"] { font-weight:500; }
+                        .sgo_cdet .o_list_table tbody tr:hover { background:#eef4fe; }
+                        .sgo_cdet .o_list_table tfoot { border-top:2px solid var(--sgo-border); font-weight:600; }
+                    </style>
+                    <sheet>
+                        <div class="sgo_cdet">
+                            <field name="currency_id" invisible="1"/>
+
+                            <div class="card0">
+                                <div class="dhead">
+                                    <div class="dh_ico"><i class="fa fa-building-o"/></div>
+                                    <div>
+                                        <div class="dh_name"><field name="cliente" readonly="1"/></div>
+                                        <div class="dh_meta">
+                                            <span class="pill"><field name="clase_cobro" readonly="1"/></span>
+                                            <span>NIT <field name="nit" readonly="1" class="oe_inline"/></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dh_bar"/>
+                            </div>
+
+                            <div class="card0">
+                                <div class="card_h">
+                                    <i class="fa fa-balance-scale"/> Conciliación SIESA del cliente
+                                    <span class="hint"><field name="det_num_docs" readonly="1" class="oe_inline"/> documentos</span>
+                                </div>
+                                <div class="kpis">
+                                    <div class="kpi"><span class="l">Por cobrar</span><field name="det_por_cobrar" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi ok"><span class="l">Recaudado</span><field name="det_recaudado" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi"><span class="l">Deducción / retención</span><field name="det_deduccion" nolabel="1" readonly="1"/></div>
+                                    <div class="kpi pend"><span class="l">Pendiente por recaudar</span><field name="det_pendiente" nolabel="1" readonly="1"/></div>
+                                </div>
+                                <div class="cnote">
+                                    La <b>deducción</b> son, típicamente, las <b>retenciones que el cliente le practica
+                                    a la Fundación</b> al pagar (no es plata perdida: es anticipo de impuestos).
+                                    Un documento con <b>recaudo + deducción = por cobrar</b> quedó <b>saldado</b>.
+                                </div>
+                            </div>
+
+                            <div class="card0">
+                                <div class="card_h">
+                                    <i class="fa fa-list-ul"/> Documentos y recaudos (SIESA)
+                                    <span class="hint">clic en un documento para ver su detalle</span>
+                                </div>
+                                <field name="hist_siesa_ids" nolabel="1" readonly="1">
+                                    <form string="Detalle del documento">
+                                        <style>
+                                            .sgo_cmini { --navy:#1c2b5a; --blue:#0d6efd; --money:#1f3d8f;
+                                                --green:#198754; --orange:#c2410c; --muted:#7a8699; --border:#e8edf5; }
+                                            .sgo_cmini .mh { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+                                            .sgo_cmini .mh_ico { width:34px; height:34px; border-radius:9px; background:#eef3fb;
+                                                color:var(--blue); display:flex; align-items:center; justify-content:center; flex:none; }
+                                            .sgo_cmini .mh_t .o_field_widget { font-size:17px; font-weight:500; color:var(--navy); }
+                                            .sgo_cmini .mh_s { font-size:12px; color:var(--muted); }
+                                            .sgo_cmini .mgrid { display:flex; flex-wrap:wrap; border:1px solid var(--border);
+                                                border-radius:12px; overflow:hidden; background:#fff; }
+                                            .sgo_cmini .mi { flex:1; min-width:150px; padding:11px 14px; border-right:1px solid #f3f6fb; }
+                                            .sgo_cmini .l { display:block; font-size:10px; color:var(--muted);
+                                                text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; font-weight:700; }
+                                            .sgo_cmini .mi .o_field_widget { font-size:15px; font-weight:500; color:var(--money); }
+                                            .sgo_cmini .mi.ok .o_field_widget { color:var(--green); }
+                                            .sgo_cmini .mi.pend .o_field_widget { color:var(--orange); }
+                                            .sgo_cmini .mnote { margin-top:10px; padding:9px 13px; font-size:12.5px;
+                                                color:#5c3a1e; background:#fffdf8; border:1px dashed #ecdcc3; border-radius:9px; }
+                                        </style>
+                                        <div class="sgo_cmini">
+                                            <field name="currency_id" invisible="1"/>
+                                            <div class="mh">
+                                                <div class="mh_ico"><i class="fa fa-file-text-o"/></div>
+                                                <div>
+                                                    <div class="mh_t"><field name="consec" readonly="1"/></div>
+                                                    <div class="mh_s">
+                                                        <field name="clase_cobro" readonly="1" class="oe_inline"/> ·
+                                                        <field name="cliente" readonly="1" class="oe_inline"/> ·
+                                                        <field name="fecha" readonly="1" class="oe_inline"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mgrid">
+                                                <div class="mi"><span class="l">Por cobrar</span><field name="por_cobrar" readonly="1"/></div>
+                                                <div class="mi ok"><span class="l">Recaudado</span><field name="recaudado" readonly="1"/></div>
+                                                <div class="mi"><span class="l">Deducción / retención</span><field name="deduccion" readonly="1"/></div>
+                                                <div class="mi pend"><span class="l">Pendiente</span><field name="pendiente" readonly="1"/></div>
+                                            </div>
+                                            <div class="mgrid" style="margin-top:10px;">
+                                                <div class="mi"><span class="l">RPC / RCF</span><field name="rcf" readonly="1"/></div>
+                                                <div class="mi"><span class="l">Recibo (RT)</span><field name="doc_recaudo" readonly="1"/></div>
+                                                <div class="mi"><span class="l">Fecha recaudo</span><field name="fecha_recaudo" readonly="1"/></div>
+                                                <div class="mi"><span class="l">Doc. deducción</span><field name="doc_deduccion" readonly="1"/></div>
+                                            </div>
+                                            <div class="mnote">
+                                                <b>Recaudado + Deducción = Por cobrar</b> quiere decir que el documento quedó
+                                                <b>saldado</b>. La deducción es, típicamente, la <b>retención que el cliente le
+                                                practicó a la Fundación</b> (anticipo de impuestos, no plata perdida).
+                                            </div>
+                                        </div>
+                                        <footer>
+                                            <button string="Cerrar" special="cancel" class="btn-primary"/>
+                                        </footer>
+                                    </form>
+                                    <tree create="false" edit="false" delete="false" limit="60"
+                                          default_order="fecha, consec">
+                                        <field name="consec" string="Documento"/>
+                                        <field name="estado" widget="badge" optional="show"
+                                          decoration-success="estado == 'Saldado'"
+                                          decoration-warning="estado == 'Parcial'"
+                                          decoration-danger="estado == 'Pendiente'"
+                                          decoration-muted="estado == 'Nota crédito'"/>
+                                        <field name="rcf" string="RPC/RCF" optional="hide"/>
+                                        <field name="fecha" string="Fecha"/>
+                                        <field name="por_cobrar" sum="Total"/>
+                                        <field name="recaudado" sum="Total"/>
+                                        <field name="deduccion" string="Deducción" sum="Total"/>
+                                        <field name="doc_deduccion" string="Doc. deducción"/>
+                                        <field name="doc_recaudo" string="Recibo (RT)"/>
+                                        <field name="fecha_recaudo" string="F. recaudo"/>
+                                        <field name="pendiente" string="Pendiente" sum="Total"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             BLOQUE PRINCIPAL: se inyecta dentro de la página "COBROS PROYECTO",
+             debajo de la tabla de cobros planeados de SGO.
+             ===================================================================== -->
+        <record id="view_cobros_proyecto_form_siesa" model="ir.ui.view">
+            <field name="name">action_ingresar_pagos_proyecto.form.siesa</field>
+            <field name="model">action_ingresar_pagos_proyecto</field>
+            <field name="inherit_id" ref="view_action_ingresar_pagos_proyecto_form"/>
+            <field name="arch" type="xml">
+                <!-- OJO: NO usar //field[@name='cantidad_lineas_tabla_pagos'] como
+                     ancla: ese campo aparece DOS veces en esta vista (uno arriba en
+                     un group y otro dentro de la page), y el xpath agarraba el
+                     primero -> el bloque salia arriba. 'tabla_pagos' es unico y es
+                     justo la tabla de cobros vieja, asi que esto cae debajo de ella. -->
+                <!-- Quitar el resumen viejo "ACUMULADO DE PROYECTO" -->
+                <xpath expr="//table[.//field[@name='total_proyecto']]" position="replace"/>
+                <!-- Quitar la tabla vieja "INGRESAR DATOS DEL COBRO" -->
+                <xpath expr="//table[.//field[@name='valor_pagado_editable']]" position="replace"/>
+                <!-- Quitar los botones de agregar cobro manual -->
+                <!-- Botones viejos de cobro manual (hay 2 en la vista padre). Odoo 16 prohibe
+                     usar @string como selector de herencia; se eliminan por POSICION: al borrar
+                     el primero, el segundo pasa a ser [1] y el xpath repetido lo elimina. -->
+                <xpath expr="(//button[@name='agregar_nuevo'])[1]" position="replace"/>
+                <xpath expr="(//button[@name='agregar_nuevo'])[1]" position="replace"/>
+                <xpath expr="//button[@name='datos']" position="replace"/>
+                <!-- REEMPLAZAR la tabla vieja de cobros por el bloque SIESA (queda
+                     dentro de la pestana "COBROS PROYECTO", donde antes iba la tabla) -->
+                <xpath expr="//field[@name='tabla_pagos']" position="replace">
+                    <field name="cobros_siesa_ids" invisible="1"/>
+                    <field name="siesa_currency_id" invisible="1"/>
+
+                    <div class="o_cob_box">
+                        <style>
+                            .o_cob_box { --sgo-navy:#1c2b5a; --sgo-blue:#0d6efd; --sgo-royal:#2145c9;
+                                --sgo-money:#1f3d8f; --sgo-green:#198754; --sgo-green-bg:#eef7f1;
+                                --sgo-orange:#c2410c; --sgo-orange-bg:#fbf6f1; --sgo-border:#e8edf5;
+                                --sgo-muted:#7a8699;
+                                margin-top:16px; padding:16px; background:#f0f3f8;
+                                border:1px solid var(--sgo-border); border-radius:12px; }
+                            .o_cob_head { display:flex; align-items:center; justify-content:space-between;
+                                flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+                            .o_cob_title { font-size:15px; font-weight:500; color:var(--sgo-navy); }
+                            .o_cob_title .fa { color:var(--sgo-blue); margin-right:8px; }
+                            .o_cob_sub { font-size:12px; color:var(--sgo-muted); font-weight:400; }
+                            .o_cob_tools { display:flex; align-items:center; gap:10px; }
+                            .o_cob_btn { background:var(--sgo-navy) !important; border-color:var(--sgo-navy) !important;
+                                color:#fff !important; font-weight:700; }
+                            .o_cob_btn:hover { background:#16234a !important; }
+                            .o_cob_btn_xls { background:var(--sgo-green) !important; border-color:var(--sgo-green) !important;
+                                color:#fff !important; font-weight:700; }
+                            .o_cob_btn_xls:hover { background:#146c43 !important; }
+                            .o_cob_btn_guia { background:#fff !important; border:1px solid var(--sgo-royal) !important;
+                                color:var(--sgo-royal) !important; font-weight:700; white-space:nowrap; }
+                            .o_cob_btn_guia:hover { background:var(--sgo-royal) !important; color:#fff !important; }
+                            .o_cob_resumen { background:#fff; border:1px solid var(--sgo-border);
+                                border-radius:12px; overflow:hidden; box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                            .o_cob_res_head { background:linear-gradient(120deg,#1c2b5a,#22377e); color:#fff; padding:9px 14px;
+                                font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:.5px;
+                                display:flex; align-items:center; gap:8px; }
+                            .o_cob_res_head .fa { color:#8fb0ff; }
+                            .o_cob_res_count { margin-left:auto; font-weight:500; text-transform:none;
+                                color:#c7d3f2; font-size:12px; }
+                            .o_cob_res_grid { display:flex; flex-wrap:wrap; }
+                            .o_cob_res_sub { padding:8px 16px; background:#f8fafd; border-top:1px solid var(--sgo-border);
+                                border-bottom:1px solid var(--sgo-border); font-size:11px; font-weight:600;
+                                text-transform:uppercase; letter-spacing:.4px; color:var(--sgo-navy);
+                                display:flex; align-items:center; gap:7px; }
+                            .o_cob_res_sub .fa { color:var(--sgo-blue); }
+                            .o_cob_res_grid2 .o_cob_res_item .o_field_widget { color:var(--sgo-navy); font-size:15px; }
+                            .o_cob_res_item { flex:1; min-width:140px; padding:12px 16px; border-right:1px solid #f3f6fb; }
+                            .o_cob_res_item .lbl { display:block; font-size:10px; color:var(--sgo-muted);
+                                text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; font-weight:700; }
+                            .o_cob_res_item .o_field_widget { font-size:17px; font-weight:500; color:var(--sgo-money); }
+                            .o_cob_res_item.ok { background:var(--sgo-green-bg); }
+                            .o_cob_res_item.ok .o_field_widget { color:var(--sgo-green); }
+                            .o_cob_res_item.pend { background:var(--sgo-orange-bg); }
+                            .o_cob_res_item.pend .o_field_widget { color:var(--sgo-orange); font-size:16.5px; font-weight:600; }
+                            .o_cob_toolsrow { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:16px 0 10px; }
+                            .o_cob_toolsrow .pl { font-size:11px; font-weight:500; text-transform:uppercase;
+                                letter-spacing:.5px; color:var(--sgo-navy); }
+                            .o_cob_toolsrow select { background:#fff; border:1px solid #d3dbea; border-radius:9px;
+                                padding:7px 30px 7px 12px; font-weight:700; color:var(--sgo-navy); min-width:200px; }
+                            .o_cob_search { position:relative; flex:1 1 240px; max-width:430px; }
+                            .o_cob_search .o_field_widget { width:100%; }
+                            .o_cob_search input { width:100%; background:#fff; border:1px solid #d3dbea;
+                                border-radius:9px; padding:6px 36px 6px 12px; font-size:12.5px;
+                                color:var(--sgo-navy); }
+                            .o_cob_search input:focus { border-color:var(--sgo-royal); outline:none;
+                                box-shadow:0 0 0 3px rgba(33,69,201,.10); }
+                            .o_cob_search .o_cob_clear { position:absolute; right:6px; top:50%;
+                                transform:translateY(-50%); display:flex; align-items:center;
+                                justify-content:center; width:20px; height:20px; padding:0;
+                                border:0; border-radius:50%; background:#dc2626; color:#fff;
+                                line-height:1; box-shadow:none; cursor:pointer; }
+                            .o_cob_search .o_cob_clear:hover { background:#b91c1c; color:#fff; }
+                            .o_cob_search .o_cob_clear .fa { font-size:11px; }
+                            .o_cob_notecat { margin:-2px 0 10px; padding:9px 14px; font-size:12.5px;
+                                color:#5c3a1e; background:#fffdf8; border:1px dashed #ecdcc3; border-radius:9px; }
+                            .o_cob_notecat .fa { color:#b45309; margin-right:6px; }
+                            .o_cob_empty { display:flex; gap:14px; align-items:flex-start; background:#fff;
+                                border:1px solid var(--sgo-border); border-left:4px solid var(--sgo-blue);
+                                border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+                            .o_cob_empty .e_ico { width:34px; height:34px; border-radius:50%; background:#eef3fb;
+                                color:var(--sgo-blue); display:flex; align-items:center; justify-content:center;
+                                flex:none; font-size:16px; }
+                            .o_cob_empty .e_t { font-size:14px; font-weight:500; color:var(--sgo-navy); margin-bottom:4px; }
+                            .o_cob_empty .e_b { font-size:13px; color:#4b5563; line-height:1.6; }
+                            .o_cob_empty .e_b b { color:var(--sgo-navy); }
+                            .o_cob_tablecard { background:#fff; border:1px solid var(--sgo-border);
+                                border-radius:12px; overflow-x:auto; overflow-y:hidden;
+                                box-shadow:0 1px 2px rgba(28,43,90,.03); }
+                            .o_cob_tablecard .o_list_table { min-width:100%; }
+                            .o_cob_tablecard .o_field_widget { padding-top:16px; }
+                            .o_cob_tablecard .o_list_table thead th { background:#fff; color:var(--sgo-navy);
+                                text-transform:uppercase; font-size:10.5px; letter-spacing:.3px;
+                                vertical-align:middle; line-height:1.3; padding-top:8px; padding-bottom:8px;
+                                border-bottom:2px solid var(--sgo-royal); }
+                            .o_cob_tablecard .o_list_table td.o_data_cell,
+                            .o_cob_tablecard .o_list_table th { text-align:right; }
+                            .o_cob_tablecard .o_list_table td[name="cliente"],
+                            .o_cob_tablecard .o_list_table th[data-name="cliente"],
+                            .o_cob_tablecard .o_list_table td[name="consec"],
+                            .o_cob_tablecard .o_list_table th[data-name="consec"],
+                            .o_cob_tablecard .o_list_table td[name="rcf"],
+                            .o_cob_tablecard .o_list_table th[data-name="rcf"],
+                            .o_cob_tablecard .o_list_table td[name="doc_recaudo"],
+                            .o_cob_tablecard .o_list_table th[data-name="doc_recaudo"],
+                            .o_cob_tablecard .o_list_table td[name="doc_deduccion"],
+                            .o_cob_tablecard .o_list_table th[data-name="doc_deduccion"]
+                                { text-align:left; }
+                            .o_cob_tablecard .o_list_table td[name="cliente"] { font-weight:500; }
+                            .o_cob_tablecard .o_list_table tbody tr { cursor:pointer; }
+                            .o_cob_tablecard .o_list_table tbody tr:nth-child(even) { background:#fbfcfe; }
+                            .o_cob_tablecard .o_list_table tbody tr:hover { background:#eef4fe; }
+                            .o_cob_tablecard .o_list_table tfoot { border-top:2px solid var(--sgo-border); font-weight:600; }
+                            .o_cob_tablecard .badge, .sgo_cdet .badge { font-weight:600;
+                                letter-spacing:.2px; border-radius:999px; padding:3px 10px; }
+                            .o_cob_toolsrow .o_cob_btn_guia { margin-left:auto; }
+                            .o_cob_estado .o_field_radio { display:flex; gap:6px; flex-wrap:wrap; }
+                            .o_cob_estado .form-check { margin:0; padding:0; min-height:0; }
+                            .o_cob_estado input { position:absolute; opacity:0; pointer-events:none; }
+                            .o_cob_estado label { cursor:pointer; border:1px solid #d3dbea; background:#fff;
+                                color:#5b6a8c; border-radius:999px; padding:4px 12px; font-size:11.5px;
+                                font-weight:600; margin:0; line-height:1.4; }
+                            .o_cob_estado label:hover { border-color:var(--sgo-royal); color:var(--sgo-navy); }
+                            .o_cob_estado input:checked + label { background:var(--sgo-navy);
+                                border-color:var(--sgo-navy); color:#fff; }
+                            .o_cob_nores { display:flex; align-items:center; gap:8px; color:#7a8699;
+                                font-size:12.5px; padding:10px 4px 4px; }
+                            .o_cob_nores .fa { color:#9aa6bd; }
+                            .o_cob_first { display:flex; align-items:flex-start; gap:10px;
+                                border:1px dashed #c7d3ea; background:#fbfcff; color:#5b6a8c;
+                                border-radius:12px; padding:13px 16px; margin:2px 0 10px;
+                                font-size:12.5px; line-height:1.5; }
+                            .o_cob_first .fa { color:var(--sgo-royal); font-size:15px; margin-top:1px; }
+                            .o_cob_tablecard .o_list_table tbody tr { cursor:pointer; }
+                            .o_cob_tablecard .o_list_table, .sgo_cdet .o_list_table,
+                            .o_cob_res_grid .o_field_widget { font-variant-numeric:tabular-nums; }
+                            .o_cob_hint { text-align:right; font-size:11px; color:#94a3b8; margin:6px 2px 0; }
+                            .o_cob_legend { display:flex; gap:16px; flex-wrap:wrap; justify-content:flex-end;
+                                margin:4px 2px 0; font-size:11px; color:#7a8699; }
+                            .o_cob_legend .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; }
+                            .o_cob_legend .d_ok { background:#198754; }
+                            .o_cob_legend .d_par { background:#fd7e14; }
+                            .o_cob_legend .d_mut { background:#9aa4b2; }
+                            .o_cob_legend .d_pen { background:#1f2937; }
+                        </style>
+
+                        <div class="o_cob_head">
+                            <div class="o_cob_title">
+                                <i class="fa fa-database"/>Cobros reales (SIESA)
+                                <span class="o_cob_sub"> — conciliación contra el programa de cobros</span>
+                            </div>
+                            <div class="o_cob_tools">
+                                <span class="o_cob_sub">Última act.:</span>
+                                <field name="cobros_siesa_last_sync" nolabel="1" readonly="1" class="oe_inline"/>
+                                <button name="action_cargar_cobros_siesa" type="object"
+                                        string="Refrescar" icon="fa-refresh" class="btn btn-sm o_cob_btn"/>
+                                <button name="action_exportar_excel_cobros" type="object"
+                                        string="Excel" icon="fa-file-excel-o" class="btn btn-sm o_cob_btn_xls"/>
+                            </div>
+                        </div>
+
+                        <div class="o_cob_resumen">
+                            <div class="o_cob_res_head">
+                                <i class="fa fa-calculator"/> Resumen — cobros reales (SIESA)
+                                <span class="o_cob_res_count"><field name="total_cobros_count" nolabel="1"/> documentos</span>
+                            </div>
+                            <div class="o_cob_res_grid">
+                                <div class="o_cob_res_item" title="Total causado a cargo del cliente en SIESA (aportes CT + facturas FE/NV)"><span class="lbl">Por cobrar</span><field name="total_cobros_por_cobrar" nolabel="1"/></div>
+                                <div class="o_cob_res_item ok" title="Lo que efectivamente ha entrado: recibos de caja RT / NRT aplicados"><span class="lbl">Recaudado</span><field name="total_cobros_recaudado" nolabel="1"/></div>
+                                <div class="o_cob_res_item" title="Retenciones que el cliente le practica a la Fundación (anticipo de impuestos)"><span class="lbl">Deducción / retención</span><field name="total_cobros_deduccion" nolabel="1"/></div>
+                                <div class="o_cob_res_item pend" title="Por cobrar − recaudado − deducciones"><span class="lbl">Pendiente por recaudar</span><field name="total_cobros_pendiente" nolabel="1"/></div>
+                                <div class="o_cob_res_item" title="Avance del recaudo (incluye deducciones) sobre el total por cobrar"><span class="lbl">% recaudado</span><field name="total_cobros_pct" nolabel="1" widget="progressbar"/></div>
+                            </div>
+                            <div class="o_cob_res_sub">
+                                <i class="fa fa-sitemap"/> Desglose (SIESA)
+                            </div>
+                            <div class="o_cob_res_grid o_cob_res_grid2">
+                                <div class="o_cob_res_item" title="Causación por aportes de convenio (documentos CT)"><span class="lbl">Aportes por cobrar (CT)</span><field name="tot_cob_aportes" nolabel="1"/></div>
+                                <div class="o_cob_res_item" title="Causación por facturación de servicios (documentos FE)"><span class="lbl">Facturas por cobrar (FE)</span><field name="tot_cob_facturas" nolabel="1"/></div>
+                                <div class="o_cob_res_item" title="Deducciones ÷ por cobrar: el porcentaje que el cliente retiene"><span class="lbl">Retención efectiva</span><field name="tot_cob_ret_pct" nolabel="1" widget="progressbar"/></div>
+                                <div class="o_cob_res_item" title="Documentos de cobro con saldo en cero, sobre el total"><span class="lbl">Documentos saldados</span><field name="tot_cob_saldados_txt" nolabel="1"/></div>
+                            </div>
+                        </div>
+
+                        <div class="o_cob_toolsrow">
+                            <span class="pl">Ver:</span>
+                            <field name="cobros_vista_sel" nolabel="1"/>
+                            <span class="pl">Estado:</span>
+                            <div class="o_cob_estado" title="Filtrar la tabla por estado">
+                                <field name="cobros_filtro_estado" widget="radio"
+                                       options="{'horizontal': true}" nolabel="1"/>
+                            </div>
+                            <div class="o_cob_search">
+                                <field name="cobros_siesa_buscar" nolabel="1"
+                                       placeholder="Buscar cliente, NIT, documento… (Enter)"/>
+                                <button name="action_limpiar_busqueda_cobros" type="object"
+                                        class="o_cob_clear" icon="fa-times"
+                                        attrs="{'invisible': [('cobros_siesa_buscar', 'in', [False, ''])]}"
+                                        title="Limpiar la búsqueda"/>
+                            </div>
+                            <button name="action_guia_tecnica_cobros" type="object"
+                                    class="btn btn-sm o_cob_btn_guia" icon="fa-question-circle">
+                                Guía técnica
+                            </button>
+                        </div>
+
+                        <field name="cobros_sin_datos" invisible="1"/>
+                        <div class="o_cob_empty" attrs="{'invisible': [('cobros_sin_datos', '=', False)]}">
+                            <div class="e_ico"><i class="fa fa-info-circle"/></div>
+                            <div>
+                                <div class="e_t">Este proyecto no registra cobros en SIESA</div>
+                                <div class="e_b">
+                                    No tiene ninguna cuenta de cobro de aportes (<b>CT</b>) ni factura de venta (<b>FE</b>).
+                                    <b>No es un error del sistema</b>: hay convenios cuya plata entró <b>antes</b> de que
+                                    SIESA operara, y quedó registrada como <b>saldo inicial</b> de la migración — por eso
+                                    no existe un documento de cobro que mostrar.
+                                    <br/>
+                                    En esos casos la financiación se sigue por la cuenta contable
+                                    <b>2902 · Recibidos y reintegros de convenios</b>, que se va descargando a medida
+                                    que el proyecto ejecuta. Si esperabas ver cobros acá, confirmá con el área
+                                    financiera cómo entró la plata de este convenio.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="o_cob_notecat" attrs="{'invisible': [('cobros_vista_sel', '!=', 'Nota credito')]}">
+                            <i class="fa fa-info-circle"/> En esta categoría los valores salen en <b>negativo a propósito</b>:
+                            una nota crédito (NV) <b>reversa</b> una factura. Se dejan con su signo para que la suma
+                            cuadre exacto con la cartera (quitarles el signo inflaría los totales).
+                        </div>
+
+                        <field name="cobros_vista_count" invisible="1"/>
+                        <div class="o_cob_nores"
+                             attrs="{'invisible': ['|','|',('cobros_siesa_last_sync','=',False),('cobros_vista_count','&gt;',0),'&amp;',('cobros_siesa_buscar','in',[False,'']),('cobros_filtro_estado','in',[False,'todos'])]}">
+                            <i class="fa fa-filter"/> Sin resultados con los filtros actuales — cambiá el estado, la categoría o limpiá la búsqueda con la ×.
+                        </div>
+                        <div class="o_cob_first"
+                             attrs="{'invisible': [('cobros_siesa_last_sync','!=',False)]}">
+                            <i class="fa fa-database"/>
+                            <span>Todavía no se ha consultado SIESA para este proyecto.
+                                Presioná <b>Refrescar</b> (arriba a la derecha) para traer los cobros reales.</span>
+                        </div>
+                        <div class="o_cob_tablecard" attrs="{'invisible': [('cobros_siesa_last_sync','=',False)]}">
+                            <field name="cobros_vista_ids" nolabel="1" readonly="1">
+                                <tree default_order="fecha desc" string="Cobros SIESA" create="false" edit="false" delete="false" limit="25">
+                                    <field name="cliente"/>
+                                    <field name="estado" widget="badge" optional="show"
+                                    decoration-success="estado == 'Saldado'"
+                                    decoration-warning="estado == 'Parcial'"
+                                    decoration-danger="estado == 'Pendiente'"
+                                    decoration-muted="estado == 'Nota crédito'"/>
+                                    <field name="nit" optional="hide"/>
+                                    <field name="rcf" string="RPC/RCF" optional="hide"/>
+                                    <field name="consec" string="Documento"/>
+                                    <field name="fecha" string="Fecha"/>
+                                    <field name="dias" string="Días" optional="show"
+                                           decoration-danger="dias &gt; 60"
+                                           decoration-warning="dias &gt; 30 and dias &lt;= 60"
+                                           decoration-muted="dias == 0"/>
+                                    <field name="por_cobrar" sum="Total"/>
+                                    <field name="recaudado" sum="Total"/>
+                                    <field name="deduccion" string="Deducción" sum="Total" optional="hide"/>
+                                    <field name="doc_deduccion" string="Doc. deducción" optional="hide"/>
+                                    <field name="doc_recaudo" string="Recibo (RT)"/>
+                                    <field name="fecha_recaudo" string="F. recaudo" optional="hide"/>
+                                    <field name="pendiente" string="Pendiente" sum="Total"/>
+                                    <field name="currency_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </div>
+                        <div class="o_cob_hint" attrs="{'invisible': [('cobros_siesa_last_sync','=',False)]}">Clic en una fila para abrir la ficha del cliente: sus documentos, recaudos y retenciones.</div>
+</div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             WIZARD: elegir qué categorías descargar en Excel.
+             ===================================================================== -->
+        <record id="view_cobros_siesa_export_wizard" model="ir.ui.view">
+            <field name="name">cobros.siesa.export.wizard.form</field>
+            <field name="model">cobros.siesa.export.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Descargar Excel">
+                    <style>
+                        .sgo_cexp .t { font-size:13px; color:#7a8699; margin:2px 0 12px; }
+                        .sgo_cexp .opt { display:flex; align-items:center; gap:10px; background:#fff;
+                            border:1px solid #e8edf5; border-radius:12px; padding:10px 14px; margin-bottom:8px; }
+                        .sgo_cexp .opt:hover { border-color:#0d6efd; }
+                        .sgo_cexp .opt .fa { color:#0d6efd; width:18px; text-align:center; }
+                        .sgo_cexp .opt label { margin:0; font-weight:700; color:#1c2b5a; }
+                    </style>
+                    <field name="cobros_id" invisible="1"/>
+                    <div class="sgo_cexp">
+                        <div class="t">Elegí qué categorías incluir. Cada una sale en su propia hoja del archivo, con totales.</div>
+                        <div class="opt">
+                            <field name="incluir_aportes" nolabel="1"/>
+                            <i class="fa fa-handshake-o"/><label for="incluir_aportes">Aportes (CT)</label>
+                        </div>
+                        <div class="opt">
+                            <field name="incluir_facturas" nolabel="1"/>
+                            <i class="fa fa-file-text-o"/><label for="incluir_facturas">Facturas (FE)</label>
+                        </div>
+                        <div class="opt">
+                            <field name="incluir_notas" nolabel="1"/>
+                            <i class="fa fa-undo"/><label for="incluir_notas">Notas crédito (NV)</label>
+                        </div>
+                    </div>
+                    <footer>
+                        <button name="action_exportar" type="object" string="Descargar"
+                                class="btn-primary" icon="fa-download"/>
+                        <button string="Cancelar" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- =====================================================================
+             GUÍA TÉCNICA de cobros (para dummies).
+             ===================================================================== -->
+        <record id="view_cobros_siesa_guia_wizard" model="ir.ui.view">
+            <field name="name">cobros.siesa.guia.wizard.form</field>
+            <field name="model">cobros.siesa.guia.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Guía técnica - Cobros SIESA">
+                    <style>
+                        .sgo_cguia { --navy:#1c2b5a; --blue:#0d6efd; --royal:#2145c9; --green:#198754;
+                            --amber:#9a3412; --muted:#7a8699; --border:#e8edf5; max-width:900px; }
+                        .sgo_cguia .g_hero { background:linear-gradient(120deg,#1c2b5a,#2145c9); color:#fff;
+                            border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+                        .sgo_cguia .g_hero h2 { margin:0; font-size:20px; font-weight:500; color:#fff; }
+                        .sgo_cguia .g_hero p { margin:6px 0 0; font-size:13px; color:#d7e0f7; }
+                        .sgo_cguia .g_sec { background:#fff; border:1px solid var(--border);
+                            border-radius:12px; margin-bottom:12px; overflow:hidden; }
+                        .sgo_cguia .g_h { display:flex; align-items:center; gap:9px; padding:10px 16px;
+                            background:#f8fafd; border-bottom:1px solid var(--border);
+                            font-size:13px; font-weight:500; color:var(--navy); text-transform:uppercase; letter-spacing:.4px; }
+                        .sgo_cguia .g_h .fa { color:var(--blue); font-size:15px; }
+                        .sgo_cguia .g_b { padding:12px 16px; font-size:13.5px; color:#25324a; line-height:1.6; }
+                        .sgo_cguia .g_b p { margin:0 0 8px; }
+                        .sgo_cguia .g_b b { color:var(--navy); }
+                        .sgo_cguia .g_b .tag { display:inline-block; background:#eef2fb; color:var(--royal);
+                            border-radius:6px; padding:1px 7px; font-weight:700; font-size:12px; font-family:monospace; }
+                        .sgo_cguia table.g_t { width:100%; border-collapse:collapse; margin:4px 0; font-size:13px; }
+                        .sgo_cguia table.g_t th { background:#eef2f7; color:var(--navy); text-align:left;
+                            padding:6px 10px; font-size:11px; text-transform:uppercase; letter-spacing:.3px;
+                            border-bottom:2px solid var(--royal); }
+                        .sgo_cguia table.g_t td { padding:6px 10px; border-bottom:1px solid #f3f6fb; vertical-align:top; }
+                        .sgo_cguia table.g_t td:first-child { font-weight:700; color:var(--navy); white-space:nowrap; }
+                        .sgo_cguia .g_call { border-left:4px solid var(--amber); background:#fffdf8;
+                            padding:9px 14px; border-radius:0 8px 8px 0; margin:8px 0; font-size:13px; color:#5c3a1e; }
+                        .sgo_cguia ol.g_steps { margin:0; padding-left:20px; }
+                        .sgo_cguia ol.g_steps li { margin-bottom:6px; font-size:13.5px; }
+                    </style>
+                    <div class="sgo_cguia">
+                        <field name="dummy" invisible="1"/>
+
+                        <div class="g_hero">
+                            <h2>📗 Guía técnica — Cobros reales (SIESA)</h2>
+                            <p>Lo que ENTRA al proyecto, explicado simple. Es el espejo del módulo de pagos.</p>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-info-circle"/> ¿Qué es esto?</div>
+                            <div class="g_b">
+                                <p>Trae desde <b>SIESA</b> (el ERP contable) lo que el proyecto <b>cobró y recaudó de verdad</b>,
+                                para conciliarlo contra el programa de cobros de arriba. Si pagos responde
+                                "¿a quién le debemos y cuánto le pagamos?", <b>cobros responde "¿quién nos debe y
+                                cuánto nos ha entrado?"</b>.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-tags"/> Los dos mundos del cobro</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Categoría</th><th>Qué es</th><th>Doc.</th></tr>
+                                    <tr><td>Aportes</td><td><b>Convenios</b> (UN 15-xx): la Fundación pasa una cuenta de cobro al aportante (Gobernación, Fuerza Aérea…) por su aporte. La plata no es "venta": la Fundación la <b>administra</b>.</td><td><span class="tag">CT</span></td></tr>
+                                    <tr><td>Facturas</td><td><b>Proyectos propios</b>: la Fundación factura un servicio a un cliente.</td><td><span class="tag">FE</span></td></tr>
+                                    <tr><td>Notas crédito</td><td>Reversan una factura. Salen en <b>negativo</b>, a propósito.</td><td><span class="tag">NV</span></td></tr>
+                                </table>
+                                <p>Un proyecto puede tener los dos (ej. 14-073). La vista por defecto muestra <b>Aportes + Facturas</b>.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-file-text-o"/> Tipos de documento</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Rol</th><th>Documentos</th></tr>
+                                    <tr><td>Crean el derecho de cobro</td><td><span class="tag">CT</span> (aporte) · <span class="tag">FE</span> (factura)</td></tr>
+                                    <tr><td>Reversan</td><td><span class="tag">NV</span> (nota crédito de venta)</td></tr>
+                                    <tr><td><b>RECAUDA</b> (entra la plata)</td><td><span class="tag">RT</span> — recibo de tesorería. Es el "PE" de los cobros.</td></tr>
+                                    <tr><td>Reversa un recaudo</td><td><span class="tag">NRT</span></td></tr>
+                                    <tr><td>Bajan el saldo sin ser banco</td><td><span class="tag">DD</span> <span class="tag">AJ</span> <span class="tag">NI</span> <span class="tag">OAJ</span> <span class="tag">NC</span> — normalmente las <b>retenciones del cliente</b></td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-table"/> Qué significa cada columna</div>
+                            <div class="g_b">
+                                <table class="g_t">
+                                    <tr><th>Columna</th><th>Significado</th></tr>
+                                    <tr><td>Cliente / Aportante</td><td>A quién se le cobra.</td></tr>
+                                    <tr><td>RPC/RCF</td><td>El registro presupuestal, cuando el documento lo trae.</td></tr>
+                                    <tr><td>Documento</td><td>El que crea el derecho (ej. <span class="tag">CT 109</span>, <span class="tag">FE 2735</span>).</td></tr>
+                                    <tr><td>Por cobrar</td><td>El valor del aporte o de la factura.</td></tr>
+                                    <tr><td>Recaudado</td><td>Lo que <b>entró al banco</b> (documentos RT).</td></tr>
+                                    <tr><td>Deducción / retención</td><td>Lo que bajó el saldo <b>sin ser plata de banco</b>: casi siempre la <b>retención que el cliente le practica a la Fundación</b>. No es plata perdida: es anticipo de impuestos.</td></tr>
+                                    <tr><td>Doc. deducción</td><td>El tipo y número que hizo la deducción (ej. <span class="tag">DD 8062</span>, <span class="tag">NC 361</span>).</td></tr>
+                                    <tr><td>Recibo (RT)</td><td>El documento con que se recaudó.</td></tr>
+                                    <tr><td>Pendiente por recaudar</td><td>Por cobrar − <b>TODO lo aplicado</b> (recaudo + deducciones). Si da 0 → <b>saldado</b>.</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-exclamation-triangle"/> Lo que más confunde</div>
+                            <div class="g_b">
+                                <div class="g_call">🔎 <b>"Recaudaron menos de lo que cobramos"</b> → normal: el cliente <b>retiene</b>.
+                                Ej. real: <span class="tag">CT 59</span> por $1.500.000.000 → recaudado $1.462.500.000 + deducción $37.500.000
+                                (<span class="tag">DD 8062</span>, el 2.5%) = $1.500.000.000 exacto → <b>saldado</b> ✓ (fila verde).</div>
+                                <div class="g_call">🔎 <b>Un documento sin recibo (RT)</b> → o está <b>pendiente de verdad</b>, o lo mataron
+                                con una nota/ajuste (<span class="tag">AJ</span>, <span class="tag">NI</span>, <span class="tag">NC</span>).
+                                La columna <b>Doc. deducción</b> lo dice.</div>
+                                <div class="g_call">🔎 <b>Las notas crédito salen en negativo</b> → a propósito: reversan una factura.
+                                Con su signo, la suma cuadra con la cartera.</div>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-question-circle"/> ¿Y si el proyecto sale SIN cobros?</div>
+                            <div class="g_b">
+                                <p>Pasa, y <b>no siempre es un error</b>. Hay convenios que <b>no tienen ni un CT ni una FE</b>
+                                porque su plata entró <b>antes</b> de que SIESA operara: quedó registrada como
+                                <b>saldo inicial (SI)</b> de la migración. Nunca hubo un cobro que registrar.</p>
+                                <p>Caso real verificado: un convenio recibió <b>$1.596 millones</b> registrados como saldo
+                                inicial con fecha de migración. Su financiación no se sigue por cobros, sino por la cuenta
+                                <span class="tag">2902</span> (Recibidos y reintegros de convenios), que <b>se va
+                                descargando</b> a medida que el proyecto ejecuta.</p>
+                                <div class="g_call">Si un proyecto sale vacío y vos esperabas cobros, confirmá con el área
+                                financiera <b>cómo entró la plata</b>. El módulo muestra lo que la contabilidad tiene: si no
+                                hay documento de cobro, no hay nada que inventar.</div>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-paint-brush"/> Colores de las filas</div>
+                            <div class="g_b">
+                                <p><span style="color:#198754;font-weight:500;">● Verde</span> = <b>saldado</b> (recaudado y/o deducido) ·
+                                   <span style="color:#fd7e14;font-weight:500;">● Naranja</span> = parcial: queda pendiente ·
+                                   <span style="color:#9aa4b2;font-weight:500;">● Gris</span> = nota crédito / en cero ·
+                                   <span style="color:#1f2937;font-weight:500;">● Negro</span> = pendiente por recaudar.</p>
+                                <p>El color aplica a <b>toda la fila</b>. Mira el <b>pendiente</b>, no el recaudo solo.</p>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-hand-pointer-o"/> Cómo usarlo</div>
+                            <div class="g_b">
+                                <ol class="g_steps">
+                                    <li><b>Selector "Ver:"</b> — filtra por <b>tipo</b> de documento (Aportes, Facturas o Notas crédito). El resumen sigue lo que elijas.</li>
+                                    <li><b>Chips "Estado:"</b> — filtran por <b>estado</b> (Pendientes, Parciales, Saldados). Se combinan con el selector "Ver": podés ver, por ejemplo, solo las Facturas que están Pendientes.</li>
+                                    <li><b>Buscador</b> — busca en TODAS las páginas por cliente, NIT, documento, RCF o recibo.</li>
+                                    <li><b>Chips de estado</b> — filtran la tabla al instante (Pendientes, Parciales...); la columna <b>Días</b> muestra la antigüedad de lo abierto (ámbar &gt;30, rojo &gt;60); y con el <b>engranaje ⚙</b> de la tabla podés mostrar u ocultar columnas.</li>
+                                    <li><b>Clic en una fila</b> — abre la <b>ficha del cliente</b>: todos sus documentos, recaudos y retenciones.</li>
+                                    <li><b>Botón Excel</b> — elegís categorías y cada una sale en su hoja, con totales.</li>
+                                    <li><b>Refrescar</b> — vuelve a consultar SIESA. También refresca al entrar por "Cobros del proyecto".</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="g_sec">
+                            <div class="g_h"><i class="fa fa-cogs"/> Notas técnicas</div>
+                            <div class="g_b">
+                                <p>• Se filtra por <b>tipo de documento</b>, no por cuenta contable: por eso la misma consulta sirve
+                                para convenios (ancla <span class="tag">8355100112</span>, cuenta de orden) y para facturación (13xx).</p>
+                                <p>• <b>Los documentos ANULADOS no se muestran.</b> Es común que anulen una CT y hagan otra nueva
+                                (corrigen la cuenta bancaria o el texto). Si se mostraran, aparecerían como "pendientes"
+                                miles de millones que en realidad no se deben. Se detectan porque traen fecha y usuario de anulación.</p>
+                                <p>• El saldo abierto de SIESA registra la <b>apertura del propio documento</b> como si fuera un cruce:
+                                el módulo la <b>excluye</b> (si no, el recaudo se netea a 0).</p>
+                                <p>• Los valores <b>no se aproximan</b>: decimales exactos desde SQL Server.</p>
+                                <p>• SIESA se consulta <b>solo</b> al entrar por el botón o al pulsar Refrescar. Nunca en segundo plano.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <footer>
+                        <button string="Entendido" special="cancel" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

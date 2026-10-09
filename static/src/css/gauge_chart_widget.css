@@ -1,0 +1,29 @@
+.gauge_chart_widget {
+    width: 100%;
+    height: 22rem;
+    display: block;
+}
+
+.gauge-chart-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.gauge-text-overlay {
+    pointer-events: none;
+}
+
+.gauge-value {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important; /* Slate 900 */
+    line-height: 1.2 !important;
+}
+
+.gauge-label {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    color: #64748b !important; /* Slate 500 */
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}

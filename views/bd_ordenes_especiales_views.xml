@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bd_ordenes_especiales_tree" model="ir.ui.view">
+        <field name="name">bd_ordenes_especiales.tree</field>
+        <field name="model">bd_ordenes_especiales</field>
+        <field name="arch" type="xml">
+            <tree string="BDD Órdenes especiales"
+                  import="true"
+                  create="true"
+                  edit="true"
+                  delete="true"
+                  editable="top"
+                  class="o_bd_ordenes_especiales_editable_tree">
+                <field name="centro_costo"/>
+                <field name="proyecto" class="o_bd_ordenes_limit_18"/>
+                <field name="objeto_contrato" class="o_bd_ordenes_limit_18"/>
+                <field name="tipo_identificacion"/>
+                <field name="numero_identificacion"/>
+                <field name="digito_verificacion"/>
+                <field name="nombre_razon_social_contratista" class="o_bd_ordenes_limit_18"/>
+                <field name="direccion" optional="hide" class="o_bd_ordenes_limit_18"/>
+                <field name="ciudad"/>
+                <field name="telefono_celular" optional="hide"/>
+                <field name="correo_electronico" optional="hide" class="o_bd_ordenes_limit_18"/>
+                <field name="valor_mensual"/>
+                <field name="total_prestacion_servicios_obra_orden"/>
+                <field name="total_salarios" optional="hide"/>
+                <field name="total_otros_ingresos_laborales" optional="hide"/>
+                <field name="seguridad_social" optional="hide"/>
+                <field name="prestaciones_sociales" optional="hide"/>
+                <field name="valor_total"/>
+                <field name="ciiu"/>
+                <field name="facturacion_electronica" optional="hide"/>
+                <field name="responsable_iva" optional="hide"/>
+                <field name="declara_renta" optional="hide"/>
+                <field name="regimen_simple_tributacion" optional="hide"/>
+                <field name="regimen_especial" optional="hide"/>
+                <field name="regimen_ordinario" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_bd_ordenes_especiales_form" model="ir.ui.view">
+        <field name="name">bd_ordenes_especiales.form</field>
+        <field name="model">bd_ordenes_especiales</field>
+        <field name="arch" type="xml">
+            <form string="BDD Órdenes especiales">
+                <sheet>
+                    <group>
+                        <group string="Proyecto">
+                            <field name="centro_costo"/>
+                            <field name="proyecto"/>
+                            <field name="objeto_contrato"/>
+                        </group>
+                        <group string="Contratista / Proveedor">
+                            <field name="tipo_identificacion"/>
+                            <field name="numero_identificacion"/>
+                            <field name="digito_verificacion"/>
+                            <field name="nombre_razon_social_contratista"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Contacto">
+                            <field name="direccion"/>
+                            <field name="ciudad"/>
+                            <field name="telefono_celular"/>
+                            <field name="correo_electronico"/>
+                        </group>
+                        <group string="Valores">
+                            <field name="valor_mensual"/>
+                            <field name="total_prestacion_servicios_obra_orden"/>
+                            <field name="total_salarios"/>
+                            <field name="total_otros_ingresos_laborales"/>
+                            <field name="seguridad_social"/>
+                            <field name="prestaciones_sociales"/>
+                            <field name="valor_total"/>
+                        </group>
+                    </group>
+
+                    <group string="Información tributaria">
+                        <field name="ciiu"/>
+                        <field name="facturacion_electronica"/>
+                        <field name="responsable_iva"/>
+                        <field name="declara_renta"/>
+                        <field name="regimen_simple_tributacion"/>
+                        <field name="regimen_especial"/>
+                        <field name="regimen_ordinario"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_bd_ordenes_especiales" model="ir.actions.act_window">
+        <field name="name">BDD Órdenes especiales</field>
+        <field name="res_model">bd_ordenes_especiales</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_bd_ordenes_especiales_tree"/>
+    </record>
+
+    <menuitem id="menu_bd_ordenes_especiales"
+              name="BDD Órdenes especiales"
+              parent="menu_principal"
+              action="action_bd_ordenes_especiales"
+              sequence="136"
+              groups="Matriz.group_soporte"/>
+</odoo>

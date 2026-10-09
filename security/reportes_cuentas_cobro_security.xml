@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_reportes_cuentas_cobro" model="res.groups">
+        <field name="name">Analista de reportes - Cuentas de cobro</field>
+        <field name="category_id" ref="Matriz.cat_sgo_admin_control"/>
+        <field name="comment">Rol de solo consulta para generar informes y analizar tiempos del flujo de todas las cuentas de cobro.</field>
+        <field name="implied_ids" eval="[(4, ref('Matriz.group_consulta_global_cuentas_cobro'))]"/>
+    </record>
+
+    <record id="access_acta_reporte_cuentas_wizard" model="ir.model.access">
+        <field name="name">Reporte cuentas de cobro - asistente</field>
+        <field name="model_id" ref="model_acta_reporte_cuentas_wizard"/>
+        <field name="group_id" ref="Matriz.group_reportes_cuentas_cobro"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_acta_reporte_cuentas_line" model="ir.model.access">
+        <field name="name">Reporte cuentas de cobro - resultados</field>
+        <field name="model_id" ref="model_acta_reporte_cuentas_line"/>
+        <field name="group_id" ref="Matriz.group_reportes_cuentas_cobro"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="acta_reporte_cuentas_wizard_propias_rule" model="ir.rule">
+        <field name="name">Reportes cuentas - asistentes propios</field>
+        <field name="model_id" ref="model_acta_reporte_cuentas_wizard"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('Matriz.group_reportes_cuentas_cobro'))]"/>
+    </record>
+
+    <record id="acta_reporte_cuentas_line_propias_rule" model="ir.rule">
+        <field name="name">Reportes cuentas - resultados propios</field>
+        <field name="model_id" ref="model_acta_reporte_cuentas_line"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('Matriz.group_reportes_cuentas_cobro'))]"/>
+    </record>
+
+    <record id="access_acta_pdf_unificado_orden_wizard" model="ir.model.access">
+        <field name="name">Orden PDF unificado - wizard</field>
+        <field name="model_id" ref="model_acta_pdf_unificado_orden_wizard"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+
+    <record id="access_acta_pdf_unificado_orden_line" model="ir.model.access">
+        <field name="name">Orden PDF unificado - lineas</field>
+        <field name="model_id" ref="model_acta_pdf_unificado_orden_line"/>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+</odoo>

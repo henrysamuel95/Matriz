@@ -1,0 +1,9 @@
+.o_acta_entrega_kanban .o_kanban_group {
+    margin-right: 12px;
+    border-radius: 12px 12px 0 0;
+    background: #f5f8fc;
+}
+
+.o_acta_entrega_kanban .o_kanban_group:not(.o_column_folded) .o_kanban_record {
+    margin: 0 8px 12px;
+}
